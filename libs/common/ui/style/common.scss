@@ -1,0 +1,151 @@
+
+html,body,head,div,span,h1,h2,h3,h4,h5,h6,button,input,a,address,article,aside,b,canvas,caption,table,code,dd,del,datalist,dl,dt,big,em,figure,
+iframe,header,form,label,figcaption,fieldset,img,li,ul,main,map,nav,ol,embed,output,select,textarea,option,pre,p,param,section,small,strong,sub,sup,source,
+summary,thead,time,tbody,tfoot,th,tr,td,tt,var,video,audio,wbr,footer{
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+  padding:0;
+  margin:0;
+}
+
+a{
+  color:inherit;
+  text-decoration: none;
+  outline:none;
+}
+input,textarea{
+  font-size:inherit;
+  outline:none;
+}
+
+input[type="number"]{
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button{
+    -webkit-appearance: none;
+    margin:0;
+  }
+}
+
+//ios input disabled bug
+input:disabled{
+  -webkit-text-fill-color:currentColor;
+  opacity:1;
+}
+input:disabled::-webkit-input-placeholder{
+  -webkit-text-fill-color: currentColor;
+  opacity:1;
+}
+
+.center{
+  text-align:center;
+}
+
+
+.flex:not(.flex-vertical)>.flex-basis-0{
+  flex-basis:0;
+  width:0;
+}
+.flex.flex-vertical>.flex-basis-0{
+  flex-basis:0;
+  height:0;
+}
+
+.flex{
+  display:flex;
+  align-items:flex-start;
+  >*:not(.flex){
+    display:block;
+    //flex-shrink:0;//默认为1 若总和超过长度，会等比缩（new flexbox）
+  }
+
+  &.flex-center{
+    align-items:center;
+  }
+  &.flex-start{
+    align-items:flex-start;
+  }
+  &.flex-end{
+    align-items:flex-end;
+  }
+  &.flex-wrap{
+    flex-wrap:wrap;
+  }
+  &.flex-vertical{
+    flex-direction: column;
+  }
+  &.flex-full {
+    align-items:stretch;
+    align-content:stretch;
+  }
+
+  @each $number in 0,1,2,3,4,5,6 {
+    > .flex-#{$number},>.flex-p-#{$number} {
+      flex-grow: $number;
+    }
+    > .shrink-#{$number},>.flex-p-#{$number} {
+      flex-shrink: $number;
+    }
+    > .flex-p-#{$number} {
+      @extend .flex-basis-0
+    }
+  }
+
+  >.flex-basis-0{
+    flex-basis:0;
+  }
+}
+
+[contenteditable="true"]{
+  outline:none;
+  white-space:pre;
+  border:1px solid #aaa;
+  line-height:1.2em;
+  min-height:1.2em;
+  user-select:text;
+  &:empty:before{
+    content:attr(placeholder);
+    display:block;
+    color:#aaa;
+  }
+}
+@each $number in 1,2,3,4,5,10,15,20,25,30{
+  @each $dir in left,right,top,bottom{
+    .#{$dir}-#{$number}{
+      margin-#{$dir}:#{$number}px!important;
+    }
+  }
+  .top-bottom-#{$number}{
+    margin-top:#{$number}px!important;
+    margin-bottom:#{$number}px!important;
+  }
+  .left-right-#{$number}{
+    margin-left:#{$number}px!important;
+    margin-right:#{$number}px!important;
+  }
+  .padding-#{$number}{
+    padding:#{$number}px!important;
+  }
+  .padding-h-#{$number} {
+    padding-left: #{$number}px!important;
+    padding-right: #{$number}px!important;
+  }
+  .padding-v-#{$number} {
+    padding-top: #{$number}px!important;
+    padding-bottom: #{$number}px!important;
+  }
+}
+@each $number in 110,120,130,140,150,160,170,180,190,200{
+  .bigger-#{$number}{
+    font-size:#{$number/100}em!important;
+  }
+}
+@each $number in 90,80,70,60,50,40,30,20,10{
+  .smaller-#{$number}{
+    font-size:#{$number/100}em!important;
+  }
+}
+
+
+
+
+
+

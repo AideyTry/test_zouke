@@ -1,0 +1,31 @@
+//按钮样式模板函数
+@mixin btn-color($bgColor,$color:white,$clearColor:$bgColor){
+  $hoverColor:lighten($bgColor,10);
+  $activeColor:darken($bgColor,10);
+  $clearHoverColor:lighten($clearColor,10);
+  $clearActiveColor:darken($clearColor,10);
+
+  background:$bgColor;
+  color:$color;
+  &:hover ,&:focus{
+    background: $hoverColor;
+  }
+  &:active{
+    background:$activeColor;
+  }
+
+  &.btn-clear{
+    background:transparent;
+    color:$clearColor;
+    &:hover,&:focus{
+      background:transparent;
+      color:$clearHoverColor;
+    }
+    &:active{
+      color:$clearActiveColor;
+    }
+  }
+  &.btn-border{
+    border:1px solid $bgColor;
+  }
+}

@@ -1,0 +1,33 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const childProcess=require('child_process');
+const emitName = process.argv[2];
+
+if(!require('../config').DEBUG){
+    const args = emitName?[emitName]:[];
+    childProcess.spawn('./build.prod',args,{stdio:'inherit'});
+}else{
+    console.log('\x1b[0;31m\ndev:node\n\x1b[0m')
+    const path = require('path');
+
+    const webpackCliPath = path.join(__dirname,'../node_modules/.bin/webpack');
+
+    function webpack(env){
+        const webpackCliArgv = env?['--env',env]:[];
+        return childProcess.spawn(webpackCliPath,webpackCliArgv,{stdio:'inherit'});
+    }
+
+    switch(emitName){
+        case 'vendor':
+            webpack('vendor');
+            break;
+        case 'app':
+            webpack('app');
+            break;
+        default:
+            console.error('\x1b[0;31mvendor | app\n\x1b[0m')
+            break;
+    }
+}

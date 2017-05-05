@@ -1,0 +1,30 @@
+{
+  "name": "@local/ifdef2-loader",
+  "dependencies": {},
+  "description": "Webpack loader that allows JavaScript or TypeScript conditional compilation (`#if ... #endif`)\r directly from Webpack.",
+  "devDependencies": {},
+  "directories": {},
+  "dist": {
+    "shasum": "c264cc2bc8ebe2edf9ee39f884a922121b703e12",
+    "tarball": "https://registry.npmjs.org/ifdef-loader/-/ifdef-loader-1.0.2.tgz"
+  },
+  "gitHead": "fe67a7c63874f76ded009e1dba7af47460469bd4",
+  "homepage": "https://github.com/nippur72/ifdef-loader#readme",
+  "license": "MIT",
+  "maintainers": [
+    {
+      "name": "nippur72",
+      "email": "nino.porcino@gmail.com"
+    }
+  ],
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nippur72/ifdef-loader.git"
+  },
+  "scripts": {
+    "test": "tsc & jasmine --no-color"
+  },
+  "version": "1.0.4"
+}

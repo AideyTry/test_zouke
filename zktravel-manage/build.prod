@@ -1,0 +1,26 @@
+#!/bin/bash
+
+reset="\e[0m"
+red="\e[0;31m"
+
+printf "$red\nprod:bash\n\n$reset"
+
+cd "$(dirname $0)"
+
+webpack(){
+    cli="../node_modules/.bin/webpack";
+    $cli --env $1
+}
+
+case $1 in
+    vendor)
+        webpack vendor
+        ;;
+    app)
+        webpack app
+        ;;
+    *)
+        printf "$red"
+        printf "vendor | app\n\n$reset"
+        ;;
+esac

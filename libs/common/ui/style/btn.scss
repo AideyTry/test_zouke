@@ -1,0 +1,34 @@
+@import '../var/const';
+
+//btn
+
+.btn{
+  display:inline-block;
+  box-sizing:border-box;
+  vertical-align:middle;
+  border:none;
+  font-weight:bold;
+  outline:none;
+  font-size:14px;
+  text-align:center;
+  line-height:2em;
+  padding:0 10px;
+  -webkit-user-select:none;
+  user-select:none;
+  cursor:pointer;
+
+  &.btn-disabled{
+    cursor:not-allowed!important;
+    background:#B8BBBA!important;
+    color:white!important;
+    &.btn-clear{
+      background:transparent!important;
+    }
+  }
+  &.btn-full{
+    width:100%;
+  }
+  &.btn-round{
+    border-radius: $BORDER_RADIUS;
+  }
+}
