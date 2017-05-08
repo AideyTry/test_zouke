@@ -58,5 +58,6 @@ link ifdef2-loader
 link webpack-lite-utils
 link webpack-plugin-md5-hash
 link webpack-plugin-stats-writter
+link koa-mvc
 
 npm rebuild node-sass

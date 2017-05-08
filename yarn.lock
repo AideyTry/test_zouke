@@ -827,6 +827,10 @@ browserslist@^1.3.6, browserslist@^1.5.2, browserslist@^1.7.6:
     caniuse-db "^1.0.30000639"
     electron-to-chromium "^1.2.7"
 
+bson@~1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/bson/-/bson-1.0.4.tgz#93c10d39eaa5b58415cbc4052f3e53e562b0b72c"
+
 buffer-shims@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/buffer-shims/-/buffer-shims-1.0.0.tgz#9978ce317388c649ad8793028c3477ef044a8b51"
@@ -1359,6 +1363,10 @@ domain-browser@^1.1.1:
   version "1.1.7"
   resolved "https://registry.yarnpkg.com/domain-browser/-/domain-browser-1.1.7.tgz#867aa4b093faa05f1de08c06f4d7b21fdf8698bc"
 
+double-ended-queue@^2.1.0-0:
+  version "2.1.0-0"
+  resolved "https://registry.yarnpkg.com/double-ended-queue/-/double-ended-queue-2.1.0-0.tgz#103d3527fd31528f40188130c841efdd78264e5c"
+
 ecc-jsbn@~0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/ecc-jsbn/-/ecc-jsbn-0.1.1.tgz#0fc73a9ed5f0d53c38193398523ef7e543777505"
@@ -1422,6 +1430,10 @@ error-ex@^1.2.0:
 error-inject@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/error-inject/-/error-inject-1.0.0.tgz#e2b3d91b54aed672f309d950d154850fa11d4f37"
+
+es6-promise@3.2.1:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-3.2.1.tgz#ec56233868032909207170c39448e24449dd1fc4"
 
 escape-html@~1.0.1:
   version "1.0.3"
@@ -2385,6 +2397,21 @@ mixin-object@^2.0.1:
   dependencies:
     minimist "0.0.8"
 
+mongodb-core@2.1.10:
+  version "2.1.10"
+  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-2.1.10.tgz#eb290681d196d3346a492161aa2ea0905e63151b"
+  dependencies:
+    bson "~1.0.4"
+    require_optional "~1.0.0"
+
+mongodb@^2.2.26:
+  version "2.2.26"
+  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-2.2.26.tgz#1bd50c557c277c98e1a05da38c9839c4922b034a"
+  dependencies:
+    es6-promise "3.2.1"
+    mongodb-core "2.1.10"
+    readable-stream "2.2.7"
+
 ms@0.7.3:
   version "0.7.3"
   resolved "https://registry.yarnpkg.com/ms/-/ms-0.7.3.tgz#708155a5e44e33f5fd0fc53e81d0d40a91be1fff"
@@ -3168,9 +3195,9 @@ read-pkg@^1.0.0:
     normalize-package-data "^2.3.2"
     path-type "^1.0.0"
 
-readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.5, readable-stream@^2.0.6, readable-stream@^2.1.4, readable-stream@^2.2.6:
-  version "2.2.9"
-  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.2.9.tgz#cf78ec6f4a6d1eb43d26488cac97f042e74b7fc8"
+readable-stream@2.2.7, readable-stream@^2.0.1, readable-stream@^2.0.2, readable-stream@^2.0.5, readable-stream@^2.0.6, readable-stream@^2.1.4, readable-stream@^2.2.6:
+  version "2.2.7"
+  resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-2.2.7.tgz#07057acbe2467b22042d36f98c5ad507054e95b1"
   dependencies:
     buffer-shims "~1.0.0"
     core-util-is "~1.0.0"
@@ -3195,6 +3222,22 @@ redent@^1.0.0:
   dependencies:
     indent-string "^2.1.0"
     strip-indent "^1.0.1"
+
+redis-commands@^1.2.0:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/redis-commands/-/redis-commands-1.3.1.tgz#81d826f45fa9c8b2011f4cd7a0fe597d241d442b"
+
+redis-parser@^2.5.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/redis-parser/-/redis-parser-2.6.0.tgz#52ed09dacac108f1a631c07e9b69941e7a19504b"
+
+redis@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/redis/-/redis-2.7.1.tgz#7d56f7875b98b20410b71539f1d878ed58ebf46a"
+  dependencies:
+    double-ended-queue "^2.1.0-0"
+    redis-commands "^1.2.0"
+    redis-parser "^2.5.0"
 
 reduce-css-calc@^1.2.6:
   version "1.3.0"
@@ -3316,6 +3359,17 @@ require-main-filename@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-1.0.1.tgz#97f717b69d48784f5f526a6c5aa8ffdda055a4d1"
 
+require_optional@~1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/require_optional/-/require_optional-1.0.0.tgz#52a86137a849728eb60a55533617f8f914f59abf"
+  dependencies:
+    resolve-from "^2.0.0"
+    semver "^5.1.0"
+
+resolve-from@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/resolve-from/-/resolve-from-2.0.0.tgz#9480ab20e94ffa1d9e80a804c7ea147611966b57"
+
 resolve@^1.1.6, resolve@^1.3.3:
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.3.3.tgz#655907c3469a8680dc2de3a275a8fdd69691f0e5"
@@ -3372,7 +3426,7 @@ scss-tokenizer@^0.2.1:
     js-base64 "^2.1.8"
     source-map "^0.4.2"
 
-"semver@2 || 3 || 4 || 5", semver@^5.3.0, semver@~5.3.0:
+"semver@2 || 3 || 4 || 5", semver@^5.1.0, semver@^5.3.0, semver@~5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.3.0.tgz#9b2ce5d3de02d17c6012ad326aa6b4d0cf54f94f"
 
@@ -3836,9 +3890,9 @@ webpack-sources@^0.2.3:
     source-list-map "^1.1.1"
     source-map "~0.5.3"
 
-webpack@^2.4.1:
-  version "2.4.1"
-  resolved "https://registry.yarnpkg.com/webpack/-/webpack-2.4.1.tgz#15a91dbe34966d8a4b99c7d656efd92a2e5a6f6a"
+webpack@^2.5.0:
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/webpack/-/webpack-2.5.1.tgz#61742f0cf8af555b87460a9cd8bba2f1e3ee2fce"
   dependencies:
     acorn "^5.0.0"
     acorn-dynamic-import "^2.0.0"

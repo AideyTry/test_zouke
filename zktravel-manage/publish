@@ -11,3 +11,5 @@ cd "$(dirname $0)"
 
 cp -rf ./.manifest/* ./.manifest.bak
 cp -rf ./.manifest.next/* ./.manifest
+
+pm2 reload zktravel-manage
