@@ -20,9 +20,10 @@ module.exports = class Controller {
     }
 
     render(model = {}, view){
+        const controller = this.route.controller;
         view = view || this.route.action;
 
-        const viewPath = path.resolve(this.route.viewsRoot, `${view}.pug`);
+        const viewPath = path.resolve(this.route.viewsRoot, `${controller}/${view}.pug`);
         const content = pug.compileFile(viewPath, pugCompileOptions)({
             model
         });
