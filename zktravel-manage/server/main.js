@@ -4,6 +4,8 @@ if(!DEBUG){
     process.env.NODE_ENV = 'production';
 }
 
+require('./requireRoot');
+
 const Koa = require('koa');
 
 const koaMvc = require('@local/koa-mvc')();
