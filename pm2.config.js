@@ -16,6 +16,7 @@ module.exports = {
         exec_mode: 'cluster',
         out_file: s('./zktravel-manage/logs/out.log'),
         error_file: s('./zktravel-manage/logs/err.log'),
+        merge_logs: true,
         log_date_format: 'YYYY-MM-DD HH:mm Z'
     }]
 };

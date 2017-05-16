@@ -18,7 +18,9 @@ module.exports = class Controller {
         });
         this.layout = '~layout';
     }
-
+    renderText(txt){
+        this.ctx.body = txt;
+    }
     render(model = {}, view){
         const controller = this.route.controller;
         view = view || this.route.action;

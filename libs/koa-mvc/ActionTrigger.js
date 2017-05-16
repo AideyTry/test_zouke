@@ -10,7 +10,10 @@ function findControllerByPath(p){
         try{
             cache[p] = require(p);
         }catch(e){
-            cache[p] = new NotFoundError('controller not found');
+            if(e.message.startsWith('Cannot find module ')){
+                cache[p] = new NotFoundError('controller not found');
+            }
+            cache[p] = e;
         }
     }
 
