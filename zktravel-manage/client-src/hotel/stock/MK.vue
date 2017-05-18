@@ -17,7 +17,6 @@
 			return{
 				pageNum:1,
 				pageSize:10,
-				// listData:0
 			}
 		},
 		components:{
@@ -25,7 +24,7 @@
 		},
 		computed:{
 			pages(){
-				return{
+				return{	
 						pageNum: this.pageNum,
 						pageSize:this.pageSize,
 						total:Math.ceil((this.$store.state.list).length/this.pageSize),
@@ -37,24 +36,27 @@
 				return this.$store.state.counts;
 			},
 			list(){
-				// console.log(this.pageNum);
 				let listData=this.$store.state.list;
-				// console.log(listData);
 				return listData.slice((this.pageNum-1)*this.pageSize,this.pageSize*this.pageNum);
 			}
 		},
 		methods:{
 			mkprev(){
 				if(this.$store.state.counts.isTrue.mkisTrue){
+					if(this.$store.state.flag.flag){
+					this.pageNum=this.$store.state.flag.page;
+					return false;
+					}
 					this.pageNum--;
-					// console.log(this.pageNum);
 				}
 			},
 			mknext(){
-				// if(this.$store.state.counts.isTrue.mkisTrue){
+					if(this.$store.state.flag.flag){
+						this.pageNum=this.$store.state.flag.page;
+						return false;
+					}
 					this.pageNum++;
-					// console.log(this.pageNum);
-				// }
+
 			}
 		}
 	}

@@ -194,7 +194,7 @@ export default new Vuex.Store({
                             bLink:"www.zouke.com"
                         },
                         {
-                            grade:"L2",
+                            grade:"2",
                             sName:"大酒店18",
                             mName:"假日大酒店18",
                             sAddress:"地址4",
@@ -238,6 +238,10 @@ export default new Vuex.Store({
                             bLink:"www.zouke.com"
                         }
         ],
+        flag:{
+            flag:false,  //记录状态进行跳转页面使用
+            page:null
+        },
         // pages:{
         //     pageNum:1,
         //     pageSize:10

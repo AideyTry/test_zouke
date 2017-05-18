@@ -157,10 +157,10 @@
 			<tfoot>
 				<nav class="pagination pull-right">
 	                   <span>当前页第{{pages.pageNum}}页，共{{pages.total}}页</span>
-	                   <a class="prev" href="javascript:;" v-on:click="prev()" v-bind:class="{disabled:isTrue}"><span class="glyphicon glyphicon-triangle-left"></span></a>
+	                   <a class="prev" href="javascript:;" v-on:click="prev()" v-bind:class="{disabled:isTrueP}"><span class="glyphicon glyphicon-triangle-left"></span></a>
 	                   <strong>{{pages.pageNum}}/{{pages.total}}</strong>
-	                   <a class="next" href="javascript:;" v-on:click="next()" v-bind:class="{disabled:isTrue}"><span class="glyphicon glyphicon-triangle-right"></span></a>
-	                   <input  type="text" name=""  id="input">
+	                   <a class="next" href="javascript:;" v-on:click="next()" v-bind:class="{disabled:isTrueN}"><span class="glyphicon glyphicon-triangle-right"></span></a>
+	                   <input  type="text" name="" value="输入页码跳转" onfocus="javascript:if(this.value=='输入页码跳转')this.value='';" id="input">
 	                   <button class="bColor btn btn-default" @click="skip()">跳转</button>
 	             
 				</nav>
@@ -181,7 +181,8 @@
 				misTrue:false,
 				pisTrue:false,
 				uisTrue:false,
-				isTrue:false
+				isTrueP:false,
+				isTrueN:false
 			}
 		},
 		methods:{
@@ -212,38 +213,48 @@
 				this.uisTrue=false;
 			},
 			prev(){
-
+					this.$store.state.flag.flag=false;
 					if(this.pages.pageNum>1){
 						this.pages.pageNum--;
 						this.$emit('prev');
+						this.isTrueN=false;
+						this.isTrueP=false;
 						return false;
 					}
 					else if(this.pages.pageNum<=1){
-						this.isTrue=true;
+						this.isTrueN=false;
+						this.isTrueP=true;
 						return false;
 					}
 
 			},
 			next(){
+				this.$store.state.flag.flag=false;
 				if(this.pages.pageNum<this.pages.total){
 					this.pages.pageNum++;
 					this.$emit('next');
+					this.isTrueP=false;
+					this.isTrueN=false;
 				}
 				else if(this.pages.pageNum>=this.pages.total){
-					this.isTrue=true;
+
+					this.isTrueN=true;
 				}
 			},
 			skip(){
-				console.log(1);
 				let  input = document.getElementById("input");
-				
-				
 				if(this.pages.pageNum>(input.value-0)){
+					this.$store.state.flag.page=input.value-0;
+					this.$store.state.flag.flag=true;
 					this.$emit('prev');
-					this.pages.pageNum=(input.value-0);
 				}
-				else if(this.pages.pageNum<(input.value-0))
-				this.$emit('next');
+				else if(this.pages.pageNum=(input.value-0)){
+					
+					this.$store.state.flag.page=input.value-0;
+					this.$store.state.flag.flag=true;
+					this.$emit('next');
+				}
+				
 			}
 
 		}
