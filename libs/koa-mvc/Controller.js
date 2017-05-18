@@ -10,6 +10,10 @@ const pugCompileOptions = {
 }
 
 module.exports = class Controller {
+
+    $beforeAction(){}
+    $afterAction(){}
+
     constructor({ctx, route, router}){
         Object.defineProperties(this, {
             ctx: { value: ctx },
@@ -18,11 +22,23 @@ module.exports = class Controller {
         });
         this.layout = '~layout';
     }
-
+    get request(){
+        return this.ctx.request;
+    }
+    get response(){
+        return this.ctx.response;
+    }
+    get cookies(){
+        return this.ctx.cookies;
+    }
+    renderText(txt){
+        this.ctx.body = txt;
+    }
     render(model = {}, view){
+        const controller = this.route.controller;
         view = view || this.route.action;
 
-        const viewPath = path.resolve(this.route.viewsRoot, `${view}.pug`);
+        const viewPath = path.resolve(this.route.viewsRoot, `${controller}/${view}.pug`);
         const content = pug.compileFile(viewPath, pugCompileOptions)({
             model
         });

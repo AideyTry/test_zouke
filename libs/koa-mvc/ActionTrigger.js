@@ -10,7 +10,10 @@ function findControllerByPath(p){
         try{
             cache[p] = require(p);
         }catch(e){
-            cache[p] = new NotFoundError('controller not found');
+            if(e.message.startsWith('Cannot find module ')){
+                cache[p] = new NotFoundError('controller not found');
+            }
+            cache[p] = e;
         }
     }
 
@@ -48,18 +51,14 @@ module.exports = class ActionTrigger{
 
         const controller = this._controller;
         if(controller[this._actionName]){
-            let result =true;
-            if(controller.beforeAction){
-                let result = controller.beforeAction();
-                if(result instanceof Promise) result = await result;
+            let result = await controller.$beforeAction();
+
+            if(result!==false){
+                const actionResult = await controller[this._actionName]();
             }
 
-            if(result){
-                const actionResult = controller[this._actionName]();
-                if(actionResult instanceof Promise) await actionResult;
-            }
-
-            controller.afterAction&&controller.afterAction();
+            await controller.$afterAction();
+            
         } else throw new NotFoundError('action not found');
     }
 }
