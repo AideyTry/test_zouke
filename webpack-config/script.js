@@ -2,6 +2,7 @@ const { DEBUG } = require('../config');
 const merge = require('webpack-merge');
 const optimize = require('./partical/optimize');
 const resource = require('./partical/resource');
+const path = require('path');
 
 module.exports = merge(resource, optimize, {
     output:{
@@ -22,7 +23,7 @@ module.exports = merge(resource, optimize, {
             {
                 test: /\.js$/,
                 loader: 'babel-loader',
-                exclude: /node_modules/
+                exclude: [/node_modules/, path.resolve(__dirname,'../libs/babel-helper')]
             },
             {
                 test: /\.vue$/,
