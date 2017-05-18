@@ -36,7 +36,18 @@
 				return this.$store.state.counts;
 			},
 			list(){
-				let listData=this.$store.state.list;
+				let list=this.$store.state.list,listData;
+				listData=list.sort(function(a,b){
+					if(a.id>b.id){
+						return 1;
+					}
+					if(a.id<b.id){
+						return -1;
+					}
+					return 0;
+
+				});
+				// console.log(listData);
 				return listData.slice((this.pageNum-1)*this.pageSize,this.pageSize*this.pageNum);
 			}
 		},
