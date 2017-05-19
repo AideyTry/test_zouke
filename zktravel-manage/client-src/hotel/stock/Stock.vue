@@ -87,7 +87,7 @@
 					let url='';
 					switch(page){
 						case 'mk':
-							url='/index/stock/mk';
+							url='/index/stock/mk';							
 							this.$store.state.counts.isTrue.mkisTrue=true;
 							this.$store.state.counts.isTrue.dlisTrue=false;
 							this.$store.state.counts.isTrue.vtisTrue=false;
@@ -97,6 +97,7 @@
 							this.isTrue.two=false;
 							this.isTrue.three=false;
 							this.isTrue.four=false;
+							
 							break;
 						case 'dl':
 							url='/index/stock/dl';

@@ -7,6 +7,7 @@ export default new Vuex.Store({
     state: {
        list:[
                         {   
+                            id:1,
                             grade:"L1",
                             sName:"黄冠大酒店",
                             mName:"皇冠假日大酒店",
@@ -18,6 +19,7 @@ export default new Vuex.Store({
                             bLink:"www.zouke.com"
                         },
                         {
+                            id:3,
                             grade:"L3",
                             sName:"黄亚大酒店",
                             mName:"皇亚假日大酒店",
@@ -28,7 +30,8 @@ export default new Vuex.Store({
                             link:"www.baidu.com",
                             bLink:"www.zouke.com"
                         },
-                        {
+                        {   
+                            id:2,
                             grade:"L2",
                             sName:"黄季大酒店",
                             mName:"皇季假日大酒店",
@@ -39,7 +42,8 @@ export default new Vuex.Store({
                             link:"www.baidu.com",
                             bLink:"www.zouke.com"
                         },
-                        {
+                        {   
+                            id:4,
                             grade:"L4",
                             sName:"大酒店",
                             mName:"假日大酒店",
@@ -50,7 +54,8 @@ export default new Vuex.Store({
                             link:"www.baidu.com",
                             bLink:"www.zouke.com"
                         },
-                        {
+                        {   
+                            id:1,
                             grade:"L1",
                             sName:"大酒店5",
                             mName:"假日大酒店5",
@@ -62,7 +67,8 @@ export default new Vuex.Store({
                             bLink:"www.zouke.com"
                         },
                         {   
-                            grade:"L1",
+                            id:6,
+                            grade:"L6",
                             sName:"大酒店6",
                             mName:"假日大酒店6",
                             sAddress:"地址4",
@@ -72,8 +78,9 @@ export default new Vuex.Store({
                             link:"www.baidu.com",
                             bLink:"www.zouke.com"
                         },
-                        {
-                            grade:"L1",
+                        {   
+                            id:7,
+                            grade:"L7",
                             sName:"大酒店7",
                             mName:"假日大酒店7",
                             sAddress:"地址4",
@@ -83,8 +90,9 @@ export default new Vuex.Store({
                             link:"www.baidu.com",
                             bLink:"www.zouke.com"
                         },
-                        {
-                            grade:"L1",
+                        {   
+                            id:5,
+                            grade:"L5",
                             sName:"大酒店8",
                             mName:"假日大酒店8",
                             sAddress:"地址4",
@@ -95,6 +103,7 @@ export default new Vuex.Store({
                             bLink:"www.zouke.com"
                         },
                         {
+                            id:3,
                             grade:"L3",
                             sName:"大酒店9",
                             mName:"假日大酒店9",
@@ -105,7 +114,8 @@ export default new Vuex.Store({
                             link:"www.baidu.com",
                             bLink:"www.zouke.com"
                         },
-                        {
+                        {   
+                            id:4,
                             grade:"L4",
                             sName:"大酒店10",
                             mName:"假日大酒店10",
@@ -117,6 +127,7 @@ export default new Vuex.Store({
                             bLink:"www.zouke.com"
                         },
                         {
+                            id:1,
                             grade:"L1",
                             sName:"大酒店11",
                             mName:"假日大酒店11",
@@ -128,6 +139,7 @@ export default new Vuex.Store({
                             bLink:"www.zouke.com"
                         },
                         {
+                            id:3,
                             grade:"L3",
                             sName:"大酒店12",
                             mName:"假日大酒店12",
@@ -139,6 +151,7 @@ export default new Vuex.Store({
                             bLink:"www.zouke.com"
                         },
                         {
+                            id:1,
                             grade:"L1",
                             sName:"大酒店13",
                             mName:"假日大酒店13",
@@ -149,7 +162,8 @@ export default new Vuex.Store({
                             link:"www.baidu.com",
                             bLink:"www.zouke.com"
                         },
-                        {
+                        {   
+                            id:2,
                             grade:"L2",
                             sName:"大酒店14",
                             mName:"假日大酒店14",
@@ -161,6 +175,7 @@ export default new Vuex.Store({
                             bLink:"www.zouke.com"
                         },
                         {
+                            id:4,
                             grade:"L4",
                             sName:"大酒店15",
                             mName:"假日大酒店15",
@@ -172,6 +187,7 @@ export default new Vuex.Store({
                             bLink:"www.zouke.com"
                         },
                         {
+                            id:1,
                             grade:"L1",
                             sName:"大酒店16",
                             mName:"假日大酒店16",
@@ -183,6 +199,7 @@ export default new Vuex.Store({
                             bLink:"www.zouke.com"
                         },
                         {
+                            id:1,
                             grade:"L1",
                             sName:"大酒店17",
                             mName:"假日大酒店17",
@@ -194,6 +211,7 @@ export default new Vuex.Store({
                             bLink:"www.zouke.com"
                         },
                         {
+                            id:2,
                             grade:"L2",
                             sName:"大酒店18",
                             mName:"假日大酒店18",
@@ -204,8 +222,9 @@ export default new Vuex.Store({
                             link:"www.baidu.com",
                             bLink:"www.zouke.com"
                         },
-                        {
-                            grade:"l3",
+                        {   
+                            id:3,
+                            grade:"L3",
                             sName:"大酒店19",
                             mName:"假日大酒店19",
                             sAddress:"地址4",
@@ -216,7 +235,8 @@ export default new Vuex.Store({
                             bLink:"www.zouke.com"
                         },
                         {
-                            grade:"l2",
+                            id:2,
+                            grade:"L2",
                             sName:"大酒店20",
                             mName:"假日大酒店20",
                             sAddress:"地址4",
@@ -227,7 +247,8 @@ export default new Vuex.Store({
                             bLink:"www.zouke.com"
                         },
                         {
-                            grade:"l1",
+                            id:1,
+                            grade:"L1",
                             sName:"大酒店21",
                             mName:"假日大酒店21",
                             sAddress:"地址4",
@@ -238,6 +259,10 @@ export default new Vuex.Store({
                             bLink:"www.zouke.com"
                         }
         ],
+        flag:{
+            flag:false,  //记录状态进行跳转页面使用
+            page:null
+        },
         // pages:{
         //     pageNum:1,
         //     pageSize:10

@@ -17,7 +17,6 @@
 			return{
 				pageNum:1,
 				pageSize:10,
-				// listData:0
 			}
 		},
 		components:{
@@ -25,36 +24,48 @@
 		},
 		computed:{
 			pages(){
-				return{
-						pageNum: this.pageNum,
-						pageSize:this.pageSize,
-						total:Math.ceil((this.$store.state.list).length/this.pageSize),
-						pages:Math.ceil((this.$store.state.list).length/this.pageSize)/this.pageNum
-					}
+				return{	
+					pageNum: this.pageNum,
+					pageSize:this.pageSize,
+					total:Math.ceil((this.$store.state.list).length/this.pageSize),
+					pages:Math.ceil((this.$store.state.list).length/this.pageSize)/this.pageNum
+				}
 
 			},
 			counts(){
 				return this.$store.state.counts;
 			},
 			list(){
-				// console.log(this.pageNum);
-				let listData=this.$store.state.list;
-				// console.log(listData);
+				let list=this.$store.state.list,listData;
+				listData=list.sort(function(a,b){
+					if(a.id>b.id){
+						return 1;
+					}
+					if(a.id<b.id){
+						return -1;
+					}
+						return 0;
+				});
 				return listData.slice((this.pageNum-1)*this.pageSize,this.pageSize*this.pageNum);
 			}
 		},
 		methods:{
 			mkprev(){
 				if(this.$store.state.counts.isTrue.mkisTrue){
+					if(this.$store.state.flag.flag){
+					this.pageNum=this.$store.state.flag.page;
+					return false;
+					}
 					this.pageNum--;
-					// console.log(this.pageNum);
 				}
 			},
 			mknext(){
-				// if(this.$store.state.counts.isTrue.mkisTrue){
+					if(this.$store.state.flag.flag){
+						this.pageNum=this.$store.state.flag.page;
+						return false;
+					}
 					this.pageNum++;
-					// console.log(this.pageNum);
-				// }
+
 			}
 		}
 	}
