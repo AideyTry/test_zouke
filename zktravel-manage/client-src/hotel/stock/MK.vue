@@ -25,11 +25,11 @@
 		computed:{
 			pages(){
 				return{	
-						pageNum: this.pageNum,
-						pageSize:this.pageSize,
-						total:Math.ceil((this.$store.state.list).length/this.pageSize),
-						pages:Math.ceil((this.$store.state.list).length/this.pageSize)/this.pageNum
-					}
+					pageNum: this.pageNum,
+					pageSize:this.pageSize,
+					total:Math.ceil((this.$store.state.list).length/this.pageSize),
+					pages:Math.ceil((this.$store.state.list).length/this.pageSize)/this.pageNum
+				}
 
 			},
 			counts(){
@@ -44,10 +44,8 @@
 					if(a.id<b.id){
 						return -1;
 					}
-					return 0;
-
+						return 0;
 				});
-				// console.log(listData);
 				return listData.slice((this.pageNum-1)*this.pageSize,this.pageSize*this.pageNum);
 			}
 		},
