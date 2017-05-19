@@ -4,6 +4,10 @@ const MappingLevel = require('./MappingLevel');
 const { zk_collection_name, sp_collection_name } = require('./config');
 const Pretreatment = require('./Pretreatment');
 
+function abstractError(){
+    throw new Error('this method need to rewrite by child class')
+}
+
 module.exports = class Mapping {
 
     constructor(){
@@ -83,12 +87,16 @@ module.exports = class Mapping {
 
     }
     //匹配
-    async $map(spHotel, zk_id){
+    async $map(spHotel, zk_id, sp_area = abstractError()){
         if(spHotel.map_state&&spHotel.map_state.remap){
             this._incState('remap');
         }else{
             this._incState('map');
         }
+        const zkCollection = await this.$getZkHotelCollection();
+        zkCollection.updateOne({ _id: zk_id }, {
+            $addToSet: { [`sp_id.${sp_area}`]: spHotel.id }
+        });
     }
 
 
@@ -146,8 +154,13 @@ module.exports = class Mapping {
     }
 
     //下架
-    async $offline(spHotel){
+    async $offline(spHotel, sp_area = abstractError()){
         this._incState('offline');
+
+        const zkCollection = await this.$getZkHotelCollection();
+        await zkCollection.findOneAndUpdate({[`sp_id.${sp_area}`]: spHotel.id}, {
+            $pull: { [`sp_id.${sp_area}`]: spHotel.id }
+        });
     }
 
     _diff({ dis, hotel: {[Pretreatment.field]: h1_field} }, { [Pretreatment.field]: h2_field}){
