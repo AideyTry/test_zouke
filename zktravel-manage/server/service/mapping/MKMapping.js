@@ -5,19 +5,11 @@ module.exports = class MKMapping extends Mapping{
         return await super.$findSpNotResolve({sp: 'mk'})
     }
     async $map(mkHotel, zk_id){
-        const zkCollection = await this.$getZkHotelCollection();
-        zkCollection.updateOne({ _id: zk_id }, {
-            $addToSet: { 'sp_id.mk_ids': mkHotel.id }
-        });
-        return await super.$map(mkHotel, zk_id);
+        return await super.$map(mkHotel, zk_id, 'mk_ids');
     }
 
     async $offline(mkHotel){
-        const zkCollection = await this.$getZkHotelCollection();
-        await zkCollection.findOneAndUpdate({'sp_id.mk_ids': mkHotel.id}, {
-            $pull: { 'sp_id.mk_ids': mkHotel.id }
-        });
-        return await super.$offline(mkHotel);
+        return await super.$offline(mkHotel, 'mk_ids');
     }
 
     async $insert(mkHotel,...arg){

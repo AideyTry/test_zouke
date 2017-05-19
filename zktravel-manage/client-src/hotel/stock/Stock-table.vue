@@ -121,7 +121,7 @@
 
 <template>
 	<div>
-		<shotel v-if="shotelisTrue" class="shotel"></shotel>
+		<!--<shotel v-if="shotelisTrue" class="shotel"></shotel>-->
 		<table class="table table-bordered">
 			<thead>
 				<tr>
@@ -154,7 +154,7 @@
 				<tr v-for="item in list">
 					<td>{{item.grade}}</td>
 					<td @click="shotel()">{{item.sName}}</td>
-					<td>{{item.mName}}</td>
+					<td @click="shotel()">{{item.mName}}</td>
 					<td>{{item.sAddress}}</td>
 					<td>{{item.mAddress}}</td>
 					<td>{{item.sPhone}}</td>
@@ -186,13 +186,13 @@
 </template>
 
 <script>
-	import Shotel from './Shotel';
-	import Photel from './Photel';
+//	import Shotel from './Shotel';
+//	import Photel from './Photel';
 	export default {
 		props: ['mk', 'list', 'pages'],
 		components: {
-			shotel: Shotel,
-			photel: Photel
+//			shotel: Shotel,
+//			photel: Photel
 		},
 		data() {
 			return {
@@ -274,9 +274,12 @@
 				}
 
 			},
-			shotel() {
-				this.shotelisTrue = true;
-			}
+//			shotel() {
+//				this.shotelisTrue = true;
+//			},
+//			photel(){
+//				this.photelisTrue = true;
+//			}
 
 		}
 	}
