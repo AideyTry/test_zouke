@@ -276,6 +276,9 @@
 			},
 			shotel() {
 				this.shotelisTrue = true;
+			},
+			photel(){
+//				this.photelisTrue = true;
 			}
 
 		}
