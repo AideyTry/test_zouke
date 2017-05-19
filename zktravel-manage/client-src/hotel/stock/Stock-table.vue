@@ -1,21 +1,22 @@
 <style lang="scss" scoped>
-	.shotel {
-			width: 70%;
-			height: 100%;
-			position: absolute;
-			top: 100px;
-			left: 15%;
-			background: rgba(255,255,255,1);
-			z-index: 100;
-		}
-	table {
+	.hotel {
+		position: fixed;
+		width: 70%;
+		height: 100%;
+		left: 10%;
+		top: 5%;
+		z-index: 99;
+		/*background: rgba(255, 255, 255, 1);*/
+		background-color: #fff;
+		/*border: 1px solid #000;*/
+	}
+	
+	.table1 {
 		margin-top: 10px;
 		width: 100%;
-		position:relative;
 		th {
 			color: #000;
 		}
-	
 		content {
 			width: 500px;
 			height: 400px;
@@ -72,12 +73,10 @@
 		}
 		th,
 		td {
-			/*// border:1px solid #000;*/
 			line-height: 100%;
 			text-align: center;
 		}
 		button {
-			/*// background-color: #0cf;*/
 			border-sizing: border-box;
 			line-height: 100%;
 			text-align: center;
@@ -110,23 +109,23 @@
 				display: inline-block;
 			}
 			.bColor {
-				/*// background-color: #ccc;*/
 				display: inline-block;
 				padding: 6px;
 			}
 		}
 	}
-	
 </style>
 
 <template>
 	<div>
-		<table class="table table-bordered">
+		<shotel class="hotel" @close="close11" v-if="shotelisTrue"></shotel>
+		<photel class="hotel" @close2="close22" v-if="photelisTrue"></photel>
+		<table class="table1 table table-bordered">
 			<thead>
 				<tr>
 					<th>匹配等级</th>
-					<th>SAI名</th>
-					<th>{{mk.name}}</th>
+					<th @click="shotel()">SAI名</th>
+					<th @click="photel()">{{mk.name}}</th>
 					<th>SAI地址</th>
 					<th>{{mk.address}}</th>
 					<th>SAI电话</th>
@@ -153,7 +152,7 @@
 				<tr v-for="item in list">
 					<td>{{item.grade}}</td>
 					<td @click="shotel()">{{item.sName}}</td>
-					<td @click="shotel()">{{item.mName}}</td>
+					<td @click="photel()">{{item.mName}}</td>
 					<td>{{item.sAddress}}</td>
 					<td>{{item.mAddress}}</td>
 					<td>{{item.sPhone}}</td>
@@ -178,16 +177,20 @@
 
 				</nav>
 			</tfoot>
-			
+
 		</table>
 
 	</div>
 </template>
 
 <script>
+	import Photel from './Photel';
+	import Shotel from './Shotel';
 	export default {
 		props: ['mk', 'list', 'pages'],
 		components: {
+			photel: Photel,
+			shotel: Shotel
 		},
 		data() {
 			return {
@@ -202,6 +205,19 @@
 			}
 		},
 		methods: {
+			//  组件是否显示
+			photel() {
+				this.photelisTrue = !this.photelisTrue;
+			},
+			shotel() {
+				this.shotelisTrue = !this.shotelisTrue;
+			},
+			close22(){
+				this.photelisTrue = !this.photelisTrue;
+			},
+			close11(){
+				this.shotelisTrue = !this.shotelisTrue;
+			},
 			match() {
 				this.misTrue = true;
 				this.pisTrue = false;
@@ -269,6 +285,16 @@
 				}
 
 			},
+			beforeRouteLeave(to, from, next) {
+				if(from.name == 'mk') {
+					//				this._scrollTop = document.body.scrollTop;
+					this.page = 0;
+					this.title.nick_name;
+					this.getList();
+					console.log(this.page);
+				}
+				next();
+			}
 		}
 	}
 </script>
