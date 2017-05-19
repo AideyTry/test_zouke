@@ -6,6 +6,7 @@ import Index from './common/Index';
 
 import routeStock from './hotel/stock/routes';
 import routeSAI from './hotel/SAI/routes';
+import Login    from './common/Login'
 Vue.use(VueRouter);
 
 export default new VueRouter({
@@ -21,8 +22,12 @@ export default new VueRouter({
             ]
         },
         {
-            path: '*',
-            redirect: '/index',
+            path: '/',
+            redirect: '/login',
+        },
+        {
+            path:'/login',
+            component:Login
         }
     ]
 })
