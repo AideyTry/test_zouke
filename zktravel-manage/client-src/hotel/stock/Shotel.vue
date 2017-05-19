@@ -1,10 +1,41 @@
+<style lang="scss" scoped>
+        *{margin:0;padding:0;}
+        .hotel-top {border-bottom:1px solid #ccc; padding:5px 15px;}
+        .hotel-top input {height:28px;}
+        .hotel-btn button{margin-right:10px; width:70px;}
+        .modify {background:#ffffff; border:1px solid #46b8da; color:#46b8da}
+        .title{font-size:20px; font-weight: bold;}
+        .hotel-state {margin-top:6px;}
+        .container-fluid label {text-align: right;margin-top:2px;}
+        .container-fluid input {height:28px;}
+        .star{height:26px;}
+        .btn-go{background:dodgerblue; width:60px; height:30px; color:#FFFFFF;}
+        .borders {border:1px solid #ccc; text-align: center; height:28px; line-height:28px; width:60px; margin-right:10px;}
+        .border-width{width:100px;}
+        .picture {height:100px; width:180px; margin-left:-12px;}
+        .picture img {width:100%; height:100%;}
+        textarea {text-indent: 2em; line-height:30px;}
+        table th, table td{text-align: center;}
+		width: 34px;
+		height: 34px;
+		border-radius: 100%;
+		line-height:34px;
+		text-align:center;
+		position:absolute;
+		border:1px solid #999;
+		top:-17px;
+		right:-17px;
+		z-index: 199;
+		font-weight: 100;
+	}
+</style>
 <template>
-    <div>
-        <div class="container-fluid">
+	 <div class="container-fluid">
+	 	<div class="close" @click="clicks">X</div>
         <div class="row hotel-top">
             <div class="title pull-left col-lg-2">酒店详情</div>
             <div class="hotel-btn pull-right col-lg-offset-6 col-lg-4">
-                <button type="button" class="btn modify" v-on:click="update()">修改</button>
+                <button type="button" class="btn modify">修改</button>
                 <button type="button" class="pass btn btn-success">通过</button>
             </div>
         </div>
@@ -93,18 +124,18 @@
             <!--酒店图片-->
             <div class="form-group col-lg-12">
                 <label class="col-lg-1">酒店图片</label>
-                <!--<a href=" " >-->
+                <!--<a href="#" >-->
                     <input class="col-lg-2 picture" type="file" id="file_input" placeholder="上传图片">
-                <!--</a >-->
+                <!--</a>-->
                 <!--<a href="#" class="col-lg-2 picture">-->
                     <input class="col-lg-2 picture" type="file" placeholder="上传">
-                <!--</a >-->
+                <!--</a>-->
             </div>
             <!--酒店介绍-->
             <div class="form-group col-lg-12">
                 <label class="col-lg-1">酒店介绍</label>
                 <textarea class="col-lg-8" disabled autofocus rows="3" cols="30">Hotel Tourisme Avenue酒店位于巴黎市中心，距离埃菲尔铁塔仅有10分钟步行路程，距离战神广场（Champs de Mars）仅有5分钟步行路程，提供覆盖各处的免费Wi-Fi和24小时前台。
-                Hôtel Tourisme Avenue酒店的客房以当代风格装饰，配有保险箱、冰箱、礼宾盘以及带浴缸或淋浴的私人浴室。
+Hôtel Tourisme Avenue酒店的客房以当代风格装饰，配有保险箱、冰箱、礼宾盘以及带浴缸或淋浴的私人浴室。
                 </textarea>
             </div>
             <!--酒店入住、离店时间-->
@@ -151,49 +182,27 @@
             </div>
         </div>
     </div>
-    </div>
-	    
 </template>
 
-<style lang="scss" scoped>
-	     *{margin:0;padding:0;}
-        .hotel-top {border-bottom:1px solid #ccc; padding:5px 15px;}
-        .hotel-top input {height:28px;}
-        .hotel-btn button{margin-right:10px; width:70px;}
-        .modify {background:#ffffff; border:1px solid #46b8da; color:#46b8da}
-        .title{font-size:20px; font-weight: bold;}
-        .hotel-state {margin-top:6px;}
-        .container-fluid label {text-align: right;margin-top:2px;}
-        .container-fluid input {height:28px;}
-        .star{height:26px;}
-        /*.line {width:10px; padding:5px;}*/
-        .btn-go{background:dodgerblue; width:60px; height:30px; color:#FFFFFF;}
-        .borders {border:1px solid #ccc; text-align: center; height:28px; line-height:28px; width:60px; margin-right:10px;}
-        .border-width{width:100px;}
-        .picture {height:100px; width:180px; margin-left:-12px;}
-        .picture img {width:100%; height:100%;}
-        textarea {text-indent: 2em; line-height:30px;}
-        table th, table td{text-align: center;}
-        .active{
-            background-color: #eee;
-        }
-</style>
-    
 <script>
-	export default{
-        props:['updates'],
-        data(){
-            return{
-                isTrue:false
-            }
-        },
-        methods:{
-            update(){
-                console.log(this.updates.isTrue.aisTrue);
-                this.updates.isTrue.aisTrue=false;
-                this.$store.commit('audit');
-                console.log(this.updates.isTrue.aisTrue);
-            }
-        }
-    }
+	export default {
+		props: ['updates'],
+		data() {
+			return {
+				isTrue: false,
+				flag:true,
+			}
+		},
+		methods: {
+			update() {
+				console.log(this.updates.isTrue.aisTrue);
+				this.updates.isTrue.aisTrue = false;
+				this.$store.commit('audit');
+				console.log(this.updates.isTrue.aisTrue);
+			},
+			clicks(){
+				this.flag = false;
+			}
+		}
+	}
 </script>

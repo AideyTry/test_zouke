@@ -1,4 +1,13 @@
 <style lang="scss" scoped>
+	.shotel {
+			width: 70%;
+			height: 100%;
+			position: absolute;
+			top: 100px;
+			left: 15%;
+			background: rgba(255,255,255,1);
+			z-index: 100;
+		}
 	table {
 		margin-top: 10px;
 		width: 100%;
@@ -6,15 +15,7 @@
 		th {
 			color: #000;
 		}
-		.shotel {
-			width: 80%;
-			height: 80%;
-			position: absolute;
-			top: 30px;
-			left: 20px;
-			/*background: rgba(255,255,255,);*/
-			z-index: 99999;
-		}
+	
 		content {
 			width: 500px;
 			height: 400px;
@@ -71,12 +72,12 @@
 		}
 		th,
 		td {
-			// border:1px solid #000;
+			/*// border:1px solid #000;*/
 			line-height: 100%;
 			text-align: center;
 		}
 		button {
-			// background-color: #0cf;
+			/*// background-color: #0cf;*/
 			border-sizing: border-box;
 			line-height: 100%;
 			text-align: center;
@@ -109,17 +110,18 @@
 				display: inline-block;
 			}
 			.bColor {
-				// background-color: #ccc;
+				/*// background-color: #ccc;*/
 				display: inline-block;
 				padding: 6px;
 			}
 		}
 	}
+	
 </style>
 
 <template>
 	<div>
-
+		<shotel v-if="shotelisTrue" class="shotel"></shotel>
 		<table class="table table-bordered">
 			<thead>
 				<tr>
@@ -177,7 +179,7 @@
 
 				</nav>
 			</tfoot>
-			<shotel v-if="shotelisTrue" class="shotel"></shotel>
+			
 		</table>
 
 	</div>
