@@ -5,19 +5,11 @@ module.exports = class DLMapping extends Mapping{
         return await super.$findSpNotResolve({sp: 'dl'})
     }
     async $map(dlHotel, zk_id){
-        const zkCollection = await this.$getZkHotelCollection();
-        zkCollection.updateOne({ _id: zk_id }, {
-            $addToSet: { 'sp_id.dl_ids': dlHotel.id }
-        });
-        return await super.$map(dlHotel, zk_id);
+        return await super.$map(dlHotel, zk_id, 'dl_ids');
     }
 
     async $offline(dlHotel){
-        const zkCollection = await this.$getZkHotelCollection();
-        await zkCollection.findOneAndUpdate({'sp_id.dl_ids': dlHotel.id}, {
-            $pull: { 'sp_id.dl_ids': dlHotel.id }
-        });
-        return await super.$offline(dlHotel);
+        return await super.$offline(dlHotel, 'dl_ids');
     }
 
     async $insert(dlHotel,...arg){

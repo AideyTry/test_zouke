@@ -23,7 +23,7 @@ function convertAddress(address){
 
 function convertEnName(enName){
     enName = convertAddress(enName)
-    enName = enName.replace(/hotel|hostel/g, '');
+    enName = enName.replace(/hotel|hostel/g, '').trim();
     return enName;
 }
 
