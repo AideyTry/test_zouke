@@ -154,7 +154,7 @@
 				<tr v-for="item in list">
 					<td>{{item.grade}}</td>
 					<td @click="shotel()">{{item.sName}}</td>
-					<td>{{item.mName}}</td>
+					<td @click="shotel()">{{item.mName}}</td>
 					<td>{{item.sAddress}}</td>
 					<td>{{item.mAddress}}</td>
 					<td>{{item.sPhone}}</td>
@@ -278,7 +278,7 @@
 				this.shotelisTrue = true;
 			},
 			photel(){
-//				this.photelisTrue = true;
+				this.photelisTrue = true;
 			}
 
 		}
