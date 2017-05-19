@@ -274,21 +274,13 @@
 				}
 
 			},
-<<<<<<< HEAD
-//			shotel() {
-//				this.shotelisTrue = true;
-//			},
-//			photel(){
-//				this.photelisTrue = true;
-//			}
-=======
 			shotel() {
 				this.shotelisTrue = true;
 			},
 			photel(){
 				this.photelisTrue = true;
 			}
->>>>>>> 3b7b7eefdc64ff73f7ae58c190464c860b2f8ab1
+
 
 		}
 	}
