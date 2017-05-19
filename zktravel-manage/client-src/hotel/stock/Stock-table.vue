@@ -121,7 +121,6 @@
 
 <template>
 	<div>
-		<!--<shotel v-if="shotelisTrue" class="shotel"></shotel>-->
 		<table class="table table-bordered">
 			<thead>
 				<tr>
@@ -186,13 +185,9 @@
 </template>
 
 <script>
-//	import Shotel from './Shotel';
-//	import Photel from './Photel';
 	export default {
 		props: ['mk', 'list', 'pages'],
 		components: {
-//			shotel: Shotel,
-//			photel: Photel
 		},
 		data() {
 			return {
@@ -274,14 +269,6 @@
 				}
 
 			},
-			shotel() {
-				this.shotelisTrue = true;
-			},
-			photel(){
-				this.photelisTrue = true;
-			}
-
-
 		}
 	}
 </script>
