@@ -89,7 +89,9 @@
 		height:28px;
 		line-height:28px;
 		text-decoration: none;
+		background:#FFFFFF;
 	}
+	.hotel-state{padding-top:8px;}
 </style>
 <template>
 	<div>
@@ -99,22 +101,22 @@
 				<div class="title pull-left col-lg-2">酒店详情</div>
 			</div>
 			<!--酒店状态-->
-			<div class="hotel-state row">
+			<div class="row hotel-state">
 				<div class="form-group col-lg-12">
 					<label class="col-lg-1">酒店官网</label>
 					<!--<a href="#" class="col-lg-2 picture">-->
 					<a class="col-lg-2 guan" href="#">链接官网</a>
 					<!--<input class="col-lg-2" type="text" placeholder="上传">-->
 				</div>
-				<div class="form-group col-lg-3 hotel-state">
+				<div class="form-group col-lg-3">
 					<label class="col-lg-4">酒店的ID</label>
-					<input type="text" class="col-lg-6" disabled placeholder="XXXXXX">
+					<input type="text" class="col-lg-8" disabled placeholder="XXXXXX">
 				</div>
-				<div class="form-group col-lg-3 hotel-state">
+				<div class="form-group col-lg-3">
 					<label class="col-lg-4">状态</label>
-					<input type="text" class="col-lg-6" disabled placeholder="已上架-待审核">
+					<input type="text" class="col-lg-8" disabled placeholder="已上架-待审核">
 				</div>
-				<div class="form-group col-lg-3 hotel-state">
+				<div class="form-group col-lg-3">
 					<label class="col-lg-4">星级</label>
 					<select class="star col-lg-4 disabled" disabled>
 						<option value="1星">1星</option>
@@ -123,17 +125,17 @@
 					</select>
 				</div>
 			</div>
-			<div class="row hotel-state">
+			<div class="row">
 				<!--酒店名称-->
-				<div class="form-group col-lg-12 hotel-state">
-					<label class="col-lg-1">酒店中文</label>
-					<input type="text" disabled class="col-lg-4" placeholder="旅游大道酒店">
+				<div class="form-group col-lg-6">
+					<label class="col-lg-2">酒店中文</label>
+					<input type="text" disabled class="col-lg-8" placeholder="旅游大道酒店">
 				</div>
-				<div class="form-group col-lg-12 hotel-state">
-					<label class="col-lg-1">酒店英文</label>
-					<input type="text" disabled class="col-lg-4" placeholder="Hôtel Tourisme Avenue">
+				<div class="form-group col-lg-6">
+					<label class="col-lg-2">酒店英文</label>
+					<input type="text" disabled class="col-lg-8" placeholder="Hôtel Tourisme Avenue">
 				</div>
-				<div class="form-group col-lg-12 hotel-state">
+				<div class="form-group col-lg-12">
 					<label class="col-lg-1">酒店别名</label>
 					<input type="text" disabled class="col-lg-6" placeholder="Hotel Tourisme Avenue / 旅游大道金牌酒店">
 				</div>
@@ -196,17 +198,17 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="form-group col-lg-6 hotel-state">
+				<div class="form-group col-lg-6">
 					<label class="col-lg-2">酒店电话</label>
-					<input type="text" disabled class="col-lg-6" placeholder="XXXXXX">
+					<input type="text" disabled class="col-lg-8" placeholder="XXXXXX">
 				</div>
-				<div class="form-group col-lg-12 hotel-state">
-					<label class="col-lg-1">酒店传真</label>
-					<input type="text" disabled class="col-lg-4" placeholder="XXXXXX">
+				<div class="form-group col-lg-6">
+					<label class="col-lg-2">酒店传真</label>
+					<input type="text" disabled class="col-lg-8" placeholder="XXXXXX">
 				</div>
-				<div class="form-group col-lg-6 hotel-state">
+				<div class="form-group col-lg-6">
 					<label class="col-lg-2">酒店邮箱</label>
-					<input type="email" disabled class="col-lg-6" placeholder="XXXXXX">
+					<input type="email" disabled class="col-lg-8" placeholder="XXXXXX">
 				</div>
 			</div>
 		</div>
