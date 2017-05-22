@@ -97,10 +97,10 @@
 					<td>{{item.grade}}</td>
 					<td @click="shotel()" class="tdColor">{{item.sName}}</td>
 					<td @click="photel()" class="tdColor">{{item.mName}}</td>
-					<td>{{item.sAddress}}</td>
-					<td>{{item.mAddress}}</td>
-					<td>{{item.sPhone}}</td>
-					<td>{{item.mPhone}}</td>
+					<td>{{item.spAddress}}</td>
+					<td>{{item.zkAddress}}</td>
+					<td>{{item.spPhone}}</td>
+					<td>{{item.zkPhone}}</td>
 					<td>{{item.link}}</td>
 					<td>{{item.bLink}}</td>
 					<td>

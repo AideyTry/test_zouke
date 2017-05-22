@@ -5,7 +5,7 @@
 		<ul class="supplier">
 			<li class="sColor" v-on:click="gotoPage('mk')" v-bind:class="{bgColor:isTrue.one}">mk</li>
 			<li class="sColor" v-on:click="gotoPage('dl')" v-bind:class="{bgColor:isTrue.two}">dl</li>
-			<li class="sColor" v-on:click="gotoPage('vt')" v-bind:class="{bgColor:isTrue.three}">vt</li>
+			<li class="sColor" v-on:click.stop.prevent="gotoPage('vt')" v-bind:class="{bgColor:isTrue.three}">vt</li>
 			<li class="sColor" v-on:click="gotoPage('bk')" v-bind:class="{bgColor:isTrue.four}">bk</li>
 		</ul>
 	<!-- 	<p class="supplier">
