@@ -58,8 +58,7 @@
 				});
 				console.log(this.listData.slice((this.pageNum-1)*this.pageSize,this.pageSize*this.pageNum));
 				return this.listData.slice((this.pageNum-1)*this.pageSize,this.pageSize*this.pageNum);
-<<<<<<< HEAD
-=======
+
 //				ajax.post('/api/vt-mapping/query').then(json=>{
 //					if(json.code===0){
 //						this.items=json.list;
@@ -79,7 +78,7 @@
 //				});
 //				console.log(this.listData.slice((this.pageNum-1)*this.pageSize,this.pageSize*this.pageNum));
 //				return this.listData.slice((this.pageNum-1)*this.pageSize,this.pageSize*this.pageNum);
->>>>>>> 981aaf973e734cf067729bae5bdaf699afc1c7b9
+
 			}
 		},
 		methods:{

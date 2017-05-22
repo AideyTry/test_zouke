@@ -1,7 +1,7 @@
 import Stock from './Stock';
 import Mk from './MK';
 import Dl from './Dl';
-import Vt from './Vt';
+import Vt from './Vts';
 import Bk from './Bk';
 export default [{
     path: 'stock',
