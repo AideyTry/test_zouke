@@ -17,64 +17,68 @@
 		th {
 			color: #000;
 		}
-		content {
-			width: 500px;
-			height: 400px;
-			border: 1px solid #000;
-			/*background-color: #fff;*/
-			display: inline-block;
-			position: fixed;
-			text-align: center;
-			top: 10%;
-			right: 15%;
-			z-index: 99;
-			span {
-				display: inline-block;
-				position: absolute;
-				right: 0;
-				top: 0;
-				background-color: #333;
-				color: #fff;
-				width: 20px;
-				height: 20px;
-				line-height: 20px;
-				text-align: center;
-				cursor: pointer;
-			}
-			h3 {
-				transform: translate(-50%, -50%);
-				position: absolute;
-				left: 50%;
-				top: 40%;
-				display: inline-block;
-				font-size: 30px;
-			}
-			input {
-				padding: 0;
-				margin: 0;
-				border-radius: 5px;
-				display: inline-block;
-				width: 40px;
-				height: 40px;
-				font-size: 16px;
-				background-color: #0aa;
-				color: #fff;
-			}
-			.btn1 {
-				position: absolute;
-				bottom: 0;
-				right: 60px;
-			}
-			.btn2 {
-				position: absolute;
-				bottom: 0;
-				right: 0;
-			}
-		}
+		// content {
+		// 	width: 500px;
+		// 	height: 400px;
+		// 	border: 1px solid #000;
+		// 	/*background-color: #fff;*/
+		// 	display: inline-block;
+		// 	position: fixed;
+		// 	text-align: center;
+		// 	top: 10%;
+		// 	right: 15%;
+		// 	z-index: 99;
+		// 	span {
+		// 		display: inline-block;
+		// 		position: absolute;
+		// 		right: 0;
+		// 		top: 0;
+		// 		background-color: #333;
+		// 		color: #fff;
+		// 		width: 20px;
+		// 		height: 20px;
+		// 		line-height: 20px;
+		// 		text-align: center;
+		// 		cursor: pointer;
+		// 	}
+		// 	h3 {
+		// 		transform: translate(-50%, -50%);
+		// 		position: absolute;
+		// 		left: 50%;
+		// 		top: 40%;
+		// 		display: inline-block;
+		// 		font-size: 30px;
+		// 	}
+		// 	input {
+		// 		padding: 0;
+		// 		margin: 0;
+		// 		border-radius: 5px;
+		// 		display: inline-block;
+		// 		width: 40px;
+		// 		height: 40px;
+		// 		font-size: 16px;
+		// 		background-color: #0aa;
+		// 		color: #fff;
+		// 	}
+		// 	.btn1 {
+		// 		position: absolute;
+		// 		bottom: 0;
+		// 		right: 60px;
+		// 	}
+		// 	.btn2 {
+		// 		position: absolute;
+		// 		bottom: 0;
+		// 		right: 0;
+		// 	}
+		// }
 		th,
 		td {
 			line-height: 100%;
 			text-align: center;
+		}
+		.tdColor{
+			color:#00f;
+			cursor: pointer;
 		}
 		button {
 			border-sizing: border-box;
@@ -135,7 +139,7 @@
 					<th>操作</th>
 				</tr>
 			</thead>
-
+<!-- 
 			<content v-if="misTrue">
 				<span class="glyphicon glyphicon-remove" v-on:click="cancel()"></span>
 				<h3>是否匹配?</h3>
@@ -147,12 +151,13 @@
 			</content>
 			<content v-if="uisTrue">
 				<span class="glyphicon glyphicon-remove" v-on:click="cancel()"></span>
-			</content>
+			</content> -->
+			<opreat v-if="misTrue" ></opreat>
 			<tbody>
 				<tr v-for="item in list">
 					<td>{{item.grade}}</td>
-					<td @click="shotel()">{{item.sName}}</td>
-					<td @click="photel()">{{item.mName}}</td>
+					<td @click="shotel()" class="tdColor">{{item.sName}}</td>
+					<td @click="photel()" class="tdColor">{{item.mName}}</td>
 					<td>{{item.sAddress}}</td>
 					<td>{{item.mAddress}}</td>
 					<td>{{item.sPhone}}</td>
@@ -186,15 +191,18 @@
 <script>
 	import Photel from './Photel';
 	import Shotel from './Shotel';
+	import Opreat from './Opreat'
 	export default {
 		props: ['mk', 'list', 'pages'],
 		components: {
 			photel: Photel,
-			shotel: Shotel
+			shotel: Shotel,
+			opreat: Opreat
 		},
 		data() {
 			return {
 				// pageNum:1,
+				isTrue:false,
 				misTrue: false,
 				pisTrue: false,
 				uisTrue: false,
@@ -222,6 +230,7 @@
 				this.misTrue = true;
 				this.pisTrue = false;
 				this.uisTrue = false;
+				// this.isTrue=true;
 				console.log(this.mk);
 			},
 			put() {
@@ -238,6 +247,7 @@
 				this.misTrue = false;
 				this.pisTrue = false;
 				this.uisTrue = false;
+				// this.isTrue=false;
 			},
 			confirm() {
 				this.misTrue = false;
