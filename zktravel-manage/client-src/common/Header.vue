@@ -5,8 +5,10 @@
 	
 		<div class="right">
 			<span class="glyphicon glyphicon-envelope"></span>
-			<span>管理员</span>
+			<span>{{$store.state.passName}}</span>
 			<input type="button" value="退出" v-on:click="exit()" >
+			<Logout v-if="isTrue" @cancel="hcancel()"></Logout>	
+
 	<!-- 		<strong v-if="eisTrue">确定要退出吗？
 				<p></p>
 				<input type="button" name="" value="取消" v-on:click="cancel()">
@@ -41,8 +43,6 @@
 			}
 			input{
 				 border: none;
-			    padding: 0;
-			    margin: 0;
 			    outline-style: none;
 				display:inline-block;
 				height:50px;
@@ -59,18 +59,26 @@
 
 
 <script>
+	import Logout from './Logout'
 	export default{
-		props:['c'],
+		// props:['c'],
 		data(){
 			return {
-				// isTrue:false
+				isTrue:false
 			}
+		},
+		components:{
+			'Logout':Logout
 		},
 		methods:{
 			exit(){
-					// this.$store.counts.isTrue.eisTrue=true;
-					this.$store.commit('exit');
-					// console.log(this.$store.counts.isTrue.eisTrue);
+			// 		// this.$store.counts.isTrue.eisTrue=true;
+					// this.$store.commit('exit');
+					this.isTrue=true;
+			// 		// console.log(this.$store.counts.isTrue.eisTrue);
+			},
+			hcancel(){
+				this.isTrue=false;
 			}
 			// cancel(){
 			// 	this.isTrue=false;
