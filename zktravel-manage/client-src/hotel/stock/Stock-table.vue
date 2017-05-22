@@ -2,11 +2,9 @@
 	.hotel {
 		position: fixed;
 		width: 80%;
-		height: 100%;
 		left: 17%;
-		top: 5%;
-		z-index: 99;
-		/*background: rgba(255, 255, 255, 1);*/
+		top: 2%;
+		z-index: 140;
 		background-color: #EEEEEE;
 		/*border: 1px solid #000;*/
 	}
