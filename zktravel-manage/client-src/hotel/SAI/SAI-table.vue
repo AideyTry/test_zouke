@@ -1,6 +1,5 @@
 <template>
 	<div>
-
 		<table class="table table-bordered">
 			<thead>
 				<tr>
@@ -49,11 +48,11 @@
 			top: 5%;
 			left: 17%;
 			width: 80%;
-			/*// height:60%;*/
 			border-top: 1px solid #000;
 			border-left: 1px solid #000;
 			border-right: 1px solid #000;
-			background: rgba(255, 255, 255, 1);
+			/*background: rgba(255, 255, 255, 1);*/
+			background-color: #EEEEEE;
 		}
 		button {
 			background-color: #0cf;

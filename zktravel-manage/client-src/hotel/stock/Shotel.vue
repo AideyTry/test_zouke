@@ -24,10 +24,6 @@
 		font-weight: bold;
 	}
 	
-	.hotel-state {
-		margin-top: 6px;
-	}
-	
 	.container-fluid label {
 		text-align: right;
 		margin-top: 2px;
@@ -74,7 +70,7 @@
 		height: 100%;
 	}
 	.active {
-		background-color: #eee;
+		background-color: #999;
 	}
 	textarea {
 		text-indent: 2em;
@@ -102,22 +98,22 @@
 	}
 </style>
 <template id="files-list-template">
-	<div class="container-fluid">
+	<div class="container-fluid contain">
 		<div @click="close()" class="cricle">X</div>
 		<div class="row hotel-top">
 			<div class="title pull-left col-lg-2">酒店详情</div>
 		</div>
 		<!--酒店状态-->
-		<div class="hotel-state row">
-			<div class="form-group col-lg-3 hotel-state">
+		<div class="row">
+			<div class="form-group col-lg-3">
 				<label class="col-lg-4">酒店ID</label>
 				<input type="text" class="col-lg-6" disabled placeholder="XXXXXX">
 			</div>
-			<div class="form-group col-lg-3 hotel-state">
+			<div class="form-group col-lg-3">
 				<label class="col-lg-4">状态</label>
 				<input type="text" class="col-lg-6" disabled placeholder="已上架-待审核">
 			</div>
-			<div class="form-group col-lg-3 hotel-state">
+			<div class="form-group col-lg-3">
 				<label class="col-lg-4">星级</label>
 				<select class="star col-lg-4 disabled" disabled>
 					<option value="1星">1星</option>
@@ -126,17 +122,17 @@
 				</select>
 			</div>
 		</div>
-		<div class="row hotel-state">
+		<div class="row">
 			<!--酒店名称-->
 			<div class="form-group col-lg-12">
 				<label class="col-lg-1">酒店中文</label>
 				<input type="text" disabled class="col-lg-4" placeholder="旅游大道酒店">
 			</div>
-			<div class="form-group col-lg-12 hotel-state">
+			<div class="form-group col-lg-12">
 				<label class="col-lg-1">酒店英文</label>
 				<input type="text" disabled class="col-lg-4" placeholder="Hôtel Tourisme Avenue">
 			</div>
-			<div class="form-group col-lg-12 hotel-state">
+			<div class="form-group col-lg-12">
 				<label class="col-lg-1">酒店别名</label>
 				<input type="text" disabled class="col-lg-6" placeholder="Hotel Tourisme Avenue / 旅游大道金牌酒店">
 			</div>
@@ -208,25 +204,25 @@ Hôtel Tourisme Avenue酒店的客房以当代风格装饰，配有保险箱、�
                 </textarea>
 			</div>
 			<!--酒店入住、离店时间-->
-			<div class="form-group col-lg-3">
-				<label class="col-lg-5">酒店入住时间</label>
-				<input type="text" disabled class="col-lg-7" placeholder="XXXXXX">
+			<div class="form-group col-lg-6">
+				<label class="col-lg-2">入住时间</label>
+				<input type="text" disabled class="col-lg-6" placeholder="XXXXXX">
 			</div>
-			<div class="form-group col-lg-3">
-				<label class="col-lg-5">酒店离店时间</label>
-				<input type="text" disabled class="col-lg-7" placeholder="XXXXXX">
+			<div class="form-group col-lg-6">
+				<label class="col-lg-2">离店时间</label>
+				<input type="text" disabled class="col-lg-6" placeholder="XXXXXX">
 			</div>
 		</div>
 		<div class="row">
-			<div class="form-group col-lg-6 hotel-state">
+			<div class="form-group col-lg-6">
 				<label class="col-lg-2">酒店电话</label>
 				<input type="text" disabled class="col-lg-6" placeholder="XXXXXX">
 			</div>
-			<div class="form-group col-lg-12 hotel-state">
+			<div class="form-group col-lg-12">
 				<label class="col-lg-1">酒店传真</label>
 				<input type="text" disabled class="col-lg-4" placeholder="XXXXXX">
 			</div>
-			<div class="form-group col-lg-6 hotel-state">
+			<div class="form-group col-lg-6">
 				<label class="col-lg-2">酒店邮箱</label>
 				<input type="email" class="col-lg-6" placeholder="XXXXXX" disabled >
 			</div>

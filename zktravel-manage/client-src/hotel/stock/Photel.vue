@@ -23,11 +23,6 @@
 		font-size: 20px;
 		font-weight: bold;
 	}
-	
-	.hotel-state {
-		margin-top: 6px;
-	}
-	
 	.container-fluid label {
 		text-align: right;
 		margin-top: 2px;
