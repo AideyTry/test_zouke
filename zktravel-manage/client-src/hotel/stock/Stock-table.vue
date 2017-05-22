@@ -17,60 +17,10 @@
 		th {
 			color: #000;
 		}
-		// content {
-		// 	width: 500px;
-		// 	height: 400px;
-		// 	border: 1px solid #000;
-		// 	/*background-color: #fff;*/
-		// 	display: inline-block;
-		// 	position: fixed;
-		// 	text-align: center;
-		// 	top: 10%;
-		// 	right: 15%;
-		// 	z-index: 99;
-		// 	span {
-		// 		display: inline-block;
-		// 		position: absolute;
-		// 		right: 0;
-		// 		top: 0;
-		// 		background-color: #333;
-		// 		color: #fff;
-		// 		width: 20px;
-		// 		height: 20px;
-		// 		line-height: 20px;
-		// 		text-align: center;
-		// 		cursor: pointer;
-		// 	}
-		// 	h3 {
-		// 		transform: translate(-50%, -50%);
-		// 		position: absolute;
-		// 		left: 50%;
-		// 		top: 40%;
-		// 		display: inline-block;
-		// 		font-size: 30px;
-		// 	}
-		// 	input {
-		// 		padding: 0;
-		// 		margin: 0;
-		// 		border-radius: 5px;
-		// 		display: inline-block;
-		// 		width: 40px;
-		// 		height: 40px;
-		// 		font-size: 16px;
-		// 		background-color: #0aa;
-		// 		color: #fff;
-		// 	}
-		// 	.btn1 {
-		// 		position: absolute;
-		// 		bottom: 0;
-		// 		right: 60px;
-		// 	}
-		// 	.btn2 {
-		// 		position: absolute;
-		// 		bottom: 0;
-		// 		right: 0;
-		// 	}
-		// }
+		.oColor{
+			background-color:#eeeeee;
+			// z-index:100;
+		}
 		th,
 		td {
 			line-height: 100%;
@@ -139,20 +89,9 @@
 					<th>操作</th>
 				</tr>
 			</thead>
-<!-- 
-			<content v-if="misTrue">
-				<span class="glyphicon glyphicon-remove" v-on:click="cancel()"></span>
-				<h3>是否匹配?</h3>
-				<input class="btn1" type="button" name="" value="否" v-on:click="cancel()">
-				<input class="btn2" type="button" value="是" v-on:click="confirm()">
-			</content>
-			<content v-if="pisTrue">
-				<span class="glyphicon glyphicon-remove" v-on:click="cancel()"></span>
-			</content>
-			<content v-if="uisTrue">
-				<span class="glyphicon glyphicon-remove" v-on:click="cancel()"></span>
-			</content> -->
-			<opreat v-if="misTrue" ></opreat>
+			<opreat class="oColor" v-if="isTrue" @cancel="cancel" @confirm="confirm" :opreat="opreatData">
+				
+			</opreat>
 			<tbody>
 				<tr v-for="item in list">
 					<td>{{item.grade}}</td>
@@ -203,13 +142,33 @@
 			return {
 				// pageNum:1,
 				isTrue:false,
-				misTrue: false,
-				pisTrue: false,
-				uisTrue: false,
+				misTrue:false,
+				pisTrue:false,
+				uisTrue:false,
 				isTrueP: false,
 				isTrueN: false,
 				shotelisTrue: false,
 				photelisTrue: false,
+				opreatList:
+				{
+					match:"匹配",
+					put:"入库",
+					unnecessary:"置为无效"
+				}
+				
+			}
+		},
+		computed:{
+			opreatData(){
+				if(this.misTrue===true){
+					return this.opreatList.match;
+				}
+				else if(this.pisTrue===true){
+					return this.opreatList.put;
+				}
+				else if(this.uisTrue===true){
+					return this.opreatList.unnecessary;
+				}
 			}
 		},
 		methods: {
@@ -226,33 +185,32 @@
 			close11(){
 				this.shotelisTrue = !this.shotelisTrue;
 			},
+			//匹配
 			match() {
-				this.misTrue = true;
-				this.pisTrue = false;
-				this.uisTrue = false;
-				// this.isTrue=true;
-				console.log(this.mk);
+				this.isTrue=true;
+				this.misTrue=true;
+				this.pisTrue=false;
+				this.uisTrue=false;
 			},
+			//入库
 			put() {
-				this.misTrue = false;
-				this.pisTrue = true;
-				this.uisTrue = false;
+				this.isTrue=true;
+				this.misTrue=false;
+				this.pisTrue=true;
+				this.uisTrue=false;
 			},
+			//置为无效
 			unnecessary() {
-				this.misTrue = false;
-				this.pisTrue = false;
-				this.uisTrue = true;
+				this.isTrue = true;
+				this.misTrue=false;
+				this.pisTrue=false;
+				this.uisTrue=true;
 			},
 			cancel() {
-				this.misTrue = false;
-				this.pisTrue = false;
-				this.uisTrue = false;
-				// this.isTrue=false;
+				this.isTrue=false;
 			},
 			confirm() {
-				this.misTrue = false;
-				this.pisTrue = false;
-				this.uisTrue = false;
+				this.isTrue=false;
 			},
 			prev() {
 				this.$store.state.flag.flag = false;

@@ -3,7 +3,7 @@
 			width: 500px;
 			height: 400px;
 			border: 1px solid #000;
-			/*background-color: #fff;*/
+			background-color: #fff;
 			display: inline-block;
 			position: fixed;
 			text-align: center;
@@ -39,7 +39,7 @@
 				width: 40px;
 				height: 40px;
 				font-size: 16px;
-				background-color: #0aa;
+				// background-color: #0aa;
 				color: #fff;
 			}
 			.btn1 {
@@ -59,9 +59,9 @@
 <div>
 	<content>
 		<span class="glyphicon glyphicon-remove" v-on:click="cancel()"></span>
-		<h3>是否匹配?</h3>
-		<input class="btn1" type="button" name="" value="否" v-on:click="cancel()">
-		<input class="btn2" type="button" value="是" v-on:click="confirm()">
+		<h3>是否{{opreat}}?</h3>
+		<input class="btn1 btn btn-info" type="button" name="" value="否" v-on:click="cancel()">
+		<input class="btn2 btn btn-success" type="button" value="是" v-on:click="confirm()">
 	</content>
 
 </div>
@@ -71,7 +71,7 @@
 <script>
 
 	export default{
-		// props:[],
+		props:['opreat'],
 		data(){
 			return {
 
@@ -79,7 +79,10 @@
 		},
 		methods:{
 			cancel(){
-				// this.$emit("cancel");
+				this.$emit("cancel");
+			},
+			confirm(){
+				this.$emit("confirm");
 			}
 		}
 	}
