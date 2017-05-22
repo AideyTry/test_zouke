@@ -46,6 +46,8 @@
 		width: 60px;
 		height: 28px;
 		color: #FFFFFF;
+		display:inline-block;
+		padding-top:4px;
 	}
 	
 	.borders {
@@ -207,11 +209,11 @@ Hôtel Tourisme Avenue酒店的客房以当代风格装饰，配有保险箱、�
 			</div>
 			<!--酒店入住、离店时间-->
 			<div class="form-group col-lg-3">
-				<label class="col-lg-5">入住时间</label>
+				<label class="col-lg-5">酒店入住时间</label>
 				<input type="text" disabled class="col-lg-7" placeholder="XXXXXX">
 			</div>
 			<div class="form-group col-lg-3">
-				<label class="col-lg-5">离店时间</label>
+				<label class="col-lg-5">酒店离店时间</label>
 				<input type="text" disabled class="col-lg-7" placeholder="XXXXXX">
 			</div>
 		</div>
@@ -226,7 +228,7 @@ Hôtel Tourisme Avenue酒店的客房以当代风格装饰，配有保险箱、�
 			</div>
 			<div class="form-group col-lg-6 hotel-state">
 				<label class="col-lg-2">酒店邮箱</label>
-				<input type="email" disabled class="col-lg-6" placeholder="XXXXXX">
+				<input type="email" class="col-lg-6" placeholder="XXXXXX" disabled >
 			</div>
 		</div>
 		<div class="row">

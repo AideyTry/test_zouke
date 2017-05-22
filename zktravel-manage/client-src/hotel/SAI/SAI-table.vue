@@ -86,12 +86,6 @@
 		},
 		methods: {
 			audit() {
-//				this.flag++;
-//				if(this.flag % 2 != 0) {
-//					this.isTrue = true;
-//				} else {
-//					this.isTrue = false;
-//				}
 				this.isTrue = !this.isTrue;
 			},
 			closeSai() {

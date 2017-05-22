@@ -46,6 +46,8 @@
 		width: 60px;
 		height: 28px;
 		color: #FFFFFF;
+		display:inline-block;
+		padding-top:4px;
 	}
 	
 	.borders {
@@ -177,7 +179,7 @@
 				<!--链接-->
 				<div class="form-group col-lg-12">
 					<label class="col-lg-1">链接地址</label>
-					<input type="url" class="col-lg-4" disabled="flag" placeholder="https://www.booking.com/">
+					<input type="url" class="col-lg-4" :disabled="flag" placeholder="https://www.booking.com/">
 					<!--<button type="button" class="btn col-lg-1 btn-go">前往</button>-->
 					<a class="btn col-lg-1 btn-go" href="#">前往</a>
 					<label class="col-lg-1">B评分</label>

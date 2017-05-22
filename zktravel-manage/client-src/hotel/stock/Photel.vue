@@ -40,14 +40,6 @@
 	.star {
 		height: 26px;
 	}
-	
-	.btn-go {
-		background: dodgerblue;
-		width: 60px;
-		height: 30px;
-		color: #FFFFFF;
-	}
-	
 	.borders {
 		border: 1px solid #ccc;
 		text-align: center;
