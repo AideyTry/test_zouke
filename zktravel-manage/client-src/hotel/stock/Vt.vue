@@ -1,7 +1,8 @@
 <template>
 	<div>
 		<Stocktable :mk="counts" :list="list" :pages="pages" @prev="mkprev" @next="mknext"></Stocktable>
-	</div>	
+		<!-- <button @click="increments">+</button> -->
+	</div>
 </template>
 
 <style lang="scss" scoped>
@@ -11,11 +12,12 @@
 
 <script>
 	import Stock_table from './Stock-table';
+	// import ajax from '@local/common/ajax';
 	export default{
 		data(){
 			return{
 				pageNum:1,
-				pageSize:10
+				pageSize:10,
 			}
 		},
 		components:{
@@ -32,12 +34,12 @@
 
 			},
 			counts(){
-				return this.$store.state.counts
+				return this.$store.state.counts;
 			},
 			list(){
 				let list=this.$store.state.list;
 				let listData;
-				// this.$ajax.post('/api/vt-mapping/query',{}).then(json=>{
+				// this.ajax.post('/api/vt-mapping/query',{}).then(json=>{
 				// 	console.log(json);
 				// 	console.log(1);
 				// }).then(error=>{
@@ -57,12 +59,8 @@
 			}
 		},
 		methods:{
-			// increments(){
-			// 	this.$store.commit('increment'
-
-			// },
 			mkprev(){
-				if(this.$store.state.counts.isTrue.mkisTrue){
+				if(this.$store.state.counts.isTrue.vtisTrue){
 					if(this.$store.state.flag.flag){
 					this.pageNum=this.$store.state.flag.page;
 					return false;
@@ -80,4 +78,5 @@
 			}
 		}
 	}
+
 </script>
