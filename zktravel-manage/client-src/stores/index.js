@@ -5,6 +5,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        token:null,
+        logout:null,
+        passName:null,
        list:[
                         {   
                             id:1,

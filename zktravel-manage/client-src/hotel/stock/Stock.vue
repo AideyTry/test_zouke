@@ -87,12 +87,13 @@
 					let url='';
 					switch(page){
 						case 'mk':
-							url='/index/stock/mk';							
+							
+							this.$store.commit('mk');
 							this.$store.state.counts.isTrue.mkisTrue=true;
 							this.$store.state.counts.isTrue.dlisTrue=false;
 							this.$store.state.counts.isTrue.vtisTrue=false;
 							this.$store.state.counts.isTrue.bkisTrue=false;
-							this.$store.commit('mk');
+							url='/index/stock/mk';		
 							this.isTrue.one=true;
 							this.isTrue.two=false;
 							this.isTrue.three=false;
