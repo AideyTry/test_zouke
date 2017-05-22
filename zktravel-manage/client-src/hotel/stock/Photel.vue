@@ -82,20 +82,26 @@
 		text-align: center;
 	}
 	
-	.active {
-		background-color: #eee;
-	}
-	.cricle{
-		width:34px;
-		height:34px;
-		border-radius:100%;
-		position:absolute;
-		top:-17px;
-		right:-17px;
+	.cricle {
+		width: 34px;
+		height: 34px;
+		border-radius: 100%;
+		position: absolute;
+		top: -17px;
+		right: -17px;
 		font-weight: 100;
-		border:1px solid #ccc;
-		line-height:34px;
+		border: 1px solid #999;
+		line-height: 34px;
 		text-align: center;
+		z-index: 130;
+		background:#FFFFFF;
+	}
+	
+	.guan {
+		border: 1px solid #ccc;
+		height:28px;
+		line-height:28px;
+		text-decoration: none;
 	}
 </style>
 <template>
@@ -107,8 +113,14 @@
 			</div>
 			<!--酒店状态-->
 			<div class="hotel-state row">
+				<div class="form-group col-lg-12">
+					<label class="col-lg-1">酒店官网</label>
+					<!--<a href="#" class="col-lg-2 picture">-->
+					<a class="col-lg-2 guan" href="#">链接官网</a>
+					<!--<input class="col-lg-2" type="text" placeholder="上传">-->
+				</div>
 				<div class="form-group col-lg-3 hotel-state">
-					<label class="col-lg-4">酒店ID</label>
+					<label class="col-lg-4">酒店的ID</label>
 					<input type="text" class="col-lg-6" disabled placeholder="XXXXXX">
 				</div>
 				<div class="form-group col-lg-3 hotel-state">
@@ -117,7 +129,7 @@
 				</div>
 				<div class="form-group col-lg-3 hotel-state">
 					<label class="col-lg-4">星级</label>
-					<select class="star col-lg-2 disabled" disabled>
+					<select class="star col-lg-4 disabled" disabled>
 						<option value="1星">1星</option>
 						<option value="2星">2星</option>
 						<option value="3星">3星</option>
@@ -166,14 +178,6 @@
 					</select>
 					<input type="text" disabled class="col-lg-3" placeholder="66, avenue de la Motte-Picquet">
 				</div>
-				<!--链接-->
-				<div class="form-group col-lg-12">
-					<label class="col-lg-1">链接地址</label>
-					<input type="url" class="col-lg-4" placeholder="https://www.booking.com/">
-					<button type="button" class="btn col-lg-1 btn-go">前往</button>
-					<label class="col-lg-1">B评分</label>
-					<input type="text" disabled class="col-lg-2" placeholder="https://www.booking.com/">
-				</div>
 				<!--全部设施-->
 				<div class="form-group col-lg-12">
 					<label class="col-lg-1">全部设施</label>
@@ -200,18 +204,8 @@
 				<!--酒店介绍-->
 				<div class="form-group col-lg-12">
 					<label class="col-lg-1">酒店介绍</label>
-					<textarea class="col-lg-8" disabled autofocus rows="3" cols="30">Hotel Tourisme Avenue酒店位于巴黎市中心，距离埃菲尔铁塔仅有10分钟步行路程，距离战神广场（Champs de Mars）仅有5分钟步行路程，提供覆盖各处的免费Wi-Fi和24小时前台。
-                Hôtel Tourisme Avenue酒店的客房以当代风格装饰，配有保险箱、冰箱、礼宾盘以及带浴缸或淋浴的私人浴室。
+					<textarea class="col-lg-8" disabled autofocus rows="2" cols="30">Hotel Tourisme Avenue酒店位于巴黎市中心，距离埃菲尔铁塔仅有10分钟步行路程，距离战神广场（Champs de Mars）仅有5分钟步行路程，提供覆盖各处的免费Wi-Fi和24小时前台。  Hôtel Tourisme Avenue酒店的客房以当代风格装饰，配有保险箱、冰箱、礼宾盘以及带浴缸或淋浴的私人浴室。
                 </textarea>
-				</div>
-				<!--酒店入住、离店时间-->
-				<div class="form-group col-lg-3">
-					<label class="col-lg-5">酒店入住时间</label>
-					<input type="text" disabled class="col-lg-7" placeholder="XXXXXX">
-				</div>
-				<div class="form-group col-lg-3">
-					<label class="col-lg-5">酒店离店时间</label>
-					<input type="text" disabled class="col-lg-7" placeholder="XXXXXX">
 				</div>
 			</div>
 			<div class="row">
@@ -226,25 +220,6 @@
 				<div class="form-group col-lg-6 hotel-state">
 					<label class="col-lg-2">酒店邮箱</label>
 					<input type="email" disabled class="col-lg-6" placeholder="XXXXXX">
-				</div>
-			</div>
-			<div class="row">
-				<div class="hotel-state col-lg-6">
-					<label class="col-lg-2">信息</label>
-					<table disabled class="table-bordered table col-lg-offset-1">
-						<tr class="active">
-							<th>vt_id</th>
-							<th>mk_id</th>
-							<th>dl_id</th>
-							<th>booking</th>
-						</tr>
-						<tr>
-							<td>2347</td>
-							<td>33788</td>
-							<td>882131</td>
-							<td>链接XXX</td>
-						</tr>
-					</table>
 				</div>
 			</div>
 		</div>
@@ -267,7 +242,7 @@
 				this.$store.commit('audit');
 				console.log(this.updates.isTrue.aisTrue);
 			},
-			close2(){
+			close2() {
 				this.$emit('close2');
 			}
 		}

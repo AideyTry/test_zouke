@@ -1,13 +1,13 @@
 <style lang="scss" scoped>
 	.hotel {
 		position: fixed;
-		width: 70%;
+		width: 80%;
 		height: 100%;
-		left: 10%;
+		left: 17%;
 		top: 5%;
 		z-index: 99;
 		/*background: rgba(255, 255, 255, 1);*/
-		background-color: #fff;
+		background-color: #EEEEEE;
 		/*border: 1px solid #000;*/
 	}
 	
@@ -21,7 +21,7 @@
 			width: 500px;
 			height: 400px;
 			border: 1px solid #000;
-			background-color: #fff;
+			/*background-color: #fff;*/
 			display: inline-block;
 			position: fixed;
 			text-align: center;
@@ -120,7 +120,7 @@
 	<div>
 		<shotel class="hotel" @close="close11" v-if="shotelisTrue"></shotel>
 		<photel class="hotel" @close2="close22" v-if="photelisTrue"></photel>
-		<table class="table1 table table-bordered">
+		<table class="table1 table table-bordered tableBg">
 			<thead>
 				<tr>
 					<th>匹配等级</th>
@@ -201,7 +201,7 @@
 				isTrueP: false,
 				isTrueN: false,
 				shotelisTrue: false,
-				photelisTrue: false
+				photelisTrue: false,
 			}
 		},
 		methods: {

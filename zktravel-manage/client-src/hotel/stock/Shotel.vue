@@ -44,7 +44,7 @@
 	.btn-go {
 		background: dodgerblue;
 		width: 60px;
-		height: 30px;
+		height: 28px;
 		color: #FFFFFF;
 	}
 	
@@ -71,7 +71,9 @@
 		width: 100%;
 		height: 100%;
 	}
-	
+	.active {
+		background-color: #eee;
+	}
 	textarea {
 		text-indent: 2em;
 		line-height: 30px;
@@ -92,7 +94,9 @@
 		top:-17px;
 		right:-17px;
 		font-weight: 100;
-		border:1px solid #ccc;
+		border:1px solid #999;
+		z-index: 130;
+		background:#FFFFFF;
 	}
 </style>
 <template id="files-list-template">
@@ -113,7 +117,7 @@
 			</div>
 			<div class="form-group col-lg-3 hotel-state">
 				<label class="col-lg-4">星级</label>
-				<select class="star col-lg-2 disabled" disabled>
+				<select class="star col-lg-4 disabled" disabled>
 					<option value="1星">1星</option>
 					<option value="2星">2星</option>
 					<option value="3星">3星</option>
@@ -122,7 +126,7 @@
 		</div>
 		<div class="row hotel-state">
 			<!--酒店名称-->
-			<div class="form-group col-lg-12 hotel-state">
+			<div class="form-group col-lg-12">
 				<label class="col-lg-1">酒店中文</label>
 				<input type="text" disabled class="col-lg-4" placeholder="旅游大道酒店">
 			</div>
@@ -166,7 +170,8 @@
 			<div class="form-group col-lg-12">
 				<label class="col-lg-1">链接地址</label>
 				<input type="url" class="col-lg-4" placeholder="https://www.booking.com/">
-				<button type="button" class="btn col-lg-1 btn-go">前往</button>
+				<a class="btn col-lg-1 btn-go" href="#">前往</a>
+				<!--<button type="button" class="btn col-lg-1 btn-go">前往</button>-->
 				<label class="col-lg-1">B评分</label>
 				<input type="text" disabled class="col-lg-2" placeholder="https://www.booking.com/">
 			</div>
@@ -196,17 +201,17 @@
 			<!--酒店介绍-->
 			<div class="form-group col-lg-12">
 				<label class="col-lg-1">酒店介绍</label>
-				<textarea class="col-lg-8" disabled autofocus rows="3" cols="30">Hotel Tourisme Avenue酒店位于巴黎市中心，距离埃菲尔铁塔仅有10分钟步行路程，距离战神广场（Champs de Mars）仅有5分钟步行路程，提供覆盖各处的免费Wi-Fi和24小时前台。
+				<textarea class="col-lg-8" disabled autofocus rows="2" cols="30">Hotel Tourisme Avenue酒店位于巴黎市中心，距离埃菲尔铁塔仅有10分钟步行路程，距离战神广场（Champs de Mars）仅有5分钟步行路程，提供覆盖各处的免费Wi-Fi和24小时前台。
 Hôtel Tourisme Avenue酒店的客房以当代风格装饰，配有保险箱、冰箱、礼宾盘以及带浴缸或淋浴的私人浴室。
                 </textarea>
 			</div>
 			<!--酒店入住、离店时间-->
 			<div class="form-group col-lg-3">
-				<label class="col-lg-5">酒店入住时间</label>
+				<label class="col-lg-5">入住时间</label>
 				<input type="text" disabled class="col-lg-7" placeholder="XXXXXX">
 			</div>
 			<div class="form-group col-lg-3">
-				<label class="col-lg-5">酒店离店时间</label>
+				<label class="col-lg-5">离店时间</label>
 				<input type="text" disabled class="col-lg-7" placeholder="XXXXXX">
 			</div>
 		</div>
@@ -225,24 +230,24 @@ Hôtel Tourisme Avenue酒店的客房以当代风格装饰，配有保险箱、�
 			</div>
 		</div>
 		<div class="row">
-			<div class="hotel-state col-lg-6">
-				<label class="col-lg-2">信息</label>
-				<table disabled class="table-bordered table col-lg-offset-1">
-					<tr class="active">
-						<th>vt_id</th>
-						<th>mk_id</th>
-						<th>dl_id</th>
-						<th>booking</th>
-					</tr>
-					<tr>
-						<td>2347</td>
-						<td>33788</td>
-						<td>882131</td>
-						<td>链接XXX</td>
-					</tr>
-				</table>
+				<div class="hotel-state col-lg-6">
+					<label class="col-lg-2">信息</label>
+					<table disabled class="table-bordered table col-lg-offset-1">
+						<tr class="active">
+							<th>vt_id</th>
+							<th>mk_id</th>
+							<th>dl_id</th>
+							<th>booking</th>
+						</tr>
+						<tr>
+							<td>2347</td>
+							<td>33788</td>
+							<td>882131</td>
+							<td><a href="#">链接XXX</a></td>
+						</tr>
+					</table>
+				</div>
 			</div>
-		</div>
 	</div>
 </template>
 
@@ -264,7 +269,6 @@ Hôtel Tourisme Avenue酒店的客房以当代风格装饰，配有保险箱、�
 			close(){
 				this.$emit('close');
 			}
-			
-		}
+		},
 	}
 </script>
