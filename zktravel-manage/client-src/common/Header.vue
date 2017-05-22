@@ -5,7 +5,8 @@
 	
 		<div class="right">
 			<span class="glyphicon glyphicon-envelope"></span>
-			<span>{{$store.state.passName}}</span>
+			<span>当前用户:</span>
+			<strong>{{$store.state.passName}}</strong>
 			<input type="button" value="退出" v-on:click="exit()" >
 			<Logout v-if="isTrue" @cancel="hcancel()"></Logout>	
 
@@ -34,7 +35,7 @@
 		border-bottom:1px solid #000;
 		border-right:none;
 		.right{
-			width:15%;
+			width:35%;
 			position:absolute;
 			right:0;
 			span{

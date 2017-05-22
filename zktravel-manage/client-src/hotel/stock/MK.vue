@@ -12,6 +12,7 @@
 
 <script>
 	import Stock_table from './Stock-table';
+	// import ajax from '@local/common/ajax';
 	export default{
 		data(){
 			return{
@@ -36,7 +37,15 @@
 				return this.$store.state.counts;
 			},
 			list(){
-				let list=this.$store.state.list,listData;
+				let list=this.$store.state.list;
+				let listData;
+				// this.$ajax.post('/api/vt-mapping/query',{}).then(json=>{
+				// 	console.log(json);
+				// 	console.log(1);
+				// }).then(error=>{
+				// 	console.log("error");
+				// })
+
 				listData=list.sort(function(a,b){
 					if(a.id>b.id){
 						return 1;

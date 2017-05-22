@@ -2,6 +2,7 @@ const BController = require('./BController');
 const User = require('../service/user/User');
 
 module.exports = class LController extends BController {
+    /*
     async get userInfo(){
         if(!this._userInfo) this._userInfo = await User.get(this.session.userId);
 
@@ -18,4 +19,5 @@ module.exports = class LController extends BController {
         this.renderJson({ code: -1, msg: 'not login' });
         return false;
     }
+    */
 }
