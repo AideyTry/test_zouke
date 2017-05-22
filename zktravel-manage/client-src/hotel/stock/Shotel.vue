@@ -24,10 +24,6 @@
 		font-weight: bold;
 	}
 	
-	.hotel-state {
-		margin-top: 6px;
-	}
-	
 	.container-fluid label {
 		text-align: right;
 		margin-top: 2px;
@@ -46,8 +42,8 @@
 		width: 60px;
 		height: 28px;
 		color: #FFFFFF;
-		display:inline-block;
-		padding-top:4px;
+		display: inline-block;
+		padding-top: 4px;
 	}
 	
 	.borders {
@@ -73,9 +69,11 @@
 		width: 100%;
 		height: 100%;
 	}
+	
 	.active {
-		background-color: #eee;
+		background-color: #999999;
 	}
+	
 	textarea {
 		text-indent: 2em;
 		line-height: 30px;
@@ -85,40 +83,46 @@
 	table td {
 		text-align: center;
 	}
-	.cricle{
-		width:34px;
-		height:34px;
-		line-height:34px;
+	
+	.cricle {
+		width: 34px;
+		height: 34px;
+		line-height: 34px;
 		text-align: center;
-		border-radius:100%;
-		position:absolute;
+		border-radius: 100%;
+		position: absolute;
 		text-align: center;
-		top:-17px;
-		right:-17px;
+		top: -17px;
+		right: -17px;
 		font-weight: 100;
-		border:1px solid #999;
+		border: 1px solid #999;
 		z-index: 130;
-		background:#FFFFFF;
+		background: #FFFFFF;
 	}
+	.tabs th, .tabs td{
+		height:30px;
+		line-height:30px;
+	}
+	.hotel-state{padding-top:6px;}
 </style>
 <template id="files-list-template">
-	<div class="container-fluid">
+	<div class="container-fluid contain">
 		<div @click="close()" class="cricle">X</div>
 		<div class="row hotel-top">
 			<div class="title pull-left col-lg-2">酒店详情</div>
 		</div>
 		<!--酒店状态-->
-		<div class="hotel-state row">
-			<div class="form-group col-lg-3 hotel-state">
-				<label class="col-lg-4">酒店ID</label>
+		<div class="row hotel-state">
+			<div class="form-group col-lg-3">
+				<label class="col-lg-4">酒店的ID</label>
 				<input type="text" class="col-lg-6" disabled placeholder="XXXXXX">
 			</div>
-			<div class="form-group col-lg-3 hotel-state">
+			<div class="form-group col-lg-3">
 				<label class="col-lg-4">状态</label>
-				<input type="text" class="col-lg-6" disabled placeholder="已上架-待审核">
+				<input type="text" class="col-lg-8" disabled placeholder="已上架-待审核">
 			</div>
-			<div class="form-group col-lg-3 hotel-state">
-				<label class="col-lg-4">星级</label>
+			<div class="form-group col-lg-3">
+				<label class="col-lg-6">星级</label>
 				<select class="star col-lg-4 disabled" disabled>
 					<option value="1星">1星</option>
 					<option value="2星">2星</option>
@@ -126,17 +130,17 @@
 				</select>
 			</div>
 		</div>
-		<div class="row hotel-state">
+		<div class="row">
 			<!--酒店名称-->
+			<div class="form-group col-lg-6">
+				<label class="col-lg-2">酒店中文</label>
+				<input type="text" disabled class="col-lg-8" placeholder="旅游大道酒店">
+			</div>
+			<div class="form-group col-lg-6">
+				<label class="col-lg-2">酒店英文</label>
+				<input type="text" disabled class="col-lg-8" placeholder="Hôtel Tourisme Avenue">
+			</div>
 			<div class="form-group col-lg-12">
-				<label class="col-lg-1">酒店中文</label>
-				<input type="text" disabled class="col-lg-4" placeholder="旅游大道酒店">
-			</div>
-			<div class="form-group col-lg-12 hotel-state">
-				<label class="col-lg-1">酒店英文</label>
-				<input type="text" disabled class="col-lg-4" placeholder="Hôtel Tourisme Avenue">
-			</div>
-			<div class="form-group col-lg-12 hotel-state">
 				<label class="col-lg-1">酒店别名</label>
 				<input type="text" disabled class="col-lg-6" placeholder="Hotel Tourisme Avenue / 旅游大道金牌酒店">
 			</div>
@@ -208,48 +212,50 @@ Hôtel Tourisme Avenue酒店的客房以当代风格装饰，配有保险箱、�
                 </textarea>
 			</div>
 			<!--酒店入住、离店时间-->
-			<div class="form-group col-lg-3">
-				<label class="col-lg-5">酒店入住时间</label>
-				<input type="text" disabled class="col-lg-7" placeholder="XXXXXX">
+			<div class="form-group col-lg-6">
+				<label class="col-lg-2">入住时间</label>
+				<input type="text" disabled class="col-lg-8" placeholder="XXXXXX">
 			</div>
-			<div class="form-group col-lg-3">
-				<label class="col-lg-5">酒店离店时间</label>
-				<input type="text" disabled class="col-lg-7" placeholder="XXXXXX">
+			<div class="form-group col-lg-6">
+				<label class="col-lg-2">离店时间</label>
+				<input type="text" disabled class="col-lg-8" placeholder="XXXXXX">
 			</div>
 		</div>
 		<div class="row">
-			<div class="form-group col-lg-6 hotel-state">
+			<div class="form-group col-lg-6">
 				<label class="col-lg-2">酒店电话</label>
-				<input type="text" disabled class="col-lg-6" placeholder="XXXXXX">
+				<input type="text" disabled class="col-lg-8" placeholder="XXXXXX">
 			</div>
-			<div class="form-group col-lg-12 hotel-state">
-				<label class="col-lg-1">酒店传真</label>
-				<input type="text" disabled class="col-lg-4" placeholder="XXXXXX">
+			<div class="form-group col-lg-6">
+				<label class="col-lg-2">酒店传真</label>
+				<input type="text" disabled class="col-lg-8" placeholder="XXXXXX">
 			</div>
-			<div class="form-group col-lg-6 hotel-state">
+			<div class="form-group col-lg-6">
 				<label class="col-lg-2">酒店邮箱</label>
-				<input type="email" class="col-lg-6" placeholder="XXXXXX" disabled >
+				<input type="email" class="col-lg-8" placeholder="XXXXXX" disabled>
 			</div>
 		</div>
 		<div class="row">
-				<div class="hotel-state col-lg-6">
-					<label class="col-lg-2">信息</label>
-					<table disabled class="table-bordered table col-lg-offset-1">
-						<tr class="active">
-							<th>vt_id</th>
-							<th>mk_id</th>
-							<th>dl_id</th>
-							<th>booking</th>
-						</tr>
-						<tr>
-							<td>2347</td>
-							<td>33788</td>
-							<td>882131</td>
-							<td><a href="#">链接XXX</a></td>
-						</tr>
-					</table>
-				</div>
+			<div class="col-lg-6">
+				<label class="col-lg-2">信息</label>
+				<table disabled class="table-bordered table col-lg-offset-1 tabs">
+					<tr class="active">
+						<th>vt_id</th>
+						<th>mk_id</th>
+						<th>dl_id</th>
+						<th>booking</th>
+					</tr>
+					<tr>
+						<td>2347</td>
+						<td>33788</td>
+						<td>882131</td>
+						<td>
+							<a href="#">链接XXX</a>
+						</td>
+					</tr>
+				</table>
 			</div>
+		</div>
 	</div>
 </template>
 
@@ -268,7 +274,7 @@ Hôtel Tourisme Avenue酒店的客房以当代风格装饰，配有保险箱、�
 				this.$store.commit('audit');
 				console.log(this.updates.isTrue.aisTrue);
 			},
-			close(){
+			close() {
 				this.$emit('close');
 			}
 		},
