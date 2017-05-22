@@ -53,7 +53,7 @@ function encode(u){
     return btoa(utob(u))
 }
 
-export default function(u) {
+export default function base64encode(u) {
     return encode(String(u)).replace(/[+\/]/g, function(m0) {
         return m0 == '+' ? '-' : '_';
     }).replace(/=/g, '');
