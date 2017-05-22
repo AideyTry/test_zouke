@@ -7,6 +7,11 @@ module.exports = class VTMapping extends Mapping{
         })
         
     }
+    async query(){
+        return await super.query({
+            $or: [ { sp: null }, { sp: 'vt' } ]
+        })
+    }
     async $map(vtHotel, zk_id){
         return await super.$map(vtHotel, zk_id, 'vt_ids');
     }

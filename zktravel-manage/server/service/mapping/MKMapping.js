@@ -4,6 +4,9 @@ module.exports = class MKMapping extends Mapping{
     async $findSpNotResolve(){
         return await super.$findSpNotResolve({sp: 'mk'})
     }
+    async query(){
+        return await super.query({sp: 'mk'})
+    }
     async $map(mkHotel, zk_id){
         return await super.$map(mkHotel, zk_id, 'mk_ids');
     }

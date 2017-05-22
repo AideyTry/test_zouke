@@ -4,6 +4,9 @@ module.exports = class DLMapping extends Mapping{
     async $findSpNotResolve(){
         return await super.$findSpNotResolve({sp: 'dl'})
     }
+    async query(){
+        return await super.query({sp: 'dl'})
+    }
     async $map(dlHotel, zk_id){
         return await super.$map(dlHotel, zk_id, 'dl_ids');
     }

@@ -79,6 +79,66 @@ module.exports = class Mapping {
         });
     }
 
+    async query(query){
+        const spCollection = await this.$getSpHotelCollection();
+        const zkCollection = await this.$getZkHotelCollection();
+        const spFuzzyList = await spCollection.find({
+            $and:[
+                {
+                    'map_state.invalid': {$ne:true},
+                    'map_state.fuzzy': {$ne:null},
+                    'mode': 'R'
+                },
+                query
+            ]
+        }, { id:1, name:1, name_en:1, address:1, phone:1, url_web:1, map_state:1 }).toArray();
+
+        const zkIds = new Set();
+
+        for(let {map_state:{fuzzy}} of spFuzzyList){
+            const keys = Object.keys(fuzzy);
+            for(let id of keys){
+                zkIds.add(parseInt(id));
+            }
+        }
+
+        const zkHotels = await zkCollection.find({
+            _id: {$in:[...zkIds]}
+        }, { name:1, name_en:1, address:1, phone:1, url_web:1 }).toArray();
+
+        const zkHotelMap = {};
+        for(let zkHotel of zkHotels){
+            zkHotelMap[zkHotel._id] = zkHotel;
+        }
+
+        const result = [];
+
+        for(let sp of spFuzzyList){
+            const map_state = sp.map_state;
+            for(let zkId of Object.keys(map_state.fuzzy)){
+                const zk = zkHotelMap[zkId];
+                result.push({
+                    sign: map_state.timestamp,
+                    spId: sp._id.toString(),
+                    spName: sp.name,
+                    spNameEn: sp.name_en,
+                    spAddress: sp.address,
+                    spPhone: sp.phone,
+                    spWeb: sp.url_web,
+                    
+                    zkId: zk._id,
+                    zkName: zk.name,
+                    zkNameEn: zk.name_en,
+                    zkAddress: zk.address,
+                    zkPhone: zk.phone,
+                    zkWeb: zk.url_web
+                })
+            }
+        }
+
+        return result;
+    }
+
     async invalid(sp_id){
 
     }
