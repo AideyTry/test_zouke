@@ -86,8 +86,7 @@
 				gotoPage(page){
 					let url='';
 					switch(page){
-						case 'mk':
-							
+						case 'mk':						
 							this.$store.commit('mk');
 							this.$store.state.counts.isTrue.mkisTrue=true;
 							this.$store.state.counts.isTrue.dlisTrue=false;
@@ -98,7 +97,6 @@
 							this.isTrue.two=false;
 							this.isTrue.three=false;
 							this.isTrue.four=false;
-							
 							break;
 						case 'dl':
 							url='/index/stock/dl';

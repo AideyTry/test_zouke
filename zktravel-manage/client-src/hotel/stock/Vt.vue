@@ -39,11 +39,9 @@
 				return this.$store.state.counts;
 			},
 			list(){
-<<<<<<< HEAD
 				ajax.post('/api/vt-mapping/query').then(json=>{
 					if(json.code===0){
 						this.items=json.list;
-						return false;
 					}
 				}).then(error=>{
 					console.log(1);
@@ -60,27 +58,6 @@
 				});
 				console.log(this.listData.slice((this.pageNum-1)*this.pageSize,this.pageSize*this.pageNum));
 				return this.listData.slice((this.pageNum-1)*this.pageSize,this.pageSize*this.pageNum);
-=======
-//				ajax.post('/api/vt-mapping/query').then(json=>{
-//					if(json.code===0){
-//						this.items=json.list;
-//					}
-//				}).then(error=>{
-//					console.log(1);
-//				})
-//
-//				this.listData=this.items.sort(function(a,b){
-//					if(a.id>b.id){
-//						return 1;
-//					}
-//					if(a.id<b.id){
-//						return -1;
-//					}
-//						return 0;
-//				});
-//				console.log(this.listData.slice((this.pageNum-1)*this.pageSize,this.pageSize*this.pageNum));
-//				return this.listData.slice((this.pageNum-1)*this.pageSize,this.pageSize*this.pageNum);
->>>>>>> 236c5967d14817d0e47489cf5403a2884bd66450
 			}
 		},
 		methods:{
