@@ -18,6 +18,9 @@
             </div>
 
             <form class="col-md-offset-1 col-md-10" @submit.stop.prevent="login()">
+              <!--   <div>
+                  <img src="favicon.ico">
+                </div> -->
                 <div class="input-group input-group-lg">
                     <span class="input-group-addon">
                         用户名:
