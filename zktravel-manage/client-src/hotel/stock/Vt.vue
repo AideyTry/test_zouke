@@ -42,6 +42,7 @@
 				ajax.post('/api/vt-mapping/query').then(json=>{
 					if(json.code===0){
 						this.items=json.list;
+						return false;
 					}
 				}).then(error=>{
 					console.log(1);
