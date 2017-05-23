@@ -171,15 +171,15 @@
 			<div class="form-group col-lg-12">
 				<label class="col-lg-1">中文地址</label>
 				<select class="star col-lg-1" disabled>
-					<option>法国</option>
+					<option>{{shdata.country_name}}</option>
 				</select>
 				<select class="star col-lg-1" disabled>
-					<option>巴黎</option>
+					<option>{{shdata.city_name}}</option>
 				</select>
 				<select class="star col-lg-1" disabled>
-					<option>15区</option>
+					<option></option>
 				</select>
-				<input type="text" disabled class="col-lg-3" placeholder="66, avenue de la Motte-Picquet">
+				<input type="text" disabled class="col-lg-5" v-model="shdata.address">
 			</div>
 		</div>
 		<!--英文地址-->
@@ -187,24 +187,24 @@
 			<div class="form-group col-lg-12">
 				<label class="col-lg-1">英文地址</label>
 				<select class="star col-lg-1" disabled>
-					<option>French</option>
+					<option>{{shdata.country_name_en}}</option>
 				</select>
 				<select class="star col-lg-1" disabled>
-					<option>Paris</option>
+					<option>{{shdata.city_name_en}}</option>
 				</select>
 				<select class="star col-lg-1" disabled>
-					<option>15th arr.</option>
+					<option></option>
 				</select>
-				<input type="text" disabled class="col-lg-3" placeholder="66, avenue de la Motte-Picquet">
+				<input type="text" disabled class="col-lg-5" v-model="shdata.address">
 			</div>
 		</div>
 
 		<!--链接-->
 		<div class="row">
 			<div class="form-group col-lg-12">
-				<label class="col-lg-1">链接地址</label>
+				<label class="col-lg-1">booking链接地址</label>
 				<input type="text" class="col-lg-4" disabled v-model="shdata.url_web">
-				<a class="btn col-lg-1 btn-go" :href="shdata.url_web">前往</a>
+				<a class="btn col-lg-1 btn-go" :href="'https://'+ shdata.url_web">前往</a>
 				<label class="col-lg-1">B评分</label>
 				<input type="text" disabled class="col-lg-2" placeholder="评分">
 			</div>
@@ -268,7 +268,7 @@
 		</div>
 		<div class="row">
 			<div class="col-lg-6">
-				<label class="col-lg-2">信息</label>
+				<label class="col-lg-2">mapping信息</label>
 				<table disabled class="table-bordered table col-lg-offset-1 tabs">
 					<tr class="active">
 						<th>vt_id</th>
@@ -277,9 +277,9 @@
 						<th>booking</th>
 					</tr>
 					<tr>
-						<td>2347</td>
-						<td>33788</td>
-						<td>882131</td>
+						<td><a href="www.baidu.com" target="_blank">2347</a></td>
+						<td><a href="#">33788</a></td>
+						<td><a href="#">882131</a></td>
 						<td>
 							<a href="#">链接XXX</a>
 						</td>
@@ -298,9 +298,8 @@
 		data() {
 			return {
 				isTrue: false,
-				shdata: {},
-				times: [],
-				photo: []
+				shdata: {}, // 界面数据
+				photo: [] // 界面中要显示的图片
 			}
 		},
 		created() {
@@ -309,23 +308,18 @@
 			}).then(json => {
 				if(json.code === 0) {
 					this.shdata = json.detail;
-					//					this.times = this.shdata.notes;
 					this.photo = this.shdata.photos;
-					//					console.log(this.shdata);
+//					console.log(this.shdata);
 				}
 			})
 		},
 		methods: {
 			update() {
-				//				console.log(this.updates.isTrue.aisTrue);
 				this.updates.isTrue.aisTrue = false;
 				this.$store.commit('audit');
-				//				console.log(this.updates.isTrue.aisTrue);
-				//				console.log(this.ids);
 			},
 			close() {
 				this.$emit('close');
-				//				console.log(this.ids);
 			}
 		},
 	}

@@ -127,7 +127,7 @@
 			<div class="row hotel-state">
 				<div class="form-group col-lg-12">
 					<label class="col-lg-1">酒店官网</label>
-					<a class="col-lg-4 guan" :href="'https://'+ phdata.url_web">{{phdata.url_web}}</a>
+					<a class="col-lg-4 guan" :href="phdata.url_web">{{phdata.url_web}}</a>
 				</div>
 				<div class="form-group col-lg-3">
 					<label class="col-lg-4">酒店的ID</label>
@@ -233,7 +233,7 @@
 <script>
 	import ajax from '@local/common/ajax';
 	export default {
-		props: ['updates', 'idp'],
+		props: ['updates',],
 		data() {
 			return {
 				isTrue: false,
@@ -242,15 +242,15 @@
 			}
 		},
 		created() {
-			ajax.post('/api/sp-hotel/detail', {
-				id: this.idp
-			}).then(json => {
-				if(json.code === 0) {
-					this.phdata = json.detail;
-					// console.log(this.phdata);
-					this.spphoto = this.phdata.photos;
-				}
-			})
+//			ajax.post('/api/sp-hotel/detail', {
+//				id: this.idp
+//			}).then(json => {
+//				if(json.code === 0) {
+//					this.phdata = json.detail;
+//					// console.log(this.phdata);
+//					this.spphoto = this.phdata.photos;
+//				}
+//			})
 		},
 		methods: {
 			update() {
