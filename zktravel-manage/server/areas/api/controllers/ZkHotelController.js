@@ -6,6 +6,6 @@ module.exports = class ZkHotelController extends LController {
         const params = this.request.body;
         const zkHotel = new ZkHotel();
         const detail = await zkHotel.detail(params.id);
-        this.renderJson({code:0, detail});
+        this.renderJSON({code:0, detail});
     }
 }

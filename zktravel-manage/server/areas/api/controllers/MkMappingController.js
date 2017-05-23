@@ -6,6 +6,6 @@ module.exports = class MkMappingController extends LController {
     async query(){
         const mkMapping = new MKMapping();
         const list = await mkMapping.query();
-        this.renderJson({code:0, list});
+        this.renderJSON({code:0, list});
     }
 }
