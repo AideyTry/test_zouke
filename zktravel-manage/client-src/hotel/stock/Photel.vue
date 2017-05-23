@@ -50,17 +50,6 @@
 		width: 100px;
 	}
 	
-	.picture {
-		height: 100px;
-		width: 180px;
-		margin-left: -12px;
-	}
-	
-	.picture img {
-		width: 100%;
-		height: 100%;
-	}
-	
 	textarea {
 		text-indent: 2em;
 		line-height: 30px;
@@ -95,7 +84,34 @@
 	}
 	
 	.hotel-state {
-		padding-top: 8px;
+		padding-top: 10px;
+	}
+	.picture {
+		height: 150px;
+		width:700px;
+		list-style: none;
+		overflow-x: scroll;
+		white-space: nowrap;
+		margin-bottom: 0;
+	}
+	
+	.picture li {
+		height: 150px;
+		width:150px;
+		/*float: left;*/
+		display:inline-block;
+		white-space: nowrap;
+		padding:4px;
+	}
+	
+	.picture img {
+		width: 100%;
+		height: 100%;
+		display: inline-block;
+		padding:2px;
+	}
+	.foot {
+		height:100px;
 	}
 </style>
 <template>
@@ -115,18 +131,16 @@
 				</div>
 				<div class="form-group col-lg-3">
 					<label class="col-lg-4">酒店的ID</label>
-					<input type="text" class="col-lg-8" disabled placeholder="XXXXXX">
+					<input type="text" class="col-lg-8" disabled v-model="idp">
 				</div>
 				<div class="form-group col-lg-3">
 					<label class="col-lg-4">状态</label>
-					<input type="text" class="col-lg-8" disabled placeholder="已上架-待审核">
+					<input type="text" class="col-lg-8" disabled placeholder="状态">
 				</div>
 				<div class="form-group col-lg-3">
 					<label class="col-lg-4">星级</label>
 					<select class="star col-lg-4 disabled" disabled>
-						<option value="1星">1星</option>
-						<option value="2星">2星</option>
-						<option value="3星">3星</option>
+						<option>1星</option>
 					</select>
 				</div>
 			</div>
@@ -134,21 +148,21 @@
 				<!--酒店名称-->
 				<div class="form-group col-lg-6">
 					<label class="col-lg-2">酒店中文</label>
-					<input type="text" disabled class="col-lg-8" placeholder="旅游大道酒店">
+					<input type="text" disabled class="col-lg-8" v-model="phdata.name">
 				</div>
 				<div class="form-group col-lg-6">
 					<label class="col-lg-2">酒店英文</label>
-					<input type="text" disabled class="col-lg-8" placeholder="Hôtel Tourisme Avenue">
+					<input type="text" disabled class="col-lg-8" v-model="phdata.name_en">
 				</div>
 				<div class="form-group col-lg-12">
 					<label class="col-lg-1">酒店别名</label>
-					<input type="text" disabled class="col-lg-6" placeholder="Hotel Tourisme Avenue / 旅游大道金牌酒店">
+					<input type="text" disabled class="col-lg-6" placeholder="酒店别名">
 				</div>
 				<!--中文地址-->
 				<div class="form-group col-lg-12">
 					<label class="col-lg-1">中文地址</label>
 					<select class="star col-lg-1" disabled>
-						<option>法国</option>
+						<option>{{phdata.country_name}}</option>
 					</select>
 					<select class="star col-lg-1" disabled>
 						<option>巴黎</option>
@@ -162,7 +176,7 @@
 				<div class="form-group col-lg-12">
 					<label class="col-lg-1">英文地址</label>
 					<select class="star col-lg-1" disabled>
-						<option>French</option>
+						<option>{{phdata.country_name_en}}</option>
 					</select>
 					<select class="star col-lg-1" disabled>
 						<option>Paris</option>
@@ -188,57 +202,63 @@
 				<!--酒店图片-->
 				<div class="form-group col-lg-12">
 					<label class="col-lg-1">酒店图片</label>
-					<!--<a href=" " >-->
-					<input class="col-lg-2 picture" type="file" id="file_input" placeholder="上传图片">
-					<!--</a >-->
-					<!--<a href="#" class="col-lg-2 picture">-->
-					<input class="col-lg-2 picture" type="file" placeholder="上传">
-					<!--</a >-->
+					<ul class="picture thumbnail">
+						<li v-for="img in spphoto"><img :src="img.url" alt="picture"></li>
+					</ul>
 				</div>
 				<!--酒店介绍-->
 				<div class="form-group col-lg-12">
 					<label class="col-lg-1">酒店介绍</label>
-					<textarea class="col-lg-8" disabled autofocus rows="2" cols="30">Hotel Tourisme Avenue酒店位于巴黎市中心，距离埃菲尔铁塔仅有10分钟步行路程，距离战神广场（Champs de Mars）仅有5分钟步行路程，提供覆盖各处的免费Wi-Fi和24小时前台。  Hôtel Tourisme Avenue酒店的客房以当代风格装饰，配有保险箱、冰箱、礼宾盘以及带浴缸或淋浴的私人浴室。
+					<textarea class="col-lg-8" disabled autofocus rows="3" cols="30">{{phdata.description}}
                 </textarea>
 				</div>
 			</div>
 			<div class="row">
 				<div class="form-group col-lg-6">
 					<label class="col-lg-2">酒店电话</label>
-					<input type="text" disabled class="col-lg-8" placeholder="XXXXXX">
+					<input type="text" disabled class="col-lg-8" v-model="phdata.phone">
 				</div>
 				<div class="form-group col-lg-6">
 					<label class="col-lg-2">酒店传真</label>
-					<input type="text" disabled class="col-lg-8" placeholder="XXXXXX">
+					<input type="text" disabled class="col-lg-8" v-model="phdata.fax" placeholder="null">
 				</div>
 				<div class="form-group col-lg-6">
 					<label class="col-lg-2">酒店邮箱</label>
-					<input type="email" disabled class="col-lg-8" placeholder="XXXXXX">
+					<input type="email" disabled class="col-lg-8" v-model="phdata.email">
 				</div>
 			</div>
 		</div>
+		<div class="row foot"></div>
 	</div>
 
 </template>
 
 <script>
+	import ajax from '@local/common/ajax';
 	export default {
-		props: ['updates','idp'],
+		props: ['updates', 'idp'],
 		data() {
 			return {
 				isTrue: false,
+				phdata: {},
+				spphoto: []
 			}
 		},
-		mounted() {
-			// /api/sp-hotel/detail
-			console.log(this.idp);
+		created(){
+			ajax.post('/api/sp-hotel/detail', {
+				id: this.idp
+			}).then(json => {
+				if(json.code === 0) {
+					this.phdata = json.detail;
+//					console.log(this.phdata);
+					this.spphoto = this.phdata.photos;
+				}
+			})
 		},
 		methods: {
 			update() {
-				console.log(this.updates.isTrue.aisTrue);
 				this.updates.isTrue.aisTrue = false;
 				this.$store.commit('audit');
-				console.log(this.updates.isTrue.aisTrue);
 			},
 			close2() {
 				this.$emit('close2');
