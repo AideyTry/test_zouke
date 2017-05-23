@@ -75,8 +75,8 @@
 <template>
 	<div>
 		<div class="tabl">
-			<shotel class="hotel" @close="close11" v-if="shotelisTrue"></shotel>
-			<photel class="hotel" @close2="close22" v-if="photelisTrue"></photel>
+			<shotel class="hotel" @close="close11" v-if="shotelisTrue" :ids="sid"></shotel>
+			<photel class="hotel" @close2="close22" v-if="photelisTrue" :idp="pid"></photel>
 			<table class="table1 table table-bordered tableBg">
 				<thead>
 					<tr>
@@ -96,13 +96,13 @@
 
 				</opreat>
 				<tbody>
-					<tr v-for="item in list">
+					<tr v-for="(item,index) in list">
 						<td>{{item.grade}}</td>
-						<td @click="shotel()" class="tdColor">{{item.zkName}}</td>
-						<td @click="photel()" class="tdColor">{{item.spName}}</td>
+						<td @click="shotel(item.zkId)" class="tdColor">{{item.zkName}}</td>
+						<td @click="photel(item.spId)" class="tdColor">{{item.spName}}</td>
 						<td>{{item.zkAddress}}</td>
 						<td>{{item.spAddress}}</td>
-						<td>{{item.zkPhone}}</td>
+						<td>{{item.zkPhone}}</td>	
 						<td>{{item.spPhone}}</td>
 						<td>{{item.link}}</td>
 						<td>{{item.bLink}}</td>
@@ -139,10 +139,14 @@
 			photel: Photel,
 			shotel: Shotel,
 			opreat: Opreat
+
 		},
 		data() {
 			return {
 				// pageNum:1,
+				sid:null,
+				pid:null,
+				items:null,
 				isTrue: false,
 				misTrue: false,
 				pisTrue: false,
@@ -172,11 +176,16 @@
 		},
 		methods: {
 			//  组件是否显示
-			photel() {
+			photel(pid) {
 				this.photelisTrue = !this.photelisTrue;
+				console.log(pid);
 			},
-			shotel() {
+			shotel(sid) {
 				this.shotelisTrue = !this.shotelisTrue;
+
+				console.log(this.list);
+				console.log(sid);
+				this.sid=sid;
 			},
 			close22() {
 				this.photelisTrue = !this.photelisTrue;
