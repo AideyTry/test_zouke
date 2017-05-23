@@ -11,7 +11,7 @@
 
 <script>
 	import Stock_table from './Stock-table';
-//	import ajax from '@local/common/ajax';
+	import ajax from '@local/common/ajax';
 	export default {
 		data() {
 			return {
@@ -37,15 +37,15 @@
 			list() {
 				let list = this.$store.state.list;
 				let listData;
-//				this.$ajax.post('/api/vt-mapping/query', {}).then(json => {
-//					console.log(json);
-//					if(json.code == 0) {
-//						console.log(json);
-//						//						this.listAll = json.list;
-//					} else {
-//						this.$toast.show('网络发生错误，请联系管理员');
-//					}
-//				});
+				ajax.post('/api/vt-mapping/query', {}).then(json => {
+					console.log(json);
+					if(json.code == 0) {
+						console.log(json);
+						//						this.listAll = json.list;
+					} else {
+						this.$toast.show('网络发生错误，请联系管理员');
+					}
+				});
 				listData = list.sort(function(a, b) {
 					if(a.id > b.id) {
 						return 1;

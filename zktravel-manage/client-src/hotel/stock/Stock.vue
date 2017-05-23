@@ -118,6 +118,7 @@
 							this.$store.state.counts.isTrue.vtisTrue=true;
 							this.$store.state.counts.isTrue.bkisTrue=false;
 							this.$store.commit('vt');
+							this.$store.dispatch('actionVt');
 							this.isTrue.one=false;
 							this.isTrue.two=false;
 							this.isTrue.three=true;
