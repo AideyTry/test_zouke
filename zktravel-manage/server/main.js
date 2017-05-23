@@ -19,6 +19,14 @@ const bodyParser = require('koa-bodyparser');
 const app = new Koa();
 app.keys = ['zktravel manage system', 'zktravel system'];
 
+app.use(async (ctx, next)=>{
+    if(/\.(js|css|ico|png|jpg|jpeg)$/.test(ctx.path)){
+        return
+    }
+
+    await next();
+})
+
 app.use(session({
     key: SESS_KEY,
     maxAge: 86400000

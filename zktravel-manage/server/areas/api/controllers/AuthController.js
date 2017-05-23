@@ -1,7 +1,7 @@
 const BController = requireRoot('common/BController');
 const qrcode = require('qrcode');
 const { DEBUG } = requireRoot('env');
-const loginUrl = `http://${DEBUG?'wx.test.zouke.com':'w.zouke.com'}/zksystem/auth/qr-login?port=8081&path=%2Ftrigger%2Fauth%2Flogin`;
+const loginUrl = `http://${DEBUG?'wx.test.zouke.com':'w.zouke.com'}/zksystem/auth/qr-login?port=8081&path=trigger%2Fauth%2Flogin`;
 
 const codeKey = '/api/auth/code';
 const codeExpriesKey = '/api/auth/code-expries';
@@ -15,7 +15,7 @@ module.exports = class AuthController extends BController{
         const now = new Date();
         const code = des.encrypt(this.sessionId+'/'+ now.valueOf());
         this.session[codeKey] = code;
-        this.session[codeExpriesKey] = now.valueOf() + 30000;
+        this.session[codeExpriesKey] = now.valueOf() + (DEBUG?60000:30000);
         const url = `${loginUrl}&code=${encodeURIComponent(code)}`;
         
         console.log('========== qr-url', url);

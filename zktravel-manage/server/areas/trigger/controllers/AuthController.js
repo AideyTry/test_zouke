@@ -8,6 +8,11 @@ const codeExpriesKey = '/api/auth/code-expries';
 module.exports = class AuthController extends Controller {
     async login(){
         const { code, uid } = this.request.query;
+        if(!code||!uid){
+            this.renderJSON({code:1, msg:'need code and uid query string'})
+            return;
+        } 
+
         const sessionId = des.decrypt(code).split('/')[0];
         const session = sessionStore.get(sessionId);
         const now = new Date();
@@ -18,5 +23,7 @@ module.exports = class AuthController extends Controller {
             delete session[codeExpriesKey];
             sessionStore.set(sessionId, session);
         }
+
+        this.renderJSON({code:0});
     }
 }
