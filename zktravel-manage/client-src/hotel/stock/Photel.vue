@@ -23,6 +23,7 @@
 		font-size: 20px;
 		font-weight: bold;
 	}
+	
 	.container-fluid label {
 		text-align: right;
 		margin-top: 2px;
@@ -35,6 +36,7 @@
 	.star {
 		height: 26px;
 	}
+	
 	.borders {
 		border: 1px solid #ccc;
 		text-align: center;
@@ -81,17 +83,20 @@
 		line-height: 34px;
 		text-align: center;
 		z-index: 130;
-		background:#FFFFFF;
+		background: #FFFFFF;
 	}
 	
 	.guan {
 		border: 1px solid #ccc;
-		height:28px;
-		line-height:28px;
+		height: 28px;
+		line-height: 28px;
 		text-decoration: none;
-		background:#FFFFFF;
+		background: #FFFFFF;
 	}
-	.hotel-state{padding-top:8px;}
+	
+	.hotel-state {
+		padding-top: 8px;
+	}
 </style>
 <template>
 	<div>
@@ -218,11 +223,14 @@
 
 <script>
 	export default {
-		props: ['updates'],
+		props: ['updates','idp'],
 		data() {
 			return {
 				isTrue: false,
 			}
+		},
+		mounted(id) {
+			console.log(this.idp);
 		},
 		methods: {
 			update() {

@@ -75,14 +75,14 @@
 <template>
 	<div>
 		<div class="tabl">
-			<shotel class="hotel" @close="close11" v-if="shotelisTrue"></shotel>
-			<photel class="hotel" @close2="close22" v-if="photelisTrue"></photel>
+			<shotel class="hotel" @close="close11" v-if="shotelisTrue" :ids="sid"></shotel>
+			<photel class="hotel" @close2="close22" v-if="photelisTrue" :idp="pid"></photel>
 			<table class="table1 table table-bordered tableBg">
 				<thead>
 					<tr>
 						<th>匹配等级</th>
-						<th @click="shotel()">SAI名</th>
-						<th @click="photel()">{{mk.name}}</th>
+						<th>SAI名</th>
+						<th>{{mk.name}}</th>
 						<th>SAI地址</th>
 						<th>{{mk.address}}</th>
 						<th>SAI电话</th>
@@ -98,8 +98,8 @@
 				<tbody>
 					<tr v-for="item in list">
 						<td>{{item.grade}}</td>
-						<td @click="shotel()" class="tdColor">{{item.zkName}}</td>
-						<td @click="photel()" class="tdColor">{{item.spName}}</td>
+						<td @click="shotel(item.zkId)" class="tdColor">{{item.zkName}}</td>
+						<td @click="photel(item.spId)" class="tdColor">{{item.spName}}</td>
 						<td>{{item.zkAddress}}</td>
 						<td>{{item.spAddress}}</td>
 						<td>{{item.zkPhone}}</td>
@@ -138,7 +138,9 @@
 		components: {
 			photel: Photel,
 			shotel: Shotel,
-			opreat: Opreat
+			opreat: Opreat,
+			sid:'',
+			pid:''
 		},
 		data() {
 			return {
@@ -151,6 +153,7 @@
 				isTrueN: false,
 				shotelisTrue: false,
 				photelisTrue: false,
+				shotelData:[], // 酒店数据
 				opreatList: {
 					match: "匹配",
 					put: "入库",
@@ -171,12 +174,17 @@
 			}
 		},
 		methods: {
-			//  组件是否显示
-			photel() {
+//			  组件是否显示
+			photel(id) {
 				this.photelisTrue = !this.photelisTrue;
+//				console.log(id);
+				this.pid = id;
 			},
-			shotel() {
+			shotel(id) {
 				this.shotelisTrue = !this.shotelisTrue;
+//				this.$router.push(para);
+//				console.log(id);
+				this.sid = id;
 			},
 			close22() {
 				this.photelisTrue = !this.photelisTrue;

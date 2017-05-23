@@ -261,11 +261,16 @@ Hôtel Tourisme Avenue酒店的客房以当代风格装饰，配有保险箱、�
 
 <script>
 	export default {
-		props: ['updates'],
+		props: ['updates','ids'],
 		data() {
 			return {
 				isTrue: false,
+				shdata:[],
 			}
+		},
+		mounted(){
+//			this.id = this.$route.query.id;
+			console.log(this.ids);
 		},
 		methods: {
 			update() {
