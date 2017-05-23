@@ -74,10 +74,9 @@
 
 <template>
 	<div>
-<<<<<<< HEAD
 		<div class="tabl">
-			<shotel class="hotel" @close="close11" v-if="shotelisTrue"></shotel>
-			<photel class="hotel" @close2="close22" v-if="photelisTrue"></photel>
+			<shotel class="hotel" @close="close11" v-if="shotelisTrue" :ids="sid"></shotel>
+			<photel class="hotel" @close2="close22" v-if="photelisTrue" :idp="pid"></photel>
 			<table class="table1 table table-bordered tableBg">
 				<thead>
 					<tr>
@@ -97,14 +96,14 @@
 
 				</opreat>
 				<tbody>
-					<tr v-for="item in list">
+					<tr v-for="(item,index) in list">
 						<td>{{item.grade}}</td>
-						<td @click="shotel()" class="tdColor">{{item.sName}}</td>
-						<td @click="photel()" class="tdColor">{{item.mName}}</td>
-						<td>{{item.sAddress}}</td>
-						<td>{{item.mAddress}}</td>
-						<td>{{item.sPhone}}</td>
-						<td>{{item.mPhone}}</td>
+						<td @click="shotel(item.zkId)" class="tdColor">{{item.zkName}}</td>
+						<td @click="photel(item.spId)" class="tdColor">{{item.spName}}</td>
+						<td>{{item.zkAddress}}</td>
+						<td>{{item.spAddress}}</td>
+						<td>{{item.zkPhone}}</td>	
+						<td>{{item.spPhone}}</td>
 						<td>{{item.link}}</td>
 						<td>{{item.bLink}}</td>
 						<td>
@@ -122,62 +121,11 @@
 						<a class="next" href="javascript:;" v-on:click="next()" v-bind:class="{disabled:isTrueN}"><span class="glyphicon glyphicon-triangle-right"></span></a>
 						<input type="text" name="" value="输入页码跳转" onfocus="javascript:if(this.value=='输入页码跳转')this.value='';" id="input">
 						<button class="bColor btn btn-default" @click="skip()">跳转</button>
-=======
-		<shotel class="hotel" @close="close11" v-if="shotelisTrue"></shotel>
-		<photel class="hotel" @close2="close22" v-if="photelisTrue"></photel>
-		<table class="table1 table table-bordered tableBg">
-			<thead>
-				<tr>
-					<th>匹配等级</th>
-					<th @click="shotel()">SAI名</th>
-					<th @click="photel()">{{mk.name}}</th>
-					<th>SAI地址</th>
-					<th>{{mk.address}}</th>
-					<th>SAI电话</th>
-					<th>{{mk.phone}}</th>
-					<th>坐标链接</th>
-					<th>Booking链接</th>
-					<th>操作</th>
-				</tr>
-			</thead>
-			<opreat class="oColor" v-if="isTrue" @cancel="cancel" @confirm="confirm" :opreat="opreatData">
-				
-			</opreat>
-			<tbody>
-				<tr v-for="item in list">
-					<td>{{item.grade}}</td>
-					<td @click="shotel()" class="tdColor">{{item.sName}}</td>
-					<td @click="photel()" class="tdColor">{{item.mName}}</td>
-					<td>{{item.spAddress}}</td>
-					<td>{{item.zkAddress}}</td>
-					<td>{{item.spPhone}}</td>
-					<td>{{item.zkPhone}}</td>
-					<td>{{item.link}}</td>
-					<td>{{item.bLink}}</td>
-					<td>
-						<button class="btn btn-info" v-on:click="match()">匹配</button>
-						<button class="btn btn-success" v-on:click="put()">入库</button>
-						<button class="btn btn-danger" v-on:click="unnecessary()">置为无效</button>
-					</td>
-				</tr>
-			</tbody>
-			<tfoot>
-				<nav class="pagination pull-right">
-					<span>当前页第{{pages.pageNum}}页，共{{pages.total}}页</span>
-					<a class="prev" href="javascript:;" v-on:click="prev()" v-bind:class="{disabled:isTrueP}"><span class="glyphicon glyphicon-triangle-left"></span></a>
-					<strong>{{pages.pageNum}}/{{pages.total}}</strong>
-					<a class="next" href="javascript:;" v-on:click="next()" v-bind:class="{disabled:isTrueN}"><span class="glyphicon glyphicon-triangle-right"></span></a>
-					<input type="text" name="" value="输入页码跳转" onfocus="javascript:if(this.value=='输入页码跳转')this.value='';" id="input">
-					<button class="bColor btn btn-default" @click="skip()">跳转</button>
->>>>>>> 1d8ef5ef082ddacfd5e62f3611c6508a1bc2a734
-
 					</nav>
 				</tfoot>
 
 			</table>
-
 		</div>
-
 	</div>
 </template>
 
@@ -191,10 +139,14 @@
 			photel: Photel,
 			shotel: Shotel,
 			opreat: Opreat
+
 		},
 		data() {
 			return {
 				// pageNum:1,
+				sid:null,
+				pid:null,
+				items:null,
 				isTrue: false,
 				misTrue: false,
 				pisTrue: false,
@@ -224,11 +176,16 @@
 		},
 		methods: {
 			//  组件是否显示
-			photel() {
+			photel(pid) {
 				this.photelisTrue = !this.photelisTrue;
+				console.log(pid);
 			},
-			shotel() {
+			shotel(sid) {
 				this.shotelisTrue = !this.shotelisTrue;
+
+				console.log(this.list);
+				console.log(sid);
+				this.sid=sid;
 			},
 			close22() {
 				this.photelisTrue = !this.photelisTrue;
