@@ -117,6 +117,7 @@ module.exports = class Mapping {
             const map_state = sp.map_state;
             for(let zkId of Object.keys(map_state.fuzzy)){
                 const zk = zkHotelMap[zkId];
+                const key = map_state.fuzzy[zkId];
                 result.push({
                     sign: map_state.timestamp,
                     spId: sp._id.toString(),
@@ -131,7 +132,10 @@ module.exports = class Mapping {
                     zkNameEn: zk.name_en,
                     zkAddress: zk.address,
                     zkPhone: zk.phone,
-                    zkWeb: zk.url_web
+                    zkWeb: zk.url_web,
+
+                    level: MappingLevel.getLevel(key),
+                    levelDesc: MappingLevel.getLevelDesc(key)
                 })
             }
         }
