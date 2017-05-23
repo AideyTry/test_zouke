@@ -71,7 +71,7 @@
 <script>
 
 	export default{
-		props:['opreat'],
+		props:['opreat','items'],
 		data(){
 			return {
 
@@ -82,6 +82,23 @@
 				this.$emit("cancel");
 			},
 			confirm(){
+				
+				if(this.opreat==='匹配'){
+					this.$store.state.opreat.zkId=this.items.zkId;
+					this.$store.state.opreat.spId=this.items.spId;
+					this.$store.dispatch('actionOmath');
+				}
+				else if(this.opreat==='入库'){
+					this.$store.state.opreat.sign=this.items.sign;
+					this.$store.state.opreat.zkId=this.items.zkId;
+					this.$store.state.opreat.spId=this.items.spId;
+					this.$store.dispatch('actionOput');
+				}
+				else if(this.opreat==='置为无效'){
+					this.$store.state.opreat.spId=this.items.spId;
+					// console.log(this.$store.state.opreat.spId);
+					this.$store.dispatch('actionOu');
+				}
 				this.$emit("confirm");
 			}
 		}

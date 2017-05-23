@@ -29,8 +29,8 @@
 				return {
 					pageNum: this.pageNum,
 					pageSize: this.pageSize,
-					total: Math.ceil((this.$store.state.list).length / this.pageSize),
-					pages: Math.ceil((this.$store.state.list).length / this.pageSize) / this.pageNum
+					total: Math.ceil((this.$store.state.listVt).length / this.pageSize),
+					pages: Math.ceil((this.$store.state.listVt).length / this.pageSize) / this.pageNum
 				}
 			},
 			counts() {
@@ -38,7 +38,7 @@
 			},
 			list() {
 				//分页
-				this.items=this.$store.state.list;
+				this.items=this.$store.state.listVt;
 				this.listData = this.items.sort(function(a, b) {
 					if(a.level> b.level) {
 						return 1;

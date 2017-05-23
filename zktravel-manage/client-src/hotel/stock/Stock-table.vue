@@ -92,7 +92,7 @@
 						<th>操作</th>
 					</tr>
 				</thead>
-				<opreat class="oColor" v-if="isTrue" @cancel="cancel" @confirm="confirm" :opreat="opreatData">
+				<opreat class="oColor" v-if="isTrue" @cancel="cancel" @confirm="confirm" :opreat="opreatData" :items='item'>
 
 				</opreat>
 				<tbody>
@@ -107,9 +107,9 @@
 						<td>{{item.link}}</td>
 						<td>{{item.bLink}}</td>
 						<td>
-							<button class="btn btn-info" v-on:click="match()">匹配</button>
-							<button class="btn btn-success" v-on:click="put()">入库</button>
-							<button class="btn btn-danger" v-on:click="unnecessary()">置为无效</button>
+							<button class="btn btn-info" v-on:click="match(item)">匹配</button>
+							<button class="btn btn-success" v-on:click="put(item)">入库</button>
+							<button class="btn btn-danger" v-on:click="unnecessary(item)">置为无效</button>
 						</td>
 					</tr>
 				</tbody>
@@ -144,6 +144,7 @@
 		data() {
 			return {
 				// pageNum:1,
+				item:null,
 				sid:null,
 				pid:null,
 				items:null,
@@ -194,25 +195,29 @@
 				this.shotelisTrue = !this.shotelisTrue;
 			},
 			//匹配
-			match() {
+			match(item) {
 				this.isTrue = true;
 				this.misTrue = true;
 				this.pisTrue = false;
 				this.uisTrue = false;
+				this.item=item;
+				console.log(this.list);
 			},
 			//入库
-			put() {
+			put(item) {
 				this.isTrue = true;
 				this.misTrue = false;
 				this.pisTrue = true;
 				this.uisTrue = false;
+				this.item=item;
 			},
 			//置为无效
-			unnecessary() {
+			unnecessary(item) {
 				this.isTrue = true;
 				this.misTrue = false;
 				this.pisTrue = false;
 				this.uisTrue = true;
+				this.item=item;
 			},
 			cancel() {
 				this.isTrue = false;

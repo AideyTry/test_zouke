@@ -8,7 +8,15 @@ export default new Vuex.Store({
         token:null,
         logout:null,
         passName:null,
-        newList:[],
+        opreat:{
+            zkId:null,
+            spId:null,
+            sign:null
+        },
+        listVt:[],
+        listMk:[],
+        listDl:[],
+        listBk:[],
         list:[
                         {   
                             id:1,
@@ -324,10 +332,37 @@ export default new Vuex.Store({
         actionVt(context){
             return  ajax.post('/api/vt-mapping/query').then(json=>{
                 if(json.code===0){
-                    context.state.list=json.list;
-                    console.log(JSON.parse(JSON.stringify(context.state.list)))
+                    context.state.listVt=json.list;
+                    console.log(JSON.parse(JSON.stringify(context.state.listVt)))
                 }  
             } )
+        },
+        actionMk(context){
+
+        },
+        actionDl(context){
+
+        },
+        actionBk(context){
+
+        },
+        actionOmath(context){
+            console.log(context.state.opreat.zkId,context.state.opreat.spId);
+            // return ajax.post('',{spId:context.state.opreate.spId,zkId:context.state.opreate.zkId}).then(json=>{
+            //     console.log(json);
+            // })
+        },
+        actionOput(context){
+            console.log(context.state.opreat.sign,context.state.opreat.zkId,context.state.opreat.spId);
+            // return ajax.post('',{sign:context.state.opreate.sign,spId:context.state.opreate.spId,zkId:context.state.opreate.zkId}).then(json=>{
+            //     console.log(json);
+            // })
+        },
+        actionOu(context){
+            console.log(context.state.opreat.spId);
+            // return ajax.post('',{spId:context.state.opreate.spId}).then(json=>{
+            //     console.log(json);
+            // })
         }
     },
     mutations: {

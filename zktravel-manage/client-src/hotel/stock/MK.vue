@@ -17,6 +17,9 @@
 			return {
 				pageNum: 1,
 				pageSize: 10,
+				items:[],
+				listData:[]
+
 			}
 		},
 		components: {
@@ -35,27 +38,28 @@
 				return this.$store.state.counts;
 			},
 			list() {
-				let list = this.$store.state.list;
-				let listData;
-				ajax.post('/api/vt-mapping/query', {}).then(json => {
-					console.log(json);
-					if(json.code == 0) {
-						console.log(json);
-						//						this.listAll = json.list;
-					} else {
-						this.$toast.show('网络发生错误，请联系管理员');
-					}
-				});
-				listData = list.sort(function(a, b) {
-					if(a.id > b.id) {
+				// this.items = this.$store.state.list;
+				// ajax.post('/api/vt-mapping/query', {}).then(json => {
+				// 	console.log(json);
+				// 	if(json.code == 0) {
+				// 		console.log(json);
+				// 		//						this.listAll = json.list;
+				// 	} else {
+				// 		this.$toast.show('网络发生错误，请联系管理员');
+				// 	}
+				// });
+		//分页
+				this.items=this.$store.state.list;
+				this.listData = this.items.sort(function(a, b) {
+					if(a.level> b.level) {
 						return 1;
 					}
-					if(a.id < b.id) {
+					if(a.level < b.level) {
 						return -1;
 					}
 					return 0;
 				});
-				return listData.slice((this.pageNum - 1) * this.pageSize, this.pageSize * this.pageNum);
+				return this.listData.slice((this.pageNum - 1) * this.pageSize, this.pageSize * this.pageNum);
 			}
 		},
 		methods: {
