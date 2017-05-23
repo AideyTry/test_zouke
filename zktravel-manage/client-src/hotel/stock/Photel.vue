@@ -229,7 +229,8 @@
 				isTrue: false,
 			}
 		},
-		mounted(id) {
+		mounted() {
+			// /api/sp-hotel/detail
 			console.log(this.idp);
 		},
 		methods: {

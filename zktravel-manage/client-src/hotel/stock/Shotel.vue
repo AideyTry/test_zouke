@@ -99,11 +99,16 @@
 		z-index: 130;
 		background: #FFFFFF;
 	}
-	.tabs th, .tabs td{
-		height:30px;
-		line-height:30px;
+	
+	.tabs th,
+	.tabs td {
+		height: 30px;
+		line-height: 30px;
 	}
-	.hotel-state{padding-top:6px;}
+	
+	.hotel-state {
+		padding-top: 6px;
+	}
 </style>
 <template id="files-list-template">
 	<div class="container-fluid contain">
@@ -260,17 +265,27 @@ Hôtel Tourisme Avenue酒店的客房以当代风格装饰，配有保险箱、�
 </template>
 
 <script>
+	import ajax from '@local/common/ajax';
 	export default {
-		props: ['updates','ids'],
+		props: ['updates', 'ids'],
 		data() {
 			return {
 				isTrue: false,
-				shdata:[],
+				shdata: [],
 			}
 		},
-		mounted(){
-//			this.id = this.$route.query.id;
+		mounted() {
 			console.log(this.ids);
+			ajax.post('/api/zk-hotel/detail', {
+				id: this.ids
+			}).then(json => {
+				if(json.code === 0) {
+					this.shdata = json.list;
+					console.log(this.shdata);
+					// console.log(JSON.parse(JSON.stringify(context.state.list)))
+				}
+			})
+
 		},
 		methods: {
 			update() {
@@ -278,9 +293,11 @@ Hôtel Tourisme Avenue酒店的客房以当代风格装饰，配有保险箱、�
 				this.updates.isTrue.aisTrue = false;
 				this.$store.commit('audit');
 				console.log(this.updates.isTrue.aisTrue);
+				console.log(this.ids);
 			},
 			close() {
 				this.$emit('close');
+				console.log(this.ids);
 			}
 		},
 	}

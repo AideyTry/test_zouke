@@ -96,7 +96,7 @@
 
 				</opreat>
 				<tbody>
-					<tr v-for="item in list">
+					<tr v-for="(item,index) in list">
 						<td>{{item.grade}}</td>
 						<td @click="shotel(item.zkId)" class="tdColor">{{item.zkName}}</td>
 						<td @click="photel(item.spId)" class="tdColor">{{item.spName}}</td>
@@ -139,12 +139,13 @@
 			photel: Photel,
 			shotel: Shotel,
 			opreat: Opreat,
-			sid:'',
-			pid:''
 		},
 		data() {
 			return {
 				// pageNum:1,
+				sid: null,
+				pid: null,
+				items: null,
 				isTrue: false,
 				misTrue: false,
 				pisTrue: false,
@@ -153,7 +154,7 @@
 				isTrueN: false,
 				shotelisTrue: false,
 				photelisTrue: false,
-				shotelData:[], // 酒店数据
+				shotelData: [], // 酒店数据
 				opreatList: {
 					match: "匹配",
 					put: "入库",
@@ -174,17 +175,14 @@
 			}
 		},
 		methods: {
-//			  组件是否显示
-			photel(id) {
+			// 组件是否显示
+			photel(pid) {
 				this.photelisTrue = !this.photelisTrue;
-//				console.log(id);
-				this.pid = id;
+				this.pid = pid;
 			},
-			shotel(id) {
+			shotel(sid) {
 				this.shotelisTrue = !this.shotelisTrue;
-//				this.$router.push(para);
-//				console.log(id);
-				this.sid = id;
+				this.sid = sid;
 			},
 			close22() {
 				this.photelisTrue = !this.photelisTrue;
