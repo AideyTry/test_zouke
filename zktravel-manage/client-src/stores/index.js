@@ -275,10 +275,13 @@ export default new Vuex.Store({
             flag:false,  //记录状态进行跳转页面使用
             page:null
         },
-        // pages:{
-        //     pageNum:1,
-        //     pageSize:10
-        // },
+
+        //SAI酒店库数据
+        saiisTrue:{
+            pisTrue:false,
+            ofisTrue:false,
+            onisTrue:false
+        },
         counts: {
                 isTrue:{
                     eisTrue:false,
@@ -335,7 +338,7 @@ export default new Vuex.Store({
                     context.state.listVt=json.list;
                     console.log(JSON.parse(JSON.stringify(context.state.listVt)))
                 }  
-            } )
+            })
         },
         actionMk(context){
 

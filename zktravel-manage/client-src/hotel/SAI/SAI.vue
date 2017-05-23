@@ -1,47 +1,3 @@
-<template>
-	<div>
-		<div class="hColor">
-			<h3>SAI酒店库</h3>
-			<input type="text" name="" value="搜索酒店名/ID" onfocus="javascript:if(this.value=='搜索酒店名/ID')this.value='';">
-			<button class="btn btn-info">搜索</button>
-			<strong>
-				<span>星级</span>
-			<select>
-				<option>全部</option>
-				<option>1星</option>
-				<option>2星</option>
-				<option>3星</option>
-				<option>4星</option>
-				<option>5星</option>
-			</select>
-			</strong>
-			<strong>
-				<span>国家</span>
-			<select>
-				<option>全部</option>
-				<option>法国</option>
-				<option>德国</option>
-				<option>英国</option>
-				<option>希腊</option>
-				<option>意大利</option>
-			</select>
-			</strong>
-			<ul class="audit">
-				<li class="sAudit" v-on:click="gotoPage('pending')" v-bind:class="{bgColor:isTrue.one}">
-					已上架-待审核
-				</li>
-				<li class="sAudit" v-on:click="gotoPage('online')" v-bind:class="{bgColor:isTrue.two}">
-				已上架-通过审核
-				</li>
-				<li class="unCompleted" v-on:click="gotoPage('offline')" v-bind:class="{bgColor:isTrue.three}">
-					未上架
-				</li>
-			</ul>
-		</div>
-		<router-view></router-view>
-	</div>
-</template>
-
 <style lang="scss" scoped>
 	*{
 		padding:0;
@@ -94,6 +50,10 @@
 				font-size:12px;
 				font-family: 'microsoft yahei';
 			}
+			.sColor:hover{
+				cursor:pointer;
+				color:#0cc;
+			}
 			.unCompleted{
 				display:inline-block;
 				width:26%;
@@ -117,6 +77,51 @@
 		}
 	}
 </style>
+<template>
+	<div>
+		<div class="hColor">
+			<h3>SAI酒店库</h3>
+			<input type="text" name="" value="搜索酒店名/ID" onfocus="javascript:if(this.value=='搜索酒店名/ID')this.value='';">
+			<button class="btn btn-info">搜索</button>
+			<strong>
+				<span>星级</span>
+			<select>
+				<option>全部</option>
+				<option>1星</option>
+				<option>2星</option>
+				<option>3星</option>
+				<option>4星</option>
+				<option>5星</option>
+			</select>
+			</strong>
+			<strong>
+				<span>国家</span>
+			<select>
+				<option>全部</option>
+				<option>法国</option>
+				<option>德国</option>
+				<option>英国</option>
+				<option>希腊</option>
+				<option>意大利</option>
+			</select>
+			</strong>
+			<ul class="audit">
+				<li class="sAudit sColor" v-on:click="gotoPage('pending')" v-bind:class="{bgColor:isTrue.one}">
+					已上架-待审核
+				</li>
+				<li class="sAudit sColor" v-on:click="gotoPage('online')" v-bind:class="{bgColor:isTrue.two}">
+				已上架-通过审核
+				</li>
+				<li class="unCompleted sColor" v-on:click="gotoPage('offline')" v-bind:class="{bgColor:isTrue.three}">
+					未上架
+				</li>
+			</ul>
+		</div>
+		<router-view></router-view>
+	</div>
+</template>
+
+
 	
 <script>
 	export default{
@@ -151,18 +156,27 @@
 						this.isTrue.one=true;
 						this.isTrue.two=false;
 						this.isTrue.three=false;
+						this.$store.state.saiisTrue.pisTrue=true;
+						this.$store.state.saiisTrue.onisTrue=false;
+						this.$store.state.saiisTrue.ofisTrue=false;
 						break;
 					case 'online':
 						url = '/index/SAI/online';
 						this.isTrue.one=false;
 						this.isTrue.two=true;
 						this.isTrue.three=false;
+						this.$store.state.saiisTrue.pisTrue=false;
+						this.$store.state.saiisTrue.onisTrue=true;
+						this.$store.state.saiisTrue.ofisTrue=false;
 						break;
 					case 'offline':
 						url = '/index/SAI/offline';
 						this.isTrue.one=false;
 						this.isTrue.two=false;
 						this.isTrue.three=true;
+						this.$store.state.saiisTrue.pisTrue=false;
+						this.$store.state.saiisTrue.onisTrue=false;
+						this.$store.state.saiisTrue.ofisTrue=true;
 						break;
 				}
 				this.$router.push({

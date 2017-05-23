@@ -7,6 +7,7 @@ import store  from './stores'
 import routeStock from './hotel/stock/routes';
 import routeSAI from './hotel/SAI/routes';
 import Login    from './common/Login'
+import ajax from '@local/common/ajax';
 Vue.use(VueRouter);
 
 
@@ -37,9 +38,11 @@ const router=new VueRouter({
   
 })
 router.beforeEach((to,from,next)=>{
-        
+        ajax.post('/api/auth/is-login').then(json=>{
+            console.log(json);
+        })
         if(to.matched.some(r=>r.meta.requireAuth)){
-            if(store.state.token===200){
+            if(store.state.token===0){
                  
                 next();
 

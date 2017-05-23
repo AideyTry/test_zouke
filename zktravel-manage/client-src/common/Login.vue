@@ -17,10 +17,7 @@
 <!--                 <img src="/uploads/monkey.png" class="img-circle" alt=""> -->
             </div>
 
-            <form class="col-md-offset-1 col-md-10" @submit.stop.prevent="login()">
-              <!--   <div>
-                  <img src="favicon.ico">
-                </div> -->
+  <!--           <form class="col-md-offset-1 col-md-10" @submit.stop.prevent="login()">
                 <div class="input-group input-group-lg">
                     <span class="input-group-addon">
                         用户名:
@@ -39,13 +36,14 @@
                 <div v-if="isTrue">
                     <p class="color">用户名或密码有误,请重新输入</p>
                 </div>
-            </form>
-           
+            </form> -->
+           <img>
         </div>
     </div>
 </template>
   
 <script>
+    import ajax from '@local/common/ajax';
     export default {
       data(){
         return {
@@ -54,23 +52,42 @@
           passWord:""
         }
       },
+      // beforeCreate(){
+      //   let img=document.querySelector("img");
+      //   ajax.post('/api/auth/is-login').then(json=>{
+      //     if(json.code===0){
+      //          this.$store.state.token=0;
+      //         // let redirect=decodeURIComponent(this.$route.query.redirect||'/');
+      //         // this.$store.state.passName=this.passName;
+      //         this.$router.push({
+      //           path:'/index'
+      //         });
+      //     }
+      //     else{
+      //       ajax.post('/api/auth/qr').then(json=>{
+      //       // img.setAttribute("src",json);
+      //       })
+      //     }
+      //   })
+      // },
       methods:{
-        login(){
-          if((this.passName==="admin")&&(this.passWord==="123456")){
-            this.$store.state.token=200;
-            // let redirect=decodeURIComponent(this.$route.query.redirect||'/');
-            this.$store.state.passName=this.passName;
-            this.$router.push({
-              path:'/index'
-            });
-            // console.log(2);
-            // console.log(this.$store.state.token);
-          }
-          else{
-            console.log("用户名或密码有误");
-            this.isTrue=true;
-          }
-        }
+        // login(){
+
+        //     if((this.passName==="admin")&&(this.passWord==="123456")){
+              // this.$store.state.token=200;
+              // // let redirect=decodeURIComponent(this.$route.query.redirect||'/');
+              // this.$store.state.passName=this.passName;
+              // this.$router.push({
+              //   path:'/index'
+              // });
+        //       // console.log(2);
+        //       // console.log(this.$store.state.token);
+        //     }
+        //     else{
+        //       console.log("用户名或密码有误");
+        //       this.isTrue=true;
+        //     }
+        // }
       }
     }
 </script>
