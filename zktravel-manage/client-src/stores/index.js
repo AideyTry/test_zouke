@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-
+import ajax from '@local/common/ajax';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -8,7 +8,8 @@ export default new Vuex.Store({
         token:null,
         logout:null,
         passName:null,
-       list:[
+        newList:[],
+        list:[
                         {   
                             id:1,
                             grade:"L1",
@@ -319,6 +320,16 @@ export default new Vuex.Store({
     //         return state.list;
     //     }
     // },
+    actions:{
+        actionVt(context){
+            return  ajax.post('/api/vt-mapping/query').then(json=>{
+                if(json.code===0){
+                    context.state.list=json.list;
+                    console.log(JSON.parse(JSON.stringify(context.state.list)))
+                }  
+            } )
+        }
+    },
     mutations: {
         mk(state) {
             state.counts.name=state.counts.kms.name;
