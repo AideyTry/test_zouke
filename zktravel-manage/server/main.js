@@ -1,5 +1,5 @@
 
-const { DEBUG } = require('../../config');
+const { DEBUG, SESS_KEY } = require('./env');
 if(!DEBUG){
     process.env.NODE_ENV = 'production';
 }
@@ -20,7 +20,7 @@ const app = new Koa();
 app.keys = ['zktravel manage system', 'zktravel system'];
 
 app.use(session({
-    key: 'sess',
+    key: SESS_KEY,
     maxAge: 86400000
 },app))
 

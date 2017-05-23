@@ -6,6 +6,6 @@ module.exports = class VtMappingController extends LController {
     async query(){
         const vtMapping = new VTMapping();
         const list = await vtMapping.query();
-        this.renderJson({code:0, list});
+        this.renderJSON({code:0, list});
     }
 }
