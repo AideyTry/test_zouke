@@ -1,7 +1,7 @@
 
 const dbclient = requireRoot('db');
 const MappingLevel = require('./MappingLevel');
-const { zk_collection_name, sp_collection_name } = require('./config');
+const { zk_collection_name, sp_collection_name } = require('../config');
 const Pretreatment = require('./Pretreatment');
 
 function abstractError(){

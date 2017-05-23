@@ -8,4 +8,8 @@ module.exports = class VtMappingController extends LController {
         const list = await vtMapping.query();
         this.renderJson({code:0, list});
     }
+
+    async detail(){
+        
+    }
 }
