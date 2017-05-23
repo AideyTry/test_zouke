@@ -97,7 +97,7 @@
 				</opreat>
 				<tbody>
 					<tr v-for="(item,index) in list">
-						<td>{{item.grade}}</td>
+						<td>{{item.levelDesc}}</td>
 						<td @click="shotel(item.zkId)" class="tdColor">{{item.zkName}}</td>
 						<td @click="photel(item.spId)" class="tdColor">{{item.spName}}</td>
 						<td>{{item.zkAddress}}</td>

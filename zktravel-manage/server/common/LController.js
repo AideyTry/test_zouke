@@ -16,7 +16,7 @@ module.exports = class LController extends BController {
             if(userInfo) return //pass
         }
 
-        this.renderJson({ code: -1, msg: 'not login' });
+        this.renderJSON({ code: -1, msg: 'not login' });
         return false;
     }
     */

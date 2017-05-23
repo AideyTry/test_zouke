@@ -6,6 +6,6 @@ module.exports = class SpHotelController extends LController {
         const params = this.request.body;
         const spHotel = new SpHotel();
         const detail = await spHotel.detail(params.id);
-        this.renderJson({code:0, detail});
+        this.renderJSON({code:0, detail});
     }
 }

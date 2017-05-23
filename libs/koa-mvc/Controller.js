@@ -54,8 +54,12 @@ module.exports = class Controller {
             this.ctx.body = content;
         }
     }
-    renderJson(json = {}){
+    renderJSON(json = {}){
         this.ctx.body = json;
+    }
+    renderSVG(svg){
+        this.ctx.body = svg;
+        this.ctx.type="image/svg+xml";
     }
     redirect(params, area){
         const url = (typeof params === 'string') ? params : this.router.resolve(params, area);

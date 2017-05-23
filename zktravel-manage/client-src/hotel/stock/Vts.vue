@@ -40,10 +40,10 @@
 				//分页
 				this.items=this.$store.state.list;
 				this.listData = this.items.sort(function(a, b) {
-					if(a.id > b.id) {
+					if(a.level> b.level) {
 						return 1;
 					}
-					if(a.id < b.id) {
+					if(a.level < b.level) {
 						return -1;
 					}
 					return 0;
