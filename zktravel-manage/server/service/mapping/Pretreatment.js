@@ -1,4 +1,4 @@
-const { sp_collection_name } = require('./config');
+const { sp_collection_name } = require('../config');
 const dbclient = requireRoot('db');
 
 const charMapStr = 'Ä-A、ä-a、Á-A、á-a、À-A、à-a、Â-A、â-a、Ą-A、ą-a、Å-A、 å-a、Ã-A、ã-a、Ç-C、ç-c、Ć-C、ć-c、Č-C、č-c、Ď-D、ď-d、ð-d、Ё -E、ë-e、È=E、è-e、É-E、é-e、Ê-E、ê-e、Ę-E、ę-e、Ě-E、ě-e、Ğ-G、ğ-g、Î-I、î-i、Ì-I、ì-i、Í-I、í-i、Ï-I、ï-i、Ł-L、ł-l、Й-N、й-n、Ń-N、ń-n、Ó-O、ó-o、Ò-O、ò-o、Ô-O、ô-o、Ö-O、ö-o、Õ-O、õ-o、Ř-R、ř-r、Š-S、š-s、Ş-S、ş-s、Ś-S、ś-s、Ť-T、ť-t、Ű-U、ű-u、Ü-U、ü-u、Ú-U、ú-u、Ù-U、ù-u、Ů-U、ů-u、Ÿ-Y 、ÿ-y、Ý-Y、ý-y、Ź-Z、ź-z、Ż-Z、ż-z、Ž-Z、ž-z、Æ-AE、æ-ae、Ǽ-AE、Ǣ-AE 、ß-s、ø-o、Dž-Dz、dź-dz';

@@ -4,7 +4,7 @@ require('../requireRoot');
 require('@local/common/core/w/prototype');
 
 const dbclient = requireRoot('db');
-const { zk_collection_name } = requireRoot('service/mapping/config');
+const { zk_collection_name } = requireRoot('service/config');
 const Pretreatment = requireRoot('service/mapping/Pretreatment');
 
 async function run(){
