@@ -31,7 +31,8 @@ const router = new VueRouter({
 			component: Xid,
 			children: [{
 					path: 'vtid',
-					component: Vtid
+					component: Vtid,
+					name:'vtids'
 				},
 				{
 					path: 'mkid',

@@ -60,21 +60,6 @@
 		text-align: center;
 	}
 	
-	.cricle {
-		width: 34px;
-		height: 34px;
-		border-radius: 100%;
-		position: absolute;
-		top: -17px;
-		right: -17px;
-		font-weight: 100;
-		border: 1px solid #999;
-		line-height: 34px;
-		text-align: center;
-		z-index: 130;
-		background: #FFFFFF;
-	}
-	
 	.guan {
 		border: 1px solid #ccc;
 		height: 28px;
@@ -99,7 +84,6 @@
 	.picture li {
 		height: 150px;
 		width: 150px;
-		/*float: left;*/
 		display: inline-block;
 		white-space: nowrap;
 		padding: 4px;
@@ -120,38 +104,24 @@
 	<div>
 		<div class="container-fluid">
 			<div class="row hotel-top">
-				<div class="title pull-left col-lg-2">mk酒店详情</div>
+				<div class="title pull-left col-lg-2">酒店详情</div>
 			</div>
 			<!--酒店状态-->
 			<div class="row hotel-state">
 				<div class="form-group col-lg-12">
 					<label class="col-lg-1">酒店官网</label>
-					<a class="col-lg-4 guan" :href="phdata.url_web">{{phdata.url_web}}</a>
-				</div>
-				<div class="form-group col-lg-3">
-					<label class="col-lg-4">酒店的ID</label>
-					<input type="text" class="col-lg-8" disabled v-model="idp">
-				</div>
-				<div class="form-group col-lg-3">
-					<label class="col-lg-4">状态</label>
-					<input type="text" class="col-lg-8" disabled placeholder="状态">
-				</div>
-				<div class="form-group col-lg-3">
-					<label class="col-lg-4">星级</label>
-					<select class="star col-lg-4 disabled" disabled>
-						<option>1星</option>
-					</select>
+					<a class="col-lg-4 guan" :href="vtdata.url_web">{{vtdata.url_web}}</a>
 				</div>
 			</div>
 			<div class="row">
 				<!--酒店名称-->
 				<div class="form-group col-lg-6">
 					<label class="col-lg-2">酒店中文</label>
-					<input type="text" disabled class="col-lg-8" v-model="phdata.name">
+					<input type="text" disabled class="col-lg-8" v-model="vtdata.name">
 				</div>
 				<div class="form-group col-lg-6">
 					<label class="col-lg-2">酒店英文</label>
-					<input type="text" disabled class="col-lg-8" v-model="phdata.name_en">
+					<input type="text" disabled class="col-lg-8" v-model="vtdata.name_en">
 				</div>
 				<div class="form-group col-lg-12">
 					<label class="col-lg-1">酒店别名</label>
@@ -163,15 +133,15 @@
 				<div class="form-group col-lg-12">
 					<label class="col-lg-1 pull-left">酒店地址</label>
 					<select class="star col-lg-1" disabled>
-						<option>{{phdata.country_name}}{{phdata.country_name_en}}</option>
+						<option>{{vtdata.country_name}}{{vtdata.country_name_en}}</option>
 					</select>
 					<select class="star col-lg-1" disabled>
-						<option>{{phdata.city_name}}{{phdata.city_name_en}}</option>
+						<option>{{vtdata.city_name}}{{vtdata.city_name_en}}</option>
 					</select>
 					<select class="star col-lg-1" disabled>
 						<option></option>
 					</select>
-					<input type="text" disabled class="col-lg-5" v-model="phdata.address">
+					<input type="text" disabled class="col-lg-5" v-model="vtdata.address">
 				</div>
 			</div>
 
@@ -196,7 +166,7 @@
 				<div class="form-group col-lg-12 ">
 					<label class="col-lg-1 ">酒店图片</label>
 					<ul class="picture thumbnail ">
-						<li v-for="img in spphoto "><img :src="img.url " alt="picture "></li>
+						<li v-for="img in vtphoto"><img :src="img.url " alt="picture"></li>
 					</ul>
 				</div>
 			</div>
@@ -205,22 +175,22 @@
 			<div class="row ">
 				<div class="form-group col-lg-12 ">
 					<label class="col-lg-1 ">酒店介绍</label>
-					<textarea class="col-lg-8 " disabled autofocus rows="3 " cols="30 ">{{phdata.description}}
+					<textarea class="col-lg-8 " disabled autofocus rows="3 " cols="30 ">{{vtdata.description}}
                 </textarea>
 				</div>
 			</div>
 			<div class="row ">
 				<div class="form-group col-lg-6 ">
 					<label class="col-lg-2 ">酒店电话</label>
-					<input type="text " disabled class="col-lg-8 " v-model="phdata.phone ">
+					<input type="text " disabled class="col-lg-8 " v-model="vtdata.phone ">
 				</div>
 				<div class="form-group col-lg-6 ">
 					<label class="col-lg-2 ">酒店传真</label>
-					<input type="text " disabled class="col-lg-8 " v-model="phdata.fax " placeholder="null ">
+					<input type="text " disabled class="col-lg-8 " v-model="vtdata.fax " placeholder="null ">
 				</div>
 				<div class="form-group col-lg-6 ">
 					<label class="col-lg-2 ">酒店邮箱</label>
-					<input type="email" disabled class="col-lg-8 " v-model="phdata.email ">
+					<input type="email " disabled class="col-lg-8 " v-model="vtdata.email ">
 				</div>
 			</div>
 		</div>
@@ -232,33 +202,26 @@
 <script>
 	import ajax from '@local/common/ajax';
 	export default {
-		props: ['updates',],
+		props: ['updates'],
 		data() {
 			return {
 				isTrue: false,
-				phdata: {},
-				spphoto: []
+				vtdata: {},
+				vtphoto: [],
 			}
 		},
 		created() {
-//			ajax.post('/api/sp-hotel/detail', {
-//				id: this.idp
-//			}).then(json => {
-//				if(json.code === 0) {
-//					this.phdata = json.detail;
-//					// console.log(this.phdata);
-//					this.spphoto = this.phdata.photos;
-//				}
-//			})
-		},
-		methods: {
-			update() {
-				this.updates.isTrue.aisTrue = false;
-				this.$store.commit('audit');
-			},
-			close2() {
-				this.$emit('close2');
-			}
+			let spId=this.state.idData.mki;
+			ajax.post('/api/sp-hotel/detail', {
+				spId: spId,
+				sp:'mk'
+			}).then(json => {
+				if(json.code === 0) {
+					this.vtdata = json.detail;
+					 console.log(this.vtdata);
+					this.vtphoto = this.vtdata.photos;
+				}
+			})
 		}
 	}
 </script>

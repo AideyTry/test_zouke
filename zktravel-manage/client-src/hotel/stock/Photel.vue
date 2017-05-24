@@ -137,12 +137,6 @@
 					<label class="col-lg-4">状态</label>
 					<input type="text" class="col-lg-8" disabled placeholder="状态">
 				</div>
-				<div class="form-group col-lg-3">
-					<label class="col-lg-4">星级</label>
-					<select class="star col-lg-4 disabled" disabled>
-						<option>1星</option>
-					</select>
-				</div>
 			</div>
 			<div class="row">
 				<!--酒店名称-->
@@ -163,14 +157,11 @@
 			<div class="row">
 				<div class="form-group col-lg-12">
 					<label class="col-lg-1 pull-left">酒店地址</label>
-					<select class="star col-lg-1" disabled>
+					<select class="star col-lg-2" disabled>
 						<option>{{phdata.country_name}}{{phdata.country_name_en}}</option>
 					</select>
-					<select class="star col-lg-1" disabled>
+					<select class="star col-lg-2" disabled>
 						<option>{{phdata.city_name}}{{phdata.city_name_en}}</option>
-					</select>
-					<select class="star col-lg-1" disabled>
-						<option></option>
 					</select>
 					<input type="text" disabled class="col-lg-5" v-model="phdata.address">
 				</div>

@@ -170,14 +170,11 @@
 		<div class="row">
 			<div class="form-group col-lg-12">
 				<label class="col-lg-1">中文地址</label>
-				<select class="star col-lg-1" disabled>
+				<select class="star col-lg-2" disabled>
 					<option>{{shdata.country_name}}</option>
 				</select>
-				<select class="star col-lg-1" disabled>
+				<select class="star col-lg-2" disabled>
 					<option>{{shdata.city_name}}</option>
-				</select>
-				<select class="star col-lg-1" disabled>
-					<option></option>
 				</select>
 				<input type="text" disabled class="col-lg-5" v-model="shdata.address">
 			</div>
@@ -186,14 +183,11 @@
 		<div class="row">
 			<div class="form-group col-lg-12">
 				<label class="col-lg-1">英文地址</label>
-				<select class="star col-lg-1" disabled>
+				<select class="star col-lg-2" disabled>
 					<option>{{shdata.country_name_en}}</option>
 				</select>
-				<select class="star col-lg-1" disabled>
+				<select class="star col-lg-2" disabled>
 					<option>{{shdata.city_name_en}}</option>
-				</select>
-				<select class="star col-lg-1" disabled>
-					<option></option>
 				</select>
 				<input type="text" disabled class="col-lg-5" v-model="shdata.address">
 			</div>
@@ -206,7 +200,7 @@
 				<input type="text" class="col-lg-4" disabled v-model="shdata.url_web">
 				<a class="btn col-lg-1 btn-go" :href="'https://'+ shdata.url_web" target="_blank">前往</a>
 				<label class="col-lg-1">B评分</label>
-				<input type="text" disabled class="col-lg-2" placeholder="评分">
+				<input type="text" disabled class="col-lg-2" v-model="fea.score">
 			</div>
 		</div>
 		<!--全部设施-->
@@ -259,7 +253,7 @@
 			</div>
 			<div class="form-group col-lg-6">
 				<label class="col-lg-2">酒店传真</label>
-				<input type="text" disabled class="col-lg-8" v-model="shdata.fax">
+				<input type="text" disabled class="col-lg-8" v-model="shdata.fax" placeholder="null">
 			</div>
 			<div class="form-group col-lg-6">
 				<label class="col-lg-2">酒店邮箱</label>
@@ -269,7 +263,7 @@
 		<div class="row">
 			<div class="col-lg-6">
 				<label class="col-lg-3">mapping信息</label>
-				<table disabled class="table-bordered table col-lg-offset-1 tabs">
+				<table disabled class="table table-bordered col-lg-offset-1 tabs">
 					<tr class="actives">
 						<th>vt_id</th>
 						<th>mk_id</th>
@@ -277,11 +271,11 @@
 						<th>booking</th>
 					</tr>
 					<tr class="active">
-						<td><a @click="vtlink()">2347</a></td>
-						<td><a @click="mklink()">33788</a></td>
-						<td><a @click="dllink()">882131</a></td>
+						<td><a v-for="vid in vids" @click="vtlink(vid)" target="_blank" href="xid/vtid">{{vid}}</a></td>
+						<td><a v-for="mid in mids" @click="mklink(mid)" target="_blank" href="xid/mkid">{{mids}}</a></td>
+						<td><a v-for="did in dids" @click="dllink(did)" target="_blank" href="xid/dlid">{{dids}}</a></td>
 						<td>
-							<a href="#" target="_blank">链接XXX</a>
+							<a :href="'https://'+ shdata.url_web" target="_blank">{{shdata.url_web}}</a>
 						</td>
 					</tr>
 				</table>
@@ -299,7 +293,12 @@
 			return {
 				isTrue: false,
 				shdata: {}, // 界面数据
-				photo: [] // 界面中要显示的图片
+				photo: [], // 界面中要显示的图片
+				fea:{}, // 评价
+				vtdata:{},
+				vids:[], // 表格中vt_ids
+				mids:[], // 表格中mk_ids
+				dids:[] // 表格中dl_ids
 			}
 		},
 		created() {
@@ -309,7 +308,10 @@
 				if(json.code === 0) {
 					this.shdata = json.detail;
 					this.photo = this.shdata.photos;
-//					console.log(this.shdata);
+					this.fea = this.shdata.booking_info.feature;
+					this.vids = this.shdata.sp_id.vt_ids;
+					this.mids = this.shdata.sp_id.mk_ids
+					this.dids = this.shdata.sp_id.dl_ids
 				}
 			})
 		},
@@ -321,14 +323,15 @@
 			close() {
 				this.$emit('close');
 			},
-			vtlink(){
-				this.$router.push({path:'/xid/vtid'});
+			vtlink(para){
+//				this.$router.push({path:'/xid/vtid'});
+				this.$store.commit("getId",para)
 			},
-			mklink(){
-				this.$router.push({path:'/xid/mkid'});
+			mklink(para){
+				this.$store.commit("getMk",para)
 			},
 			dllink(){
-				this.$router.push({path:'/xid/dlid'});
+				this.$store.commit("getDl",para)
 			}
 		},
 	}
