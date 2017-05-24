@@ -91,7 +91,7 @@ module.exports = class Mapping {
                 },
                 query
             ]
-        }, { id:1, name:1, name_en:1, address:1, phone:1, url_web:1, map_state:1 }).toArray();
+        }, { id:1, name:1, name_en:1, address:1, phone:1, url_web:1, map_state:1, gps: 1 }).toArray();
 
         const zkIds = new Set();
 
@@ -104,7 +104,7 @@ module.exports = class Mapping {
 
         const zkHotels = await zkCollection.find({
             _id: {$in:[...zkIds]}
-        }, { name:1, name_en:1, address:1, phone:1, url_web:1 }).toArray();
+        }, { name:1, name_en:1, address:1, phone:1, url_web:1, gps:1, booking_info:1 }).toArray();
 
         const zkHotelMap = {};
         for(let zkHotel of zkHotels){
@@ -112,7 +112,7 @@ module.exports = class Mapping {
         }
 
         const result = [];
-
+        
         for(let sp of spFuzzyList){
             const map_state = sp.map_state;
             for(let zkId of Object.keys(map_state.fuzzy)){
@@ -126,6 +126,7 @@ module.exports = class Mapping {
                     spAddress: sp.address,
                     spPhone: sp.phone,
                     spWeb: sp.url_web,
+                    spGPS: sp.gps,
                     
                     zkId: zk._id,
                     zkName: zk.name,
@@ -133,6 +134,9 @@ module.exports = class Mapping {
                     zkAddress: zk.address,
                     zkPhone: zk.phone,
                     zkWeb: zk.url_web,
+                    zkGPS: zk.gps,
+
+                    bookingUrl: zk.booking_info?zk.booking_info.url:'',
 
                     level: MappingLevel.getLevel(key),
                     levelDesc: MappingLevel.getLevelDesc(key)
@@ -157,9 +161,16 @@ module.exports = class Mapping {
         }else{
             this._incState('map');
         }
+        const alias = [];
+        if(spHotel.name) alias.push(spHotel.name);
+        if(spHotel.name_en) alias.push(spHotel.name_en);
+
         const zkCollection = await this.$getZkHotelCollection();
         zkCollection.updateOne({ _id: zk_id }, {
-            $addToSet: { [`sp_id.${sp_area}`]: spHotel.id }
+            $addToSet: { 
+                [`sp_id.${sp_area}`]: spHotel.id,
+                "alias":{ $each:alias }
+            }
         });
     }
 

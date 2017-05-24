@@ -2,10 +2,10 @@ const Mapping = require('./Mapping');
 
 module.exports = class DLMapping extends Mapping{
     async $findSpNotResolve(){
-        return await super.$findSpNotResolve({sp: 'dl'})
+        return await super.$findSpNotResolve({supplier: 'dl'})
     }
     async query(){
-        return await super.query({sp: 'dl'})
+        return await super.query({supplier: 'dl'})
     }
     async $map(dlHotel, zk_id){
         return await super.$map(dlHotel, zk_id, 'dl_ids');

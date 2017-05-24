@@ -19,26 +19,22 @@ const bodyParser = require('koa-bodyparser');
 const app = new Koa();
 app.keys = ['zktravel manage system', 'zktravel system'];
 
-app.use(async (ctx, next)=>{
+app.use(async (ctx, next) => {
     if(/\.(js|css|ico|png|jpg|jpeg)$/.test(ctx.path)){
         return
     }
 
-    await next();
-})
-
-app.use(session({
-    key: SESS_KEY,
-    maxAge: 86400000
-},app))
-
-app.use(async (ctx, next) => {
     if(ctx.accepts(['html', 'image/*'])==='image/*'||ctx.path.startsWith('/trigger/')||ctx.headers['x-requested-with'] === 'XMLHttpRequest'){
         await next();
     }else{
         await opa(ctx, next);
     }
 });
+
+app.use(session({
+    key: SESS_KEY,
+    maxAge: 86400000
+}, app))
 
 app.use(bodyParser());
 app.use(async (ctx, next)=>{
