@@ -11,7 +11,7 @@ class Toast{
         div.className = 'toast-weix';
         div.innerHTML = `<div class="container"></div>`;
         this._$div = div;
-        this._$container = div.$('.container');
+        this._$container = div.querySelector('.container');
 
         this._t = 0;
         this._show = false;

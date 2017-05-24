@@ -10,6 +10,7 @@ export default new Vuex.Store({
         hash:null,
         logout:null,
         passName:null,
+
         opreat:{
             zkId:null,
             spId:null,
@@ -19,6 +20,14 @@ export default new Vuex.Store({
         listMk:[],
         listDl:[],
         listBk:[],
+
+        newList:[],
+        idData:{
+        		vti:null,
+        		mki:null,
+        		dli:null
+        },
+
         list:[
                         {   
                             id:1,
@@ -411,6 +420,15 @@ export default new Vuex.Store({
         },
         audit(state){
             state.counts.isTrue.aisTrue=true;
+        },
+        getId(state,id){
+        		state.idData.vti=id;
+        },
+        getMk(state,id){
+        		state.idData.mki = id;
+        },
+        getDl(state,id){
+        		state.idData.dli = id;
         }
     }
 })

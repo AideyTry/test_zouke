@@ -81,8 +81,8 @@
 				<thead>
 					<tr>
 						<th>匹配等级</th>
-						<th @click="shotel()">SAI名</th>
-						<th @click="photel()">{{mk.name}}</th>
+						<th>SAI名</th>
+						<th>{{mk.name}}</th>
 						<th>SAI地址</th>
 						<th>{{mk.address}}</th>
 						<th>SAI电话</th>
@@ -102,7 +102,7 @@
 						<td @click="photel(item.spId)" class="tdColor">{{item.spName}}</td>
 						<td>{{item.zkAddress}}</td>
 						<td>{{item.spAddress}}</td>
-						<td>{{item.zkPhone}}</td>	
+						<td>{{item.zkPhone}}</td>
 						<td>{{item.spPhone}}</td>
 						<td @click="link(item)" class="tdColor">{{item.link}}</td>
 						<td @click="booking(item)" class="tdColor">{{item.bookingUrl}}</td>
@@ -138,16 +138,21 @@
 		components: {
 			photel: Photel,
 			shotel: Shotel,
-			opreat: Opreat
-
+			opreat: Opreat,
 		},
 		data() {
 			return {
 				// pageNum:1,
+<<<<<<< HEAD
 				item:null,
 				sid:null,
 				pid:null,
 				items:null,
+=======
+				sid: null,
+				pid: null,
+				items: null,
+>>>>>>> a21a477a9f284fa639cd1683d4329ba4cff1cfbb
 				isTrue: false,
 				misTrue: false,
 				pisTrue: false,
@@ -156,6 +161,7 @@
 				isTrueN: false,
 				shotelisTrue: false,
 				photelisTrue: false,
+				shotelData: [], // 酒店数据
 				opreatList: {
 					match: "匹配",
 					put: "入库",
@@ -176,17 +182,14 @@
 			}
 		},
 		methods: {
-			//  组件是否显示
+			// 组件是否显示
 			photel(pid) {
 				this.photelisTrue = !this.photelisTrue;
-				console.log(pid);
+				this.pid = pid;
 			},
 			shotel(sid) {
 				this.shotelisTrue = !this.shotelisTrue;
-
-				console.log(this.list);
-				console.log(sid);
-				this.sid=sid;
+				this.sid = sid;
 			},
 			booking(item){
 				window.open(item.bookingUrl);
