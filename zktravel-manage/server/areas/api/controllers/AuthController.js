@@ -1,4 +1,4 @@
-const BController = requireRoot('common/BController');
+const SController = requireRoot('common/SController');
 const qrcode = require('qrcode');
 const { DEBUG } = requireRoot('env');
 const loginUrl = `http://${DEBUG?'wx.test.zouke.com':'w.zouke.com'}/zksystem/auth/qr-login?port=8081&path=trigger%2Fauth%2Flogin`;
@@ -10,7 +10,7 @@ const des = new DES('zouke7788');
 
 const User = requireRoot('service/user/User');
 
-module.exports = class AuthController extends BController{
+module.exports = class AuthController extends SController{
     async qrCode(){
         const now = new Date();
         const code = des.encrypt(this.sessionId+'/'+ now.valueOf());
@@ -59,5 +59,9 @@ module.exports = class AuthController extends BController{
 
         this.renderJSON({code:9, msg:'qrcode invalid'});
 
+    }
+    logout(){
+        this.session = null;
+        this.renderJSON({ code:0, msg:'logout ok' });
     }
 }
