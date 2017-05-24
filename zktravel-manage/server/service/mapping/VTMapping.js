@@ -3,13 +3,13 @@ const Mapping = require('./Mapping');
 module.exports = class VTMapping extends Mapping{
     async $findSpNotResolve(){
         return await super.$findSpNotResolve({
-            $or: [ { sp: null }, { sp: 'vt' } ] //default sp: vt
+            supplier: 'vt'
         })
         
     }
     async query(){
         return await super.query({
-            $or: [ { sp: null }, { sp: 'vt' } ]
+            supplier: 'vt'
         })
     }
     async $map(vtHotel, zk_id){
