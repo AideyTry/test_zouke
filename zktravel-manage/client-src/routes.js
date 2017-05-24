@@ -12,6 +12,7 @@ Vue.use(VueRouter);
 
 
 const router=new VueRouter({
+    hashbang: true,
     routes: [
         {
             path: '/index',
@@ -60,9 +61,4 @@ router.beforeEach((to,from,next)=>{
         next();
     }
 })
-        // })
-        
-
-       
-    // })
 export default router;

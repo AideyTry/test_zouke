@@ -104,8 +104,8 @@
 						<td>{{item.spAddress}}</td>
 						<td>{{item.zkPhone}}</td>	
 						<td>{{item.spPhone}}</td>
-						<td>{{item.link}}</td>
-						<td>{{item.bLink}}</td>
+						<td @click="link(item)" class="tdColor">{{item.link}}</td>
+						<td @click="booking(item)" class="tdColor">{{item.bookingUrl}}</td>
 						<td>
 							<button class="btn btn-info" v-on:click="match(item)">匹配</button>
 							<button class="btn btn-success" v-on:click="put(item)">入库</button>
@@ -187,6 +187,9 @@
 				console.log(this.list);
 				console.log(sid);
 				this.sid=sid;
+			},
+			booking(item){
+				window.open(item.bookingUrl);
 			},
 			close22() {
 				this.photelisTrue = !this.photelisTrue;

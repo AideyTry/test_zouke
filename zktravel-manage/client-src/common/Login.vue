@@ -34,14 +34,14 @@
         }
       },
       computed:{
-        token(){
-          return this.$store.state.token;
+        state(){
+          return this.$store.state;
         }
       },
       mounted(){
         let that=this;
         let timer=setInterval(function(){
-            if(that.token===0){
+            if(that.state.token===0){
               that.$router.push({
                 path:'/index'
               })
@@ -49,16 +49,21 @@
             else {
               ajax.post("/api/auth/is-login").then(json=>{
                 that.$store.commit('login',json);
-                if(that.token===0){
+                //登录成功
+                console.log(that.state.token);
+                if(that.state.token===0){
                   clearInterval(timer);
+                  // document.cookie('userInfo',that.state.userInfo);
                   that.$router.push({
                     path:'/index'
                   })       
                 }
-                else if(that.token===1){
+                //未登录
+                else if(that.state.token===1){
                   console.log("未登录");
                 }
-                else if(that.token===9){
+                //二维码失效
+                else if(that.state.token===9){
                   console.log("二维码失效");
                   clearInterval(timer);
                 }
@@ -68,6 +73,6 @@
     
       },
       methods:{
-    }
+      }
   }
 </script>

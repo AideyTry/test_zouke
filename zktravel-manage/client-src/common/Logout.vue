@@ -80,20 +80,28 @@
 				// isTrue:false
 			}
 		},
+		computed:{
+			logout(){
+				return this.$store.state;
+			}
+		},
 		methods:{
 				cancel(){
 					this.$emit('cancel');
 				},
 				confirm(){
+					console.log("退出");
 					ajax.post("/api/auth/logout").then(json=>{
 						console.log(json);
-					})
-					this.$store.state.logout=1;
-					if(this.$store.state.logout===1){
-						this.$router.push({
+						this.$store.commit('logout',json);
+						console.log();
+						if(this.logout.logout===0){
+							this.$router.push({
 							path:'/login'
-						})
-					}
+							})
+							this.logout.token=1;
+						}
+					})
 				}
 		}
 	}
