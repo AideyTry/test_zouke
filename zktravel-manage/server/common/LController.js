@@ -1,23 +1,25 @@
-const BController = require('./BController');
-const User = require('../service/user/User');
+const SController = require('./SController');
+const User = requireRoot('service/user/User');
 
-module.exports = class LController extends BController {
-    /*
-    async get userInfo(){
-        if(!this._userInfo) this._userInfo = await User.get(this.session.userId);
+module.exports = class LoginController extends SController {
+    get userInfo(){
+        if(this._userInfo) return this._userInfo;
 
-        return this._userInfo;
+        const uid = this.session.uid;
+        if(uid) return User.get(uid);
+        else return null;
     }
 
     async $beforeAction(){
-        await super.$beforeAction();
-        if(this.session.userId){
-            const userInfo = await this.userInfo;
-            if(userInfo) return //pass
-        }
+        const result = await super.$beforeAction();
+        if(result===false) return false;
 
-        this.renderJSON({ code: -1, msg: 'not login' });
-        return false;
-    }
-    */
+        if(this.ctx.headers['x-requested-with']!=='XMLHttpRequest') return false;
+
+        const userInfo = await this.userInfo;
+        if(!userInfo){
+            this.renderJSON({ code: -1, msg: 'not login' });
+            return false; //pass
+        }
+    }   
 }
