@@ -26,10 +26,10 @@ const router=new VueRouter({
                 
             ]
         },
-        {
-            path: '/',
-            redirect: '/login',
-        },
+        // {
+        //     path: '/',
+        //     redirect: '/index',
+        // },
         {
             path:'/login',
             component:Login
@@ -37,28 +37,32 @@ const router=new VueRouter({
     ]
   
 })
+
+if(window.localStorage.getItem('token')){
+    store.commit('login1',window.localStorage.getItem('token'))
+}
+
 router.beforeEach((to,from,next)=>{
-        ajax.post('/api/auth/is-login').then(json=>{
-            console.log(json);
-        })
-        if(to.matched.some(r=>r.meta.requireAuth)){
-            if(store.state.token===0){
-                 
-                next();
-
-            }
-            else{
-                next({
-                    path:'/login',
-                    // query:{
-                    //     redirect:to.fullPath
-                    // }
-
-                });
-            }
-        }
-        else{
+    if(to.matched.some(r=>r.meta.requireAuth)){
+        if(store.state.token!=0){
+            next({
+                path:'/login'
+                // query:{
+                //     redirect:to.fullPath
+                // }
+            });
+         }
+         else{
             next();
-        }
-    })
+         }
+     }
+    else{
+        next();
+    }
+})
+        // })
+        
+
+       
+    // })
 export default router;

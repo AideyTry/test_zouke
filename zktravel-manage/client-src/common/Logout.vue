@@ -72,7 +72,7 @@
 
 
 <script>
-
+	import ajax from '@local/common/ajax';
 	export default{
 		// props:['Logout'],
 		date(){
@@ -85,6 +85,9 @@
 					this.$emit('cancel');
 				},
 				confirm(){
+					ajax.post("/api/auth/logout").then(json=>{
+						console.log(json);
+					})
 					this.$store.state.logout=1;
 					if(this.$store.state.logout===1){
 						this.$router.push({

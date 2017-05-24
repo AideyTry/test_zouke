@@ -6,6 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         token:null,
+        hash:null,
         logout:null,
         passName:null,
         opreat:{
@@ -369,6 +370,14 @@ export default new Vuex.Store({
         }
     },
     mutations: {
+        login(state,json){
+            state.token=json.code;
+            window.localStorage.token=json.code;
+
+        },
+        login1(state,token){
+            state.token=token;
+        },
         mk(state) {
             state.counts.name=state.counts.kms.name;
             state.counts.address=state.counts.kms.address;
