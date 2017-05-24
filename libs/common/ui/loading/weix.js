@@ -15,7 +15,7 @@ div.innerHTML=`
         <i class="weui-loading weui-icon_toast"></i>
         <p class="weui-toast__content"></p>
     </div>`;
-const textNode = div.$('.weui-toast__content');
+const textNode = div.querySelector('.weui-toast__content');
 
 export default {
     open(loadingText){

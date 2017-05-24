@@ -6,7 +6,7 @@ const StatsWritter = require('@local/webpack-plugin-stats-writter');
 const path = require('path');
 const { DEBUG } = require('../config');
 
-const src = path.resolve(__dirname, './client-src');
+const src = path.resolve(__dirname, './client-src-2');
 const dist = path.resolve(__dirname, './client');
 const utils = require('@local/webpack-lite-utils')(
     src, path.resolve(__dirname, DEBUG ? './.manifest' : './.manifest.next')
@@ -49,9 +49,18 @@ module.exports = function(name){
                 output: {
                     path: dist
                 },
+                resolve:{
+                    alias: {
+                        root: src
+                    }
+                },
                 plugins: [
                     new Md5HashPlugin(utils.getGitCommitHash()),
-                    new StatsWritter(utils.getStatsPath('main'))
+                    new StatsWritter(utils.getStatsPath('main')),
+                    new webpack.DllReferencePlugin({
+                        context: __dirname,
+                        manifest: utils.getManifestPath('vendor')
+                    })
                 ]
             });
     }
