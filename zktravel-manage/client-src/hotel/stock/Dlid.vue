@@ -60,21 +60,6 @@
 		text-align: center;
 	}
 	
-	.cricle {
-		width: 34px;
-		height: 34px;
-		border-radius: 100%;
-		position: absolute;
-		top: -17px;
-		right: -17px;
-		font-weight: 100;
-		border: 1px solid #999;
-		line-height: 34px;
-		text-align: center;
-		z-index: 130;
-		background: #FFFFFF;
-	}
-	
 	.guan {
 		border: 1px solid #ccc;
 		height: 28px;
@@ -119,9 +104,8 @@
 <template>
 	<div>
 		<div class="container-fluid">
-			<div @click="close2()" class="cricle">X</div>
 			<div class="row hotel-top">
-				<div class="title pull-left col-lg-2">酒店详情</div>
+				<div class="title pull-left col-lg-2">dl酒店详情</div>
 			</div>
 			<!--酒店状态-->
 			<div class="row hotel-state">

@@ -119,9 +119,8 @@
 <template>
 	<div>
 		<div class="container-fluid">
-			<div @click="close2()" class="cricle">X</div>
 			<div class="row hotel-top">
-				<div class="title pull-left col-lg-2">酒店详情</div>
+				<div class="title pull-left col-lg-2">mk酒店详情</div>
 			</div>
 			<!--酒店状态-->
 			<div class="row hotel-state">
@@ -221,7 +220,7 @@
 				</div>
 				<div class="form-group col-lg-6 ">
 					<label class="col-lg-2 ">酒店邮箱</label>
-					<input type="email " disabled class="col-lg-8 " v-model="phdata.email ">
+					<input type="email" disabled class="col-lg-8 " v-model="phdata.email ">
 				</div>
 			</div>
 		</div>

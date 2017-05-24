@@ -84,7 +84,7 @@
 		padding: 2px;
 	}
 	
-	.active {
+	.actives {
 		background-color: #999999;
 	}
 	
@@ -202,9 +202,9 @@
 		<!--链接-->
 		<div class="row">
 			<div class="form-group col-lg-12">
-				<label class="col-lg-1">booking链接地址</label>
+				<label class="col-lg-2">booking链接地址</label>
 				<input type="text" class="col-lg-4" disabled v-model="shdata.url_web">
-				<a class="btn col-lg-1 btn-go" :href="'https://'+ shdata.url_web">前往</a>
+				<a class="btn col-lg-1 btn-go" :href="'https://'+ shdata.url_web" target="_blank">前往</a>
 				<label class="col-lg-1">B评分</label>
 				<input type="text" disabled class="col-lg-2" placeholder="评分">
 			</div>
@@ -268,26 +268,26 @@
 		</div>
 		<div class="row">
 			<div class="col-lg-6">
-				<label class="col-lg-2">mapping信息</label>
+				<label class="col-lg-3">mapping信息</label>
 				<table disabled class="table-bordered table col-lg-offset-1 tabs">
-					<tr class="active">
+					<tr class="actives">
 						<th>vt_id</th>
 						<th>mk_id</th>
 						<th>dl_id</th>
 						<th>booking</th>
 					</tr>
-					<tr>
-						<td><a href="www.baidu.com" target="_blank">2347</a></td>
-						<td><a href="#">33788</a></td>
-						<td><a href="#">882131</a></td>
+					<tr class="active">
+						<td><a @click="vtlink()">2347</a></td>
+						<td><a @click="mklink()">33788</a></td>
+						<td><a @click="dllink()">882131</a></td>
 						<td>
-							<a href="#">链接XXX</a>
+							<a href="#" target="_blank">链接XXX</a>
 						</td>
 					</tr>
 				</table>
 			</div>
 		</div>
-		<div class="row foot"></div>
+	<div class="row foot"></div>
 	</div>
 </template>
 
@@ -320,6 +320,15 @@
 			},
 			close() {
 				this.$emit('close');
+			},
+			vtlink(){
+				this.$router.push({path:'/xid/vtid'});
+			},
+			mklink(){
+				this.$router.push({path:'/xid/mkid'});
+			},
+			dllink(){
+				this.$router.push({path:'/xid/dlid'});
 			}
 		},
 	}
