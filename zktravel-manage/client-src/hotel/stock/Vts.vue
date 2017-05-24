@@ -48,7 +48,7 @@
 					}
 					return 0;
 				});
-				return this.listData.slice((this.pageNum - 1) * this.pageSize, this.pageSize * this.pageNum);
+				return this.listData.slice((this.pageNum-1)*this.pageSize,this.pageSize*this.pageNum);
 			}
 		},
 		methods: {

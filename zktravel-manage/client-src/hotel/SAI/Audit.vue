@@ -84,9 +84,9 @@
         text-align: center;
     }
     
-    .active {
-        background-color: #eee;
-    }
+    .actives {
+		background-color: #999999;
+	}
     
     .cricle {
         width: 34px;
@@ -103,6 +103,7 @@
         z-index: 130;
         background: #FFFFFF;
     }
+    .foot{height:100px; width:100%;}
 </style>
 <template>
     <div>
@@ -243,24 +244,25 @@
                 <div class="hotel-state col-lg-6">
                     <label class="col-lg-2">信息</label>
                     <table disabled class="table-bordered table col-lg-offset-1">
-                        <tr class="active">
+                        <tr class="actives">
                             <th>vt_id</th>
                             <th>mk_id</th>
                             <th>dl_id</th>
                             <th>booking</th>
                         </tr>
-                        <tr>
-                            <td>2347</td>
-                            <td>33788</td>
-                            <td>882131</td>
-                            <td>
-                                <a href="#">链接XXX</a>
-                            </td>
-                        </tr>
+                        <tr class="active">
+						<td><a v-for="vid in vidss" @click="vtlink(vid)" target="_blank" href="xid/vtid">{{vid}}</a></td>
+						<td><a v-for="mid in midss" @click="mklink(mid)" target="_blank" href="xid/mkid">{{mids}}</a></td>
+						<td><a v-for="did in didss" @click="dllink(did)" target="_blank" href="xid/dlid">{{dids}}</a></td>
+						<td>
+							<!--<a :href="'https://'+ shdata.url_web" target="_blank">{{shdata.url_web}}</a>-->
+						</td>
+					</tr>
                     </table>
                 </div>
             </div>
         </div>
+        <div class="foot"></div>
     </div>
 
 </template>
@@ -272,15 +274,33 @@
             return {
                 isTrue: false,
                 flag: true,
+                Adata:{},
+                Aphoto:[],
+                feat:{},
+                vidss:[], // 表格中vt_ids
+				midss:[], // 表格中mk_ids
+				didss:[] // 表格中dl_ids
             }
         },
+        created() {
+//			ajax.post('/api/zk-hotel/detail', {
+//				id: this.ids
+//			}).then(json => {
+//				if(json.code === 0) {
+//					this.Adata = json.detail;
+//					this.Aphoto = this.shdata.photos;
+//					this.feat = this.shdata.booking_info.feature;
+//					this.vidss = this.shdata.sp_id.vt_ids;
+//					this.midss = this.shdata.sp_id.mk_ids
+//					this.didss = this.shdata.sp_id.dl_ids
+//				}
+//			})
+		},
         methods: {
             // 修改
             update() {
-//              console.log(this.updates.isTrue.aisTrue);
                 this.updates.isTrue.aisTrue = false;
                 this.$store.commit('audit');
-//              console.log(this.updates.isTrue.aisTrue);
                 this.flag = false;
                 console.log(this.flag);
             },
@@ -291,7 +311,17 @@
             // 关闭组件
             close(){
                 this.$emit('close');
-            }
+            },
+            vtlink(para){
+//				this.$router.push({path:'/xid/vtid'});
+				this.$store.commit("getId",para)
+			},
+			mklink(para){
+				this.$store.commit("getMk",para)
+			},
+			dllink(){
+				this.$store.commit("getDl",para)
+			}
         }
     }
 </script>
