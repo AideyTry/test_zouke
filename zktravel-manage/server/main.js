@@ -1,5 +1,5 @@
 
-const { DEBUG, SESS_KEY } = require('./env');
+const { DEBUG, SESS_KEY, PORT } = require('./env');
 if(!DEBUG){
     process.env.NODE_ENV = 'production';
 }
@@ -43,4 +43,4 @@ app.use(async (ctx, next)=>{
     console.log(`request ${ctx.originalUrl} end`);
 });
 
-app.listen(8081);
+app.listen(PORT);
