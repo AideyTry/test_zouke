@@ -20,8 +20,9 @@ function setValue(obj,keyChain,value){
 
 function genStateGetter(computedKey,namespaceKey){
     return function(){
-        if(!this.$parent) return this.$store.state;
         const namespace = this.$options[namespaceKey];
+        if(namespace) return getValue(this)
+        if(!this.$parent) return this.$store.state;
         if(namespace) return getValue(this.$parent[computedKey],namespace);
         else return this.$parent[computedKey]
     }
@@ -30,7 +31,12 @@ function genStateGetter(computedKey,namespaceKey){
 Vue.mixin({
     computed:{
         //$rootState:genStateGetter('$rootState','rootState'),
-        $state:genStateGetter('$state','state')
+        $state(){
+            const namespace = this.$options.state;
+            if(namespace) return getValue(this.$store.state, namespace);
+
+            return this.$parent ? this.$parent.$state : this.$store.state;
+        }
     },
     methods:{
         $commit(...arg){
