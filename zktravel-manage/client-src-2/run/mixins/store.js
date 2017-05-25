@@ -28,16 +28,8 @@ function genStateGetter(computedKey,namespaceKey){
 }
 
 Vue.mixin({
-    beforeCreate(){
-        const {stateName} = this.$options;
-        if(stateName){
-            Object.defineProperty(this,stateName,{
-                get(){return this.$state}
-            });
-        }
-    },
     computed:{
-        $rootState:genStateGetter('$rootState','rootState'),
+        //$rootState:genStateGetter('$rootState','rootState'),
         $state:genStateGetter('$state','state')
     },
     methods:{

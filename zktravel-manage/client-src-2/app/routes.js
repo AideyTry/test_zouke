@@ -1,4 +1,3 @@
-import './store';
 import LoginPage from './Login.Page';
 import dashboardRoutes from './dashboard/routes';
 import fullpageRoutes from './fullpage/routes';
