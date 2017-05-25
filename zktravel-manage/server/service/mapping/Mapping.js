@@ -148,12 +148,9 @@ module.exports = class Mapping {
     }
 
     async invalid(sp_id){
-
+        
     }
 
-    async map(sp_id, zk_id){
-
-    }
     //匹配
     async $map(spHotel, zk_id, sp_area = abstractError()){
         if(spHotel.map_state&&spHotel.map_state.remap){
