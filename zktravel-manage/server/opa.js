@@ -8,13 +8,13 @@ function readJSON(p){
 }
 
 module.exports = ctx => {
-    const vendorStats = readJSON(path.resolve(__dirname, '../../.manifest/vendor.stats.json'))
-    const mainStats = readJSON(path.resolve(__dirname, '../../.manifest/main.stats.json'));
+    const vendorStats = readJSON(path.resolve(__dirname, '../.manifest/vendor.stats.json'))
+    const mainStats = readJSON(path.resolve(__dirname, '../.manifest/main.stats.json'));
 
     const vendorPath = vendorStats.publicPath + vendorStats.assetsByChunkName.vendor;
     const mainPath = mainStats.publicPath + mainStats.assetsByChunkName.main;
 
-    ctx.body = pug.compileFile(path.resolve(__dirname, '../app.pug'),{
+    ctx.body = pug.compileFile(path.resolve(__dirname, './app.pug'),{
         cache: true,
         doctype: 'html'
     })({
