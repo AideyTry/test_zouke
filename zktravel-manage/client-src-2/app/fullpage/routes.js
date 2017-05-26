@@ -22,6 +22,6 @@ export default [{
 			path: 'dlid',
 			component: Dlid,
 			name:'fullpage-dlids'
-		}
+		},
 	]
 }]

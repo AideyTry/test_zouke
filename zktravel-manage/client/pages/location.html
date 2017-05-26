@@ -1,0 +1,103 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>map</title>
+        <style>#map{
+            position:fixed!important;
+            width:100%;
+            height:100%;
+            left:0;
+            top:0;
+        }</style>
+    </head>
+    <body>
+        <div id="map"></div>
+        <script>
+            var points=JSON.parse(decodeURIComponent(location.search.slice(1)));  /*[
+                [{lat:48.8605003,lng:2.3464999},'1'],
+				[{lat:48.8606111,lng:2.337644},'2']
+            ]*/;
+            var mapStyle = [    //不显示路名及餐饮等business信息
+                {"featureType": "landscape.man_made", "elementType": "geometry", "stylers": [{"color": "#f7f1df"}]},    //人造 - 放大地图上主色调
+                {"featureType": "landscape.natural", "elementType": "geometry", "stylers": [{"color": "#f3f8ec"}]},     //自然 - 缩小地图上主色调
+                {"featureType": "landscape.natural.terrain", "elementType": "geometry", "stylers": [{"visibility": "off"}]},    //地貌
+                {"featureType": "poi", "elementType": "labels", "stylers": [{"visibility": "on"}]},                     //POI点
+                {"featureType": "poi.business", "elementType": "all", "stylers": [{"visibility": "off"}]},              //含餐饮、商店等
+                {"featureType": "poi.medical", "elementType": "geometry", "stylers": [{"color": "#fbd3da"}]},           //医疗相关
+                {"featureType": "poi.park", "elementType": "geometry", "stylers": [{"color": "#bde6ab"}]},              //公园
+                {"featureType": "road", "elementType": "geometry.stroke", "stylers": [{"visibility": "off"}]},          //高架路（主干道）
+                {"featureType": "road", "elementType": "labels", "stylers": [{"visibility": "off"}]},                   //路标（名）
+                {"featureType": "road.highway", "elementType": "geometry.fill", "stylers": [{"color": "#ffe15f"}]},     //高速公路
+                {"featureType": "road.highway", "elementType": "geometry.stroke", "stylers": [{"color": "#efd151"}]},
+                {"featureType": "road.arterial", "elementType": "geometry.fill", "stylers": [{"color": "#ffffff"}]},    //干路
+                {"featureType": "road.local", "elementType": "geometry.fill", "stylers": [{"color": "black"}]},         //本地道路
+                {
+                    "featureType": "transit.station.airport",
+                    "elementType": "geometry.fill",
+                    "stylers": [{"color": "#cfb2db"}]
+                },  //机场
+                {"featureType": "water", "elementType": "geometry", "stylers": [{"color": "#a2daf2"}]}                  //河道、湖泊
+            ]
+            
+            function mapReady(){
+                var map = new google.maps.Map(document.getElementById('map'),{
+                    zoom : 7,
+                    mapTypeId : google.maps.MapTypeId.ROADMAP,
+                    //mapTypeControl : false,
+                    //streetViewControl : false,
+					scaleControl:true,
+                    style : mapStyle
+                })
+                
+                var bounds = new google.maps.LatLngBounds();
+                points.forEach(function(point){
+                    addMarker(map, point, bounds);
+                });
+                map.fitBounds(bounds);
+
+                //hack
+                function callback(rawFn){
+                    return function(arg){
+                        if(Array.isArray(arg)&&arg.length===3){
+                            if(typeof arg[0] === 'number'&&typeof arg[1]==='number'&&typeof arg[2]==='number'){
+                                return;
+                            }
+                        }
+                        rawFn.apply(this, arguments);
+                    }
+                };
+                var t = setInterval(function(){
+                    if(window._xdc_){
+                        var keys = Object.keys(window._xdc_);
+                        keys.forEach(function(key){
+                            if(!window._xdc_[key]._r){
+                                window._xdc_[key]=callback(window._xdc_[key]);
+                                window._xdc_[key]._r = true;
+                            }
+                        });
+                    }
+                }, 10);
+
+                setTimeout(function(){
+                    clearInterval(t);
+                }, 2000);
+            }
+            function addMarker(map,point,bounds){
+                bounds.extend(point[0]);
+                var marker = new google.maps.Marker({
+                    position:point[0],
+                    map,
+                    title:point[1]
+                });
+                var infoWindow = new google.maps.InfoWindow({
+                    content:point[1]
+                });
+                marker.addListener('click',function(){
+                    infoWindow.open(map,marker);
+                })
+                infoWindow.open(map,marker);
+            }
+        </script>
+        <script src="//ditu.google.cn/maps/api/js?v=3&sensor=false&libraries=geometry&language=zh_CN&callback=mapReady"></script>
+    </body>
+</html>

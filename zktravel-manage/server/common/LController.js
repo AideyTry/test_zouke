@@ -11,11 +11,12 @@ module.exports = class LoginController extends SController {
     }
 
     async $beforeAction(){
-        console.log(this.sessionId);
         const result = await super.$beforeAction();
         if(result===false) return false;
 
         if(this.ctx.headers['x-requested-with']!=='XMLHttpRequest') return false;
+
+        console.log(this.request.body);
 
         const userInfo = await this.userInfo;
         if(!userInfo){

@@ -3,6 +3,7 @@ const dbclient = requireRoot('db');
 const MappingLevel = require('./MappingLevel');
 const { zk_collection_name, sp_collection_name } = require('../config');
 const Pretreatment = require('./Pretreatment');
+const mongodb = require('mongodb');
 
 function abstractError(){
     throw new Error('this method need to rewrite by child class')
@@ -147,8 +148,29 @@ module.exports = class Mapping {
         return result;
     }
 
-    async invalid(sp_id){
-        
+    async invalid(_spId){
+        await this._resolveHotel(new mongodb.ObjectId(_spId), {
+            timestamp: new Date().valueOf(),
+            invalid: true
+        })
+    }
+
+    async map(_spId, zk_id){
+        _spId = new mongodb.ObjectId(_spId);
+        const spCollection = await this.$getSpHotelCollection();
+        const spHotel = await spCollection.findOne({ _id: _spId})
+
+        if(!spHotel) return false;
+
+        await this.$map(spHotel, zk_id);
+
+        await this._resolveHotel(_spId, {
+            timestamp: new Date().valueOf(),
+            strict: zk_id,
+            key: spHotel.map_state.fuzzy[zk_id]
+        });
+
+        return true;
     }
 
     //匹配
@@ -172,8 +194,22 @@ module.exports = class Mapping {
     }
 
 
-    async insert(sp_id, timestamp){
+    async insert(_spId, timestamp){
+        _spId = new mongodb.ObjectId(_spId);
+        const spCollection = await this.$getSpHotelCollection();
+        const spHotel = await spCollection.findOne({ _id: _spId });
+        if(!spHotel) return 1; //hotel not found
+        if(!spHotel.map_state||!spHotel.map_state.timestamp) return 2; //no map info;
 
+        if(timestamp!==0&&spHotel.map_state.timestamp!==timestamp) return 3; //timestamp changed
+
+        const _id = await this.$insert(spHotel, 'clientInsert');
+        await this._resolveHotel(_spId, {
+            timestamp: new Date().valueOf(),
+            strict: _id,
+            key: 0b1111111
+        });
+        return 0;
     }
     //入库
     async $insert(spHotel, logPre='autoMap'){
@@ -186,7 +222,8 @@ module.exports = class Mapping {
         doc._id = await this.$genId();
 
         const zkCollection = await this.$getZkHotelCollection();
-        await zkCollection.insertOne(doc);
+        const result = await zkCollection.insertOne(doc);
+        console.log('insert result', result);
 
         const spCollection = await this.$getSpHotelCollection();
         const remapResult = await this._searchSimilarHotel(doc, spCollection, {
