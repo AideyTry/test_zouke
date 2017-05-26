@@ -271,9 +271,9 @@
 						<th>booking</th>
 					</tr>
 					<tr class="active">
-						<td><a v-for="vid in vids" @click="vtlink(vid)" target="_blank" href="xid/vtid">{{vid}}</a></td>
-						<td><a v-for="mid in mids" @click="mklink(mid)" target="_blank" href="xid/mkid">{{mids}}</a></td>
-						<td><a v-for="did in dids" @click="dllink(did)" target="_blank" href="xid/dlid">{{dids}}</a></td>
+						<td><a v-for="vid in vids" @click="vtlink(vid)" target="_blank" href="fullpage/vtid">{{vid}}</a></td>
+						<td><a v-for="mid in mids" @click="mklink(mid)" target="_blank" href="fullpage/mkid">{{mids}}</a></td>
+						<td><a v-for="did in dids" @click="dllink(did)" target="_blank" href="fullpage/dlid">{{dids}}</a></td>
 						<td>
 							<a :href="'https://'+ shdata.url_web" target="_blank">{{shdata.url_web}}</a>
 						</td>
