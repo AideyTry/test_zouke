@@ -9,6 +9,6 @@ module.exports = class SessionController extends Controller{
         this.ctx.session = s;
     }
     get sessionId(){
-        return this.cookies.get(SESS_KEY);
+        return this.ctx.sessionId;
     }
 }

@@ -1,25 +1,23 @@
+const compose = require('koa-compose');
+const mvc = require('./mvc');
+const bodyParser = require('koa-bodyparser');
+const session = require('./session');
+const SessionStore = require('./SessionStore');
 
-const Router = require('./Router');
-const ActionTrigger = require('./ActionTrigger');
-const NotFoundError = require('./NotFoundError');
+module.exports = function({
+    routerConfig,
+    sessionConfig,
+    bodyConfig
+} = {}, app){
 
-module.exports = function(routerConfig){
-
-    const router = new Router(routerConfig);
-
-    return async (ctx, next) => {
-        const route = router.match(ctx.path);
-
-        const actionTrigger = new ActionTrigger({
-            ctx, route, router
-        });
-        try{
-            await actionTrigger.trigger();
-        }catch(e){
-            if(e instanceof NotFoundError) ctx.throw(404)
-            //nodejs fs can't read file
-            else if(e.code==='ENOENT') ctx.throw(500, 'koa-mvc controller.render can\'t found pug view file!')
-            else throw e;
-        }
+    if(sessionConfig&&sessionConfig.dir){
+        sessionConfig.store = new SessionStore(sessionConfig.dir);
+        delete sessionConfig.dir;
     }
+
+    return compose([
+        session(sessionConfig, app),
+        bodyParser(bodyConfig),
+        mvc(routerConfig)
+    ])
 }

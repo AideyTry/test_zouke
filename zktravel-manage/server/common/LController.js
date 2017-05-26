@@ -11,6 +11,7 @@ module.exports = class LoginController extends SController {
     }
 
     async $beforeAction(){
+        console.log(this.sessionId);
         const result = await super.$beforeAction();
         if(result===false) return false;
 
