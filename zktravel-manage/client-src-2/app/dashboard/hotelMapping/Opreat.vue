@@ -85,9 +85,6 @@
 				if(this.opreat==='匹配'){
 					store.commit('opreatMatch',this.items);
 					store.dispatch('actionOmath');
-					if(store.state.opreat.isTrue===true){
-						store.dispatch('actionVt');
-					}
 				}
 				else if(this.opreat==='入库'){
 					store.commit('opreatPut',this.items);

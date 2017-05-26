@@ -152,6 +152,7 @@
             },
             SAI:function(){
                 // this.$router.push({name:'dashboard-hotel-mapping-dl'});
+                this.$router.push({path:'/dashboard/zkhotel'});
             }
         }
     }

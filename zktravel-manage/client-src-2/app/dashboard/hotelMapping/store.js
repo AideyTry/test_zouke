@@ -12,7 +12,6 @@ export default new Vuex.Store({
         logout:null,
         passName:null,
         opreat:{
-            isTrue:false,
             zkId:null,
             spId:null,
             sign:null
@@ -363,20 +362,29 @@ export default new Vuex.Store({
             console.log(spId,zkId);
             return ajax.post('/api/vt-mapping/map',{spId:spId,zkId:zkId}).then(json=>{
                 console.log(json);
+                if(json.code===0){
+                    context.dispatch('actionVt');
+                }
 
             })
         },
         actionOput(context){
-            console.log(context.state.opreat.sign,context.state.opreat.zkId,context.state.opreat.spId);
-            // return ajax.post('',{sign:context.state.opreate.sign,spId:context.state.opreate.spId,zkId:context.state.opreate.zkId}).then(json=>{
-            //     console.log(json);
-            // })
+            let sign=context.state.opreat.sign;
+            let spId=context.state.opreat.spId;
+            let zkId=context.state.opreat.zkId;
+            console.log(sign,spId,zkId);
+            return ajax.post('',{sign:sign,spId:spId,zkId:zkId}).then(json=>{
+                console.log(json);
+            })
         },
         actionOu(context){
-            console.log(context.state.opreat.spId);
-            // return ajax.post('',{spId:context.state.opreate.spId}).then(json=>{
-            //     console.log(json);
-            // })
+            let spId=context.state.opreat.spId;
+            console.log(spId);
+            return ajax.post('',{spId:spId}).then(json=>{
+                if(json.code===0){
+                    context.dispatch('actionVt');
+                }
+            })
         }
     },
     mutations: {
@@ -417,7 +425,6 @@ export default new Vuex.Store({
         opreatMatch(state,item){
             state.opreat.zkId=item.zkId;
             state.opreat.spId=item.spId;
-            state.opreat.isTrue=true;
         },
         opreatPut(state,item){
             state.opreat.sign=item.sign;
