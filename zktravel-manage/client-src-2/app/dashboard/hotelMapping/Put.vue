@@ -75,7 +75,7 @@
 			}
 		},
 		computed:{
-
+			
 		},
 		methods:{
 			refrech(){

@@ -99,18 +99,30 @@ export default new Vuex.Store({
             return  ajax.post('/api/vt-mapping/query').then(json=>{
                 if(json.code===0){
                     context.state.listVt=json.list;
-                    console.log(JSON.parse(JSON.stringify(context.state.listVt)))
                 }  
             })
         },
         actionMk(context){
-
+             return  ajax.post('/api/mk-mapping/query').then(json=>{
+                if(json.code===0){
+                    context.state.listVt=json.list;
+                }  
+            })
         },
         actionDl(context){
-
+            return  ajax.post('/api/dl-mapping/query').then(json=>{
+                if(json.code===0){
+                    context.state.listVt=json.list;
+                }  
+            })
         },
         actionBk(context){
-
+         // return  ajax.post('/api/bk-mapping/query').then(json=>{
+         //        if(json.code===0){
+         //            context.state.listVt=json.list;
+         //            console.log(JSON.parse(JSON.stringify(context.state.listVt)))
+         //        }  
+         //    })
         },
 
        
