@@ -12,6 +12,7 @@ export default new Vuex.Store({
         logout:null,
         passName:null,
         opreat:{
+            isTrue:false,
             zkId:null,
             spId:null,
             sign:null
@@ -357,9 +358,13 @@ export default new Vuex.Store({
         },
         actionOmath(context){
             console.log(context.state.opreat.zkId,context.state.opreat.spId);
-            // return ajax.post('',{spId:context.state.opreate.spId,zkId:context.state.opreate.zkId}).then(json=>{
-            //     console.log(json);
-            // })
+            let spId=context.state.opreat.spId;
+            let zkId=context.state.opreat.zkId;
+            console.log(spId,zkId);
+            return ajax.post('/api/vt-mapping/map',{spId:spId,zkId:zkId}).then(json=>{
+                console.log(json);
+
+            })
         },
         actionOput(context){
             console.log(context.state.opreat.sign,context.state.opreat.zkId,context.state.opreat.spId);
@@ -402,16 +407,25 @@ export default new Vuex.Store({
             state.counts.address=state.counts.vts.address;
             state.counts.phone=state.counts.vts.phone;
             /*修改的*/
-   //          state.counts.isTrue.mkisTrue=false;
-			// state.counts.isTrue.dlisTrue=false;
-			// state.counts.isTrue.vtisTrue=true;
-			// state.counts.isTrue.bkisTrue=false;
-            console.log("vt");
         },
         bk(state) {
             state.counts.name=state.counts.bks.name;
             state.counts.address=state.counts.bks.address;
             state.counts.phone=state.counts.bks.phone;
+        },
+        //操作数据匹配，入库，置位无效
+        opreatMatch(state,item){
+            state.opreat.zkId=item.zkId;
+            state.opreat.spId=item.spId;
+            state.opreat.isTrue=true;
+        },
+        opreatPut(state,item){
+            state.opreat.sign=item.sign;
+            state.opreat.zkId=item.zkId;
+            state.opreat.spId=item.spId;
+        },
+        opreatUnnecessary(state,item){
+            state.opreat.spId=item.spId;
         },
         exit(state){
             state.counts.isTrue.eisTrue=true;

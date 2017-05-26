@@ -84,7 +84,8 @@
 					let url='';
 					switch(page){
 						case 'mk':						
-							this.$store.commit('mk');
+							store.commit('mk');
+							store.dispatch('actionVt');
 							url='/dashboard/hotel-mapping/mk';		
 							this.isTrue.one=true;
 							this.isTrue.two=false;
@@ -93,12 +94,12 @@
 							break;
 						case 'dl':
 							url='/dashboard/hotel-mapping/dl';
-							this.$store.commit('dl');
+							store.commit('dl');
+							store.dispatch('actionVt');
 							this.isTrue.one=false;
 							this.isTrue.two=true;
 							this.isTrue.three=false;
 							this.isTrue.four=false;
-							this.$store.commit('dl');
 							break;
 						case 'vt':
 							url='/dashboard/hotel-mapping/vt';
@@ -112,7 +113,8 @@
 							break;
 						case 'bk':
 							url='/dashboard/hotel-mapping/bk';
-							this.$store.commit('bk');
+							store.commit('bk');
+							store.dispatch('actionVt');
 							this.isTrue.one=false;
 							this.isTrue.two=false;
 							this.isTrue.three=false;

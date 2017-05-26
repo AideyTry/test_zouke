@@ -82,21 +82,19 @@
 				this.$emit("cancel");
 			},
 			confirm(){
-				
 				if(this.opreat==='匹配'){
-					store.state.opreat.zkId=this.items.zkId;
-					store.state.opreat.spId=this.items.spId;
+					store.commit('opreatMatch',this.items);
 					store.dispatch('actionOmath');
+					if(store.state.opreat.isTrue===true){
+						store.dispatch('actionVt');
+					}
 				}
 				else if(this.opreat==='入库'){
-					store.state.opreat.sign=this.items.sign;
-					store.state.opreat.zkId=this.items.zkId;
-					store.state.opreat.spId=this.items.spId;
+					store.commit('opreatPut',this.items);
 					store.dispatch('actionOput');
 				}
 				else if(this.opreat==='置为无效'){
-					store.state.opreat.spId=this.items.spId;
-					// console.log(this.$store.state.opreat.spId);
+					store.commit('opreatUnnecessary',this.items);
 					store.dispatch('actionOu');
 				}
 				this.$emit("confirm");

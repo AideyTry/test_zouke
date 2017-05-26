@@ -180,6 +180,9 @@
 				} else if(this.uisTrue === true) {
 					return this.opreatList.unnecessary;
 				}
+			},
+			store(){
+				return store;
 			}
 		},
 		methods: {
@@ -208,7 +211,11 @@
 				this.pisTrue = false;
 				this.uisTrue = false;
 				this.item=item;
+				
 				console.log(this.list);
+
+				//匹配去请求数据
+				// store.dispatch('actionOmath');
 			},
 			//入库
 			put(item) {
