@@ -1,7 +1,6 @@
 <template>
 	<div>
 		<Stocktable :mk="counts" :list="list" :pages="pages" @prev="mkprev" @next="mknext"></Stocktable>
-		<!-- <button @click="increments">+</button> -->
 	</div>
 </template>
 
@@ -10,8 +9,9 @@
 </style>
 
 <script>
-	import Stock_table from './Stock-table';
+	import Stock_table from './HotelMappingTable.Page.vue';
 	import ajax from '@local/common/ajax';
+	import store from './store.js'
 	export default {
 		data() {
 			return {
@@ -29,16 +29,17 @@
 				return {
 					pageNum: this.pageNum,
 					pageSize: this.pageSize,
-					total: Math.ceil((this.$store.state.listVt).length / this.pageSize),
-					pages: Math.ceil((this.$store.state.listVt).length / this.pageSize) / this.pageNum
+					total: Math.ceil((store.state.listVt).length / this.pageSize),
+					pages: Math.ceil((store.state.listVt).length / this.pageSize) / this.pageNum
 				}
 			},
 			counts() {
-				return this.$store.state.counts;
+				return store.state.counts;
 			},
 			list() {
 				//分页
-				this.items=this.$store.state.listVt;
+				this.items=store.state.listVt;
+				console.log(this.items);
 				this.listData = this.items.sort(function(a, b) {
 					if(a.level> b.level) {
 						return 1;
@@ -53,17 +54,16 @@
 		},
 		methods: {
 			mkprev() {
-				if(this.$store.state.counts.isTrue.vtisTrue) {
-					if(this.$store.state.flag.flag) {
-						this.pageNum = this.$store.state.flag.page;
+					if(store.state.flag.flag) {
+						this.pageNum = store.state.flag.page;
 						return false;
 					}
 					this.pageNum--;
-				}
+				
 			},
 			mknext() {
-				if(this.$store.state.flag.flag) {
-					this.pageNum = this.$store.state.flag.page;
+				if(store.state.flag.flag) {
+					this.pageNum = store.state.flag.page;
 					return false;
 				}
 				this.pageNum++;

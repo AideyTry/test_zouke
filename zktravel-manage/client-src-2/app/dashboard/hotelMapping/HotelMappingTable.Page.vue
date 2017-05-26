@@ -130,6 +130,7 @@
 </template>
 
 <script>
+	import store from './store'
 	import Photel from './Photel';
 	import Shotel from './Shotel';
 	import Opreat from './Opreat'
@@ -143,16 +144,16 @@
 		data() {
 			return {
 				// pageNum:1,
-<<<<<<< HEAD
+
 				item:null,
 				sid:null,
 				pid:null,
 				items:null,
-=======
+
 				sid: null,
 				pid: null,
 				items: null,
->>>>>>> a21a477a9f284fa639cd1683d4329ba4cff1cfbb
+
 				isTrue: false,
 				misTrue: false,
 				pisTrue: false,
@@ -232,7 +233,7 @@
 				this.isTrue = false;
 			},
 			prev() {
-				this.$store.state.flag.flag = false;
+				store.state.flag.flag = false;
 				if(this.pages.pageNum > 1) {
 					this.pages.pageNum--;
 					this.$emit('prev');
@@ -247,7 +248,7 @@
 
 			},
 			next() {
-				this.$store.state.flag.flag = false;
+				store.state.flag.flag = false;
 				if(this.pages.pageNum < this.pages.total) {
 					this.pages.pageNum++;
 					this.$emit('next');
@@ -261,16 +262,26 @@
 			skip() {
 				let input = document.getElementById("input");
 				if(this.pages.pageNum > (input.value - 0)) {
-					this.$store.state.flag.page = input.value - 0;
-					this.$store.state.flag.flag = true;
+					store.state.flag.page = input.value - 0;
+					store.state.flag.flag = true;
 					this.$emit('prev');
 				} else if(this.pages.pageNum = (input.value - 0)) {
 
-					this.$store.state.flag.page = input.value - 0;
-					this.$store.state.flag.flag = true;
+					store.state.flag.page = input.value - 0;
+					store.state.flag.flag = true;
 					this.$emit('next');
 				}
 
+			},
+			beforeRouteLeave(to, from, next) {
+				if(from.name == 'mk') {
+					//				this._scrollTop = document.body.scrollTop;
+					this.page = 0;
+					this.title.nick_name;
+					this.getList();
+					console.log(this.page);
+				}
+				next();
 			}
 		}
 	}

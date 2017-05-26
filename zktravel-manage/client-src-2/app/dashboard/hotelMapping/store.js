@@ -4,13 +4,13 @@ import ajax from '@local/common/ajax';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
+
     state: {
         token:null,
         userInfo:null,
         hash:null,
         logout:null,
         passName:null,
-
         opreat:{
             zkId:null,
             spId:null,
@@ -20,12 +20,11 @@ export default new Vuex.Store({
         listMk:[],
         listDl:[],
         listBk:[],
-
         newList:[],
         idData:{
-        		vti:null,
-        		mki:null,
-        		dli:null
+    		vti:null,
+    		mki:null,
+    		dli:null
         },
 
         list:[
@@ -297,10 +296,6 @@ export default new Vuex.Store({
                 isTrue:{
                     eisTrue:false,
                     aisTrue:false,
-                    mkisTrue:false,
-                    dlisTrue:false,
-                    vtisTrue:false,
-                    bkisTrue:false
                 },
                 
                 name:"miki名",
@@ -406,6 +401,12 @@ export default new Vuex.Store({
             state.counts.name=state.counts.vts.name;
             state.counts.address=state.counts.vts.address;
             state.counts.phone=state.counts.vts.phone;
+            /*修改的*/
+   //          state.counts.isTrue.mkisTrue=false;
+			// state.counts.isTrue.dlisTrue=false;
+			// state.counts.isTrue.vtisTrue=true;
+			// state.counts.isTrue.bkisTrue=false;
+            console.log("vt");
         },
         bk(state) {
             state.counts.name=state.counts.bks.name;

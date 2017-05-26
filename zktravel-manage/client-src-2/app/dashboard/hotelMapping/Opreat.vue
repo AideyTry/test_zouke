@@ -69,7 +69,7 @@
 </template>
 
 <script>
-
+	import store from './store.js';
 	export default{
 		props:['opreat','items'],
 		data(){
@@ -84,20 +84,20 @@
 			confirm(){
 				
 				if(this.opreat==='匹配'){
-					this.$store.state.opreat.zkId=this.items.zkId;
-					this.$store.state.opreat.spId=this.items.spId;
-					this.$store.dispatch('actionOmath');
+					store.state.opreat.zkId=this.items.zkId;
+					store.state.opreat.spId=this.items.spId;
+					store.dispatch('actionOmath');
 				}
 				else if(this.opreat==='入库'){
-					this.$store.state.opreat.sign=this.items.sign;
-					this.$store.state.opreat.zkId=this.items.zkId;
-					this.$store.state.opreat.spId=this.items.spId;
-					this.$store.dispatch('actionOput');
+					store.state.opreat.sign=this.items.sign;
+					store.state.opreat.zkId=this.items.zkId;
+					store.state.opreat.spId=this.items.spId;
+					store.dispatch('actionOput');
 				}
 				else if(this.opreat==='置为无效'){
-					this.$store.state.opreat.spId=this.items.spId;
+					store.state.opreat.spId=this.items.spId;
 					// console.log(this.$store.state.opreat.spId);
-					this.$store.dispatch('actionOu');
+					store.dispatch('actionOu');
 				}
 				this.$emit("confirm");
 			}

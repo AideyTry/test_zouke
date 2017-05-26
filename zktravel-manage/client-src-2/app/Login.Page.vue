@@ -1,9 +1,38 @@
-<template lang="pug">
-    .login
-        img(":src"='qrCode' @load="checkLoginPoll")
-        .refresh(v-if="invalid" @pointerup.prevent="refreshQRCode") 刷新二维码
-</template>
+<style lang="scss" scoped>
+     .loginIn{
+        transform:translate(-50%,-50%);
+        position:absolute;
+        top:50%;
+        left:50%;
+        .color{
+          color:#0f0;
+        }
+        // img{
+        //   display:block;
+        // }
+        h3{
+          position:absolute;
+          right:5%;
+          color: #0f0;
+        }
+      }
 
+</style>
+<!-- 原基础上修改的内容start -->
+<template lang="pug">
+    <div class="loginIn">
+        .login
+            img(":src"='qrCode' @load="checkLoginPoll")
+            .refresh(v-if="invalid" @pointerup.prevent="refreshQRCode") 刷新二维码
+        <h3>请扫码登录</h3>
+    </div>
+</template>
+ <!-- 原基础上修改的内容end -->
+<!--  <template>
+     <div>
+         <img src="">
+     </div>
+ </template> -->
 <script>
     import store from 'root/store';
 

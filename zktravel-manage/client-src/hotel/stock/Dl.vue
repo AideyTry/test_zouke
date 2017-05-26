@@ -18,6 +18,8 @@
 			return{
 				pageNum:1,
 				pageSize:10,
+				items:[],
+				listData:[]
 			}
 		},
 		components:{
@@ -37,25 +39,18 @@
 				return this.$store.state.counts;
 			},
 			list(){
-				let list=this.$store.state.list;
-				let listData;
-				// this.$ajax.post('/api/vt-mapping/query',{}).then(json=>{
-				// 	console.log(json);
-				// 	console.log(1);
-				// }).then(error=>{
-				// 	console.log("error");
-				// })
-
-				listData=list.sort(function(a,b){
-					if(a.id>b.id){
+				//分页
+				this.items=this.$store.state.list;
+				this.listData = this.items.sort(function(a, b) {
+					if(a.level> b.level) {
 						return 1;
 					}
-					if(a.id<b.id){
+					if(a.level < b.level) {
 						return -1;
 					}
-						return 0;
+					return 0;
 				});
-				return listData.slice((this.pageNum-1)*this.pageSize,this.pageSize*this.pageNum);
+				return this.listData.slice((this.pageNum - 1) * this.pageSize, this.pageSize * this.pageNum);
 			}
 		},
 		methods:{

@@ -290,7 +290,7 @@
 				</table>
 			</div>
 		</div>
-		<div class="row foot"></div>
+	<div class="row foot"></div>
 	</div>
 </template>
 
@@ -303,11 +303,11 @@
 				isTrue: false,
 				shdata: {}, // 界面数据
 				photo: [], // 界面中要显示的图片
-				fea: {}, // 评价
-				vtdata: {},
-				vids: [], // 表格中vt_ids
-				mids: [], // 表格中mk_ids
-				dids: [] // 表格中dl_ids
+				fea:{}, // 评价
+				vtdata:{},
+				vids:[], // 表格中vt_ids
+				mids:[], // 表格中mk_ids
+				dids:[] // 表格中dl_ids
 			}
 		},
 		created() {
@@ -332,15 +332,15 @@
 			close() {
 				this.$emit('close');
 			},
-			vtlink(para) {
-				//				this.$router.push({path:'/xid/vtid'});
-				this.$store.commit("getId", para)
+			vtlink(para){
+//				this.$router.push({path:'/xid/vtid'});
+				this.$store.commit("getId",para)
 			},
-			mklink(para) {
-				this.$store.commit("getMk", para)
+			mklink(para){
+				this.$store.commit("getMk",para)
 			},
-			dllink() {
-				this.$store.commit("getDl", para)
+			dllink(){
+				this.$store.commit("getDl",para)
 			}
 		},
 	}
