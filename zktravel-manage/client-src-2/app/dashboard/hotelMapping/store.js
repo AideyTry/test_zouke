@@ -355,6 +355,16 @@ export default new Vuex.Store({
         actionBk(context){
 
         },
+
+        /*
+            1:hotel 没有找到
+            2:没有map信息
+           若入库的code为 3:map信息已经更新，要做提示,刷新和强制入库按钮，点强制入库后后再传后台，此时sign变为0
+
+
+
+        */
+        //匹配
         actionOmath(context){
             console.log(context.state.opreat.zkId,context.state.opreat.spId);
             let spId=context.state.opreat.spId;
@@ -368,21 +378,24 @@ export default new Vuex.Store({
 
             })
         },
+        //入库,
         actionOput(context){
             let sign=context.state.opreat.sign;
             let spId=context.state.opreat.spId;
             let zkId=context.state.opreat.zkId;
             console.log(sign,spId,zkId);
-            return ajax.post('',{sign:sign,spId:spId,zkId:zkId}).then(json=>{
+            return ajax.post('/api/vt-mapping/insert',{sign:sign,spId:spId}).then(json=>{
                 console.log(json);
             })
         },
+        //职位微笑
         actionOu(context){
             let spId=context.state.opreat.spId;
             console.log(spId);
-            return ajax.post('',{spId:spId}).then(json=>{
+            return ajax.post('/api/vt-mapping/invalid',{spId:spId}).then(json=>{
+                console.log(json);
                 if(json.code===0){
-                    context.dispatch('actionVt');
+                    // context.dispatch('actionVt');
                 }
             })
         }
