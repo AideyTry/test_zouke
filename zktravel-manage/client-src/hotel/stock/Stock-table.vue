@@ -143,16 +143,14 @@
 		data() {
 			return {
 				// pageNum:1,
-<<<<<<< HEAD
 				item:null,
 				sid:null,
 				pid:null,
 				items:null,
-=======
+
 				sid: null,
 				pid: null,
 				items: null,
->>>>>>> a21a477a9f284fa639cd1683d4329ba4cff1cfbb
 				isTrue: false,
 				misTrue: false,
 				pisTrue: false,

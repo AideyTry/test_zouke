@@ -215,15 +215,14 @@
 				return this.$store.state;
 			}
 		},
-		created() {
-			let spId=this.state.idData.dli;
+		mounted() {
 			ajax.post('/api/sp-hotel/detail', {
-				spId: spId,
+				spId:this.spid,
 				sp:'dl'
 			}).then(json => {
 				if(json.code === 0) {
 					this.vtdata = json.detail;
-					 console.log(this.vtdata);
+					console.log(this.vtdata);
 					this.vtphoto = this.vtdata.photos;
 				}
 			})

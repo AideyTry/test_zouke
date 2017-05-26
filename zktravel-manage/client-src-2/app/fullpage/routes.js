@@ -3,7 +3,7 @@ import Dlid from '../dashboard/hotelMapping/Dlid';
 import Mkid from '../dashboard/hotelMapping/Mkid';
 import Vtid from '../dashboard/hotelMapping/Vtid';
 export default [{
-	path: 'fullpage',
+	path: 'fullpage/:spid',
 	component: {
 		render
 	},

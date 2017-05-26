@@ -270,16 +270,14 @@
 						<th>booking</th>
 					</tr>
 					<tr class="active">
-						<td v-for="vid in vids">
-							<a href="fullpage-vtids" @click="vtlink({query: {spId: vid},name:'fullpage-vtids'})" target="_blank">{{vid}}</a>
-							
-							<!--<router-link v-for="mid in mids" :to="{name: 'fullpage-vtids', params: {spId: mid}}" target="_blank">{{vid}}</router-link>-->
+						<td>
+							<router-link v-for="vid in vids" :to="{name: 'fullpage-vtids', params:{spid: vid}}" target="_blank">{{vid}}</router-link>
 						</td>
 						<td>
-							<!--<router-link v-for="mid in mids" :to="{name: 'fullpage-mkids', params: {spId: mid}}" target="_blank">{{mid}}</router-link>-->
+							<router-link v-for="mid in mids" :to="{name: 'fullpage-mkids', params: {spid: mid}}" target="_blank">{{mid}}</router-link>
 						</td>
 						<td>
-							<!--<router-link v-for="did in dids" :to="{name: 'fullpage-dlids', params: {spId: did}}" target="_blank">{{did}}</router-link>-->
+							<router-link v-for="did in dids" :to="{name: 'fullpage-dlids', params: {spid: did}}" target="_blank">{{did}}</router-link>
 						</td>
 						<td>
 							<a :href="'https://'+ shdata.url_web" target="_blank">{{shdata.url_web}}</a>
@@ -331,9 +329,6 @@
 			close() {
 				this.$emit('close');
 			},
-			vtlink(){
-				this.$router.push(para);
-			}
 		},
 	}
 </script>

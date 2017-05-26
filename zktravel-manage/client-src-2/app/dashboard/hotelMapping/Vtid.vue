@@ -206,22 +206,16 @@
 		props: ['updates'],
 		data() {
 			return {
+				spid:'',
 				isTrue: false,
 				vtdata: {}, // 页面数据
 				vtphoto: [], // 页面图片数据
-				spId:''
 			}
 		},
-		computed:{
-			state(){
-				return store.state;
-			}
-		},
-		created() {
-			this.spId = this.$route.query.spId;
+		mounted() {
+			this.spid = parseInt(this.$route.params.spid);
 			ajax.post('/api/sp-hotel/detail', {
-				// this.$route.params.spId
-				spId:this.spId,
+				id:this.spid,
 				sp:'vt'
 			}).then(json => {
 				if(json.code === 0) {
