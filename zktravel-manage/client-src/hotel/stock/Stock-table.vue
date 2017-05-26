@@ -257,16 +257,6 @@
 					this.$emit('next');
 				}
 
-			},
-			beforeRouteLeave(to, from, next) {
-				if(from.name == 'mk') {
-					//				this._scrollTop = document.body.scrollTop;
-					this.page = 0;
-					this.title.nick_name;
-					this.getList();
-					console.log(this.page);
-				}
-				next();
 			}
 		}
 	}

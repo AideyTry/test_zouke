@@ -271,9 +271,18 @@
 						<th>booking</th>
 					</tr>
 					<tr class="active">
-						<td><a v-for="vid in vids" @click="vtlink(vid)" target="_blank" href="fullpage/vtid">{{vid}}</a></td>
-						<td><a v-for="mid in mids" @click="mklink(mid)" target="_blank" href="fullpage/mkid">{{mids}}</a></td>
-						<td><a v-for="did in dids" @click="dllink(did)" target="_blank" href="fullpage/dlid">{{dids}}</a></td>
+						<td>
+							<a v-for="vid in vids" @click="vtlink(vid)" target="_blank"
+								 href="fullpage/vtid">{{vid}}</a>
+						</td>
+						<td>
+							<a v-for="mid in mids" @click="mklink(mid)" target="_blank"
+								 href="fullpage/mkid">{{mid}}</a>
+						</td>
+						<td>
+							<a v-for="did in dids" @click="dllink(did)" target="_blank" 
+								href="fullpage/dlid">{{did}}</a>
+						</td>
 						<td>
 							<a :href="'https://'+ shdata.url_web" target="_blank">{{shdata.url_web}}</a>
 						</td>
@@ -281,7 +290,7 @@
 				</table>
 			</div>
 		</div>
-	<div class="row foot"></div>
+		<div class="row foot"></div>
 	</div>
 </template>
 
@@ -294,11 +303,11 @@
 				isTrue: false,
 				shdata: {}, // 界面数据
 				photo: [], // 界面中要显示的图片
-				fea:{}, // 评价
-				vtdata:{},
-				vids:[], // 表格中vt_ids
-				mids:[], // 表格中mk_ids
-				dids:[] // 表格中dl_ids
+				fea: {}, // 评价
+				vtdata: {},
+				vids: [], // 表格中vt_ids
+				mids: [], // 表格中mk_ids
+				dids: [] // 表格中dl_ids
 			}
 		},
 		created() {
@@ -323,15 +332,15 @@
 			close() {
 				this.$emit('close');
 			},
-			vtlink(para){
-//				this.$router.push({path:'/xid/vtid'});
-				this.$store.commit("getId",para)
+			vtlink(para) {
+				//				this.$router.push({path:'/xid/vtid'});
+				this.$store.commit("getId", para)
 			},
-			mklink(para){
-				this.$store.commit("getMk",para)
+			mklink(para) {
+				this.$store.commit("getMk", para)
 			},
-			dllink(){
-				this.$store.commit("getDl",para)
+			dllink() {
+				this.$store.commit("getDl", para)
 			}
 		},
 	}

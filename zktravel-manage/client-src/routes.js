@@ -1,10 +1,10 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Index from './common/Index';
-import Xid from './common/Xid';
-import Dlid from './hotel/stock/Dlid';
-import Mkid from './hotel/stock/Mkid';
-import Vtid from './hotel/stock/Vtid';
+//import Xid from './common/Xid';
+//import Dlid from './hotel/stock/Dlid';
+//import Mkid from './hotel/stock/Mkid';
+//import Vtid from './hotel/stock/Vtid';
 
 import store from './stores'
 import routeStock from './hotel/stock/routes';
@@ -26,24 +26,24 @@ const router = new VueRouter({
 
 			]
 		},
-		{
-			path: '/xid',
-			component: Xid,
-			children: [{
-					path: 'vtid',
-					component: Vtid,
-					name:'vtids'
-				},
-				{
-					path: 'mkid',
-					component: Mkid
-				},
-				{
-					path: 'dlid',
-					component: Dlid
-				}
-			]
-		},
+//		{
+//			path: '/xid',
+//			component: Xid,
+//			children: [{
+//					path: 'vtid',
+//					component: Vtid,
+//					name:'vtids'
+//				},
+//				{
+//					path: 'mkid',
+//					component: Mkid
+//				},
+//				{
+//					path: 'dlid',
+//					component: Dlid
+//				}
+//			]
+//		},
 		{
 			path: '/',
 			redirect: '/login',
