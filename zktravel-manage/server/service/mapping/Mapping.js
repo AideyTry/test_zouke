@@ -149,8 +149,7 @@ module.exports = class Mapping {
     }
 
     async invalid(_spId){
-        const spCollection = await this.$getSpHotelCollection();
-        await this._resolveHotel(_spId, {
+        await this._resolveHotel(new mongodb.ObjectId(_spId), {
             timestamp: new Date().valueOf(),
             invalid: true
         })
@@ -197,7 +196,7 @@ module.exports = class Mapping {
 
     async insert(_spId, timestamp){
         _spId = new mongodb.ObjectId(_spId);
-        const spCollection = await this.$getZkHotelCollection();
+        const spCollection = await this.$getSpHotelCollection();
         const spHotel = await spCollection.findOne({ _id: _spId });
         if(!spHotel) return 1; //hotel not found
         if(!spHotel.map_state||!spHotel.map_state.timestamp) return 2; //no map info;
@@ -223,7 +222,8 @@ module.exports = class Mapping {
         doc._id = await this.$genId();
 
         const zkCollection = await this.$getZkHotelCollection();
-        await zkCollection.insertOne(doc);
+        const result = await zkCollection.insertOne(doc);
+        console.log('insert result', result);
 
         const spCollection = await this.$getSpHotelCollection();
         const remapResult = await this._searchSimilarHotel(doc, spCollection, {
