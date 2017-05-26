@@ -15,4 +15,16 @@ module.exports = class VtMappingController extends LController {
         if(result) this.renderJSON({ code:0 });
         else this.renderJSON({ code:1, msg: 'sp hotel not found' })
     }
+    async insert(){
+        const { spId, sign } = this.request.body;
+        const mapping = new VTMapping();
+        const result = await mapping.insert(spId, sign);
+        this.renderJSON({ code: result });
+    }
+    async invalid(){
+        const { spId } = this.request.body;
+        const mapping = new VTMapping();
+        await mapping.invalid(spId);
+        this.renderJSON({ code:0 })
+    }
 }
