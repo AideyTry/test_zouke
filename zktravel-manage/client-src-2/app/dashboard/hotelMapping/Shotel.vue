@@ -71,7 +71,6 @@
 	.picture li {
 		height: 150px;
 		width: 150px;
-		/*float: left;*/
 		display: inline-block;
 		white-space: nowrap;
 		padding: 4px;
@@ -272,16 +271,13 @@
 					</tr>
 					<tr class="active">
 						<td>
-							<a v-for="vid in vids" @click="vtlink(vid)" target="_blank"
-								 href="fullpage/vtid">{{vid}}</a>
+							<router-link v-for="vid in vids" :to="{name: 'fullpage-vtids', params:{spid: vid}}" target="_blank">{{vid}}</router-link>
 						</td>
 						<td>
-							<a v-for="mid in mids" @click="mklink(mid)" target="_blank"
-								 href="fullpage/mkid">{{mid}}</a>
+							<router-link v-for="mid in mids" :to="{name: 'fullpage-mkids', params: {spid: mid}}" target="_blank">{{mid}}</router-link>
 						</td>
 						<td>
-							<a v-for="did in dids" @click="dllink(did)" target="_blank" 
-								href="fullpage/dlid">{{did}}</a>
+							<router-link v-for="did in dids" :to="{name: 'fullpage-dlids', params: {spid: did}}" target="_blank">{{did}}</router-link>
 						</td>
 						<td>
 							<a :href="'https://'+ shdata.url_web" target="_blank">{{shdata.url_web}}</a>
@@ -290,11 +286,12 @@
 				</table>
 			</div>
 		</div>
-	<div class="row foot"></div>
+		<div class="row foot"></div>
 	</div>
 </template>
 
 <script>
+	import store from './store'
 	import ajax from '@local/common/ajax';
 	export default {
 		props: ['updates', 'ids'],
@@ -303,11 +300,11 @@
 				isTrue: false,
 				shdata: {}, // 界面数据
 				photo: [], // 界面中要显示的图片
-				fea:{}, // 评价
-				vtdata:{},
-				vids:[], // 表格中vt_ids
-				mids:[], // 表格中mk_ids
-				dids:[] // 表格中dl_ids
+				fea: {}, // 评价
+				vtdata: {},
+				vids: [], // 表格中vt_ids
+				mids: [], // 表格中mk_ids
+				dids: [] // 表格中dl_ids
 			}
 		},
 		created() {
@@ -327,21 +324,11 @@
 		methods: {
 			update() {
 				this.updates.isTrue.aisTrue = false;
-				this.$store.commit('audit');
+				store.commit('audit');
 			},
 			close() {
 				this.$emit('close');
 			},
-			vtlink(para){
-//				this.$router.push({path:'/xid/vtid'});
-				this.$store.commit("getId",para)
-			},
-			mklink(para){
-				this.$store.commit("getMk",para)
-			},
-			dllink(){
-				this.$store.commit("getDl",para)
-			}
 		},
 	}
 </script>
