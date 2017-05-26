@@ -169,13 +169,13 @@
 
 			<!--全部设施-->
 			<div class="row ">
-				<div class="form-group col-lg-12 ">
+				<div class="form-group col-lg-12">
 					<label class="col-lg-1 ">全部设施</label>
 					<span class="col-lg-1 borders ">wifi</span>
 					<span class="col-lg-1 borders border-width ">可以停车</span>
 					<span class="col-lg-1 borders border-width ">可以停车</span>
 				</div>
-				<div class="form-group col-lg-12 ">
+				<div class="form-group col-lg-12">
 					<label class="col-lg-1 ">热门设施</label>
 					<span class="col-lg-1 borders ">wifi</span>
 					<span class="col-lg-1 borders border-width ">可以停车</span>
@@ -184,39 +184,39 @@
 			</div>
 
 			<!--酒店图片-->
-			<div class="row ">
-				<div class="form-group col-lg-12 ">
+			<div class="row">
+				<div class="form-group col-lg-12">
 					<label class="col-lg-1 ">酒店图片</label>
-					<ul class="picture thumbnail ">
-						<li v-for="img in spphoto "><img :src="img.url " alt="picture "></li>
+					<ul class="picture thumbnail">
+						<li v-for="img in spphoto "><img :src="img.url" alt="picture"></li>
 					</ul>
 				</div>
 			</div>
 
 			<!--酒店介绍-->
 			<div class="row ">
-				<div class="form-group col-lg-12 ">
-					<label class="col-lg-1 ">酒店介绍</label>
-					<textarea class="col-lg-8 " disabled autofocus rows="3 " cols="30 ">{{phdata.description}}
+				<div class="form-group col-lg-12">
+					<label class="col-lg-1">酒店介绍</label>
+					<textarea class="col-lg-8" disabled autofocus rows="3" cols="30">{{phdata.description}}
                 </textarea>
 				</div>
 			</div>
-			<div class="row ">
-				<div class="form-group col-lg-6 ">
+			<div class="row">
+				<div class="form-group col-lg-6">
 					<label class="col-lg-2 ">酒店电话</label>
-					<input type="text " disabled class="col-lg-8 " v-model="phdata.phone ">
+					<input type="text" disabled class="col-lg-8" v-model="phdata.phone">
 				</div>
-				<div class="form-group col-lg-6 ">
-					<label class="col-lg-2 ">酒店传真</label>
-					<input type="text " disabled class="col-lg-8 " v-model="phdata.fax " placeholder="null ">
+				<div class="form-group col-lg-6">
+					<label class="col-lg-2">酒店传真</label>
+					<input type="text " disabled class="col-lg-8" v-model="phdata.fax" placeholder="null">
 				</div>
-				<div class="form-group col-lg-6 ">
-					<label class="col-lg-2 ">酒店邮箱</label>
-					<input type="email " disabled class="col-lg-8 " v-model="phdata.email ">
+				<div class="form-group col-lg-6">
+					<label class="col-lg-2">酒店邮箱</label>
+					<input type="email" disabled class="col-lg-8" v-model="phdata.email">
 				</div>
 			</div>
 		</div>
-		<div class="row foot "></div>
+		<div class="row foot"></div>
 	</div>
 
 </template>

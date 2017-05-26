@@ -424,6 +424,7 @@ export default new Vuex.Store({
         },
         getId(state,id){
         		state.idData.vti=id;
+        		console.log("id==",id)
         },
         getMk(state,id){
         		state.idData.mki = id;

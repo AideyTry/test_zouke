@@ -175,31 +175,32 @@
 			<div class="row ">
 				<div class="form-group col-lg-12 ">
 					<label class="col-lg-1 ">酒店介绍</label>
-					<textarea class="col-lg-8 " disabled autofocus rows="3 " cols="30 ">{{vtdata.description}}
+					<textarea class="col-lg-8 " disabled autofocus rows="3" cols="30">{{vtdata.description}}
                 </textarea>
 				</div>
 			</div>
 			<div class="row ">
 				<div class="form-group col-lg-6 ">
 					<label class="col-lg-2 ">酒店电话</label>
-					<input type="text " disabled class="col-lg-8 " v-model="vtdata.phone ">
+					<input type="text " disabled class="col-lg-8 " v-model="vtdata.phone">
 				</div>
 				<div class="form-group col-lg-6 ">
 					<label class="col-lg-2 ">酒店传真</label>
-					<input type="text " disabled class="col-lg-8 " v-model="vtdata.fax " placeholder="null ">
+					<input type="text " disabled class="col-lg-8" v-model="vtdata.fax" placeholder="null">
 				</div>
 				<div class="form-group col-lg-6 ">
 					<label class="col-lg-2 ">酒店邮箱</label>
-					<input type="email " disabled class="col-lg-8 " v-model="vtdata.email ">
+					<input type="email" disabled class="col-lg-8" v-model="vtdata.email">
 				</div>
 			</div>
 		</div>
-		<div class="row foot "></div>
+		<div class="row foot"></div>
 	</div>
 
 </template>
 
 <script>
+	import store from './store'
 	import ajax from '@local/common/ajax';
 	export default {
 		props: ['updates'],
@@ -208,17 +209,19 @@
 				isTrue: false,
 				vtdata: {}, // 页面数据
 				vtphoto: [], // 页面图片数据
+				spId:''
 			}
 		},
 		computed:{
 			state(){
-				return this.$store.state;
+				return store.state;
 			}
 		},
 		created() {
-			let spId=this.state.idData.vti;
+			this.spId = this.$route.query.spId;
 			ajax.post('/api/sp-hotel/detail', {
-				spId: spId,
+				// this.$route.params.spId
+				spId:this.spId,
 				sp:'vt'
 			}).then(json => {
 				if(json.code === 0) {
