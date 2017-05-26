@@ -16,6 +16,11 @@ export default new Vuex.Store({
             spId:null,
             sign:null
         },
+        toast:{
+            match:false,
+            put:false,
+            unnecessary:false
+        },
         listVt:[],
         listMk:[],
         listDl:[],
@@ -367,6 +372,7 @@ export default new Vuex.Store({
                 console.log(json);
                 if(json.code===0){
                     context.dispatch('actionVt');
+                    context.commit('toastMatch');
                 }
 
             })
@@ -388,6 +394,7 @@ export default new Vuex.Store({
                 if(json.code===0){
                     console.log("正确");
                     context.dispatch('actionVt');
+                    context.commit('toastPut');
                 }
                 else if(json.code===1){
                     console.log("hotel没有找到");
@@ -397,6 +404,7 @@ export default new Vuex.Store({
                 }
                 else if(json.code===3){
                     console.log("map信息已经更新");
+
                 }
             })
         },
@@ -407,7 +415,9 @@ export default new Vuex.Store({
             return ajax.post('/api/vt-mapping/invalid',{spId:spId}).then(json=>{
                 console.log(json);
                 if(json.code===0){
+                    // this.$toast.show("正确");;
                     context.dispatch('actionVt');
+                    context.commit('toastUnnecessary');
                 }
             })
         }
@@ -451,13 +461,22 @@ export default new Vuex.Store({
             state.opreat.zkId=item.zkId;
             state.opreat.spId=item.spId;
         },
+        toastMatch(state){
+            state.toast.match=true;
+        },
         opreatPut(state,item){
             state.opreat.sign=item.sign;
             state.opreat.zkId=item.zkId;
             state.opreat.spId=item.spId;
         },
+        toastPut(state){
+            state.toast.put=true;
+        },
         opreatUnnecessary(state,item){
             state.opreat.spId=item.spId;
+        },
+        toastUnnecessary(state){
+            state.toast.unnecessary=true;
         },
         exit(state){
             state.counts.isTrue.eisTrue=true;

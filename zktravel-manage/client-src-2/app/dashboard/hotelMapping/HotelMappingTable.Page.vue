@@ -104,7 +104,7 @@
 						<td>{{item.spAddress}}</td>
 						<td>{{item.zkPhone}}</td>
 						<td>{{item.spPhone}}</td>
-						<td @click="link(item)" class="tdColor">{{item.link}}</td>
+						<td @click="link(item)" class="tdColor">查看</td>
 						<td @click="booking(item)" class="tdColor">{{item.bookingUrl}}</td>
 						<td>
 							<button class="btn btn-info" v-on:click="match(item)">匹配</button>
@@ -195,6 +195,13 @@
 				this.shotelisTrue = !this.shotelisTrue;
 				this.sid = sid;
 			},
+			link(item){
+				const params = [];
+				params.push([item.spGPS, item.name]);
+				params.push([item.zkGPS, item.zkName]);
+
+				window.open(`/pages/location.html?${encodeURIComponent(JSON.stringify(params))}`);
+			},		
 			booking(item){
 				window.open(item.bookingUrl);
 			},

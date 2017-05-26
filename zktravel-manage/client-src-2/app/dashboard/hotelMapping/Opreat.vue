@@ -77,6 +77,11 @@
 
 			}
 		},
+		computed:{
+			state(){
+				return store.state;
+			}
+		},
 		methods:{
 			cancel(){
 				this.$emit("cancel");
@@ -85,14 +90,24 @@
 				if(this.opreat==='匹配'){
 					store.commit('opreatMatch',this.items);
 					store.dispatch('actionOmath');
+					if(this.state.toast.match===true){
+						this.$toast.show("操作正确");;
+					}
+
 				}
 				else if(this.opreat==='入库'){
 					store.commit('opreatPut',this.items);
 					store.dispatch('actionOput');
+					if(this.state.toast.put===true){
+						this.$toast.show("操作正确");;
+					}
 				}
 				else if(this.opreat==='置为无效'){
 					store.commit('opreatUnnecessary',this.items);
 					store.dispatch('actionOu');
+					if(this.state.toast.unnecessary===true){
+						this.$toast.show("操作正确");;
+					}
 				}
 				this.$emit("confirm");
 			}
