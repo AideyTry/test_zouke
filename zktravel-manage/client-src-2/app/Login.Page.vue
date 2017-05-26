@@ -75,14 +75,20 @@
                 poll();
             },
             redirect(){
-                const redirectRoute = JSON.parse(this.$route.query.redirect);
+                let redirectRoute = { path:'/' }
+                if(this.$route.query.redirect){
+                    redirectRoute = JSON.parse(this.$route.query.redirect);
+                }
                 this.$router.replace(redirectRoute);
             }
         },
         beforeRouteEnter(to, from, next){
             if(store.getters['userInfo']){
                 //logined
-                const redirectRoute = JSON.parse(to.query.redirect)
+                let redirectRoute = { path:'/' }
+                if(to.query.redirect){
+                    redirectRoute = JSON.parse(to.query.redirect)
+                }
                 next(Object.assign({
                     replace:true
                 }, redirectRoute));

@@ -7,6 +7,17 @@ module.exports = class DLMapping extends Mapping{
     async query(){
         return await super.query({supplier: 'dl'})
     }
+
+    async map(spId, zk_id){
+        const spCollection = await this.$getZkHotelCollection();
+        const dlHotel = await spCollection.findOne({ _id: new mongodb.ObjectId(spId), supplier: 'dl' })
+
+        if(!dlHotel) return false;
+
+        await this.$map(dlHotek, zk_id);
+        return true;
+    }
+
     async $map(dlHotel, zk_id){
         return await super.$map(dlHotel, zk_id, 'dl_ids');
     }

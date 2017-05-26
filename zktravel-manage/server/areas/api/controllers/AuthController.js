@@ -1,7 +1,7 @@
 const SController = requireRoot('common/SController');
 const qrcode = require('qrcode');
-const { DEBUG } = requireRoot('env');
-const loginUrl = `http://${DEBUG?'wx.test.zouke.com':'w.zouke.com'}/zksystem/auth/qr-login?port=8081&path=trigger%2Fauth%2Flogin`;
+const { DEBUG, PORT } = requireRoot('env');
+const loginUrl = `http://${DEBUG?'wx.test.zouke.com':'w.zouke.com'}/zksystem/auth/qr-login?port=${PORT}&path=trigger%2Fauth%2Flogin`;
 
 const codeKey = '/api/auth/code';
 const codeExpriesKey = '/api/auth/code-expries';

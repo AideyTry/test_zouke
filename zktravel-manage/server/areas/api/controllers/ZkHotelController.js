@@ -8,4 +8,11 @@ module.exports = class ZkHotelController extends LController {
         const detail = await zkHotel.detail(params.id);
         this.renderJSON({code:0, detail});
     }
+    async query(){
+        const { page=0, pageSize=10 } = this.request.body;
+        const zkHotel = new ZkHotel();
+        const result = await zkHotel.query(page, pageSize);
+
+        this.renderJSON(Object.assign({code:0}, result))
+    }
 }

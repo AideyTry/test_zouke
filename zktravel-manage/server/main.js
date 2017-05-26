@@ -1,5 +1,5 @@
 
-const { DEBUG, SESS_KEY } = require('./env');
+const { DEBUG, SESS_KEY, PORT, SESS_DIR } = require('./env');
 if(!DEBUG){
     process.env.NODE_ENV = 'production';
 }
@@ -8,15 +8,11 @@ require('./requireRoot');
 require('@local/common/core/w/prototype');
 
 const Koa = require('koa');
-
-const koaMvc = require('@local/koa-mvc')({
-    areas: ['trigger', 'api']
-});
-const opa = require('./middleware/opa');
-const session = require('./middleware/session');
-const bodyParser = require('koa-bodyparser');
-
 const app = new Koa();
+
+const koaMvc = require('@local/koa-mvc');
+const opa = require('./opa');
+
 app.keys = ['zktravel manage system', 'zktravel system'];
 
 app.use(async (ctx, next) => {
@@ -31,16 +27,20 @@ app.use(async (ctx, next) => {
     }
 });
 
-app.use(session({
-    key: SESS_KEY,
-    maxAge: 86400000
-}, app))
-
-app.use(bodyParser());
 app.use(async (ctx, next)=>{
     console.log(`request ${ctx.originalUrl} start`);
-    await koaMvc(ctx, next);
+    await next();
     console.log(`request ${ctx.originalUrl} end`);
-});
+})
+app.use(koaMvc({
+    routerConfig: {
+        areas: ['trigger', 'api']
+    },
+    sessionConfig: {
+        key: SESS_KEY,
+        maxAge: 86400000,
+        dir: SESS_DIR
+    }
+}, app));
 
-app.listen(8081);
+app.listen(PORT);
