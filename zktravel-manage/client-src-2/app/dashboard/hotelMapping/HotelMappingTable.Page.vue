@@ -23,6 +23,9 @@
 			background-color: #eeeeee;
 			// z-index:100;
 		}
+		.puts{
+			z-index:99;
+		}
 		th,
 		td {
 			line-height: 100%;
@@ -93,8 +96,8 @@
 					</tr>
 				</thead>
 				<opreat class="oColor" v-if="isTrue" @cancel="cancel" @confirm="confirm" :opreat="opreatData" :items='item'>
-
 				</opreat>
+				<put class="puts" v-if="store.state.putisTrue" @refrech="refrech" @fConfirm="fConfirm"></put>
 				<tbody>
 					<tr v-for="(item,index) in list">
 						<td>{{item.levelDesc}}</td>
@@ -133,13 +136,15 @@
 	import store from './store'
 	import Photel from './Photel';
 	import Shotel from './Shotel';
-	import Opreat from './Opreat'
+	import Opreat from './Opreat';
+	import Put from './Put'
 	export default {
 		props: ['mk', 'list', 'pages'],
 		components: {
 			photel: Photel,
 			shotel: Shotel,
 			opreat: Opreat,
+			put: Put
 		},
 		data() {
 			return {
@@ -246,6 +251,16 @@
 			confirm() {
 				this.isTrue = false;
 			},
+
+			//入库提示后刷新功能和强制入库功能
+			refrech(){
+				store.commit('closePut');
+			},
+			fConfirm(){
+				store.commit('closePut');
+				store.commit('putConstraint');
+			},
+
 			prev() {
 				store.state.flag.flag = false;
 				if(this.pages.pageNum > 1) {
