@@ -10,18 +10,18 @@ export default [{
 	name: 'fullpage',
 	children: [{
 			path: 'vtid',
-			component: Vtid,
-			name:vtids
+			component: Vtid
+			// name:vtids
 		},
 		{
 			path: 'mkid',
-			component: Mkid,
-			name:mkids
+			component: Mkid
+			// name:mkids
 		},
 		{
 			path: 'dlid',
-			component: Dlid,
-			name:dlids
+			component: Dlid
+			// name:dlids
 		}
 	]
 }]
