@@ -71,7 +71,6 @@
 	.picture li {
 		height: 150px;
 		width: 150px;
-		/*float: left;*/
 		display: inline-block;
 		white-space: nowrap;
 		padding: 4px;
@@ -333,7 +332,6 @@
 				this.$emit('close');
 			},
 			vtlink(para){
-//				this.$router.push({path:'/xid/vtid'});
 				this.$store.commit("getId",para)
 			},
 			mklink(para){
