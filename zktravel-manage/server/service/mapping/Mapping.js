@@ -149,7 +149,7 @@ module.exports = class Mapping {
     }
 
     async invalid(_spId){
-        const spCollection = await this.$getZkHotelCollection();
+        const spCollection = await this.$getSpHotelCollection();
         await this._resolveHotel(_spId, {
             timestamp: new Date().valueOf(),
             invalid: true
@@ -157,12 +157,20 @@ module.exports = class Mapping {
     }
 
     async map(_spId, zk_id){
-        const spCollection = await this.$getZkHotelCollection();
-        const vtHotel = await spCollection.findOne({ _id: new mongodb.ObjectId(_spId)})
+        _spId = new mongodb.ObjectId(_spId);
+        const spCollection = await this.$getSpHotelCollection();
+        const spHotel = await spCollection.findOne({ _id: _spId})
 
-        if(!vtHotel) return false;
+        if(!spHotel) return false;
 
-        await this.$map(vtHotel, zk_id);
+        await this.$map(spHotel, zk_id);
+
+        await this._resolveHotel(_spId, {
+            timestamp: new Date().valueOf(),
+            strict: zk_id,
+            key: spHotel.map_state.fuzzy[zk_id]
+        });
+
         return true;
     }
 
@@ -188,8 +196,9 @@ module.exports = class Mapping {
 
 
     async insert(_spId, timestamp){
+        _spId = new mongodb.ObjectId(_spId);
         const spCollection = await this.$getZkHotelCollection();
-        const spHotel = await spCollection.findOne({ _id: new mongodb.ObjectId(_spId) });
+        const spHotel = await spCollection.findOne({ _id: _spId });
         if(!spHotel) return 1; //hotel not found
         if(!spHotel.map_state||!spHotel.map_state.timestamp) return 2; //no map info;
 
