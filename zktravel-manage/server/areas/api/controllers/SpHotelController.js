@@ -3,9 +3,9 @@ const SpHotel = require('../logic/SpHotel');
 
 module.exports = class SpHotelController extends LController {
     async detail(){
-        const {id, spId, sp} = this.request.body;
+        const {id, sp} = this.request.body;
         const spHotel = new SpHotel();
-        const detail = await spHotel.detail(id||spId, sp);
+        const detail = await spHotel.detail(id, sp);
         this.renderJSON({code:0, detail});
     }
 }
