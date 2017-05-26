@@ -140,7 +140,6 @@
 			</div>
 			<div class="row">
 				<!--酒店名称-->
-
 				<div class="form-group col-lg-6">
 					<label class="col-lg-2">酒店中文</label>
 					<input type="text" disabled class="col-lg-8" v-model="phdata.name">
@@ -175,7 +174,6 @@
 					<span class="col-lg-1 borders ">wifi</span>
 					<span class="col-lg-1 borders border-width ">可以停车</span>
 					<span class="col-lg-1 borders border-width ">可以停车</span>
-
 				</div>
 				<div class="form-group col-lg-12 ">
 					<label class="col-lg-1 ">热门设施</label>
@@ -190,8 +188,7 @@
 				<div class="form-group col-lg-12 ">
 					<label class="col-lg-1 ">酒店图片</label>
 					<ul class="picture thumbnail ">
-						<li v-for="img in spphoto ">
-							< img :src="img.url " alt="picture "></li>
+						<li v-for="img in spphoto "><img :src="img.url " alt="picture "></li>
 					</ul>
 				</div>
 			</div>
@@ -210,7 +207,6 @@
 					<input type="text " disabled class="col-lg-8 " v-model="phdata.phone ">
 				</div>
 				<div class="form-group col-lg-6 ">
-
 					<label class="col-lg-2 ">酒店传真</label>
 					<input type="text " disabled class="col-lg-8 " v-model="phdata.fax " placeholder="null ">
 				</div>
