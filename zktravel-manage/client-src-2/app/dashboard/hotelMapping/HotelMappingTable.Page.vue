@@ -3,7 +3,7 @@
 		position: absolute;
 		width: 90%;
 		left: 3%;
-		top: -200px;
+		top: -60px;
 		z-index: 140;
 		background-color: #EEEEEE;
 		/*border: 1px solid #000;*/
@@ -77,7 +77,7 @@
 
 <template>
 	<div>
-		<div class="tabl">
+		<div class="table">
 			<shotel class="hotel" @close="close11" v-if="shotelisTrue" :ids="sid"></shotel>
 			<photel class="hotel" @close2="close22" v-if="photelisTrue" :idp="pid"></photel>
 			<table class="table1 table table-bordered tableBg">

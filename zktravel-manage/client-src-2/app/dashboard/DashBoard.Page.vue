@@ -23,9 +23,12 @@
             border-bottom:1px solid #000;
             border-right:none;
             .pCenter{
-                width:25%;
+                width:20%;
                 position:absolute;
                 right:0;
+                .divide{
+                    padding:0 5px;
+                }
                  strong{
                     color:#f00;
                  }
@@ -44,12 +47,13 @@
             display:block;
             float:left;
             width:15%;
-            height:751px;
+            height:800px;
             background-color: #333;
             h1{
                 margin:0;
                 padding:0;
                 background-color: #0ee;
+
                 // text-indent:20px;
                 span{
                     margin:0;
@@ -95,6 +99,7 @@
                     box-sizing:box-border;
                     background-color: #000;
                     color:#fff;
+                    cursor:pointer;
                     .active{
                         height:50px;
                         line-height:50px;
@@ -108,6 +113,10 @@
                         width:100%;
                         color:#000;
                         border-bottom:1px solid #333;
+                    }
+                    .bgColor{
+                        background-color: #fff;
+                        cursor:pointer;
                     }
                     .active:hover{
                         background-color: #FFF
@@ -145,8 +154,10 @@
         <header class="headers">
             <div class="pCenter">
                 <span class="glyphicon glyphicon-user"></span>
-                <span>当前用户</span>
+                <span class="divide">|</span>
+                <span>当前用户:</span>
                 <strong>{{userInfo.name}}</strong>
+                <span class="divide">|</span>
                 <span class="logout" @pointerup.prevent="logout">    退出
                 </span>  
             </div>
@@ -157,8 +168,8 @@
             <ul class="hotel">
                 <li @pointerup.prevent="hotel()" class="hbg">酒店数据
                     <ul v-if="isTrue">
-                        <li class="active sh" @pointerup.stop.prevent="stock()">待入库</li>
-                        <li class="active" @pointerup.stop.prevent="SAI()">SAI酒店库</li>
+                        <li class="active" :class="{bgColor:bgIstrue.mpIstrue}" @pointerup.stop.prevent="stock()">待入库</li>
+                        <li class="active" :class="{bgColor:bgIstrue.zkIstrue}" @pointerup.stop.prevent="SAI()">SAI酒店库</li>
                     </ul>
                 </li>
             </ul>
@@ -180,7 +191,11 @@
             return {
                 isActive:true,
                 isTrue:false,
-                flag:0
+                flag:0,
+                bgIstrue:{
+                    mpIstrue:false,
+                    zkIstrue:false
+                }
             }
         },
         computed:{
@@ -195,26 +210,77 @@
                 })
             },
             /*增加方法*/
-            hotel:function(){
+            hotel(){
                 this.flag++;
                 if(this.flag%2!=0){
                     this.isTrue=true;
-
+                    this.bgIstrue.mpIstrue=true;
+                    this.$router.push({name:'dashboard-hotel-mapping-vt'});
                 }else{
                     this.isTrue=false;
-                    
-                }
-                this.$router.push({name:'dashboard'});
+                    this.$router.push({name:'dashboard'})
+                  }
                 
             },
             stock:function(){
                 // this.$router.push({name:'dashboard-hotel-mapping'});
-                this.$router.push({path:'/dashboard/hotel-mapping'});
+                this.$router.push({path:'/dashboard/hotel-mapping/vt'});
+                this.bgIstrue.mpIstrue=true;
+                this.bgIstrue.zkIstrue=false;
             },
             SAI:function(){
                 // this.$router.push({name:'dashboard-hotel-mapping-dl'});
                 this.$router.push({path:'/dashboard/zkhotel'});
+                this.bgIstrue.zkIstrue=true;
+                this.bgIstrue.mpIstrue=false;
             }
-        }
+        },
+        mounted(){
+                //映射待入库
+                if(window.location.pathname==='/dashboard/hotel-mapping/vt'){
+                    
+                    this.bgIstrue.mpIstrue=true;
+                    this.bgIstrue.zkIstrue=false;
+                    this.isTrue=true;
+                }
+                else if(window.location.pathname==='/dashboard/hotel-mapping/mk'){
+                    
+                    this.bgIstrue.mpIstrue=true;
+                    this.bgIstrue.zkIstrue=false;
+                    this.isTrue=true;
+                }
+                 else if(window.location.pathname==='/dashboard/hotel-mapping/dl'){
+                    
+                    this.bgIstrue.mpIstrue=true;
+                    this.bgIstrue.zkIstrue=false;
+                    this.isTrue=true;
+                }
+                 else if(window.location.pathname==='/dashboard/hotel-mapping/bk'){
+                    
+                    this.bgIstrue.mpIstrue=true;
+                    this.bgIstrue.zkIstrue=false;
+                    this.isTrue=true;
+                }
+                //映射SAI酒店库
+                else if(window.location.pathname==='/dashboard/zkhotel'){
+                    
+                    this.bgIstrue.zkIstrue=true;
+                    this.bgIstrue.mpIstrue=false;
+                    this.isTrue=true;
+                }
+        },
+        // updated(){
+        //     console.log(window.location);
+        //       this.flag++;
+        //         console.log(this.flag);
+        //         if(this.flag%2!=0){
+        //             this.isTrue=true;
+
+        //         }else{
+        //             this.isTrue=false;
+                    
+        //         }
+        // }
     }
+
 </script>
