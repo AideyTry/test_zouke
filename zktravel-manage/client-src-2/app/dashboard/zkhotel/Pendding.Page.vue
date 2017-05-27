@@ -70,7 +70,7 @@
 				}
 	},
 	mounted(){
-		// this.$store.dispatch('pendding');
+		this.$store.dispatch('penddings');
 	}
 }
 </script>

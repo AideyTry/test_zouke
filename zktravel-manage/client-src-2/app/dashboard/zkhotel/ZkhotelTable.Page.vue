@@ -75,16 +75,16 @@
 			</Audit>
 			<tbody>
 				<tr v-for="(item,index) in list">
-					<td>{{item.levelDesc}}</td>
-					<td>{{item.zkName}}</td>
-					<td>{{item.spName}}</td>
-					<td>{{pending.country}}</td>
-					<td>{{pending.city}}</td>
+					<td>{{item._id}}</td>
+					<td>{{item.name}}</td>
+					<td>{{item.category_name}}</td>
+					<td>{{item.country_name}}</td>
+					<td>{{item.city_name}}</td>
 					<td>{{pending.area}}</td>
 					<!-- <td><button class="btn btn-info" @click="audit()">{{pending.handel}}</button></td> -->
-					<td v-if="$store.state.saiisTrue.pisTrue"><button class="btn btn-info" @click="audit()">审核</button></td>
-					<td v-if="$store.state.saiisTrue.onisTrue"><button class="btn btn-info" @click="audit()">查看</button></td>
-					<td v-if="$store.state.saiisTrue.ofisTrue">
+					<td v-if="counts.saiisTrue.pisTrue"><button class="btn btn-info" @click="audit()">审核</button></td>
+					<td v-if="counts.saiisTrue.onisTrue"><button class="btn btn-info" @click="audit()">查看</button></td>
+					<td v-if="counts.saiisTrue.ofisTrue">
 						<button class="btn btn-info" @click="audit()">查看</button>
 						<button class="btn btn-success" @click="audit()">上架</button>
 					</td>
