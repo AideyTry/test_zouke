@@ -1,171 +1,119 @@
 <style lang="scss" scoped>
     .dashboard{
-        width:100%;
-        height:100%;
-        h2{
-            font-size:24px;
-            font-weight:bold;
-            font-style:normal;
-            font-family:"微软雅黑"!important;
-            color:#000;
-            text-align:left;
-            margin:20px 0;
-        }
-        /*头部start*/
-        .headers{
-            float:right;
-            // box-sizing:border-box;
-            width:85%;
-            height:47px;
-            color:#000;
-            background-color:#fff; 
-            border-top:1px solid #000;
-            border-bottom:1px solid #000;
-            border-right:none;
-            .pCenter{
-                width:25%;
-                position:absolute;
-                right:0;
-                 strong{
-                    color:#f00;
-                 }
-                 .logout{
-                    font-size:16px;
-                    line-height:47px;
-                    cursor:pointer;
-                    
-                }
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        width: 100%;
+        background-color: #eef1f6;
+        overflow: hidden;
+        .header{
+            height: 60px;
+            line-height: 60px;
+            border-left:0px;
+            .main-title{
+                background-color: #324157;
+                color:#fff;
+                text-align: center;
             }
-           
-        }
-        /*头部end*/
-        /*侧边栏start*/
-        .sidebar{ 
-            display:block;
-            float:left;
-            width:15%;
-            height:751px;
-            background-color: #333;
-            h1{
-                margin:0;
-                padding:0;
-                background-color: #0ee;
-                // text-indent:20px;
+            .title{
+                text-indent: 30px;
+            }
+            .user-info{
+                i{
+                    font-size: 14px;
+                }
                 span{
-                    margin:0;
-                    padding:0;
-                    display:inline-block;
-                    color:#fff;
-                    margin-top:5px;
-                    margin-bottom:5px;  
-                    height:35px;
-                    line-height:35px;
-                    text-align:center;               
-                    font-size:25px;
-                    text-indent:20px;
-                }
-             
-            }
-            ul{
-                list-style:none;
-            }
-            .hotel{
-                // li{
-                //     display:inline-block;
-                //     height:50px;
-                //     line-height:50px;
-                //     // text-align:center;
-                //     font-size:16px;
-                //     width:100%;
-                //     border-top:1px solid #000;
-                //     border-bottom:1px solid #000;
-                //     border-left:1px solid #000;
-                // }
-                .hbg{
-                    height:50px;
-                    line-height:50px;
-                    // text-align:center;
-                    font-size:16px;
-                    width:100%;
-                    border-top:1px solid #000;
-                    border-bottom:1px solid #000;
-                    border-left:1px solid #000;
-                    // padding-left:20px;
-                    text-indent:20px;
-                    box-sizing:box-border;
-                    background-color: #000;
-                    color:#fff;
-                    .active{
-                        height:50px;
-                        line-height:50px;
-                        // text-align:center;
-                        font-size:16px;
-                        width:100%;
-                        border-top:1px solid #000;
-                        border-bottom:1px solid #000;
-                        border-left:1px solid #000;
-                        background-color:#ccc;
-                        width:100%;
-                        color:#000;
-                        border-bottom:1px solid #333;
-                    }
-                    .active:hover{
-                        background-color: #FFF
-                        // color:#000;
-                    }
-                    .sh{
-
-                    }
-                }
-                .hbg:hover{
-                    background-color: #fff;
-                    
-                    color:#000;
+                    margin-right: 5px;
                 }
             }
-            
+            .log-out{
+                color: #178fe5;
+                cursor: pointer;
+            }
         }
-        /*侧边栏end*/
-        /*主体部分start*/
-        .contents{
-                float:right;
-                width:85%;
-                height:800px;
-                background-color:#fff;
-                border-top:1px solid #000;
-                border-top:none;
+        .main-body{
+            height: 100%;
+            .el-menu{
+                height: 100%;
             }
-        /*主体部分end*/   
+            .content{
+                border-top: 1px solid #ccc;
+                overflow-y: scroll;
+            }
+        }
+
     }
     
 </style>
 <template>
     <div class="dashboard">
 <!--         <h2>酒店基础数据</h2> -->
-        <header class="headers">
+<!--        <header class="headers">
             <div class="pCenter">
                 <span class="glyphicon glyphicon-user"></span>
                 <span>当前用户</span>
                 <strong>{{userInfo.name}}</strong>
-                <span class="logout" @pointerup.prevent="logout">    退出
+                <span class="logout" >    退出
                 </span>  
             </div>
              
-        </header>
-        <aside class="sidebar">
-            <h1><span>超级行程单</span></h1>
-            <ul class="hotel">
-                <li @pointerup.prevent="hotel()" class="hbg">酒店数据
-                    <ul v-if="isTrue">
-                        <li class="active sh" @pointerup.stop.prevent="stock()">待入库</li>
-                        <li class="active" @pointerup.stop.prevent="SAI()">SAI酒店库</li>
-                    </ul>
-                </li>
-            </ul>
-        </aside>
-        <content class="contents">
-            <router-view></router-view>
-        </content>        
+        </header>-->
+        <el-row class="header" type="flex">
+            <el-col :span="4">
+                <i></i>
+                <div class="main-title">
+                    超级行程单
+                </div>
+            </el-col>
+            <el-col :span="16">
+                <div class="title">
+                    待入库
+                </div>
+            </el-col>
+            <el-col :span="4">
+                <div class="user-info">
+                    <i class="el-icon-message"></i>
+                    <span>用户名</span>
+                    <span>Uklili</span>
+                    <span class="log-out" @pointerup.prevent="logout">退出</span>
+                </div>
+            </el-col>
+        </el-row>
+        <el-row class="main-body" type="flex">
+            <el-col :span="4" class="nav-menu">
+<!--                <el-menu :default-active="$route.path" class="nav-memu" @open="handleopen" @close="handleclose" @select="handleselect"
+                         unique-opened router v-show="!collapsed">
+                    <template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
+                        <el-submenu :index="index+''" v-if="!item.leaf">
+                            <template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
+                            <el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
+                        </el-submenu>
+                        <el-menu-item v-if="item.leaf&&item.children.length>0" :index="item.children[0].path"><i :class="item.iconCls"></i>{{item.children[0].name}}</el-menu-item>
+                    </template>
+                </el-menu>-->
+                <el-menu :default-active="selected"   class="nav-memu" theme="dark" @select="handleSelect" @open="handleOpen" @close="handleClose">
+                    <el-menu-item index="home">
+                            主页
+                    </el-menu-item>
+                    <el-submenu index="dashboard">
+                        <template slot="title">酒店数据管理</template>
+                        <el-menu-item-group>
+                            <el-menu-item index="dashboard-hotel-mapping">
+                                待入库
+                            </el-menu-item>
+                            <el-menu-item index="dashboard-zkhotel">
+                                已入库
+                            </el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
+                    <el-menu-item index="2">导航二</el-menu-item>
+                    <el-menu-item index="3">导航三</el-menu-item>
+                </el-menu>
+            </el-col>
+            <el-col :span="20" class="content">
+                <router-view></router-view>
+            </el-col>
+        </el-row>
         
 <!--         <router-view name="dashboard-hotel-mapping"><router-view>
         <router-view name="dashboard-zkhotel"><router-view> -->
@@ -174,8 +122,13 @@
 
 <script>
     import auth from 'root/utils/auth';
+    import ElCol from "element-ui/packages/col/src/col";
+    import ElMenuItem from "../../../../node_modules/element-ui/packages/menu/src/menu-item";
     export default {
         /*增加data*/
+        components: {
+            ElMenuItem,
+            ElCol},
         data(){
             return {
                 isActive:true,
@@ -186,6 +139,9 @@
         computed:{
             userInfo(){
                 return this.$store.state.userInfo;
+            },
+            selected(){
+                    return this.$route.name
             }
         },
         methods:{
@@ -214,7 +170,19 @@
             SAI:function(){
                 // this.$router.push({name:'dashboard-hotel-mapping-dl'});
                 this.$router.push({path:'/dashboard/zkhotel'});
+            },
+            handleOpen(key, keyPath) {
+
+            },
+            handleClose(key, keyPath) {
+
+            },
+            handleSelect(index){
+                this.$router.push({name:index})
             }
+        },
+        mounted(){
+
         }
     }
 </script>
