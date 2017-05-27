@@ -31,7 +31,7 @@
 			width:302px;
 			height:32px;
 			position:absolute;
-			top:188px;
+			top:100px;
 			li{
 				display:inline-block;
 				float:left;

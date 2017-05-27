@@ -58,7 +58,6 @@
                     this.$ajax.postSilence('/api/auth/is-login').then(result=>{
                         switch(result.code){
                             case 0: //login
-                                console.log(result);
                                 this.$commit('initUserInfo', result.userInfo);
                                 this.redirect();
                                 break;

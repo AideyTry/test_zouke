@@ -74,7 +74,6 @@
 
 <template>
 	<div>
-		<div>
 			<div class="shade" v-if="shotelisTrue"></div>
 			<div class="shade2" v-if="photelisTrue"></div>
 			<shotel class="hotel" @close="close11" v-if="shotelisTrue" :ids="sid"></shotel>
@@ -127,7 +126,6 @@
 				</tfoot>
 
 			</table>
-		</div>
 	</div>
 </template>
 
