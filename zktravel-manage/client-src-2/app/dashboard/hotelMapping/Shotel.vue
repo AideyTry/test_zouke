@@ -84,7 +84,7 @@
 	}
 	
 	.actives {
-		background-color: #999999;
+		background-color: #CCCCCC;
 	}
 	
 	textarea {
@@ -103,13 +103,13 @@
 		line-height: 34px;
 		text-align: center;
 		border-radius: 100%;
-		position: absolute;
+		position: fixed;
 		text-align: center;
-		top: -17px;
-		right: -17px;
+		right: 3.4%;
+		top: 33px;
 		font-weight: 100;
 		border: 1px solid #999;
-		z-index: 130;
+		z-index: 150;
 		background: #FFFFFF;
 	}
 	
@@ -117,17 +117,24 @@
 	.tabs td {
 		height: 30px;
 		line-height: 30px;
+		border-right:1px solid #ccc;
+		
 	}
-	
 	.hotel-state {
 		padding-top: 10px;
 	}
 	
 	.foot {
-		height: 100px;
+		height: 40px;
+	}
+	
+	.contain {
+		width:80%;
+		height: 90%;
+		overflow-x: scroll;
 	}
 </style>
-<template id="files-list-template">
+<template>
 	<div class="container-fluid contain">
 		<div @click="close()" class="cricle">X</div>
 		<div class="row hotel-top">
@@ -136,7 +143,7 @@
 		<!--酒店状态-->
 		<div class="row hotel-state">
 			<div class="form-group col-lg-3">
-				<label class="col-lg-4">酒店的ID</label>
+				<label class="col-lg-4">酒店ID</label>
 				<input type="text" class="col-lg-6" v-model="ids">
 			</div>
 			<div class="form-group col-lg-3">
@@ -195,7 +202,7 @@
 		<!--链接-->
 		<div class="row">
 			<div class="form-group col-lg-12">
-				<label class="col-lg-2">booking链接地址</label>
+				<label class="col-lg-1">链接地址</label>
 				<input type="text" class="col-lg-4" disabled v-model="shdata.url_web">
 				<a class="btn col-lg-1 btn-go" :href="'https://'+ shdata.url_web" target="_blank">前往</a>
 				<label class="col-lg-1">B评分</label>
@@ -230,7 +237,7 @@
 		<div class="row">
 			<div class="form-group col-lg-12">
 				<label class="col-lg-1">酒店介绍</label>
-				<textarea class="col-lg-8" disabled autofocus rows="3" cols="30">{{shdata.description}}
+				<textarea class="col-lg-10" disabled autofocus rows="3" cols="30">{{shdata.description}}
                 </textarea>
 			</div>
 		</div>
@@ -260,8 +267,8 @@
 			</div>
 		</div>
 		<div class="row">
-			<div class="col-lg-6">
-				<label class="col-lg-3">mapping信息</label>
+			<div class="col-lg-11">
+				<label class="col-lg-1 pull-left">mapping信息</label>
 				<table disabled class="table table-bordered col-lg-offset-1 tabs">
 					<tr class="actives">
 						<th>vt_id</th>
@@ -269,15 +276,15 @@
 						<th>dl_id</th>
 						<th>booking</th>
 					</tr>
-					<tr class="active">
+					<tr>
 						<td>
-							<router-link v-for="vid in vids" :to="{name: 'fullpage-vtids', params:{spid: vid}}" target="_blank">{{vid}}</router-link>
+							<router-link v-for="vid in vids" :key="vid" :to="{name: 'fullpage-vtids', params:{spid: vid}}" target="_blank">{{vid}}</router-link>
 						</td>
 						<td>
-							<router-link v-for="mid in mids" :to="{name: 'fullpage-mkids', params: {spid: mid}}" target="_blank">{{mid}}</router-link>
+							<router-link v-for="mid in mids" :key="mid" :to="{name: 'fullpage-mkids', params: {spid: mid}}" target="_blank">{{mid}}</router-link>
 						</td>
 						<td>
-							<router-link v-for="did in dids" :to="{name: 'fullpage-dlids', params: {spid: did}}" target="_blank">{{did}}</router-link>
+							<router-link v-for="did in dids" :key="did" :to="{name: 'fullpage-dlids', params: {spid: did}}" target="_blank">{{did}}</router-link>
 						</td>
 						<td>
 							<a :href="'https://'+ shdata.url_web" target="_blank">{{shdata.url_web}}</a>

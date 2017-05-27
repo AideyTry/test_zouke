@@ -41,6 +41,7 @@ module.exports = class AuthController extends SController{
         const { [codeKey]: code, [codeExpriesKey]:codeExpries, uid } = this.session;
 
         if(uid){
+            console.log('\tuid: ',this.session.uid);
             const user = await User.get(uid);
             this.renderJSON({code:0, userInfo:{
                 name: user.name,
@@ -61,6 +62,7 @@ module.exports = class AuthController extends SController{
 
     }
     logout(){
+        console.log('\tuid: ',this.session.uid);
         this.session = null;
         this.renderJSON({ code:0, msg:'logout ok' });
     }

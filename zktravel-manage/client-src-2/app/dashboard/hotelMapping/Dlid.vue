@@ -138,9 +138,6 @@
 					<select class="star col-lg-1" disabled>
 						<option>{{vtdata.city_name}}{{vtdata.city_name_en}}</option>
 					</select>
-					<select class="star col-lg-1" disabled>
-						<option></option>
-					</select>
 					<input type="text" disabled class="col-lg-5" v-model="vtdata.address">
 				</div>
 			</div>
@@ -205,24 +202,20 @@
 		props: ['updates'],
 		data() {
 			return {
+				spid:'',
 				isTrue: false,
 				vtdata: {},
 				vtphoto: [],
 			}
 		},
-		computed:{
-			state(){
-				return this.$store.state;
-			}
-		},
 		mounted() {
+			this.spid = parseInt(this.$route.params.spid);
 			ajax.post('/api/sp-hotel/detail', {
-				spId:this.spid,
+				id:this.spid,
 				sp:'dl'
 			}).then(json => {
 				if(json.code === 0) {
 					this.vtdata = json.detail;
-					console.log(this.vtdata);
 					this.vtphoto = this.vtdata.photos;
 				}
 			})
