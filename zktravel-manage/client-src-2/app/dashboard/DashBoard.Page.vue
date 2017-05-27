@@ -122,8 +122,6 @@
 
 <script>
     import auth from 'root/utils/auth';
-    import ElCol from "element-ui/packages/col/src/col";
-    import ElMenuItem from "../../../../node_modules/element-ui/packages/menu/src/menu-item";
     export default {
         /*增加data*/
         components: {
@@ -133,7 +131,11 @@
             return {
                 isActive:true,
                 isTrue:false,
-                flag:0
+                flag:0,
+                bgIstrue:{
+                    mpIstrue:false,
+                    zkIstrue:false
+                }
             }
         },
         computed:{
@@ -151,25 +153,29 @@
                 })
             },
             /*增加方法*/
-            hotel:function(){
+            hotel(){
                 this.flag++;
                 if(this.flag%2!=0){
                     this.isTrue=true;
-
+                    this.bgIstrue.mpIstrue=true;
+                    this.$router.push({name:'dashboard-hotel-mapping-vt'});
                 }else{
                     this.isTrue=false;
-                    
-                }
-                this.$router.push({name:'dashboard'});
+                    this.$router.push({name:'dashboard'})
+                  }
                 
             },
             stock:function(){
                 // this.$router.push({name:'dashboard-hotel-mapping'});
-                this.$router.push({path:'/dashboard/hotel-mapping'});
+                this.$router.push({path:'/dashboard/hotel-mapping/vt'});
+                this.bgIstrue.mpIstrue=true;
+                this.bgIstrue.zkIstrue=false;
             },
             SAI:function(){
                 // this.$router.push({name:'dashboard-hotel-mapping-dl'});
                 this.$router.push({path:'/dashboard/zkhotel'});
+                this.bgIstrue.zkIstrue=true;
+                this.bgIstrue.mpIstrue=false;
             },
             handleOpen(key, keyPath) {
 

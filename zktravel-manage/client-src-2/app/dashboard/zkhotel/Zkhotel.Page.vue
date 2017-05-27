@@ -31,7 +31,7 @@
 			width:302px;
 			height:32px;
 			position:absolute;
-			top:188px;
+			top:100px;
 			li{
 				display:inline-block;
 				float:left;
@@ -120,8 +120,6 @@
 		<router-view></router-view>
 	</div>
 </template>
-
-
 	
 <script>
 	export default{
@@ -156,28 +154,18 @@
 						this.isTrue.one=true;
 						this.isTrue.two=false;
 						this.isTrue.three=false;
-						
-						// this.$store.state.saiisTrue.pisTrue=true;
-						// this.$store.state.saiisTrue.onisTrue=false;
-						// this.$store.state.saiisTrue.ofisTrue=false;
 						break;
 					case 'online':
 						url = '/dashboard/zkhotel/online';
 						this.isTrue.one=false;
 						this.isTrue.two=true;
 						this.isTrue.three=false;
-						// this.$store.state.saiisTrue.pisTrue=false;
-						// this.$store.state.saiisTrue.onisTrue=true;
-						// this.$store.state.saiisTrue.ofisTrue=false;
 						break;
 					case 'offline':
 						url = '/dashboard/zkhotel/offline';
 						this.isTrue.one=false;
 						this.isTrue.two=false;
 						this.isTrue.three=true;
-						// this.$store.state.saiisTrue.pisTrue=false;
-						// this.$store.state.saiisTrue.onisTrue=false;
-						// this.$store.state.saiisTrue.ofisTrue=true;
 						break;
 				}
 				this.$router.push({

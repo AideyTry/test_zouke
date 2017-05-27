@@ -16,12 +16,12 @@ module.exports = class LoginController extends SController {
 
         if(this.ctx.headers['x-requested-with']!=='XMLHttpRequest') return false;
 
-        console.log(this.request.body);
-
         const userInfo = await this.userInfo;
         if(!userInfo){
             this.renderJSON({ code: -1, msg: 'not login' });
             return false; //pass
         }
-    }   
+
+        console.log('\tuid: ',this.session.uid);
+    }
 }

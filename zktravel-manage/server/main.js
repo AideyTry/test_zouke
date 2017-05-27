@@ -7,6 +7,7 @@ if(!DEBUG){
 require('./requireRoot');
 require('@local/common/core/w/prototype');
 
+const http = require('http');
 const Koa = require('koa');
 const app = new Koa();
 
@@ -20,7 +21,11 @@ app.use(async (ctx, next) => {
         return
     }
 
-    if(ctx.accepts(['html', 'image/*'])==='image/*'||ctx.path.startsWith('/trigger/')||ctx.headers['x-requested-with'] === 'XMLHttpRequest'){
+    if(
+        ctx.accepts(['html', 'image/*'])==='image/*'||                  // qr code
+        ctx.path.startsWith('/trigger/')||                              // internal call
+        ctx.headers['x-requested-with'] === 'XMLHttpRequest'            // api ajax
+    ){
         await next();
     }else{
         await opa(ctx, next);
@@ -32,6 +37,9 @@ app.use(async (ctx, next)=>{
     await next();
     console.log(`request ${ctx.originalUrl} end`);
 })
+app.use(async (ctx, next)=>{
+    await next();
+});
 app.use(koaMvc({
     routerConfig: {
         areas: ['trigger', 'api']
@@ -43,4 +51,4 @@ app.use(koaMvc({
     }
 }, app));
 
-app.listen(PORT);
+http.createServer(app.callback()).listen(PORT, '127.0.0.1');

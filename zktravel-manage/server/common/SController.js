@@ -11,4 +11,14 @@ module.exports = class SessionController extends Controller{
     get sessionId(){
         return this.ctx.sessionId;
     }
+    $beforeAction(){
+        if(this.isAjax()){
+            console.log('\trequest data', this.request.body);
+        }
+    }
+    $afterAction(){
+        if(this.isAjax()){
+            console.log('\tresponse data', this.response.body);
+        }
+    }
 }
