@@ -63,15 +63,16 @@
 	.cricle {
 		width: 34px;
 		height: 34px;
-		border-radius: 100%;
-		position: absolute;
-		top: -17px;
-		right: -17px;
-		font-weight: 100;
-		border: 1px solid #999;
 		line-height: 34px;
 		text-align: center;
-		z-index: 130;
+		border-radius: 100%;
+		position: fixed;
+		text-align: center;
+		right: 3.4%;
+		top: 33px;
+		font-weight: 100;
+		border: 1px solid #999;
+		z-index: 150;
 		background: #FFFFFF;
 	}
 	
@@ -81,6 +82,7 @@
 		line-height: 28px;
 		text-decoration: none;
 		background: #FFFFFF;
+		min-width: 100px;
 	}
 	
 	.hotel-state {
@@ -99,7 +101,6 @@
 	.picture li {
 		height: 150px;
 		width: 150px;
-		/*float: left;*/
 		display: inline-block;
 		white-space: nowrap;
 		padding: 4px;
@@ -113,12 +114,17 @@
 	}
 	
 	.foot {
-		height: 100px;
+		height: 20px;
+	}
+	.contain {
+		width:100%;
+		height: 700px;
+		overflow-x: scroll;
 	}
 </style>
 <template>
 	<div>
-		<div class="container-fluid">
+		<div class="container-fluid contain">
 			<div @click="close2()" class="cricle">X</div>
 			<div class="row hotel-top">
 				<div class="title pull-left col-lg-2">酒店详情</div>
@@ -197,7 +203,7 @@
 			<div class="row ">
 				<div class="form-group col-lg-12">
 					<label class="col-lg-1">酒店介绍</label>
-					<textarea class="col-lg-8" disabled autofocus rows="3" cols="30">{{phdata.description}}
+					<textarea class="col-lg-10" disabled autofocus rows="3" cols="30">{{phdata.description}}
                 </textarea>
 				</div>
 			</div>
