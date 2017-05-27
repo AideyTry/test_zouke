@@ -16,6 +16,16 @@ export default new Vuex.Store({
             spId:null,
             sign:null
         },
+        toast:{
+            match:false,
+            put:false,
+            unnecessary:false
+        },
+        putisTrue:false,
+        //信息更新后点击刷新和强制入库
+        // closePutisTrue:false,
+        putConstraint:false,
+
         listVt:[],
         listMk:[],
         listDl:[],
@@ -27,260 +37,7 @@ export default new Vuex.Store({
     		dli:null
         },
 
-        list:[
-                        {   
-                            id:1,
-                            grade:"L1",
-                            sName:"黄冠大酒店",
-                            mName:"皇冠假日大酒店",
-                            sAddress:"地址1",
-                            mAddress:"地址11",
-                            sPhone:1234556,
-                            mPhone:7878788,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {
-                            id:3,
-                            grade:"L3",
-                            sName:"黄亚大酒店",
-                            mName:"皇亚假日大酒店",
-                            sAddress:"地址2",
-                            mAddress:"地址22",
-                            sPhone:2234556,
-                            mPhone:2278788,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {   
-                            id:2,
-                            grade:"L2",
-                            sName:"黄季大酒店",
-                            mName:"皇季假日大酒店",
-                            sAddress:"地址3",
-                            mAddress:"地址33",
-                            sPhone:3334556,
-                            mPhone:3378788,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {   
-                            id:4,
-                            grade:"L4",
-                            sName:"大酒店",
-                            mName:"假日大酒店",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:4434556,
-                            mPhone:4478788,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {   
-                            id:1,
-                            grade:"L1",
-                            sName:"大酒店5",
-                            mName:"假日大酒店5",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:534556,
-                            mPhone:5478788,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {   
-                            id:6,
-                            grade:"L6",
-                            sName:"大酒店6",
-                            mName:"假日大酒店6",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:6,
-                            mPhone:6,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {   
-                            id:7,
-                            grade:"L7",
-                            sName:"大酒店7",
-                            mName:"假日大酒店7",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:734556,
-                            mPhone:778788,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {   
-                            id:5,
-                            grade:"L5",
-                            sName:"大酒店8",
-                            mName:"假日大酒店8",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:8,
-                            mPhone:8,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {
-                            id:3,
-                            grade:"L3",
-                            sName:"大酒店9",
-                            mName:"假日大酒店9",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:9,
-                            mPhone:9,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {   
-                            id:4,
-                            grade:"L4",
-                            sName:"大酒店10",
-                            mName:"假日大酒店10",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:10,
-                            mPhone:10,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {
-                            id:1,
-                            grade:"L1",
-                            sName:"大酒店11",
-                            mName:"假日大酒店11",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:11,
-                            mPhone:11,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {
-                            id:3,
-                            grade:"L3",
-                            sName:"大酒店12",
-                            mName:"假日大酒店12",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:12,
-                            mPhone:12,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {
-                            id:1,
-                            grade:"L1",
-                            sName:"大酒店13",
-                            mName:"假日大酒店13",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:13,
-                            mPhone:13,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {   
-                            id:2,
-                            grade:"L2",
-                            sName:"大酒店14",
-                            mName:"假日大酒店14",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:14,
-                            mPhone:14,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {
-                            id:4,
-                            grade:"L4",
-                            sName:"大酒店15",
-                            mName:"假日大酒店15",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:15,
-                            mPhone:15,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {
-                            id:1,
-                            grade:"L1",
-                            sName:"大酒店16",
-                            mName:"假日大酒店16",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:16,
-                            mPhone:16,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {
-                            id:1,
-                            grade:"L1",
-                            sName:"大酒店17",
-                            mName:"假日大酒店17",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:17,
-                            mPhone:17,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {
-                            id:2,
-                            grade:"L2",
-                            sName:"大酒店18",
-                            mName:"假日大酒店18",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:18,
-                            mPhone:18,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {   
-                            id:3,
-                            grade:"L3",
-                            sName:"大酒店19",
-                            mName:"假日大酒店19",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:19,
-                            mPhone:19,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {
-                            id:2,
-                            grade:"L2",
-                            sName:"大酒店20",
-                            mName:"假日大酒店20",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:20,
-                            mPhone:20,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        },
-                        {
-                            id:1,
-                            grade:"L1",
-                            sName:"大酒店21",
-                            mName:"假日大酒店21",
-                            sAddress:"地址4",
-                            mAddress:"地址44",
-                            sPhone:21,
-                            mPhone:21,
-                            link:"www.baidu.com",
-                            bLink:"www.zouke.com"
-                        }
-        ],
+        list:[],
         flag:{
             flag:false,  //记录状态进行跳转页面使用
             page:null
@@ -342,18 +99,30 @@ export default new Vuex.Store({
             return  ajax.post('/api/vt-mapping/query').then(json=>{
                 if(json.code===0){
                     context.state.listVt=json.list;
-                    console.log(JSON.parse(JSON.stringify(context.state.listVt)))
                 }  
             })
         },
         actionMk(context){
-
+             return  ajax.post('/api/mk-mapping/query').then(json=>{
+                if(json.code===0){
+                    context.state.listVt=json.list;
+                }  
+            })
         },
         actionDl(context){
-
+            return  ajax.post('/api/dl-mapping/query').then(json=>{
+                if(json.code===0){
+                    context.state.listVt=json.list;
+                }  
+            })
         },
         actionBk(context){
-
+         // return  ajax.post('/api/bk-mapping/query').then(json=>{
+         //        if(json.code===0){
+         //            context.state.listVt=json.list;
+         //            console.log(JSON.parse(JSON.stringify(context.state.listVt)))
+         //        }  
+         //    })
         },
 
        
@@ -367,6 +136,7 @@ export default new Vuex.Store({
                 console.log(json);
                 if(json.code===0){
                     context.dispatch('actionVt');
+                    context.commit('toastMatch');
                 }
 
             })
@@ -386,8 +156,8 @@ export default new Vuex.Store({
             return ajax.post('/api/vt-mapping/insert',{sign:sign,spId:spId}).then(json=>{
                 console.log(json);
                 if(json.code===0){
-                    console.log("正确");
                     context.dispatch('actionVt');
+                    context.commit('toastPut');
                 }
                 else if(json.code===1){
                     console.log("hotel没有找到");
@@ -397,6 +167,14 @@ export default new Vuex.Store({
                 }
                 else if(json.code===3){
                     console.log("map信息已经更新");
+                    context.commit('putIstrue');
+                    if(context.state.putConstraint===true){
+                        return ajax.post('/api/vt-mapping/insert',{sign:0,spId:spId}).then(json=>{
+                        context.dispatch('actionVt');
+                        })
+                    }
+                    
+
                 }
             })
         },
@@ -408,6 +186,7 @@ export default new Vuex.Store({
                 console.log(json);
                 if(json.code===0){
                     context.dispatch('actionVt');
+                    context.commit('toastUnnecessary');
                 }
             })
         }
@@ -451,13 +230,33 @@ export default new Vuex.Store({
             state.opreat.zkId=item.zkId;
             state.opreat.spId=item.spId;
         },
+        //当返回的code是3，强制进入去调用接口
+        putConstraint(state){
+            state.putConstraint=true;
+        },
+        toastMatch(state){
+            state.toast.match=true;
+        },
         opreatPut(state,item){
             state.opreat.sign=item.sign;
             state.opreat.zkId=item.zkId;
             state.opreat.spId=item.spId;
         },
+        toastPut(state){
+            state.toast.put=true;
+        },
+        putIstrue(state){
+            state.putisTrue=true;
+        },
+        //强制入库的确认
+        closePut(state){
+            state.putisTrue=false;
+        },
         opreatUnnecessary(state,item){
             state.opreat.spId=item.spId;
+        },
+        toastUnnecessary(state){
+            state.toast.unnecessary=true;
         },
         exit(state){
             state.counts.isTrue.eisTrue=true;

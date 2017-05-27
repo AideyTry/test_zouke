@@ -1,16 +1,11 @@
 <style lang="scss" scoped>
 	.hotel {
-		position: absolute;
-		width: 90%;
-		left: 3%;
-		top: -200px;
+		position: fixed;
+		width: 80%;
+		left: 16%;
+		top: 50px;
 		z-index: 140;
-		background-color: #EEEEEE;
-		/*border: 1px solid #000;*/
-	}
-	
-	.tabl {
-		position: relative;
+		background-color: #FFFFFF;
 	}
 	
 	.table1 {
@@ -22,6 +17,9 @@
 		.oColor {
 			background-color: #eeeeee;
 			// z-index:100;
+		}
+		.puts{
+			z-index:99;
 		}
 		th,
 		td {
@@ -70,11 +68,15 @@
 			}
 		}
 	}
+	 .shade {width:100%; height:100%; position:fixed; z-index: 110; top:20px; left:15%; background:#CCCCCC;}
+	 .shade2 {width:100%; height:100%; position:fixed; z-index: 110; top:20px; left:15%; background:#CCCCCC;}
 </style>
 
 <template>
 	<div>
-		<div class="tabl">
+		<div>
+			<div class="shade" v-if="shotelisTrue"></div>
+			<div class="shade2" v-if="photelisTrue"></div>
 			<shotel class="hotel" @close="close11" v-if="shotelisTrue" :ids="sid"></shotel>
 			<photel class="hotel" @close2="close22" v-if="photelisTrue" :idp="pid"></photel>
 			<table class="table1 table table-bordered tableBg">
@@ -93,8 +95,8 @@
 					</tr>
 				</thead>
 				<opreat class="oColor" v-if="isTrue" @cancel="cancel" @confirm="confirm" :opreat="opreatData" :items='item'>
-
 				</opreat>
+				<put class="puts" v-if="store.state.putisTrue" @refrech="refrech" @fConfirm="fConfirm"></put>
 				<tbody>
 					<tr v-for="(item,index) in list">
 						<td>{{item.levelDesc}}</td>
@@ -104,7 +106,7 @@
 						<td>{{item.spAddress}}</td>
 						<td>{{item.zkPhone}}</td>
 						<td>{{item.spPhone}}</td>
-						<td @click="link(item)" class="tdColor">{{item.link}}</td>
+						<td @click="link(item)" class="tdColor">查看</td>
 						<td @click="booking(item)" class="tdColor">{{item.bookingUrl}}</td>
 						<td>
 							<button class="btn btn-info" v-on:click="match(item)">匹配</button>
@@ -133,13 +135,15 @@
 	import store from './store'
 	import Photel from './Photel';
 	import Shotel from './Shotel';
-	import Opreat from './Opreat'
+	import Opreat from './Opreat';
+	import Put from './Put'
 	export default {
 		props: ['mk', 'list', 'pages'],
 		components: {
 			photel: Photel,
 			shotel: Shotel,
 			opreat: Opreat,
+			put: Put
 		},
 		data() {
 			return {
@@ -195,6 +199,13 @@
 				this.shotelisTrue = !this.shotelisTrue;
 				this.sid = sid;
 			},
+			link(item){
+				const params = [];
+				params.push([item.spGPS, item.name]);
+				params.push([item.zkGPS, item.zkName]);
+
+				window.open(`/pages/location.html?${encodeURIComponent(JSON.stringify(params))}`);
+			},		
 			booking(item){
 				window.open(item.bookingUrl);
 			},
@@ -239,6 +250,16 @@
 			confirm() {
 				this.isTrue = false;
 			},
+
+			//入库提示后刷新功能和强制入库功能
+			refrech(){
+				store.commit('closePut');
+			},
+			fConfirm(){
+				store.commit('closePut');
+				store.commit('putConstraint');
+			},
+
 			prev() {
 				store.state.flag.flag = false;
 				if(this.pages.pageNum > 1) {

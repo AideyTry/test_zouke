@@ -16,19 +16,27 @@
             float:right;
             // box-sizing:border-box;
             width:85%;
-            height:70px;
-            font-size:22px;
-            line-height:70px;
+            height:47px;
             color:#000;
             background-color:#fff; 
             border-top:1px solid #000;
             border-bottom:1px solid #000;
             border-right:none;
-            .logout{
-                width:35%;
+            .pCenter{
+                width:25%;
                 position:absolute;
                 right:0;
+                 strong{
+                    color:#f00;
+                 }
+                 .logout{
+                    font-size:16px;
+                    line-height:47px;
+                    cursor:pointer;
+                    
+                }
             }
+           
         }
         /*头部end*/
         /*侧边栏start*/
@@ -38,43 +46,84 @@
             width:15%;
             height:751px;
             background-color: #333;
+            h1{
+                margin:0;
+                padding:0;
+                background-color: #0ee;
+                // text-indent:20px;
+                span{
+                    margin:0;
+                    padding:0;
+                    display:inline-block;
+                    color:#fff;
+                    margin-top:5px;
+                    margin-bottom:5px;  
+                    height:35px;
+                    line-height:35px;
+                    text-align:center;               
+                    font-size:25px;
+                    text-indent:20px;
+                }
+             
+            }
             ul{
                 list-style:none;
             }
-            li{
+            .hotel{
+                // li{
+                //     display:inline-block;
+                //     height:50px;
+                //     line-height:50px;
+                //     // text-align:center;
+                //     font-size:16px;
+                //     width:100%;
+                //     border-top:1px solid #000;
+                //     border-bottom:1px solid #000;
+                //     border-left:1px solid #000;
+                // }
+                .hbg{
+                    height:50px;
+                    line-height:50px;
+                    // text-align:center;
+                    font-size:16px;
+                    width:100%;
+                    border-top:1px solid #000;
+                    border-bottom:1px solid #000;
+                    border-left:1px solid #000;
+                    // padding-left:20px;
+                    text-indent:20px;
+                    box-sizing:box-border;
+                    background-color: #000;
+                    color:#fff;
+                    .active{
+                        height:50px;
+                        line-height:50px;
+                        // text-align:center;
+                        font-size:16px;
+                        width:100%;
+                        border-top:1px solid #000;
+                        border-bottom:1px solid #000;
+                        border-left:1px solid #000;
+                        background-color:#ccc;
+                        width:100%;
+                        color:#000;
+                        border-bottom:1px solid #333;
+                    }
+                    .active:hover{
+                        background-color: #FFF
+                        // color:#000;
+                    }
+                    .sh{
 
-                display:inline-block;
-                height:50px;
-                line-height:50px;
-                // text-align:center;
-                font-size:16px;
-                width:100%;
-                border-top:1px solid #000;
-                border-bottom:1px solid #000;
-                border-left:1px solid #000;
-            }
-            .hbg{
-                background-color: #000;
-                color:#fff;
-                .active{
-                background-color:#ccc;
-                width:100%;
-                color:#000;
-                border-bottom:1px solid #333;
+                    }
                 }
-                .active:hover{
-                    background-color: #FFF
-                    // color:#000;
-                }
-                .sh{
-
+                .hbg:hover{
+                    background-color: #fff;
+                    
+                    color:#000;
                 }
             }
-            .hbg:hover{
-                background-color: #fff;
-                
-                color:#000;
-            }
+            
         }
         /*侧边栏end*/
         /*主体部分start*/
@@ -92,13 +141,20 @@
 </style>
 <template>
     <div class="dashboard">
-        <h2>酒店基础数据</h2>
+<!--         <h2>酒店基础数据</h2> -->
         <header class="headers">
-            <div class="logout" @pointerup.prevent="logout">    退出登录
-            </div>    
+            <div class="pCenter">
+                <span class="glyphicon glyphicon-user"></span>
+                <span>当前用户</span>
+                <strong>{{userInfo.name}}</strong>
+                <span class="logout" @pointerup.prevent="logout">    退出
+                </span>  
+            </div>
+             
         </header>
         <aside class="sidebar">
-            <ul>
+            <h1><span>超级行程单</span></h1>
+            <ul class="hotel">
                 <li @pointerup.prevent="hotel()" class="hbg">酒店数据
                     <ul v-if="isTrue">
                         <li class="active sh" @pointerup.stop.prevent="stock()">待入库</li>
@@ -125,6 +181,11 @@
                 isActive:true,
                 isTrue:false,
                 flag:0
+            }
+        },
+        computed:{
+            userInfo(){
+                return this.$store.state.userInfo;
             }
         },
         methods:{

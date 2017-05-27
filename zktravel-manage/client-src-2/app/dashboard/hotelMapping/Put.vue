@@ -56,62 +56,34 @@
 </style>
 
 <template>
-<div>
+	<div>
 	<content>
 		<span class="glyphicon glyphicon-remove" v-on:click="cancel()"></span>
-		<h3>是否{{opreat}}?</h3>
-		<input class="btn1 btn btn-info" type="button" name="" value="否" v-on:click="cancel()">
-		<input class="btn2 btn btn-success" type="button" value="是" v-on:click="confirm()">
+		<h3>map信息已更新，请操作</h3>
+		<input class="btn1 btn btn-info" type="button" name="" value="刷新" v-on:click="refrech()">
+		<input class="btn2 btn btn-success" type="button" value="强制入库" v-on:click="confirm()">
 	</content>
 
 </div>
-	
 </template>
 
 <script>
-	import store from './store.js';
 	export default{
-		props:['opreat','items'],
 		data(){
 			return {
 
 			}
 		},
 		computed:{
-			state(){
-				return store.state;
-			}
+			
 		},
 		methods:{
-			cancel(){
-				this.$emit("cancel");
+			refrech(){
+				this.$emit('refrech')
 			},
 			confirm(){
-				if(this.opreat==='匹配'){
-					store.commit('opreatMatch',this.items);
-					store.dispatch('actionOmath');
-					if(this.state.toast.match===true){
-						this.$toast.show("操作正确");;
-					}
-
-				}
-				else if(this.opreat==='入库'){
-					store.commit('opreatPut',this.items);
-					store.dispatch('actionOput');
-					if(this.state.toast.put===true){
-						this.$toast.show("操作正确");;
-					}
-				}
-				else if(this.opreat==='置为无效'){
-					store.commit('opreatUnnecessary',this.items);
-					store.dispatch('actionOu');
-					if(this.state.toast.unnecessary===true){
-						this.$toast.show("操作正确");;
-					}
-				}
-				this.$emit("confirm");
+				this.$emit('fConfirm');
 			}
 		}
 	}
-
 </script>
