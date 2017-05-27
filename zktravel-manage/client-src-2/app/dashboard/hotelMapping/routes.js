@@ -9,7 +9,7 @@ import BkPage from './Bk.Page.vue';
 export default [
     { 
         // path:'hotel-mapping', component: { render }, name: 'dashboard-hotel-mapping' ,
-        path:'hotel-mapping',component:HotelMappingPage,mane:'dashboard-hotel-mapping',
+        path:'hotel-mapping',component:HotelMappingPage,name:'dashboard-hotel-mapping',
         children: [
         	//增加mapping子路由代码start
         	{

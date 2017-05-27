@@ -85,7 +85,7 @@
 					switch(page){
 						case 'mk':						
 							store.commit('mk');
-							store.dispatch('actionVt');
+							store.dispatch('actionMk');
 							url='/dashboard/hotel-mapping/mk';		
 							this.isTrue.one=true;
 							this.isTrue.two=false;
@@ -95,7 +95,7 @@
 						case 'dl':
 							url='/dashboard/hotel-mapping/dl';
 							store.commit('dl');
-							store.dispatch('actionVt');
+							store.dispatch('actionDl');
 							this.isTrue.one=false;
 							this.isTrue.two=true;
 							this.isTrue.three=false;
@@ -112,13 +112,15 @@
 							this.isTrue.four=false;
 							break;
 						case 'bk':
-							url='/dashboard/hotel-mapping/bk';
-							store.commit('bk');
-							store.dispatch('actionVt');
-							this.isTrue.one=false;
-							this.isTrue.two=false;
-							this.isTrue.three=false;
-							this.isTrue.four=true;
+							//bk暂时经用掉，
+							// url='/dashboard/hotel-mapping/bk';
+							// store.commit('bk');
+							// store.dispatch('actionBk');
+							// this.isTrue.one=false;
+							// this.isTrue.two=false;
+							// this.isTrue.three=false;
+							// this.isTrue.four=true;
+							alert("正在创建中，请等待......");
 							break;
 					}
 					this.$router.push({

@@ -29,7 +29,7 @@
 				return {
 					pageNum: this.pageNum,
 					pageSize: this.pageSize,
-					total: Math.ceil((store.state.listVt).length / this.pageSize),
+					total: Math.ceil((store.state.listVt).length / this.pageSize)||1,
 					pages: Math.ceil((store.state.listVt).length / this.pageSize) / this.pageNum
 				}
 			},
@@ -39,7 +39,6 @@
 			list() {
 				//分页
 				this.items=store.state.listVt;
-				console.log(this.items);
 				this.listData = this.items.sort(function(a, b) {
 					if(a.level> b.level) {
 						return 1;
