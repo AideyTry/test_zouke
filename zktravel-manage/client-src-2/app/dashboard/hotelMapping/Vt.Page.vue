@@ -67,6 +67,10 @@
 				}
 				this.pageNum++;
 
+			},
+			beforeCreate(){
+				// store.commit('vt');
+				// store.dispatch('actionVt');
 			}
 		}
 	}
