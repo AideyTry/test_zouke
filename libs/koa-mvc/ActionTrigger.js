@@ -56,8 +56,7 @@ module.exports = class ActionTrigger{
             if(result!==false){
                 const actionResult = await controller[this._actionName]();
             }
-
-            await controller.$afterAction();
+            await controller.$afterAction(); 
             
         } else throw new NotFoundError('action not found');
     }
