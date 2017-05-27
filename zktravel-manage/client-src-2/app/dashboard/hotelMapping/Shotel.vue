@@ -271,13 +271,13 @@
 					</tr>
 					<tr class="active">
 						<td>
-							<router-link v-for="vid in vids" :to="{name: 'fullpage-vtids', params:{spid: vid}}" target="_blank">{{vid}}</router-link>
+							<router-link v-for="vid in vids" :key="vid" :to="{name: 'fullpage-vtids', params:{spid: vid}}" target="_blank">{{vid}}</router-link>
 						</td>
 						<td>
-							<router-link v-for="mid in mids" :to="{name: 'fullpage-mkids', params: {spid: mid}}" target="_blank">{{mid}}</router-link>
+							<router-link v-for="mid in mids" :key="mid" :to="{name: 'fullpage-mkids', params: {spid: mid}}" target="_blank">{{mid}}</router-link>
 						</td>
 						<td>
-							<router-link v-for="did in dids" :to="{name: 'fullpage-dlids', params: {spid: did}}" target="_blank">{{did}}</router-link>
+							<router-link v-for="did in dids" :key="did" :to="{name: 'fullpage-dlids', params: {spid: did}}" target="_blank">{{did}}</router-link>
 						</td>
 						<td>
 							<a :href="'https://'+ shdata.url_web" target="_blank">{{shdata.url_web}}</a>
