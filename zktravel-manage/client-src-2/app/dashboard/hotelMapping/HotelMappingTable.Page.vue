@@ -175,17 +175,19 @@
 		},
 		computed: {
 			opreatData() {
-				if(this.misTrue === true) {
-					return this.opreatList.match;
-				} else if(this.pisTrue === true) {
-					return this.opreatList.put;
-				} else if(this.uisTrue === true) {
-					return this.opreatList.unnecessary;
-				}
-			},
-			store(){
-				return store;
-			}
+			    if(this.misTrue === true) {
+			     	return this.opreatList.match;
+			    } 
+			    else if(this.pisTrue === true) {
+			     	return this.opreatList.put;
+			    } 
+			    else if(this.uisTrue === true) {
+			     	return this.opreatList.unnecessary;
+			    }
+	   		},
+		   store(){
+		    	return store;
+		   }
 		},
 		methods: {
 			// 组件是否显示
