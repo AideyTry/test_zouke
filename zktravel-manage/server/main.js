@@ -38,7 +38,7 @@ app.use(koaMvc({
     },
     sessionConfig: {
         key: SESS_KEY,
-        maxAge: 86400000,
+        maxAge: DEBUG ? 86400000*30 : 86400000,
         dir: SESS_DIR
     }
 }, app));
