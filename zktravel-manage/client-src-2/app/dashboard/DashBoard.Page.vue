@@ -81,16 +81,6 @@
         </el-row>
         <el-row class="main-body" type="flex">
             <el-col :span="4" class="nav-menu">
-<!--                <el-menu :default-active="$route.path" class="nav-memu" @open="handleopen" @close="handleclose" @select="handleselect"
-                         unique-opened router v-show="!collapsed">
-                    <template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">
-                        <el-submenu :index="index+''" v-if="!item.leaf">
-                            <template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>
-                            <el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>
-                        </el-submenu>
-                        <el-menu-item v-if="item.leaf&&item.children.length>0" :index="item.children[0].path"><i :class="item.iconCls"></i>{{item.children[0].name}}</el-menu-item>
-                    </template>
-                </el-menu>-->
                 <el-menu :default-active="selected"   class="nav-memu" theme="dark" @select="handleSelect" @open="handleOpen" @close="handleClose">
                     <el-menu-item index="home">
                             主页
@@ -124,9 +114,6 @@
     import auth from 'root/utils/auth';
     export default {
         /*增加data*/
-        components: {
-            ElMenuItem,
-            ElCol},
         data(){
             return {
                 isActive:true,
