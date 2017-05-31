@@ -71,7 +71,7 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <el-pagination layout="total, prev, pager, next, jumper" @current-change="currentpage" :total="total"
+                <el-pagination layout="total, prev, pager, next, jumper" @current-change="changepage" :total="total"
                                :page-size="currentlimit"></el-pagination>
             </el-tab-pane>
             <el-tab-pane label="维途" name="vt">
@@ -217,7 +217,7 @@
                         </template>
                     </el-table-column>
                 </el-table>
-                <el-pagination layout="total, prev, pager, next, jumper" @current-change="currentpage" :total="total"
+                <el-pagination layout="total, prev, pager, next, jumper" @current-change="changepage" :total="total"
                                :page-size="currentlimit"></el-pagination>
             </el-tab-pane>
             <!--            <el-tab-pane label="Booking" name="bk">
@@ -325,10 +325,8 @@
     import ajax  from '@local/common/ajax';
     import Photel from './Photel';
     import Shotel from './Shotel';
-    import ElDialog from "../../../../../node_modules/element-ui/packages/dialog/src/component";
     export default{
         components: {
-            ElDialog,
             photel: Photel,
             shotel: Shotel
         },
@@ -385,7 +383,7 @@
                         }
                     }
                     arr.sort(function (a,b) {
-                        return b.level-a.level
+                        return a.level-b.level
                     })
                     vm.currentdata = arr;
                     vm.total = data.list.length;
