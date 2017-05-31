@@ -208,8 +208,8 @@
                 })
             },
 			verifyconfirm(pid){
-                this.showdialog1=true;
                 this.pid = pid;
+                this.showdialog1=true;
 			},
 			verifyaction(){
 
