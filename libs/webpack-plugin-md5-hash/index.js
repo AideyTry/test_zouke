@@ -19,17 +19,9 @@ module.exports = class Md5Hash{
             }
         }
         const pathDeps = [...pathSet].map(p=>{
-            return {type:'normal',path:this._pertreatmentPath(p)}
+        return {type:'normal',path:p}
         });
         return [...pathDeps,...deps];
-    }
-    _pertreatmentPath(p){
-        const seg = p.split('/');
-        if(!seg[seg.length-1].includes('?')) return p;
-
-        const lastSeg = seg[seg.length-1].split('?');
-        seg[seg.length-1] = lastSeg[0];
-        return seg.join('/');
     }
     _stringify(dep){
         switch(dep.type){

@@ -29,7 +29,7 @@ const store = new Vuex.Store({
                 },
                 flag:{
                     flag:false,  //记录状态进行跳转页面使用
-                    page:null
+                    page:1
                 }
         }
         /*SAI酒店库数据end*/
@@ -60,12 +60,21 @@ const store = new Vuex.Store({
             // console.log(total);
             state.list=list;
         },
+        penddingOpreat(state,object){
+            state.counts.saiisTrue.pisTrue=object.pisTrue;
+            state.counts.saiisTrue.onisTrue=object.onisTrue;
+            state.counts.saiisTrue.ofisTrue=object.ofisTrue;
+        },
         count(state,count){
             state.total=count;
         },
-        pages(state,page){
-            state.page=page;
-        }       
+        pages(state,object){
+            state.counts.flag.page=object.page;
+            state.counts.flag.flag=object.flag;
+            // console.log("p=",state.counts.flag.page);
+            // console.log("f=",state.counts.flag.flag);
+        },
+
         /*SAI酒店库end*/
     },
     actions: {
@@ -76,12 +85,14 @@ const store = new Vuex.Store({
         },
         /*SAI酒店库start*/
         penddings(context){
-            let page=context.state.pages.page;
+            // let page=context.state.pages.page;
+            let page=context.state.counts.flag.page-1;
+            console.log("page=",page);
+
             let pageSize=context.state.pages.pageSize;
-            console.log(page,pageSize);
             return ajax.post('/api/zk-hotel/query',{page:page,pageSize:pageSize}).then(json=>{
                 console.log(json);
-                console.log(json.count)
+                // console.log(json.count)
                 context.commit('penddingList',json.list);
                 context.commit('count',json.count);
             })

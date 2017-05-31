@@ -60,18 +60,27 @@
 		},
 		methods:{
 				mkprev() {
+
+					console.log("flag=",this.counts.flag.flag);
 					if(this.counts.flag.flag) {
 						this.pageNum = this.counts.flag.page;
+						console.log(this.pageNum);
+						this.$store.dispatch('penddings');
 						return false;
 					}
 					this.pageNum--;
+					this.$store.dispatch('penddings');
 				},
 				mknext() {
+					console.log("flag=",this.counts.flag.flag);
 					if(this.counts.flag.flag) {
 						this.pageNum = this.counts.flag.page;
+						console.log("868?",this.pageNum);
+						this.$store.dispatch('penddings');
 						return false;
 					}
 					this.pageNum++;
+					this.$store.dispatch('penddings');
 				}
 	},
 	mounted(){

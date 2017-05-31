@@ -44,7 +44,7 @@
 				border: 1px solid #ccc;
 				border-radius: 5px;
 				height: 26px;
-				width: 30%;
+				width: 18%;
 			}
 			button {
 				display: inline-block;
@@ -123,7 +123,6 @@
 		},
 		computed: {
 			counts() {
-
 				return this.$store.getters.counts;
 			}
 
@@ -136,12 +135,15 @@
 				this.isTrue = !this.isTrue;
 			},
 			prev() {
-				this.counts.flag.flag = false;
+				
+				
 				if(this.pages.pageNum > 1) {
 					this.pages.pageNum--;
+					this.$store.commit('pages',{page:this.pages.pageNum,flag:false});
 					this.$emit('prev');
 					this.isTrueN = false;
 					this.isTrueP = false;
+					// this.$store.dispatch('penddings');
 					return false;
 				} else if(this.pages.pageNum <= 1) {
 					this.isTrueN = false;
@@ -151,28 +153,33 @@
 
 			},
 			next() {
-				this.$store.commit('pages',this.pages.total);
-				this.counts.flag.flag = false;
+				
+				// this.counts.flag.flag = false;
 				if(this.pages.pageNum < this.pages.total) {
+					// this.counts.flag.flag=true;
 					this.pages.pageNum++;
+					this.$store.commit('pages',{page:this.pages.pageNum,flag:false});
 					this.$emit('next');
 					this.isTrueP = false;
 					this.isTrueN = false;
+					// this.$store.dispatch('penddings');
 				} else if(this.pages.pageNum >= this.pages.total) {
 
 					this.isTrueN = true;
 				}
+				
 			},
 			skip() {
 				let input = document.getElementById("input");
+				let page;
 				if(this.pages.pageNum > (input.value - 0)) {
-					this.counts.flag.page = input.value - 0;
-					this.counts.flag.flag = true;
+				 	page=input.value - 0;
+					this.$store.commit('pages',{page:page,flag:true});
 					this.$emit('prev');
 				} else if(this.pages.pageNum = (input.value - 0)) {
 
-					this.counts.flag.page = input.value - 0;
-					this.counts.flag.flag = true;
+					page = input.value - 0;
+					this.$store.commit('pages',{page:page,flag:true});
 					this.$emit('next');
 				}
 

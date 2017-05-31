@@ -145,6 +145,11 @@
 				}
 			}
 		},
+		computed:{
+			counts(){
+				return this.$store.counts;
+			}
+		},
 		methods:{
 			gotoPage(page){
 				let url = '';
@@ -154,6 +159,7 @@
 						this.isTrue.one=true;
 						this.isTrue.two=false;
 						this.isTrue.three=false;
+						this.$store.commit('penddingOpreat',{pisTrue:true,onisTrue:false,ofisTrue:false});
 						break;
 					case 'online':
 						url = '/dashboard/zkhotel/online';
