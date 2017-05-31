@@ -46,7 +46,6 @@ const store = new Vuex.Store({
             return state.list;
         },
         total(state){
-            console.log(state.total);
             return state.total;
         }
         /*SAI酒店库end*/
@@ -87,11 +86,9 @@ const store = new Vuex.Store({
         penddings(context){
             // let page=context.state.pages.page;
             let page=context.state.counts.flag.page-1;
-            console.log("page=",page);
 
             let pageSize=context.state.pages.pageSize;
             return ajax.post('/api/zk-hotel/query',{page:page,pageSize:pageSize}).then(json=>{
-                console.log(json);
                 // console.log(json.count)
                 context.commit('penddingList',json.list);
                 context.commit('count',json.count);
