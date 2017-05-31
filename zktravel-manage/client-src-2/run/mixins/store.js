@@ -31,12 +31,12 @@ function genStateGetter(computedKey,namespaceKey){
 Vue.mixin({
     computed:{
         //$rootState:genStateGetter('$rootState','rootState'),
-/*        $state(){
+        $state(){
             const namespace = this.$options.state;
             if(namespace) return getValue(this.$store.state, namespace);
 
             return this.$parent ? this.$parent.$state : this.$store.state;
-        }*/
+        }
     },
     methods:{
         $commit(...arg){

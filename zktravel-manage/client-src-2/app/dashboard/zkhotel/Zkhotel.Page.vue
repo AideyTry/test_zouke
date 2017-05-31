@@ -145,6 +145,11 @@
 				}
 			}
 		},
+		computed:{
+			counts(){
+				return this.$store.counts;
+			}
+		},
 		methods:{
 			gotoPage(page){
 				let url = '';
@@ -154,18 +159,21 @@
 						this.isTrue.one=true;
 						this.isTrue.two=false;
 						this.isTrue.three=false;
+						this.$store.commit('penddingOpreat',{pisTrue:true,onisTrue:false,ofisTrue:false});
 						break;
 					case 'online':
 						url = '/dashboard/zkhotel/online';
 						this.isTrue.one=false;
 						this.isTrue.two=true;
 						this.isTrue.three=false;
+						this.$store.commit('penddingOpreat',{pisTrue:false,onisTrue:true,ofisTrue:false});
 						break;
 					case 'offline':
 						url = '/dashboard/zkhotel/offline';
 						this.isTrue.one=false;
 						this.isTrue.two=false;
 						this.isTrue.three=true;
+						this.$store.commit('penddingOpreat',{pisTrue:false,onisTrue:false,ofisTrue:true});
 						break;
 				}
 				this.$router.push({

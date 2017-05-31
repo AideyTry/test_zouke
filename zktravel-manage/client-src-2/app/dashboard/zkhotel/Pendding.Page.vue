@@ -29,12 +29,16 @@
 				return {
 					pageNum: this.pageNum,
 					pageSize: this.pageSize,
-					total: Math.ceil((this.list).length / this.pageSize),
-					pages: Math.ceil((this.list).length / this.pageSize) / this.pageNum
+					// total: Math.ceil((this.list).length / this.pageSize),
+					total:Math.ceil(this.totals/this.pageSize)
+					// pages: Math.ceil(this.total / this.pageSize) / this.pageNum
 				}
 			},
 			counts(){
 				return this.$store.getters.counts;
+			},
+			totals(){
+				return this.$store.getters.total;
 			},
 			list() {
 				return this.$store.getters.list;
@@ -57,20 +61,24 @@
 				mkprev() {
 					if(this.counts.flag.flag) {
 						this.pageNum = this.counts.flag.page;
+						this.$store.dispatch('penddings');
 						return false;
 					}
 					this.pageNum--;
+					this.$store.dispatch('penddings');
 				},
 				mknext() {
 					if(this.counts.flag.flag) {
 						this.pageNum = this.counts.flag.page;
+						this.$store.dispatch('penddings');
 						return false;
 					}
 					this.pageNum++;
+					this.$store.dispatch('penddings');
 				}
 	},
 	mounted(){
-		// this.$store.dispatch('pendding');
+		this.$store.dispatch('penddings');
 	}
 }
 </script>
