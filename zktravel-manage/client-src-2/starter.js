@@ -10,12 +10,15 @@ import router from './router';
 import store from './store';
 import { loading, toast, timeout } from './config';
 import auth from './utils/auth';
-
+/*引入UI*/
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-default/index.css'
 /*引入需要的start*/
 import 'bootstrap/dist/css/bootstrap.css'
 /*引入需要的end*/
 /// #if DEBUG
 import * as core from '@local/common/core';
+Vue.use(ElementUI);
 window._g = {
     z: core,
     Vue,
