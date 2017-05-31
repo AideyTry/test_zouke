@@ -28,7 +28,7 @@ module.exports = class Md5Hash{
         if(!seg[seg.length-1].includes('?')) return p;
 
         const lastSeg = seg[seg.length-1].split('?');
-        set[set.length-1] = lastSeg[0];
+        seg[seg.length-1] = lastSeg[0];
         return seg.join('/');
     }
     _stringify(dep){
