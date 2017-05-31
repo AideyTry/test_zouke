@@ -151,6 +151,7 @@
 
 			},
 			next() {
+				this.$store.commit('pages',this.pages.total);
 				this.counts.flag.flag = false;
 				if(this.pages.pageNum < this.pages.total) {
 					this.pages.pageNum++;

@@ -29,12 +29,17 @@
 				return {
 					pageNum: this.pageNum,
 					pageSize: this.pageSize,
-					total: Math.ceil((this.list).length / this.pageSize),
-					pages: Math.ceil((this.list).length / this.pageSize) / this.pageNum
+					// total: Math.ceil((this.list).length / this.pageSize),
+					total:Math.ceil(this.totals/this.pageSize)
+					// pages: Math.ceil(this.total / this.pageSize) / this.pageNum
 				}
 			},
 			counts(){
 				return this.$store.getters.counts;
+			},
+			totals(){
+				console.log(this.$store.getters.total);
+				return this.$store.getters.total;
 			},
 			list() {
 				return this.$store.getters.list;

@@ -12,7 +12,11 @@ const store = new Vuex.Store({
 
         /*SAI酒店库数据start*/
         list:[],
-
+        total:10,
+        pages:{
+            page:1,
+            pageSIze:10
+        },
         counts: {
                 saiisTrue:{
                     pisTrue:false,
@@ -40,6 +44,10 @@ const store = new Vuex.Store({
         },
         list(state){
             return state.list;
+        },
+        total(state){
+            console.log(state.total);
+            return state.total;
         }
         /*SAI酒店库end*/
     },
@@ -49,7 +57,14 @@ const store = new Vuex.Store({
         },
         /*SAI酒店库start*/
         penddingList(state,list){
+            // console.log(total);
             state.list=list;
+        },
+        count(state,count){
+            state.total=count;
+        },
+        pages(state,page){
+            state.page=page;
         }       
         /*SAI酒店库end*/
     },
@@ -60,10 +75,15 @@ const store = new Vuex.Store({
             })
         },
         /*SAI酒店库start*/
-        penddings({commit}){
-            return ajax.post('/api/zk-hotel/query').then(json=>{
+        penddings(context){
+            let page=context.state.pages.page;
+            let pageSize=context.state.pages.pageSize;
+            console.log(page,pageSize);
+            return ajax.post('/api/zk-hotel/query',{page:page,pageSize:pageSize}).then(json=>{
                 console.log(json);
-                commit('penddingList',json.list);
+                console.log(json.count)
+                context.commit('penddingList',json.list);
+                context.commit('count',json.count);
             })
         }   
         /*SAI酒店库end*/
