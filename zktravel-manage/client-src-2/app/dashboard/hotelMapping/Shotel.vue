@@ -129,17 +129,12 @@
 	}
 	
 	.contain {
-		width:80%;
 		height: 90%;
 		overflow-x: scroll;
 	}
 </style>
 <template>
 	<div class="container-fluid contain">
-		<div @click="close()" class="cricle">X</div>
-		<div class="row hotel-top">
-			<div class="title pull-left col-lg-2">酒店详情</div>
-		</div>
 		<!--酒店状态-->
 		<div class="row hotel-state">
 			<div class="form-group col-lg-3">

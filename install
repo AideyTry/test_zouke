@@ -47,6 +47,7 @@ $yarn
 
 link(){
     cd libs/$1
+    yarn unlink
     yarn link
     cd ../../
     yarn link @local/$1

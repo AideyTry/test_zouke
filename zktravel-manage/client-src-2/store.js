@@ -12,7 +12,11 @@ const store = new Vuex.Store({
 
         /*SAI酒店库数据start*/
         list:[],
-
+        total:10,
+        pages:{
+            page:1,
+            pageSIze:10
+        },
         counts: {
                 saiisTrue:{
                     pisTrue:false,
@@ -25,7 +29,7 @@ const store = new Vuex.Store({
                 },
                 flag:{
                     flag:false,  //记录状态进行跳转页面使用
-                    page:null
+                    page:1
                 }
         }
         /*SAI酒店库数据end*/
@@ -40,6 +44,9 @@ const store = new Vuex.Store({
         },
         list(state){
             return state.list;
+        },
+        total(state){
+            return state.total;
         }
         /*SAI酒店库end*/
     },
@@ -49,8 +56,24 @@ const store = new Vuex.Store({
         },
         /*SAI酒店库start*/
         penddingList(state,list){
+            // console.log(total);
             state.list=list;
-        }       
+        },
+        penddingOpreat(state,object){
+            state.counts.saiisTrue.pisTrue=object.pisTrue;
+            state.counts.saiisTrue.onisTrue=object.onisTrue;
+            state.counts.saiisTrue.ofisTrue=object.ofisTrue;
+        },
+        count(state,count){
+            state.total=count;
+        },
+        pages(state,object){
+            state.counts.flag.page=object.page;
+            state.counts.flag.flag=object.flag;
+            // console.log("p=",state.counts.flag.page);
+            // console.log("f=",state.counts.flag.flag);
+        },
+
         /*SAI酒店库end*/
     },
     actions: {
@@ -60,10 +83,15 @@ const store = new Vuex.Store({
             })
         },
         /*SAI酒店库start*/
-        penddings({commit}){
-            return ajax.post('/api/zk-hotel/query').then(json=>{
-                console.log(json);
-                commit('penddingList',json.list);
+        penddings(context){
+            // let page=context.state.pages.page;
+            let page=context.state.counts.flag.page-1;
+
+            let pageSize=context.state.pages.pageSize;
+            return ajax.post('/api/zk-hotel/query',{page:page,pageSize:pageSize}).then(json=>{
+                // console.log(json.count)
+                context.commit('penddingList',json.list);
+                context.commit('count',json.count);
             })
         }   
         /*SAI酒店库end*/

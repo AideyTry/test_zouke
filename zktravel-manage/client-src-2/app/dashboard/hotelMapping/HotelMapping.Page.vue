@@ -1,145 +1,507 @@
 <template>
-	<div>
-		<div class="hColor">
-			<h3>待匹配/入库的酒店</h3>
-			<ul class="supplier">
-				<li class="sColor" v-on:click="gotoPage('mk')" v-bind:class="{bgColor:isTrue.one}">mk</li>
-				<li class="sColor" v-on:click="gotoPage('dl')" v-bind:class="{bgColor:isTrue.two}">dl</li>
-				<li class="sColor" v-on:click.stop.prevent="gotoPage('vt')" v-bind:class="{bgColor:isTrue.three}">vt</li>
-				<li class="sColor" v-on:click="gotoPage('bk')" v-bind:class="{bgColor:isTrue.four}">bk</li>
-			</ul>
-		</div>
-		<router-view></router-view>	
-	</div>
+    <div class="hotel-map">
+        <el-tabs :active-name="$route.params.provider" @tab-click="changetab">
+            <el-tab-pane label="Miki" name="mk">
+                <el-table
+                        :data="currentdata"
+                        border
+                        style="width: 100%">
+                    <el-table-column
+                            prop="levelDesc"
+                            label="匹配等级">
+                    </el-table-column>
+                    <el-table-column
+                            prop="zkName"
+                            label="SAI名">
+                        <template scope="scope">
+                            <a @click="shotel(scope.row.zkId)">
+                                {{scope.row.zkName}}
+                            </a>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="spName"
+                            label="miki名">
+                        <template scope="scope">
+                            <a @click="photel(scope.row.spId)">
+                                {{scope.row.spName}}
+                            </a>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="zkAddress"
+                            label="SAI地址">
+                    </el-table-column>
+                    <el-table-column
+                            prop="spAddress"
+                            label="miki地址">
+                    </el-table-column>
+                    <el-table-column
+                            prop="zkPhone"
+                            label="SAI电话">
+                    </el-table-column>
+                    <el-table-column
+                            prop="spPhone"
+                            label="miki电话">
+                    </el-table-column>
+                    <el-table-column
+                            prop="spGPS"
+                            label="坐标地址">
+                        <template scope="scope">
+                            <el-button @click="openmap(scope.$index, currentdata)" type="text" size="small">
+                                查看
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="bookingUrl" label="Booking链接">
+                        <template scope="scope">
+                            <el-button @click="openbooking(scope.$index, currentdata)" type="text" size="small">
+                                查看
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" width="250">
+                        <template scope="scope">
+                            <el-button size="small" type="info" @click="matcherconfirm(scope.$index, scope.row)">匹配
+                            </el-button>
+                            <el-button size="small" type="success" @click="updatesqlconfirm(scope.$index, scope.row)">入库
+                            </el-button>
+                            <el-button size="small" type="danger" @click="invdataconfirm(scope.$index, scope.row)">置为无效
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-pagination layout="total, prev, pager, next, jumper" @current-change="changepage" :total="total"
+                               :page-size="currentlimit"></el-pagination>
+            </el-tab-pane>
+            <el-tab-pane label="维途" name="vt">
+                <el-table
+                        :data="currentdata"
+                        border
+                        style="width: 100%">
+                    <el-table-column
+                            prop="levelDesc"
+                            label="匹配等级">
+                    </el-table-column>
+                    <el-table-column
+                            prop="zkName"
+                            label="SAI名">
+                        <template scope="scope">
+                            <a @click="shotel(scope.row.zkId)">
+                                {{scope.row.zkName}}
+                            </a>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="spName"
+                            label="维途名">
+                        <template scope="scope">
+                            <a @click="photel(scope.row.spId)">
+                                {{scope.row.spName}}
+                            </a>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="zkAddress"
+                            label="SAI地址">
+                    </el-table-column>
+                    <el-table-column
+                            prop="spAddress"
+                            label="维途地址">
+                    </el-table-column>
+                    <el-table-column
+                            prop="zkPhone"
+                            label="SAI电话">
+                    </el-table-column>
+                    <el-table-column
+                            prop="spPhone"
+                            label="维途电话">
+                    </el-table-column>
+                    <el-table-column
+                            prop="spGPS"
+                            label="坐标地址">
+                        <template scope="scope">
+                            <el-button @click="openmap(scope.$index, currentdata)" type="text" size="small">
+                                查看
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="bookingUrl" label="Booking链接">
+                        <template scope="scope">
+                            <el-button @click="openbooking(scope.$index, currentdata)" type="text" size="small">
+                                查看
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" width="250">
+                        <template scope="scope">
+                            <el-button size="small" type="info" @click="matcherconfirm(scope.$index, scope.row)">匹配
+                            </el-button>
+                            <el-button size="small" type="success" @click="updatesqlconfirm(scope.$index, scope.row)">入库
+                            </el-button>
+                            <el-button size="small" type="danger" @click="invdataconfirm(scope.$index, scope.row)">置为无效
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-pagination layout="total, prev, pager, next, jumper" @current-change="changepage" :total="total"
+                               :page-size="currentlimit"></el-pagination>
+            </el-tab-pane>
+            <el-tab-pane label="道旅" name="dl">
+                <el-table
+                        :data="currentdata"
+                        border
+                        style="width: 100%">
+                    <el-table-column
+                            prop="levelDesc"
+                            label="匹配等级">
+                    </el-table-column>
+                    <el-table-column
+                            prop="zkName"
+                            label="SAI名">
+                        <template scope="scope">
+                            <a @click="shotel(scope.row.zkId)">
+                                {{scope.row.zkName}}
+                            </a>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="spName"
+                            label="道旅名">
+                        <template scope="scope">
+                            <a @click="photel(scope.row.spId)">
+                                {{scope.row.spName}}
+                            </a>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="zkAddress"
+                            label="SAI地址">
+                    </el-table-column>
+                    <el-table-column
+                            prop="spAddress"
+                            label="道旅地址">
+                    </el-table-column>
+                    <el-table-column
+                            prop="zkPhone"
+                            label="SAI电话">
+                    </el-table-column>
+                    <el-table-column
+                            prop="spPhone"
+                            label="道旅电话">
+                    </el-table-column>
+                    <el-table-column
+                            prop="spGPS"
+                            label="坐标地址">
+                        <template scope="scope">
+                            <el-button @click="openmap(scope.$index, currentdata)" type="text" size="small">
+                                查看
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="bookingUrl" label="Booking链接">
+                        <template scope="scope">
+                            <el-button @click="openbooking(scope.$index, currentdata)" type="text" size="small">
+                                查看
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" width="250">
+                        <template scope="scope">
+                            <el-button size="small" type="info" @click="matcherconfirm(scope.$index, scope.row)">匹配
+                            </el-button>
+                            <el-button size="small" type="success" @click="updatesqlconfirm(scope.$index, scope.row)">入库
+                            </el-button>
+                            <el-button size="small" type="danger" @click="invdataconfirm(scope.$index, scope.row)">置为无效
+                            </el-button>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <el-pagination layout="total, prev, pager, next, jumper" @current-change="changepage" :total="total"
+                               :page-size="currentlimit"></el-pagination>
+            </el-tab-pane>
+            <!--            <el-tab-pane label="Booking" name="bk">
+                            <el-table
+                                    :data="currentdata"
+                                    border
+                                    style="width: 100%">
+                                <el-table-column
+                                        prop="level"
+                                        label="匹配等级">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="spName"
+                                        label="SAI名">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="zkName"
+                                        label="miki名">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="spAddress"
+                                        label="SAI地址">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="zkAddress"
+                                        label="miki地址">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="spPhone"
+                                        label="SAI电话">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="zkPhone"
+                                        label="miki电话">
+                                </el-table-column>
+                                <el-table-column
+                                        prop="spGPS"
+                                        label="坐标地址">
+                                </el-table-column>
+                            </el-table>
+                            <el-pagination  layout="prev,pager,next"  @current-change="currentpage" :total="total" :page-size="15"></el-pagination>
+                        </el-tab-pane>-->
+        </el-tabs>
+        <el-dialog
+                title="提示"
+                :visible.sync="showdialog1"
+                size="tiny">
+            <span>确认是否匹配？</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="closedialog">取 消</el-button>
+                <el-button type="primary" @click="matcheraction">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog
+                title="提示"
+                :visible.sync="showdialog2"
+                size="tiny">
+            <span>确认是否入库？</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="closedialog">取 消</el-button>
+                <el-button type="primary" @click="updatesqlaction">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog
+                title="提示"
+                :visible.sync="showdialog3"
+                size="tiny">
+            <span>确认是否置为无效？</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="closedialog">取 消</el-button>
+                <el-button type="primary" @click="invdataaction">确 定</el-button>
+            </span>
+        </el-dialog>
+        <el-dialog title="酒店详情" :visible.sync="showdialog4">
+            <photel class="hotel"  v-if="showdialog4" :idp="pid"></photel>
+        </el-dialog>
+        <el-dialog title="酒店详情" :visible.sync="showdialog5">
+            <shotel class="hotel"  v-if="showdialog5" :ids="sid"></shotel>
+        </el-dialog>
+        <el-dialog title="强制入库" :visible.sync="showdialog6" size="tiny">
+            <span>确认强制入库？</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="closedialog">取 消</el-button>
+                <el-button type="primary" @click="strictupdate">确 定</el-button>
+            </span>
+        </el-dialog>
+    </div>
 </template>
 
 <style lang="scss" scoped>
-	.hColor{
-		margin:0;
-		padding:0;
-		height:80px;
-		background-color: #eee;
-		box-sizing:border-box;
-		position:relative;
-		bottom:0;
-		ul,h3{
-			margin:0;
-			padding:0;
-			list-style:none;
-			font-size:16px;
-			font-family:Microsoft YaHei;
-			color:#000;
-		}
-		.supplier{
-			// margin-top:42px;
+    .el-pagination {
+        text-align: right;
+        background: #fff;
+        padding-right: 20px;
+        height: 50px;
+        padding-top: 10px;
+        position: fixed;
+        right: 0px;
+        width: 83.3%;
+    }
 
-			width:33.3%;
-			height:35px;
-			position:absolute;
-			bottom:0;
-			li{
-				box-sizing:border-box;
-				display:inline-block;
-				float:left;
-				width:24.5%;
-				height:100%;
-				line-height:35px;
-				text-align:center;
-				border-top:1px  solid #666;
-				border-right:1px  solid #666;
-				border-bottom:1px  solid #666;
-			}
-			.sColor:hover{
-				cursor:pointer;
-				color:#0cc;
-			}
-			.bgColor{
-				background-color: #fff;
-				border-bottom:none;
-
-			}
-		}
-	}
 </style>
 
 <script>
-		import store from './store.js'
-		export default{
-			data(){
-				return{
-					isTrue:{
-					one:false,
-					two:false,
-					three:false,
-					four:false
-				}
-				}
-			},
-			// computed:{
+    import ajax  from '@local/common/ajax';
+    import Photel from './Photel';
+    import Shotel from './Shotel';
+    export default{
+        components: {
+            photel: Photel,
+            shotel: Shotel
+        },
+        data(){
+            return {
+                tableData: '',
+                params: {
+                    page: 1,
+                    limit: 7
+                },
+                currentpage: 1,
+                currentlimit: 10,
+                currentdata: [],
+                total: 100,
+                showdialog1: false,
+                showdialog2: false,
+                showdialog3: false,
+                showdialog4: false,
+                showdialog5:false,
+                showdialog6:false,
+                actionarr:{},
+                pid:'',
+                sid:'',
+                photelisTrue:false,
+                shotelisTrue:false
+            }
 
-			// },
-			methods:{
-				gotoPage(page){
-					let url='';
-					switch(page){
-						case 'mk':						
-							store.commit('mk');
-							store.dispatch('actionMk');
-							url='dashboard-hotel-mapping-mk';	
-							break;
-						case 'dl':
-							url='dashboard-hotel-mapping-dl';
-							store.commit('dl');
-							store.dispatch('actionDl');
-							break;
-						case 'vt':
-							url='dashboard-hotel-mapping-vt';
-							break;
-						case 'bk':
-							//bk暂时经用掉，
-							// url='dashboard-hotel-mapping-bk';
-							// store.commit('bk');
-							// store.dispatch('actionBk');
-							alert("正在创建中，请等待......");
-							break;
-					}
-					this.$router.push({
-						name:url
-					});
+        },
+        methods: {
+            photel(pid) {
+                this.showdialog4=true;
+                this.pid = pid;
+            },
+            shotel(sid) {
+                this.showdialog5=true;
+                this.sid = sid;
+            },
+            getTableData(){
 
-				}
-			},
-			mounted(){
-				this.isTrue.one=false;
-				this.isTrue.two=false;
-				this.isTrue.three=true;
-				this.isTrue.four=false;
-			},
-			updated(){
-				if(window.location.pathname==='/dashboard/hotel-mapping/vt'){
-					this.isTrue.one=false;
-					this.isTrue.two=false;
-					this.isTrue.three=true;
-					this.isTrue.four=false;
-				}
-				else if(window.location.pathname==='/dashboard/hotel-mapping/mk'){
-					this.isTrue.one=true;
-					this.isTrue.two=false;
-					this.isTrue.three=false;
-					this.isTrue.four=false;
-				}
-				else if(window.location.pathname==='/dashboard/hotel-mapping/dl'){
-					this.isTrue.one=false;
-					this.isTrue.two=true;
-					this.isTrue.three=false;
-					this.isTrue.four=false;
-				}
-				else if(window.location.pathname==='/dashboard/hotel-mapping/bk'){
-					this.isTrue.one=false;
-					this.isTrue.two=false;
-					this.isTrue.three=false;
-					this.isTrue.four=true;
-				}
-			}
-	}
+            },
+            changetab(tab){
+                this.$router.push({name: 'dashboard-hotel-mapping', params: {provider: tab.name}});
+                this.loadtable();
+            },
+            loadtable(){
+                let vm = this;
+                ajax.post('/api/' + vm.$route.params.provider + '-mapping/query').then(data => {
+                    let arr = [];
+                    vm.currentpage = 1;
+                    vm.tableData = Object.assign({}, data.list);
+                    for (let num = (vm.currentpage - 1) * vm.currentlimit; num < vm.currentlimit * vm.currentpage; num++) {
+                        if (vm.tableData[num]) {
+                            arr.push(vm.tableData[num]);
+                        }
+                    }
+                    arr.sort(function (a,b) {
+                        return a.level-b.level
+                    })
+                    vm.currentdata = arr;
+                    vm.total = data.list.length;
+                })
+            },
+            changepage(page){
+                let vm = this;
+                vm.currentpage = page;
+                let arr = [];
+                for (let num = (vm.currentpage - 1) * vm.currentlimit; num < vm.currentlimit * vm.currentpage; num++) {
+                    if (vm.tableData[num]) {
+                        arr.push(vm.tableData[num]);
+
+                    }
+                }
+                arr.sort(function (a,b) {
+                    return b.level-a.level
+                })
+                vm.currentdata = arr;
+            },
+            matcherconfirm(index, row){
+                this.actionarr=row;
+                this.showdialog1=true;
+            },
+            matcheraction(){
+                ajax.post('/api/vt-mapping/map',{spId:this.actionarr.spId,zkId:this.actionarr.zkId}).then(data=>{
+                    if(data.code===0){
+                        this.actionarr={};
+                        this.showdialog1=false;
+                        this.loadtable();
+                        this.$totast.show('匹配成功');
+                    }else{
+                        this.$totast.show(data.msg)
+                    }
+
+                })
+            },
+            updatesqlconfirm(index, row){
+                this.actionarr=row;
+                this.showdialog2=true;
+            },
+            updatesqlaction(){
+                ajax.post('/api/vt-mapping/insert',{spId:this.actionarr.spId,sign:this.actionarr.sign}).then(data=>{
+                    if(data.code==0){
+                        this.actionarr={};
+                        this.showdialog2=false;
+                        this.loadtable();
+                        this.$toast.show('入库成功')
+                    }else if (data.code==1){
+                        this.showdialog2=false;
+                    }else if (data.code==2){
+                        this.showdialog2=false;
+                    }else if (data.code==3){
+                        this.$toast.show('Map信息已经更新')
+                        this.showdialog2=false;
+                        this.showdialog6=true;
+                    }
+
+                })
+            },
+            strictupdate(){
+                ajax.post('/api/vt-mapping/insert',{spId:this.actionarr.spId,sign:0}).then(data=>{
+                    if(data.code==0){
+                        this.actionarr={};
+                        this.showdialog6=false;
+                        this.loadtable();
+                        this.$toast.show('入库成功')
+                    }else {
+                        this.showdialog2=false;
+                        this.$toast.show('入库失败')
+                    }
+                })
+            },
+            invdataconfirm(index,row){
+                this.actionarr=row;
+                this.showdialog3=true;
+            },
+            invdataaction(){
+                ajax.post('/api/vt-mapping/invalid',{spId:this.actionarr.spId,zkId:this.actionarr.zkId}).then(data=>{
+                    if(data.code===0){
+                        this.actionarr={};
+                        this.showdialog3=false;
+                        this.loadtable()
+                    }
+
+                })
+            },
+            openmap(index, row){
+                let params = [];
+                params.push([row[index].spGPS, row[index].spName]);
+                params.push([row[index].zkGPS, row[index].zkName]);
+                window.open(`/pages/location.html?${encodeURIComponent(JSON.stringify(params))}`);
+            },
+            openbooking(index, row){
+                window.open(row[index].bookingUrl);
+            },
+            closedialog(){
+                this.showdialog1=false;
+                this.showdialog2=false;
+                this.showdialog3=false;
+                this.showdialog4=false;
+                this.showdialog5=false;
+                this.showdialog6=false;
+            }
+        },
+        computed: {},
+        mounted(){
+            if (this.$route.params.provider) {
+                this.loadtable();
+            }
+
+        },
+        beforeRouteEnter (to, from, next) {
+            if (!to.params.provider) {
+                next({name: 'dashboard-hotel-mapping', params: {provider: 'vt'}});
+            } else {
+                next();
+            }
+        }
+    }
 </script>
