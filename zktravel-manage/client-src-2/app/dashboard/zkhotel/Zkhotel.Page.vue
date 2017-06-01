@@ -14,22 +14,22 @@
 	<div class="zkhotel">
 		<el-tabs :active-name="$route.params.status" @tab-click="changetab">
 			<el-tab-pane label="已上架-待审核" name="throughing">
-				<el-row>
-					<el-col>
+				<el-row type="flex">
+					<el-col :span="6">
 						<el-input
 								placeholder="搜索酒店名/ID"
 								icon="search"
 								:on-icon-click="handleIconClick">
 						</el-input>
 					</el-col>
-					<el-col>
+					<el-col :span="4">
 						<el-select  clearable placeholder="星级">
 							<el-option>
 								五星级
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col>
+					<el-col :span="4">
 						<el-select  clearable placeholder="国家">
 							<el-option>
 								德国
@@ -157,7 +157,7 @@
 			</el-tab-pane>
 		</el-tabs>
 		<el-dialog title="酒店详情" :visible.sync="showdialog1">
-			<shotel class="hotel"  v-if="showdialog1" :idp="pid"></shotel>
+			<photel class="hotel"  v-if="showdialog1" :idp="sid"></photel>
 		</el-dialog>
 	</div>
 </template>
@@ -207,8 +207,8 @@
                   		vm.total=data.count;
                 })
             },
-			verifyconfirm(pid){
-                this.pid = pid;
+			verifyconfirm(sid){
+                this.sid = sid;
                 this.showdialog1=true;
 			},
 			verifyaction(){
