@@ -1,7 +1,7 @@
 const SpResolver = require('./SpResolver');
 const ZkResolver = require('./ZkResolver');
 
-const { diff, getSpHotelCollection, getZkHotelCollection } = require('./utils');
+const { diff, getSpHotelCollection, getZkHotelCollection, getDb } = require('./utils');
 const MapState = require('./MapState');
 const Pretreatment = require('./Pretreatment');
 const MappingLevel = require('./MappingLevel');
@@ -25,7 +25,7 @@ module.exports = class Mapping {
                 orQueryCondition.push({ [`${Pretreatment.field}.${key}`]: hotel[Pretreatment.field][key] });
         }
 
-        const queryResults = (await (await dbclient.get()).command({
+        const queryResults = (await (await getDb()).command({
             geoNear: collection.s.name,
             near: { type:'Point', coordinates: [hotel.gps.lng, hotel.gps.lat] },
             spherical: true,
@@ -95,7 +95,8 @@ module.exports = class Mapping {
         delete zkHotel.supplier;
         delete zkHotel.id;
         // 插入sai酒店库
-        const zkId = zkResolver.insert(zkHotel, spHotel.id);
+        const zkId = await zkResolver.insert(zkHotel, spHotel.id);
+        console.log('zkId', zkId);
         // 更新sp酒店库匹配信息
         spResolver.resolveHotel(spHotel._id, MapState.createStrict(zkId, -1));
 
@@ -166,7 +167,8 @@ module.exports = class Mapping {
                 const key = map_state.fuzzy[zkId];
                 result.push({
                     sign: map_state.timestamp,
-                    spId: sp._id.toString(),
+                    sp: sp.supplier,
+                    spId: sp.id,
                     spName: sp.name,
                     spNameEn: sp.name_en,
                     spAddress: sp.address,

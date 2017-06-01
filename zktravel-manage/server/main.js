@@ -33,9 +33,9 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx, next)=>{
-    console.log(`request ${ctx.originalUrl} start`);
+    console.log(`--> request ${ctx.originalUrl} start`);
     await next();
-    console.log(`request ${ctx.originalUrl} end`);
+    console.log(`<-- request ${ctx.originalUrl} end`);
 })
 app.use(async (ctx, next)=>{
     await next();
