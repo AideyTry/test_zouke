@@ -40,6 +40,8 @@ module.exports = class AuthController extends SController{
         const now = new Date();
         const { [codeKey]: code, [codeExpriesKey]:codeExpries, uid } = this.session;
 
+        this.logResponse();
+        
         if(uid){
             console.log('\tuid: ',this.session.uid);
             const user = await User.get(uid);

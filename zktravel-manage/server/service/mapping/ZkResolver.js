@@ -30,7 +30,7 @@ module.exports = class ZkResolver {
             [this.mapField]: [spId]
         };
         const zkCollection = await getZkHotelCollection();
-        await zkCollection.insertOne(doc);
+        await zkCollection.insertOne(hotel);
         return id;
     }
 }

@@ -12,12 +12,12 @@ module.exports = class VtMappingController extends LController {
     async map(){
         const { spId, zkId, sp } = this.request.body;
         const mapping = new Mapping();
-        const result = await mapping.map(spId, zkId);
+        const result = await mapping.map(zkId, spId, sp);
         this.renderJSON({ code: result });
     }
     async insert(){
         const { spId, sp, sign } = this.request.body;
-        const mapping = new mapping();
+        const mapping = new Mapping();
         const result = await mapping.insert(spId, sp, sign);
         this.renderJSON({ code: result });
     }
