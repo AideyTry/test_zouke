@@ -8,6 +8,19 @@ const MappingLevel = require('./MappingLevel');
 
 module.exports = class Mapping {
 
+    constructor(){
+        this._stat = {
+            alone: 0,
+            map: 0,
+            fuzzy: 0,
+            offline: 0
+        }
+    }
+
+    $logInc(type){
+        if(this._stat[type]) ++this._stat[type];
+    }
+
     async $findSpNotResolve(){
         const collection = await getSpHotelCollection();
         return collection.find({
@@ -187,7 +200,7 @@ module.exports = class Mapping {
                     bookingUrl: zk.booking_info?zk.booking_info.url:'',
 
                     level: MappingLevel.getLevel(key),
-                    levelDesc: MappingLevel.getLevelDesc(key)
+                    levelRank: MappingLevel.getLevelRank(key)
                 })
             }
         }
@@ -212,6 +225,7 @@ module.exports = class Mapping {
         if(!spHotel) return 1; //hotel not found
 
         if(MapState.isFuzzy(spHotel.map_state)){
+            console.log(`${sp} hotel map manual: spId|${spId} === zkId|${zkId}`);
             await this.$map(spHotel, zkId, spHotel.map_state.fuzzy[zkId]);
             return 0;
         }
@@ -231,6 +245,7 @@ module.exports = class Mapping {
             return 3; //fuzzy信息变更
         }
 
+        console.log(`${sp} hotel insert as new sai hotel: spId|${spId}`);
         await this.$insert(spHotel);
         return 0;
     }
@@ -246,6 +261,8 @@ module.exports = class Mapping {
             if(spHotel.mode==='D'){
                 // offline sp hotel
                 try{
+                    this.$logInc('offline');
+                    console.log(`autoMap: offline ${spHotel.supplier} hotel -> spId|${spHotel.id}`)
                     await this.$offline(spHotel);
                 }catch(e){
                     console.error(e);
@@ -260,6 +277,8 @@ module.exports = class Mapping {
                 * insert as new
                 */
                 try{
+                    this.$logInc('alone');
+                    console.log(`autoMap: ${spHotel.supplier} hotel not map any sai hotel -> spId|${spHotel.id}`);
                     this.$alone(spHotel);
                     //await this.$insert(spHotel);
                 }catch(e){
@@ -275,13 +294,19 @@ module.exports = class Mapping {
                 const diffResult = diff(zkHotelResult, spHotel);
                 if(MappingLevel.isHighest(diffResult)){
                     //免审
+                    this.$logInc('map');
+                    console.log(`autoMap: ${spHotel.supplier} hotel auto map sai hotel -> spId|${spHotel.id} == zkId|${zkHotelResult.hotel._id}`);
                     await this.$map(spHotel, zkHotelResult.hotel._id, diffResult);
                     return;
                 }
                 fuzzy[zkHotelResult.hotel_id] = diffResult;
             }
 
+            this.$logInc('fuzzy');
+            console.log(`autoMap: ${spHotel.supplier} hotel fuzzy map sai hotel -> spId|${spHotel.id}`);
             await this.$fuzzy(spHotel);
         }
+
+        console.log('autoMap stat: ', this._stat);
     }
 }
