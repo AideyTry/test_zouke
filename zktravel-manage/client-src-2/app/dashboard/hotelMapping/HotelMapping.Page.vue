@@ -81,8 +81,7 @@
                             border
                             style="width: 100%">
                         <el-table-column
-                                witdh="50"
-                                prop="levelDesc"
+                                prop="level"
                                 label="匹配等级">
                         </el-table-column>
                         <el-table-column
@@ -104,7 +103,6 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                                width="250"
                                 prop="zkAddress"
                                 label="SAI地址">
                         </el-table-column>
@@ -391,7 +389,7 @@
                         }
                     }
                     arr.sort(function (a,b) {
-                        return a.level-b.level
+                        return a.levelRank-b.levelRank
                     })
                     vm.currentdata = arr;
                     vm.total = data.list.length;
