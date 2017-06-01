@@ -1,39 +1,68 @@
 <style lang="scss" scoped>
-	.el-pagination {
-		text-align: right;
-		background: #fff;
-		padding-right: 20px;
-		height: 50px;
-		padding-top: 10px;
-		position: fixed;
-		right: 0px;
-		width: 83.3%;
+	.zkhotel{
+		.el-pagination {
+			text-align: right;
+			background: #fff;
+			padding-right: 20px;
+			height: 50px;
+			padding-top: 10px;
+			position: fixed;
+			right: 0px;
+			width: 83.3%;
+		}
+		.search-group{
+			padding-left: 20px;
+			height: 50px;
+			.search-input{
+				margin-right: 20px;
+			}
+
+		}
 	}
+
+
 </style>
 <template>
 	<div class="zkhotel">
 		<el-tabs :active-name="$route.params.status" @tab-click="changetab">
 			<el-tab-pane label="已上架-待审核" name="throughing">
-				<el-row type="flex">
-					<el-col :span="6">
+				<el-row type="flex" class="search-group">
+					<el-col :span="4" class="search-input">
 						<el-input
 								placeholder="搜索酒店名/ID"
 								icon="search"
-								:on-icon-click="handleIconClick">
+								v-model="searchinput"
+								:on-icon-click="searchhotel">
 						</el-input>
 					</el-col>
+					<el-col :span="1">
+
+					</el-col>
 					<el-col :span="4">
-						<el-select  clearable placeholder="星级">
-							<el-option>
+						<el-select  clearable v-model="starlv" placeholder="星级">
+							<el-option :value="1">
+								一星级
+							</el-option>
+							<el-option :value="2">
+								二星级
+							</el-option>
+							<el-option :value="3">
+								三星级
+							</el-option>
+							<el-option :value="4">
+								四星级
+							</el-option>
+							<el-option :value="5">
 								五星级
 							</el-option>
 						</el-select>
 					</el-col>
 					<el-col :span="4">
-						<el-select  clearable placeholder="国家">
-							<el-option>
+						<el-select  clearable v-model="searchcountry" placeholder="国家">
+							<el-option value="ge">
 								德国
 							</el-option>
+
 						</el-select>
 					</el-col>
 				</el-row>
@@ -67,7 +96,7 @@
 					</el-table-column>
 					<el-table-column label="操作" width="150">
 						<template scope="scope">
-							<el-button size="small" type="info" @click="verifyconfirm(scope.row.sp_id.vt_id)">审核
+							<el-button size="small" type="info" @click="verifyconfirm(scope.row)">审核
 							</el-button>
 						</template>
 					</el-table-column>
@@ -157,18 +186,16 @@
 			</el-tab-pane>
 		</el-tabs>
 		<el-dialog title="酒店详情" :visible.sync="showdialog1">
-			<photel class="hotel"  v-if="showdialog1" :idp="sid"></photel>
+			<shotel class="hotel"  v-if="showdialog1" :ids="sid" :sp="sp"></shotel>
 		</el-dialog>
 	</div>
 </template>
 	
 <script>
     import ajax  from '@local/common/ajax';
-    import Photel from '../hotelMapping/Photel';
     import Shotel from '../hotelMapping/Shotel';
 	export default{
         components: {
-            photel: Photel,
             shotel: Shotel
         },
 		data(){
@@ -177,13 +204,17 @@
 				total:1,
 				pager:{
 					 page:1,
-					 pageSize:20
+					 pageSize:15
 				},
 				showdialog1:false,
+				sp:'',
 				pid:'',
 				sid:'',
                 photelisTrue:false,
-                shotelisTrue:false
+                shotelisTrue:false,
+                searchinput:'',
+                starlv:1,
+                searchcountry:'ge'
 
 			}
 		},
@@ -207,11 +238,14 @@
                   		vm.total=data.count;
                 })
             },
-			verifyconfirm(sid){
-                this.sid = sid;
+			verifyconfirm(spid){
+                this.sid=spid._id;
                 this.showdialog1=true;
 			},
 			verifyaction(){
+
+			},
+            searchhotel(){
 
 			}
 		},
