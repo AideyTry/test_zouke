@@ -42,9 +42,9 @@ module.exports = class MapState {
         const set = new Set();
         const fuzzy_level = [];
         for(let mapKey of Object.values(fuzzy)){
-            MappingLevel.getLevel
+            set.add(MappingLevel.getLevel(mapKey));
         }
-        return Object.assign(createBaseMapState, { fuzzy });
+        return Object.assign(createBaseMapState, { fuzzy, fuzzy_level: [...fuzzy_level] });
     }
     static isStrict(mapState){
         if(!mapState) return false;
