@@ -36,29 +36,43 @@ module.exports = class ZkHotel {
         }
         return detail;
     }
-    async query(page, pageSize){
+    async query(page, pageSize, { valid=true, keyword } = {} ){
+
+        const findCondition = {
+            status: valid ? 0 : 1
+        };
+        if(keyword){
+            const reg = new RegExp(keyword, 'i');
+            findCondition.$or = [
+                { name: reg },
+                { name_en: reg }
+            ];
+        }
+
         const db = await dbclient.get();
         const zkCollection = await db.collection(zk_collection_name);
-        const count = await zkCollection.find().count();
+        const count = await zkCollection.find(findCondition).count();
 
         const skipNum = page * pageSize;
-        const list = await zkCollection.find({},{
-            name: 1,
-            name_en: 1,
-            category_name: 1,
-            address: 1,
-            city_name: 1,
-            city_name_en: 1,
-            country_name: 1,
-            country_name_en: 1,
-            phone: 1,
-            email: 1,
-            url_web: 1,
-            description: 1,
-            booking_info: 1,
-            alias: 1,
-            sp_id: 1
-        }).skip(skipNum).limit(pageSize).toArray()
+        const list = await zkCollection.find(findCondition,
+            {
+                name: 1,
+                name_en: 1,
+                category_name: 1,
+                address: 1,
+                city_name: 1,
+                city_name_en: 1,
+                country_name: 1,
+                country_name_en: 1,
+                phone: 1,
+                email: 1,
+                url_web: 1,
+                description: 1,
+                booking_info: 1,
+                alias: 1,
+                sp_id: 1
+            }
+        ).skip(skipNum).limit(pageSize).toArray()
 
         return { list, count };
     }
