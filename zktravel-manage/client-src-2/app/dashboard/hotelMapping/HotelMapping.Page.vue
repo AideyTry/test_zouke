@@ -373,7 +373,7 @@
             },
             loadtable(){
                 let vm = this;
-                ajax.post('/api/' + vm.$route.params.provider + '-mapping/query').then(data => {
+                ajax.post('/api/mapping/query',{sp:vm.$route.params.provider}).then(data => {
                     let arr = [];
                     vm.currentpage = 1;
                     vm.tableData = Object.assign({}, data.list);
@@ -409,7 +409,7 @@
                 this.showdialog1=true;
             },
             matcheraction(){
-                ajax.post('/api/vt-mapping/map',{spId:this.actionarr.spId,zkId:this.actionarr.zkId}).then(data=>{
+                ajax.post('/api/mapping/map ',{spId:this.actionarr.spId,zkId:this.actionarr.zkId,sp:this.$route.params.provider}).then(data=>{
                     if(data.code===0){
                         this.actionarr={};
                         this.showdialog1=false;
@@ -426,7 +426,7 @@
                 this.showdialog2=true;
             },
             updatesqlaction(){
-                ajax.post('/api/vt-mapping/insert',{spId:this.actionarr.spId,sign:this.actionarr.sign}).then(data=>{
+                ajax.post('/api/mapping/insert',{spId:this.actionarr.spId,sign:this.actionarr.sign,sp:this.$route.params.provider}).then(data=>{
                     if(data.code==0){
                         this.actionarr={};
                         this.showdialog2=false;
@@ -445,7 +445,7 @@
                 })
             },
             strictupdate(){
-                ajax.post('/api/vt-mapping/insert',{spId:this.actionarr.spId,sign:0}).then(data=>{
+                ajax.post('/api/mapping/insert',{spId:this.actionarr.spId,sign:0,sp:this.$route.params.provider}).then(data=>{
                     if(data.code==0){
                         this.actionarr={};
                         this.showdialog6=false;
