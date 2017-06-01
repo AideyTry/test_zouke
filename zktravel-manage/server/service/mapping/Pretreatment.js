@@ -88,10 +88,7 @@ module.exports = class Pretreatment{
         const spCollection = await db.collection(sp_collection_name);
 
         const cursor = spCollection.find({
-            [`${Pretreatment.field}._v`]: { $ne: Pretreatment.version } ,
-            'map_state.invalid': { $ne: true },
-            'map_state.strict': null,
-            'mode': { $ne: 'R' }
+            [`${Pretreatment.field}._v`]: { $ne: Pretreatment.version }
         },{
              name: 1, name_en: 1, phone: 1, url_web: 1, address: 1
         });
