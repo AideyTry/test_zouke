@@ -294,7 +294,7 @@
             </span>
         </el-dialog>
         <el-dialog title="酒店详情" :visible.sync="showdialog4">
-            <photel class="hotel"  v-if="showdialog4" :idp="pid"></photel>
+            <photel class="hotel"  v-if="showdialog4" :idp="pid" :sp="sp"></photel>
         </el-dialog>
         <el-dialog title="酒店详情" :visible.sync="showdialog5">
             <shotel class="hotel"  v-if="showdialog5" :ids="sid"></shotel>
@@ -354,6 +354,7 @@
                 showdialog5:false,
                 showdialog6:false,
                 actionarr:{},
+                sp:'',
                 pid:'',
                 sid:'',
                 photelisTrue:false,
@@ -365,6 +366,7 @@
             photel(pid) {
                 this.showdialog4=true;
                 this.pid = pid;
+                this.sp= this.$route.params.provider;
             },
             shotel(sid) {
                 this.showdialog5=true;
