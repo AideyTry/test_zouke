@@ -71,7 +71,7 @@ module.exports = {
     CITY,
     WEBURL,
 
-    getLevel(mapKey){
+    getLevelRank(mapKey){
         for(let index=0; index<maskKeys.length; ++index){
             const maskKey = maskKeys[index];
             if( (mapKey&maskKey) === maskKey ){
@@ -80,7 +80,7 @@ module.exports = {
         }
         return null;
     },
-    getLevelDesc(mapKey){
+    getLevel(mapKey){
         for(let maskKey of maskKeys){
             if( (mapKey&maskKey) === maskKey ){
                 return keyLevelMap[maskKey];
