@@ -38,7 +38,7 @@
 					<el-col :span="1">
 
 					</el-col>
-					<el-col :span="4">
+					<el-col :span="3">
 						<el-select  clearable v-model="starlv" placeholder="星级">
 							<el-option :value="1">
 								一星级
@@ -57,7 +57,10 @@
 							</el-option>
 						</el-select>
 					</el-col>
-					<el-col :span="4">
+					<el-col :span="1">
+
+					</el-col>
+					<el-col :span="3">
 						<el-select  clearable v-model="searchcountry" placeholder="国家">
 							<el-option value="ge">
 								德国
