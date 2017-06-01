@@ -1,49 +1,49 @@
 <style lang="scss" scoped>
-    .dashboard{
+    .dashboard {
         position: absolute;
         top: 0px;
         bottom: 0px;
         width: 100%;
         background-color: #eef1f6;
         overflow: hidden;
-        .header{
+        .header {
             height: 60px;
             line-height: 60px;
-            border-left:0px;
-            .main-title{
+            border-left: 0px;
+            .main-title {
                 background-color: #324157;
-                color:#fff;
+                color: #fff;
                 text-align: center;
             }
-            .title{
+            .title {
                 text-indent: 30px;
             }
-            .user-info{
-                i{
+            .user-info {
+                i {
                     font-size: 14px;
                 }
-                span{
+                span {
                     margin-right: 5px;
                 }
             }
-            .log-out{
+            .log-out {
                 color: #178fe5;
                 cursor: pointer;
             }
         }
-        .main-body{
+        .main-body {
             height: 100%;
-            .el-menu{
+            .el-menu {
                 height: 100%;
             }
-            .content{
+            .content {
                 border-top: 1px solid #ccc;
                 overflow-y: scroll;
             }
         }
 
     }
-    
+
 </style>
 <template>
     <div class="dashboard">
@@ -54,9 +54,9 @@
                 <span>当前用户</span>
                 <strong>{{userInfo.name}}</strong>
                 <span class="logout" >    退出
-                </span>  
+                </span>
             </div>
-             
+
         </header>-->
         <el-row class="header" type="flex">
             <el-col :span="4">
@@ -104,7 +104,7 @@
                 <router-view></router-view>
             </el-col>
         </el-row>
-        
+
 <!--         <router-view name="dashboard-hotel-mapping"><router-view>
         <router-view name="dashboard-zkhotel"><router-view> -->
     </div>
@@ -116,53 +116,53 @@
         /*增加data*/
         data(){
             return {
-                isActive:true,
-                isTrue:false,
-                flag:0,
-                bgIstrue:{
-                    mpIstrue:false,
-                    zkIstrue:false
+                isActive: true,
+                isTrue: false,
+                flag: 0,
+                bgIstrue: {
+                    mpIstrue: false,
+                    zkIstrue: false
                 }
             }
         },
-        computed:{
+        computed: {
             userInfo(){
                 return this.$store.state.userInfo;
             },
             selected(){
-                    return this.$route.name
+                return this.$route.name
             }
         },
-        methods:{
+        methods: {
             logout(){
-                this.$dispatch('logout').then(result=>{
+                this.$dispatch('logout').then(result => {
                     this.$router.replace(auth.loginRoute(this.$route));
                 })
             },
             /*增加方法*/
             hotel(){
                 this.flag++;
-                if(this.flag%2!=0){
-                    this.isTrue=true;
-                    this.bgIstrue.mpIstrue=true;
-                    this.$router.push({name:'dashboard-hotel-mapping-vt'});
-                }else{
-                    this.isTrue=false;
-                    this.$router.push({name:'dashboard'})
-                  }
-                
+                if (this.flag % 2 != 0) {
+                    this.isTrue = true;
+                    this.bgIstrue.mpIstrue = true;
+                    this.$router.push({name: 'dashboard-hotel-mapping-vt'});
+                } else {
+                    this.isTrue = false;
+                    this.$router.push({name: 'dashboard'})
+                }
+
             },
-            stock:function(){
+            stock: function () {
                 // this.$router.push({name:'dashboard-hotel-mapping'});
-                this.$router.push({path:'/dashboard/hotel-mapping/vt'});
-                this.bgIstrue.mpIstrue=true;
-                this.bgIstrue.zkIstrue=false;
+                this.$router.push({path: '/dashboard/hotel-mapping/vt'});
+                this.bgIstrue.mpIstrue = true;
+                this.bgIstrue.zkIstrue = false;
             },
-            SAI:function(){
+            SAI: function () {
                 // this.$router.push({name:'dashboard-hotel-mapping-dl'});
-                this.$router.push({path:'/dashboard/zkhotel'});
-                this.bgIstrue.zkIstrue=true;
-                this.bgIstrue.mpIstrue=false;
+                this.$router.push({path: '/dashboard/zkhotel'});
+                this.bgIstrue.zkIstrue = true;
+                this.bgIstrue.mpIstrue = false;
             },
             handleOpen(key, keyPath) {
 
@@ -171,7 +171,7 @@
 
             },
             handleSelect(index){
-                this.$router.push({name:index})
+                this.$router.push({name: index})
             }
         },
         mounted(){

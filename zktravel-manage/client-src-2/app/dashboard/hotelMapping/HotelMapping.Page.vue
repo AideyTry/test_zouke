@@ -75,77 +75,81 @@
                                :page-size="currentlimit"></el-pagination>
             </el-tab-pane>
             <el-tab-pane label="维途" name="vt">
-                <el-table
-                        :data="currentdata"
-                        border
-                        style="width: 100%">
-                    <el-table-column
-                            prop="levelDesc"
-                            label="匹配等级">
-                    </el-table-column>
-                    <el-table-column
-                            prop="zkName"
-                            label="SAI名">
-                        <template scope="scope">
-                            <a @click="shotel(scope.row.zkId)">
-                                {{scope.row.zkName}}
-                            </a>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            prop="spName"
-                            label="维途名">
-                        <template scope="scope">
-                            <a @click="photel(scope.row.spId)">
-                                {{scope.row.spName}}
-                            </a>
-                        </template>
-                    </el-table-column>
-                    <el-table-column
-                            prop="zkAddress"
-                            label="SAI地址">
-                    </el-table-column>
-                    <el-table-column
-                            prop="spAddress"
-                            label="维途地址">
-                    </el-table-column>
-                    <el-table-column
-                            prop="zkPhone"
-                            label="SAI电话">
-                    </el-table-column>
-                    <el-table-column
-                            prop="spPhone"
-                            label="维途电话">
-                    </el-table-column>
-                    <el-table-column
-                            prop="spGPS"
-                            label="坐标地址">
-                        <template scope="scope">
-                            <el-button @click="openmap(scope.$index, currentdata)" type="text" size="small">
-                                查看
-                            </el-button>
-                        </template>
-                    </el-table-column>
-                    <el-table-column prop="bookingUrl" label="Booking链接">
-                        <template scope="scope">
-                            <el-button @click="openbooking(scope.$index, currentdata)" type="text" size="small">
-                                查看
-                            </el-button>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="操作" width="250">
-                        <template scope="scope">
-                            <el-button size="small" type="info" @click="matcherconfirm(scope.$index, scope.row)">匹配
-                            </el-button>
-                            <el-button size="small" type="success" @click="updatesqlconfirm(scope.$index, scope.row)">入库
-                            </el-button>
-                            <el-button size="small" type="danger" @click="invdataconfirm(scope.$index, scope.row)">置为无效
-                            </el-button>
-                        </template>
-                    </el-table-column>
-                </el-table>
-                <el-pagination layout="total, prev, pager, next, jumper" @current-change="changepage" :total="total"
-                               :page-size="currentlimit"></el-pagination>
+                <div class="table-container">
+                    <el-table
+                            :data="currentdata"
+                            border
+                            style="width: 100%">
+                        <el-table-column
+                                witdh="50"
+                                prop="levelDesc"
+                                label="匹配等级">
+                        </el-table-column>
+                        <el-table-column
+                                prop="zkName"
+                                label="SAI名">
+                            <template scope="scope">
+                                <a @click="shotel(scope.row.zkId)">
+                                    {{scope.row.zkName}}
+                                </a>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                prop="spName"
+                                label="维途名">
+                            <template scope="scope">
+                                <a @click="photel(scope.row.spId)">
+                                    {{scope.row.spName}}
+                                </a>
+                            </template>
+                        </el-table-column>
+                        <el-table-column
+                                width="250"
+                                prop="zkAddress"
+                                label="SAI地址">
+                        </el-table-column>
+                        <el-table-column
+                                prop="spAddress"
+                                label="维途地址">
+                        </el-table-column>
+                        <el-table-column
+                                prop="zkPhone"
+                                label="SAI电话">
+                        </el-table-column>
+                        <el-table-column
+                                prop="spPhone"
+                                label="维途电话">
+                        </el-table-column>
+                        <el-table-column
+                                prop="spGPS"
+                                label="坐标地址">
+                            <template scope="scope">
+                                <el-button @click="openmap(scope.$index, currentdata)" type="text" size="small">
+                                    查看
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column prop="bookingUrl" label="Booking链接">
+                            <template scope="scope">
+                                <el-button @click="openbooking(scope.$index, currentdata)" type="text" size="small">
+                                    查看
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="操作" width="250">
+                            <template scope="scope">
+                                <el-button size="small" type="info" @click="matcherconfirm(scope.$index, scope.row)">匹配
+                                </el-button>
+                                <el-button size="small" type="success" @click="updatesqlconfirm(scope.$index, scope.row)">入库
+                                </el-button>
+                                <el-button size="small" type="danger" @click="invdataconfirm(scope.$index, scope.row)">置为无效
+                                </el-button>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                    <el-pagination layout="total, prev, pager, next, jumper" @current-change="changepage" :total="total"
+                                   :page-size="currentlimit"></el-pagination>
+                </div>
             </el-tab-pane>
             <el-tab-pane label="道旅" name="dl">
                 <el-table
@@ -308,15 +312,19 @@
 </template>
 
 <style lang="scss" scoped>
+    .el-table{
+        margin-bottom: 110px;
+    }
     .el-pagination {
         text-align: right;
         background: #fff;
-        padding-right: 20px;
+        padding-right: 36px;
         height: 50px;
         padding-top: 10px;
-        position: fixed;
-        right: 0px;
         width: 83.3%;
+        position: fixed;
+        bottom: 0px;
+        right: 0px;
     }
 
 </style>
