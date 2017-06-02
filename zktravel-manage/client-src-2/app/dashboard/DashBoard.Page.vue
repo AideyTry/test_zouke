@@ -41,6 +41,9 @@
                 overflow-y: scroll;
             }
         }
+        .el-menu{
+            border-radius: 0px !important;
+        }
 
     }
 
