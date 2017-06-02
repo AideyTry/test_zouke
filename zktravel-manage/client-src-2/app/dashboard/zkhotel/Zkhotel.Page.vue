@@ -2,7 +2,6 @@
 	.zkhotel{
 		.el-pagination {
 			text-align: right;
-			background: #fff;
 			padding-right: 36px;
 			height: 50px;
 			padding-top: 10px;
@@ -36,9 +35,9 @@
 						<el-input
 								placeholder="搜索酒店名/ID"
 								icon="search"
+								@keyup.enter.native="searchhotel"
 								v-model="pager.keyword"
-								:on-icon-click="searchhotel"
-						        @keyup.enter="searchhotel">
+								:on-icon-click="searchhotel">
 						</el-input>
 					</el-col>
 					<el-col :span="1">
@@ -115,8 +114,8 @@
 								placeholder="搜索酒店名/ID"
 								icon="search"
 								v-model="pager.keyword"
-								:on-icon-click="searchhotel"
-								@keyup.enter="searchhotel">
+								@keyup.enter.native="searchhotel"
+								:on-icon-click="searchhotel">
 						</el-input>
 					</el-col>
 					<el-col :span="1">

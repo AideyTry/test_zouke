@@ -327,7 +327,6 @@
     }
     .el-pagination {
         text-align: right;
-        background: #fff;
         padding-right: 36px;
         height: 50px;
         padding-top: 10px;
