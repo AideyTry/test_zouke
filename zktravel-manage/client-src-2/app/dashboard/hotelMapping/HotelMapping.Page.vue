@@ -331,7 +331,7 @@
         padding-right: 36px;
         height: 50px;
         padding-top: 10px;
-        width: 83.3%;
+        width: 87.5%;
         position: fixed;
         bottom: 0px;
         right: 0px;
