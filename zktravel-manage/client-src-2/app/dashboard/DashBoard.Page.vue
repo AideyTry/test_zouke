@@ -77,7 +77,7 @@
                 <div class="user-info">
                     <i class="el-icon-message"></i>
                     <span>用户名</span>
-                    <span>Uklili</span>
+                    <span style="color:orangered">{{userInfo.name}}</span>
                     <span class="log-out" @pointerup.prevent="logout">退出</span>
                 </div>
             </el-col>
@@ -130,7 +130,7 @@
         },
         computed: {
             userInfo(){
-                return this.$store.state.userInfo;
+                return this.$store.getters.userInfo;
             },
             selected(){
                 return this.$route.name
