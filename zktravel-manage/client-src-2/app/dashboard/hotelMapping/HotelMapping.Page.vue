@@ -2,7 +2,6 @@
     <div class="hotel-map">
         <el-tabs :active-name="$route.params.provider" @tab-click="changetab">
             <el-select  clearable v-model="matchlv" placeholder="等级" @change="changelv">
-
                 <template v-for="(v,k) of lvmap">
                     <el-option :value="v" :label="k"></el-option>
                 </template>
@@ -71,8 +70,6 @@
                             <el-button size="small" type="info" @click="matcherconfirm(scope.$index, scope.row)">匹配
                             </el-button>
                             <el-button size="small" type="success" @click="updatesqlconfirm(scope.$index, scope.row)">入库
-                            </el-button>
-                            <el-button size="small" type="danger" @click="invdataconfirm(scope.$index, scope.row)">置为无效
                             </el-button>
                         </template>
                     </el-table-column>
@@ -146,8 +143,6 @@
                                 </el-button>
                                 <el-button size="small" type="success" @click="updatesqlconfirm(scope.$index, scope.row)">入库
                                 </el-button>
-                                <el-button size="small" type="danger" @click="invdataconfirm(scope.$index, scope.row)">置为无效
-                                </el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -219,8 +214,6 @@
                             <el-button size="small" type="info" @click="matcherconfirm(scope.$index, scope.row)">匹配
                             </el-button>
                             <el-button size="small" type="success" @click="updatesqlconfirm(scope.$index, scope.row)">入库
-                            </el-button>
-                            <el-button size="small" type="danger" @click="invdataconfirm(scope.$index, scope.row)">置为无效
                             </el-button>
                         </template>
                     </el-table-column>
@@ -326,6 +319,7 @@
         }
     }
     .el-pagination {
+        background-color: #fff;
         text-align: right;
         padding-right: 36px;
         height: 50px;
