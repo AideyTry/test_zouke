@@ -7,5 +7,6 @@ export default [
     { 
         // path:'hotel-mapping', component: { render }, name: 'dashboard-hotel-mapping' ,
         path:'hotel-mapping/:provider',component:HotelMappingPage,name:'dashboard-hotel-mapping',
+
     }
 ]

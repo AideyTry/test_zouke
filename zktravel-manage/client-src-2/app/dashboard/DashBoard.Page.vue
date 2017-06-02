@@ -41,6 +41,9 @@
                 overflow-y: scroll;
             }
         }
+        .el-menu{
+            border-radius: 0px !important;
+        }
 
     }
 
@@ -59,32 +62,64 @@
 
         </header>-->
         <el-row class="header" type="flex">
-            <el-col :span="4">
+            <el-col :span="3">
                 <i></i>
                 <div class="main-title">
                     超级行程单
                 </div>
             </el-col>
-            <el-col :span="16">
+            <el-col :span="17">
                 <div class="title">
-                    待入库
                 </div>
             </el-col>
             <el-col :span="4">
                 <div class="user-info">
                     <i class="el-icon-message"></i>
                     <span>用户名</span>
-                    <span style="color:orangered">{{userInfo.name}}</span>
+                    <span>{{userInfo.name}}</span>
                     <span class="log-out" @pointerup.prevent="logout">退出</span>
                 </div>
             </el-col>
         </el-row>
         <el-row class="main-body" type="flex">
-            <el-col :span="4" class="nav-menu">
-                <el-menu :default-active="selected"   class="nav-memu" theme="dark" @select="handleSelect" @open="handleOpen" @close="handleClose">
+            <el-col :span="3" class="nav-menu">
+                <el-menu :default-active="activemenu"    class="nav-memu" theme="dark" @select="handleSelect" @open="handleOpen" @close="handleClose">
                     <el-menu-item index="home">
                             主页
                     </el-menu-item>
+                    <el-submenu index="publish">
+                        <template slot="title">团房需求</template>
+                        <el-menu-item-group>
+                            <el-menu-item index="dashboard-publish-requirement">
+                                发布需求
+                            </el-menu-item>
+                            <el-menu-item index="dashboard-my-publish">
+                                我的发布
+                            </el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
+                    <el-submenu index="wait">
+                        <template slot="title">团房报价</template>
+                        <el-menu-item-group>
+                            <el-menu-item index="dashboard-wait-offer">
+                                待报价/预订
+                            </el-menu-item>
+                            <el-menu-item index="dashboard-wait-examine">
+                                待审核
+                            </el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
+                    <el-submenu index="order">
+                        <template slot="title">订单库</template>
+                        <el-menu-item-group>
+                            <el-menu-item index="dashboard-order">
+                                团房订单
+                            </el-menu-item>
+                            <el-menu-item index="dashboard-sys-order">
+                                系统订单
+                            </el-menu-item>
+                        </el-menu-item-group>
+                    </el-submenu>
                     <el-submenu index="dashboard">
                         <template slot="title">酒店数据管理</template>
                         <el-menu-item-group>
@@ -96,11 +131,11 @@
                             </el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
-                    <el-menu-item index="2">导航二</el-menu-item>
-                    <el-menu-item index="3">导航三</el-menu-item>
+                    <el-menu-item index="2">用户管理</el-menu-item>
+                    <el-menu-item index="3">系统管理</el-menu-item>
                 </el-menu>
             </el-col>
-            <el-col :span="20" class="content">
+            <el-col :span="21" class="content">
                 <router-view></router-view>
             </el-col>
         </el-row>
@@ -116,6 +151,7 @@
         /*增加data*/
         data(){
             return {
+                activemenu:'dashboard-hotel-mapping',
                 isActive: true,
                 isTrue: false,
                 flag: 0,

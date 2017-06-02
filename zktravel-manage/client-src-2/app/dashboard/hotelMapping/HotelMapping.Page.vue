@@ -1,6 +1,12 @@
 <template>
     <div class="hotel-map">
         <el-tabs :active-name="$route.params.provider" @tab-click="changetab">
+            <el-select  clearable v-model="matchlv" placeholder="等级" @change="changelv">
+
+                <template v-for="(v,k) of lvmap">
+                    <el-option :value="v" :label="k"></el-option>
+                </template>
+            </el-select>
             <el-tab-pane label="Miki" name="mk">
                 <el-table
                         :data="currentdata"
@@ -81,8 +87,7 @@
                             border
                             style="width: 100%">
                         <el-table-column
-                                witdh="50"
-                                prop="levelDesc"
+                                prop="level"
                                 label="匹配等级">
                         </el-table-column>
                         <el-table-column
@@ -104,7 +109,6 @@
                             </template>
                         </el-table-column>
                         <el-table-column
-                                width="250"
                                 prop="zkAddress"
                                 label="SAI地址">
                         </el-table-column>
@@ -296,7 +300,7 @@
             </span>
         </el-dialog>
         <el-dialog title="酒店详情" :visible.sync="showdialog4">
-            <photel class="hotel"  v-if="showdialog4" :idp="pid"></photel>
+            <photel class="hotel"  v-if="showdialog4" :idp="pid" :sp="sp"></photel>
         </el-dialog>
         <el-dialog title="酒店详情" :visible.sync="showdialog5">
             <shotel class="hotel"  v-if="showdialog5" :ids="sid"></shotel>
@@ -315,13 +319,18 @@
     .el-table{
         margin-bottom: 110px;
     }
+    .el-tabs{
+        .el-select{
+            height: 50px;
+            padding-left: 20px;
+        }
+    }
     .el-pagination {
         text-align: right;
-        background: #fff;
         padding-right: 36px;
         height: 50px;
         padding-top: 10px;
-        width: 83.3%;
+        width: 87.5%;
         position: fixed;
         bottom: 0px;
         right: 0px;
@@ -356,10 +365,34 @@
                 showdialog5:false,
                 showdialog6:false,
                 actionarr:{},
+                sp:'',
                 pid:'',
                 sid:'',
                 photelisTrue:false,
-                shotelisTrue:false
+                shotelisTrue:false,
+                matchlv:19,
+                lvmap:{
+                    ALL:19,
+                    L0_nt:0,
+                    L0_na:1,
+                    L1_n:2,
+                    L1_t:3,
+                    L1_a:4,
+                    L1_na:5,
+                    L2_nt:6,
+                    L2_ta:7,
+                    L3_n:8,
+                    L3_t:9,
+                    L3_a:10,
+                    L4_nc:11,
+                    L4_tc:12,
+                    L4_ac:13,
+                    L4_wc:14,
+                    L4_n:15,
+                    L4_t:16,
+                    L4_a:17,
+                    L4_w:18
+                }
             }
 
         },
@@ -367,6 +400,7 @@
             photel(pid) {
                 this.showdialog4=true;
                 this.pid = pid;
+                this.sp= this.$route.params.provider;
             },
             shotel(sid) {
                 this.showdialog5=true;
@@ -374,6 +408,10 @@
             },
             getTableData(){
 
+            },
+            changelv(lv){
+                this.matchlv=lv;
+                this.loadtable();
             },
             changetab(tab){
                 this.$router.push({name: 'dashboard-hotel-mapping', params: {provider: tab.name}});
@@ -385,13 +423,18 @@
                     let arr = [];
                     vm.currentpage = 1;
                     vm.tableData = Object.assign({}, data.list);
+
                     for (let num = (vm.currentpage - 1) * vm.currentlimit; num < vm.currentlimit * vm.currentpage; num++) {
                         if (vm.tableData[num]) {
-                            arr.push(vm.tableData[num]);
+                            if(vm.matchlv==19){
+                                arr.push(vm.tableData[num]);
+                            }else if(vm.matchlv==vm.tableData[num].levelRank){
+                                arr.push(vm.tableData[num]);
+                            }
                         }
                     }
                     arr.sort(function (a,b) {
-                        return a.level-b.level
+                        return a.levelRank-b.levelRank
                     })
                     vm.currentdata = arr;
                     vm.total = data.list.length;
@@ -408,7 +451,7 @@
                     }
                 }
                 arr.sort(function (a,b) {
-                    return b.level-a.level
+                    return a.levelRank-b.levelRank
                 })
                 vm.currentdata = arr;
             },
