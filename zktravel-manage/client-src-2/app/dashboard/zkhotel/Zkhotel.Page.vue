@@ -1,6 +1,7 @@
 <style lang="scss" scoped>
 	.zkhotel{
 		.el-pagination {
+			background-color: #fff;
 			text-align: right;
 			padding-right: 36px;
 			height: 50px;
