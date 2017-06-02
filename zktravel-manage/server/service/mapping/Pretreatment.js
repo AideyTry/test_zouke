@@ -1,4 +1,4 @@
-const { sp_collection_name } = require('../config');
+const { sp_collection_name, zk_collection_name } = require('../config');
 const dbclient = requireRoot('db');
 
 const charMapStr = 'Ä-A、ä-a、Á-A、á-a、À-A、à-a、Â-A、â-a、Ą-A、ą-a、Å-A、 å-a、Ã-A、ã-a、Ç-C、ç-c、Ć-C、ć-c、Č-C、č-c、Ď-D、ď-d、ð-d、Ё -E、ë-e、È=E、è-e、É-E、é-e、Ê-E、ê-e、Ę-E、ę-e、Ě-E、ě-e、Ğ-G、ğ-g、Î-I、î-i、Ì-I、ì-i、Í-I、í-i、Ï-I、ï-i、Ł-L、ł-l、Й-N、й-n、Ń-N、ń-n、Ó-O、ó-o、Ò-O、ò-o、Ô-O、ô-o、Ö-O、ö-o、Õ-O、õ-o、Ř-R、ř-r、Š-S、š-s、Ş-S、ş-s、Ś-S、ś-s、Ť-T、ť-t、Ű-U、ű-u、Ü-U、ü-u、Ú-U、ú-u、Ù-U、ù-u、Ů-U、ů-u、Ÿ-Y 、ÿ-y、Ý-Y、ý-y、Ź-Z、ź-z、Ż-Z、ż-z、Ž-Z、ž-z、Æ-AE、æ-ae、Ǽ-AE、Ǣ-AE 、ß-s、ø-o、Dž-Dz、dź-dz';
@@ -87,24 +87,35 @@ module.exports = class Pretreatment{
         const db = await dbclient.get();
         const spCollection = await db.collection(sp_collection_name);
 
-        const cursor = spCollection.find({
-            [`${Pretreatment.field}._v`]: { $ne: Pretreatment.version }
+        const spCursor = spCollection.find({
+            $or:[
+                { [`${Pretreatment.field}._v`]: { $ne: Pretreatment.version } },
+                { mode: 'U' }
+            ]
         },{
              name: 1, name_en: 1, phone: 1, url_web: 1, address: 1
         });
 
-        try{
-            let hotel = null;
-            while((hotel = await cursor.next())){
-                await spCollection.updateOne({ _id: hotel._id },{
-                    $set:{
-                        [Pretreatment.field]: Pretreatment.convert(hotel)
-                    }
-                })
-            }
-        }catch(e){
-            console.error(e);
-        }
+        const count = await spCursor.count();
+        let updateCount = 0;
+        if(count===0) return;
 
+        return new Promise((resolve)=>{
+            spCursor.forEach(async hotel=>{
+                try{
+                    await spCollection.updateOne({ _id: hotel._id },{
+                        $set:{
+                            [Pretreatment.field]: Pretreatment.convert(hotel)
+                        }
+                    })
+                }catch(e){
+                    console.error(e);
+                }
+                ++updateCount;
+                if(updateCount>=count){
+                    resolve();
+                }
+            });
+        });
     }
 }

@@ -7,7 +7,9 @@ let _zkCollection = null;
 let _spCollection = null;
 
 module.exports = {
-    diff({ dis, hotel: {[Pretreatment.field]: h1_field} }, { [Pretreatment.field]: h2_field}){
+    diff({ dis, hotel:hotel1 }, hotel2 ){
+        const h1_field = hotel1[Pretreatment.field];
+        const h2_field = hotel2[Pretreatment.field];
         let result = 0;
         
         if(
@@ -22,7 +24,7 @@ module.exports = {
         if( h1_field.address&&(h1_field.address===h2_field.address)){
             result |= MappingLevel.ADDRESS;
         }
-        if( h1_field.city_id&&(h1_field.city_id===h2_field.city_id)){
+        if( hotel1.city_id&&(hotel1.city_id===hotel2.city_id)){
             result |= MappingLevel.CITY;
         }
         if( h1_field.url_web&&(h1_field.url_web===h2_field.url_web)){

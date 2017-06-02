@@ -66,6 +66,7 @@
                                     poll();
                                 }, 1000);
                                 break;
+                            case 2: //user not permitted
                             case 9: //qr invalid
                                 this.invalid = true;
                                 break;

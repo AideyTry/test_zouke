@@ -18,14 +18,14 @@ module.exports = class Mapping {
     }
 
     $logInc(type){
-        if(this._stat[type]) ++this._stat[type];
+        if(type in this._stat) ++this._stat[type];
     }
 
     async $findSpNotResolve(){
         const collection = await getSpHotelCollection();
         return collection.find({
             [`${Pretreatment.field}._v`]: Pretreatment.version,
-            'status': 0,
+            //'status': 0,
             'mode': { $ne: 'R' },
             'map_state.invalid': { $ne: true }
         });
@@ -40,13 +40,13 @@ module.exports = class Mapping {
 
         const queryResults = (await (await getDb()).command({
             geoNear: collection.s.name,
-            near: { type:'Point', coordinates: [hotel.gps.lng, hotel.gps.lat] },
+            near: { type:'Point', coordinates: hotel.geo },
             spherical: true,
             maxDistance: 1001,
             query: {
                 $and: [
                     {
-                        country_id: hotel.country_id,
+                        //country_id: hotel.country_id,
                         $or: orQueryCondition
                     },
                     query
@@ -58,7 +58,7 @@ module.exports = class Mapping {
             const cityResults = await collection.find({
                 $and: [
                     {
-                        country_id: hotel.country_id,
+                        //country_id: hotel.country_id,
                         city_id: hotel.city_id,
                         _id: { $nin: queryResults.map(r=>r.hotel._id) },
                         $or: orQueryCondition
@@ -80,7 +80,7 @@ module.exports = class Mapping {
             
             await zkResolver.offline(spHotel.id);
         }
-        spResolver.resolveHotel(spHotel._id, MapState.createOffline());
+        await spResolver.resolveHotel(spHotel._id, MapState.createOffline());
     }
     async $map(spHotel, zkId, map_key){
         const alias = [];
@@ -91,10 +91,10 @@ module.exports = class Mapping {
         await SpResolver.get(spHotel.supplier).resolveHotel(spHotel._id, MapState.createStrict(zkId, map_key));
     }
     async $fuzzy(spHotel, fuzzy){
-        SpResolver.get(spHotel.supplier).resolveHotel(spHotel._id, MapState.createFuzzy(fuzzy));
+        await SpResolver.get(spHotel.supplier).resolveHotel(spHotel._id, MapState.createFuzzy(fuzzy));
     }
     async $alone(spHotel){
-        SpResolver.get(spHotel.supplier).resolveHotel(spHotel._id, MapState.createAlone());
+        await SpResolver.get(spHotel.supplier).resolveHotel(spHotel._id, MapState.createAlone());
     }
 
     async $insert(spHotel){
@@ -153,6 +153,8 @@ module.exports = class Mapping {
             'mode': 'R'
         }, { id:1, name:1, name_en:1, address:1, phone:1, url_web:1, map_state:1, gps: 1 }).toArray();
 
+        console.log(spFuzzyList.length);
+
         const zkIds = new Set();
 
         for(let {map_state:{fuzzy}} of spFuzzyList){
@@ -165,7 +167,7 @@ module.exports = class Mapping {
         const zkHotels = await zkCollection.find({
             _id: {$in:[...zkIds]}
         }, { name:1, name_en:1, address:1, phone:1, url_web:1, gps:1, booking_info:1 }).toArray();
-
+        
         const zkHotelMap = {};
         for(let zkHotel of zkHotels){
             zkHotelMap[zkHotel._id] = zkHotel;
@@ -204,7 +206,6 @@ module.exports = class Mapping {
                 })
             }
         }
-
         return result;
     }
 
@@ -254,59 +255,76 @@ module.exports = class Mapping {
         const hotelCursor = await  this.$findSpNotResolve();
         const zkHotelCollection = await getZkHotelCollection();
 
-        let spHotel = null;
+        const count = await hotelCursor.count();
+        let updateCount = 0;
 
-        while((spHotel = await cursor.next())){
+        return new Promise(resolve=>{
+            const end = ()=>{
+                ++updateCount;
+                if(updateCount>=count){
+                    console.log('autoMap stat: ', this._stat);
+                    resolve();
+                }
+            };
+            
+            hotelCursor.forEach(async spHotel=>{
+                if(spHotel.mode==='D'){
+                    // offline sp hotel
+                    try{
+                        this.$logInc('offline');
+                        console.log(`autoMap: offline ${spHotel.supplier} hotel -> spId|${spHotel.id}`)
+                        await this.$offline(spHotel);
+                    }catch(e){
+                        console.error(e);
+                    }
+                    return end();
+                }
 
-            if(spHotel.mode==='D'){
-                // offline sp hotel
+                const similarZkHotels = await this.$searchSimilarHotel(spHotel, zkHotelCollection);
+                if(similarZkHotels.length===0){
+                    /*
+                    * doesn't map
+                    * insert as new
+                    */
+                    try{
+                        this.$logInc('alone');
+                        console.log(`autoMap: ${spHotel.supplier} hotel not map any sai hotel -> spId|${spHotel.id}`);
+                        this.$alone(spHotel);
+                        //await this.$insert(spHotel);
+                    }catch(e){
+                        console.log(e);
+                    }
+                    return end();
+                }
+
+
+                const fuzzy = {};
+
+                for(let zkHotelResult of similarZkHotels){
+                    const diffResult = diff(zkHotelResult, spHotel);
+                    if(MappingLevel.isHighest(diffResult)){
+                        //免审
+                        this.$logInc('map');
+                        console.log(`autoMap: ${spHotel.supplier} hotel auto map sai hotel -> spId|${spHotel.id} == zkId|${zkHotelResult.hotel._id}`);
+                        try{
+                            await this.$map(spHotel, zkHotelResult.hotel._id, diffResult);
+                        }catch(e){
+                            console.error(e);
+                        }
+                        return end();
+                    }
+                    fuzzy[zkHotelResult.hotel._id] = diffResult;
+                }
+
+                this.$logInc('fuzzy');
+                console.log(`autoMap: ${spHotel.supplier} hotel fuzzy map sai hotel -> spId|${spHotel.id}`);
                 try{
-                    this.$logInc('offline');
-                    console.log(`autoMap: offline ${spHotel.supplier} hotel -> spId|${spHotel.id}`)
-                    await this.$offline(spHotel);
+                    await this.$fuzzy(spHotel, fuzzy);
                 }catch(e){
                     console.error(e);
                 }
-                continue;
-            }
-
-            const similarZkHotels = await this.$searchSimilarHotel(spHotel, zkHotelCollection);
-            if(similarZkHotels.length===0){
-                /*
-                * doesn't map
-                * insert as new
-                */
-                try{
-                    this.$logInc('alone');
-                    console.log(`autoMap: ${spHotel.supplier} hotel not map any sai hotel -> spId|${spHotel.id}`);
-                    this.$alone(spHotel);
-                    //await this.$insert(spHotel);
-                }catch(e){
-                    console.log(e);
-                }
-                continue;
-            }
-
-
-            const fuzzy = {};
-
-            for(let zkHotelResult of queryResults){
-                const diffResult = diff(zkHotelResult, spHotel);
-                if(MappingLevel.isHighest(diffResult)){
-                    //免审
-                    this.$logInc('map');
-                    console.log(`autoMap: ${spHotel.supplier} hotel auto map sai hotel -> spId|${spHotel.id} == zkId|${zkHotelResult.hotel._id}`);
-                    await this.$map(spHotel, zkHotelResult.hotel._id, diffResult);
-                    return;
-                }
-                fuzzy[zkHotelResult.hotel_id] = diffResult;
-            }
-
-            this.$logInc('fuzzy');
-            console.log(`autoMap: ${spHotel.supplier} hotel fuzzy map sai hotel -> spId|${spHotel.id}`);
-            await this.$fuzzy(spHotel);
-        }
-
-        console.log('autoMap stat: ', this._stat);
+                return end();
+            });
+        });
     }
 }

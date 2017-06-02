@@ -20,9 +20,13 @@ async function run(){
     let updateCount = 0;
 
     cursor.forEach(async hotel=>{
-        await zkCollection.updateOne({_id: hotel._id},{
-            $set:{ [Pretreatment.field]: Pretreatment.convert(hotel) }
-        });
+        try{
+            await zkCollection.updateOne({_id: hotel._id},{
+                $set:{ [Pretreatment.field]: Pretreatment.convert(hotel) }
+            });
+        }catch(e){
+            console.error(e);
+        }
         ++updateCount;
         if(updateCount%10000 === 0){
             console.log(updateCount);

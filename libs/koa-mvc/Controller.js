@@ -31,6 +31,9 @@ module.exports = class Controller {
     get cookies(){
         return this.ctx.cookies;
     }
+    throw(...arg){
+        this.ctx.throw(...arg);
+    }
     isAjax(){
         return this.ctx.headers['x-requested-with'] === 'XMLHttpRequest'
     }

@@ -12,6 +12,11 @@ const User = requireRoot('service/user/User');
 
 module.exports = class AuthController extends SController{
     async qrCode(){
+        if(this.session.uid){
+            //已有uid
+            return this.throw(404);
+        }
+
         const now = new Date();
         const code = des.encrypt(this.sessionId+'/'+ now.valueOf());
         this.session[codeKey] = code;
@@ -36,21 +41,12 @@ module.exports = class AuthController extends SController{
             );
         });
     }
+    // uid | code/codeExpries 互斥
     async isLogin(){
         const now = new Date();
         const { [codeKey]: code, [codeExpriesKey]:codeExpries, uid } = this.session;
 
         this.logResponse();
-        
-        if(uid){
-            console.log('\tuid: ',this.session.uid);
-            const user = await User.get(uid);
-            this.renderJSON({code:0, userInfo:{
-                name: user.name,
-                p: user.p
-            }});
-            return;
-        }
 
         if(code&&codeExpries>=now.valueOf()){
             this.renderJSON({code:1, msg:'not login'});
@@ -60,8 +56,24 @@ module.exports = class AuthController extends SController{
         delete this.session[codeKey];
         delete this.session[codeExpriesKey];
 
-        this.renderJSON({code:9, msg:'qrcode invalid'});
+        if(!uid) {
+            this.renderJSON({code:9, msg:'qrcode invalid'});
+            return;
+        }
 
+        console.log('\tuid: ',this.session.uid);
+    
+        const user = await User.get(uid);
+        if(!user){
+            delete this.session.uid;
+            this.renderJSON({ code: 2, msg: 'user not permitted' });
+            return;
+        }
+
+        this.renderJSON({ code: 0, userInfo: {
+            name: user.name,
+            p: user.p
+        } });
     }
     logout(){
         console.log('\tuid: ',this.session.uid);
