@@ -71,8 +71,6 @@
                             </el-button>
                             <el-button size="small" type="success" @click="updatesqlconfirm(scope.$index, scope.row)">入库
                             </el-button>
-                            <el-button size="small" type="danger" @click="invdataconfirm(scope.$index, scope.row)">置为无效
-                            </el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -145,8 +143,6 @@
                                 </el-button>
                                 <el-button size="small" type="success" @click="updatesqlconfirm(scope.$index, scope.row)">入库
                                 </el-button>
-                                <el-button size="small" type="danger" @click="invdataconfirm(scope.$index, scope.row)">置为无效
-                                </el-button>
                             </template>
                         </el-table-column>
                     </el-table>
@@ -218,8 +214,6 @@
                             <el-button size="small" type="info" @click="matcherconfirm(scope.$index, scope.row)">匹配
                             </el-button>
                             <el-button size="small" type="success" @click="updatesqlconfirm(scope.$index, scope.row)">入库
-                            </el-button>
-                            <el-button size="small" type="danger" @click="invdataconfirm(scope.$index, scope.row)">置为无效
                             </el-button>
                         </template>
                     </el-table-column>

@@ -318,8 +318,8 @@
 					this.photo = this.shdata.photos;
 					this.fea = this.shdata.booking_info.feature;
 					this.vids = this.shdata.sp_id.vt_ids;
-					this.mids = this.shdata.sp_id.mk_ids
-					this.dids = this.shdata.sp_id.dl_ids
+					this.mids = this.shdata.sp_id.mk_ids;
+					this.dids = this.shdata.sp_id.dl_ids;
 				}
 			})
 		},

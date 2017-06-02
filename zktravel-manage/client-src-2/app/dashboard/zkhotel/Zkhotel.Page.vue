@@ -1,5 +1,6 @@
 <style lang="scss" scoped>
     .zkhotel {
+
         .el-pagination {
             background-color: #fff;
             text-align: right;
@@ -23,9 +24,17 @@
         .el-table {
             margin-bottom: 110px;
         }
-        .el-dialog__header {
-            height: 60px;
+        .exam{
+            .el-dialog__title{
+                font-size: 20px !important;
+            }
+            .dialog-action-group{
+                position: absolute;
+                top: 20px;
+                right: 70px;
+            }
         }
+
     }
 
 
@@ -270,13 +279,13 @@
                                :page-size="pager.pageSize"></el-pagination>
             </el-tab-pane>
         </el-tabs>
-        <el-dialog title="酒店详情" :visible.sync="showdialog1">
-<!--            <div>
-                <el-button size="small" type="info" @click="verifyconfirm(scope.row)">修改
+        <el-dialog title="酒店详情" size="large" custom-class="exam" :visible.sync="showdialog1">
+            <div class="dialog-action-group">
+                <el-button size="small" type="success" @click="verifyconfirm(scope.row)">修改
                 </el-button>
                 <el-button size="small" type="info" @click="matcherconfirm(scope.$index, scope.row)">通过
                 </el-button>
-            </div>-->
+            </div>
             <shotel class="hotel" v-if="showdialog1" :ids="sid" :sp="sp"></shotel>
         </el-dialog>
     </div>
