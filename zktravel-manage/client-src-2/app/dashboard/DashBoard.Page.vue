@@ -49,17 +49,6 @@
 </style>
 <template>
     <div class="dashboard">
-<!--         <h2>酒店基础数据</h2> -->
-<!--        <header class="headers">
-            <div class="pCenter">
-                <span class="glyphicon glyphicon-user"></span>
-                <span>当前用户</span>
-                <strong>{{userInfo.name}}</strong>
-                <span class="logout" >    退出
-                </span>
-            </div>
-
-        </header>-->
         <el-row class="header" type="flex">
             <el-col :span="3">
                 <i></i>
@@ -138,9 +127,6 @@
                 <router-view></router-view>
             </el-col>
         </el-row>
-
-<!--         <router-view name="dashboard-hotel-mapping"><router-view>
-        <router-view name="dashboard-zkhotel"><router-view> -->
     </div>
 </template>
 
@@ -150,7 +136,7 @@
         /*增加data*/
         data(){
             return {
-                activemenu:'dashboard-hotel-mapping',
+
                 isActive: true,
                 isTrue: false,
                 flag: 0,
@@ -161,6 +147,9 @@
             }
         },
         computed: {
+            activemenu(){
+              return this.$route.name;
+            },
             userInfo(){
                 return this.$store.getters.userInfo;
             },
