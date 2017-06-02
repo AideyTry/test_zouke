@@ -139,31 +139,6 @@
                     this.$router.replace(auth.loginRoute(this.$route));
                 })
             },
-            /*增加方法*/
-            hotel(){
-                this.flag++;
-                if (this.flag % 2 != 0) {
-                    this.isTrue = true;
-                    this.bgIstrue.mpIstrue = true;
-                    this.$router.push({name: 'dashboard-hotel-mapping-vt'});
-                } else {
-                    this.isTrue = false;
-                    this.$router.push({name: 'dashboard'})
-                }
-
-            },
-            stock: function () {
-                // this.$router.push({name:'dashboard-hotel-mapping'});
-                this.$router.push({path: '/dashboard/hotel-mapping/vt'});
-                this.bgIstrue.mpIstrue = true;
-                this.bgIstrue.zkIstrue = false;
-            },
-            SAI: function () {
-                // this.$router.push({name:'dashboard-hotel-mapping-dl'});
-                this.$router.push({path: '/dashboard/zkhotel'});
-                this.bgIstrue.zkIstrue = true;
-                this.bgIstrue.mpIstrue = false;
-            },
             handleOpen(key, keyPath) {
 
             },
