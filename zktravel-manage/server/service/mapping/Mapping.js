@@ -108,6 +108,7 @@ module.exports = class Mapping {
         delete zkHotel.mode;
         delete zkHotel.map_state;
         zkHotel.supplier_from = zkHotel.supplier;
+        zkHotel.status = 1;
         delete zkHotel.supplier;
         delete zkHotel.id;
         // 插入sai酒店库
@@ -165,7 +166,15 @@ module.exports = class Mapping {
         for(let {map_state:{fuzzy}} of spFuzzyList.filter(sp=>!!sp.map_state.fuzzy)){
             const keys = Object.keys(fuzzy);
             for(let id of keys){
-                zkIds.add(parseInt(id));
+                if(!level){
+                    zkIds.add(parseInt(id));
+                }else{
+                    if(level&&MappingLevel.getLevel(fuzzy[id])===level){
+                        zkIds.add(parseInt(id));
+                    }else{
+                        delete fuzzy[id];
+                    }
+                }
             }
         }
 

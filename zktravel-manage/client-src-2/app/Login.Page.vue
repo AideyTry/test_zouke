@@ -24,6 +24,7 @@
         .login
             img(":src"='qrCode' @load="checkLoginPoll")
             .refresh(v-if="invalid" @pointerup.prevent="refreshQRCode") 刷新二维码
+            .no-user(v-if="noUser") 无该用户，请联系管理员添加
         <h3>请扫码登录</h3>
     </div>
 </template>
@@ -40,6 +41,7 @@
         data(){
             return {
                 invalid: false,
+                noUser: false,
                 timestamp: new Date().valueOf()
             }
         },
@@ -52,6 +54,7 @@
             refreshQRCode(){
                 this.timestamp = new Date().valueOf();
                 this.invalid = false;
+                this.noUser = false;
             },
             checkLoginPoll(){
                 const poll = ()=>{
@@ -67,6 +70,9 @@
                                 }, 1000);
                                 break;
                             case 2: //user not permitted
+                                this.invalid = true;
+                                this.noUser = true;
+                                break;
                             case 9: //qr invalid
                                 this.invalid = true;
                                 break;
