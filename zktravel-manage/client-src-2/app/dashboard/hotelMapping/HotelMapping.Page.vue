@@ -65,7 +65,7 @@
                             </el-button>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" width="250">
+                    <el-table-column label="操作" width="180">
                         <template scope="scope">
                             <el-button size="small" type="info" @click="matcherconfirm(scope.$index, scope.row)">匹配
                             </el-button>
@@ -137,7 +137,7 @@
                                 </el-button>
                             </template>
                         </el-table-column>
-                        <el-table-column label="操作" width="250">
+                        <el-table-column label="操作" width="180">
                             <template scope="scope">
                                 <el-button size="small" type="info" @click="matcherconfirm(scope.$index, scope.row)">匹配
                                 </el-button>
@@ -209,7 +209,7 @@
                             </el-button>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" width="250">
+                    <el-table-column label="操作" width="180">
                         <template scope="scope">
                             <el-button size="small" type="info" @click="matcherconfirm(scope.$index, scope.row)">匹配
                             </el-button>
