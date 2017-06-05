@@ -143,15 +143,28 @@ module.exports = class Mapping {
         }
     }
 
-    async query(sp){
+    async query(sp, level){
         const spCollection = await getSpHotelCollection();
         const zkCollection = await getZkHotelCollection();
-        const spFuzzyList = await spCollection.find({
+        const spQuery = {
             'supplier': sp,
             'map_state.invalid': {$ne:true},
             'map_state.fuzzy': {$ne:null},
             'mode': 'R'
-        }, { id:1, name:1, name_en:1, address:1, phone:1, url_web:1, map_state:1, gps: 1 }).toArray();
+        };
+        switch(level){
+            case 'alone':
+                sqQuery['map_state.alone'] = true;
+                break;
+            case undefined:
+            case null:
+                break;
+            default:
+                sqQuery['map_state.fuzzy_level'] = level;
+                break;
+        }
+        const spFuzzyList = await spCollection.find(sqQuery,
+            { id:1, name:1, name_en:1, address:1, phone:1, url_web:1, map_state:1, gps: 1 }).toArray();
 
         console.log(spFuzzyList.length);
 
@@ -166,7 +179,7 @@ module.exports = class Mapping {
 
         const zkHotels = await zkCollection.find({
             _id: {$in:[...zkIds]}
-        }, { name:1, name_en:1, address:1, phone:1, url_web:1, gps:1, booking_info:1 }).toArray();
+        }, { name:1, name_en:1, address:1, phone:1, url_web:1, gps:1, url:1 }).toArray();
         
         const zkHotelMap = {};
         for(let zkHotel of zkHotels){
@@ -199,7 +212,7 @@ module.exports = class Mapping {
                     zkWeb: zk.url_web,
                     zkGPS: zk.gps,
 
-                    bookingUrl: zk.booking_info?zk.booking_info.url:'',
+                    bookingUrl: zk.url,
 
                     level: MappingLevel.getLevel(key),
                     levelRank: MappingLevel.getLevelRank(key)

@@ -19,8 +19,9 @@ async function run(){
     await zk_hotels_test_collection.deleteMany({});
     const hotels = await zk_hotels_new_collection.find({}).toArray();
     await zk_hotels_test_collection.insertMany(hotels.map(hotel=>{
-        hotel.status = 0;
+        hotel.status = 0;   // 0：有效   1：待审    9：下线
         hotel.geo = [hotel.gps.lng, hotel.gps.lat];
+        
         return hotel;
     }));
 
