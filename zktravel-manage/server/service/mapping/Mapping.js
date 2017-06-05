@@ -108,6 +108,7 @@ module.exports = class Mapping {
         delete zkHotel.mode;
         delete zkHotel.map_state;
         zkHotel.supplier_from = zkHotel.supplier;
+        zkHotel.status = 1;
         delete zkHotel.supplier;
         delete zkHotel.id;
         // 插入sai酒店库
