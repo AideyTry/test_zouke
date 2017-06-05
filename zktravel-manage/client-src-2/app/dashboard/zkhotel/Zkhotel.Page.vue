@@ -303,7 +303,7 @@
                 currentdata: [],
                 total: 1,
                 pager: {
-                    page: 1,
+                    page: 0,
                     pageSize: 20,
                     keyword: '',
                     status: 0
@@ -350,7 +350,7 @@
 
             },
             changepage(page){
-                this.pager.page = page;
+                this.pager.page = page-1;
                 this.loadtable();
             },
             loadtable(){
@@ -382,10 +382,8 @@
         },
         mounted(){
             if (this.$route.params.status == "ground") {
-                this.pager.valid = false;
                 this.loadtable();
             } else {
-                this.pager.valid = true;
                 this.loadtable();
             }
 
