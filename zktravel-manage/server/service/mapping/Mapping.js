@@ -165,7 +165,15 @@ module.exports = class Mapping {
         for(let {map_state:{fuzzy}} of spFuzzyList.filter(sp=>!!sp.map_state.fuzzy)){
             const keys = Object.keys(fuzzy);
             for(let id of keys){
-                zkIds.add(parseInt(id));
+                if(!level){
+                    zkIds.add(parseInt(id));
+                }else{
+                    if(level&&MappingLevel.getLevel(fuzzy[id])===level){
+                        zkIds.add(parseInt(id));
+                    }else{
+                        delete fuzzy[id];
+                    }
+                }
             }
         }
 
