@@ -1435,7 +1435,7 @@ electron-to-chromium@^1.2.7:
   version "1.3.13"
   resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.3.13.tgz#1b3a5eace6e087bb5e257a100b0cbfe81b2891fc"
 
-element-ui@^1.3.4:
+element-ui@^1.3.5:
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/element-ui/-/element-ui-1.3.5.tgz#b2bae0bd09cff986ead0d1b12c5541eba7802823"
   dependencies:
@@ -2494,7 +2494,7 @@ mongodb-core@2.1.12:
     bson "~1.0.4"
     require_optional "~1.0.0"
 
-mongodb@^2.2.26:
+mongodb@^2.2.28:
   version "2.2.28"
   resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-2.2.28.tgz#d8ff45754366e03973fa259bf4f11447858da657"
   dependencies:
@@ -3228,7 +3228,7 @@ pug-walk@^1.1.3:
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/pug-walk/-/pug-walk-1.1.3.tgz#d7cd5b23db3ca87c636c86a0973f9cd8e030436c"
 
-pug@^2.0.0-rc.1:
+pug@^2.0.0-rc.2:
   version "2.0.0-rc.2"
   resolved "https://registry.yarnpkg.com/pug/-/pug-2.0.0-rc.2.tgz#07845527790ab2c6be67dcf5eb1f31804081f04a"
   dependencies:
@@ -3761,7 +3761,7 @@ strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
 
-style-loader@^0.18.1:
+style-loader@^0.18.2:
   version "0.18.2"
   resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-0.18.2.tgz#cc31459afbcd6d80b7220ee54b291a9fd66ff5eb"
   dependencies:
@@ -3885,7 +3885,7 @@ uglify-js@^2.6.1, uglify-js@^2.8.27:
   optionalDependencies:
     uglify-to-browserify "~1.0.0"
 
-uglify-js@^3.0.13:
+uglify-js@^3.0.15:
   version "3.0.15"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.0.15.tgz#aacb323a846b234602270dead8a32441a8806f42"
   dependencies:
