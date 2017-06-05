@@ -15,7 +15,7 @@ const L0_NA = NAME | ADDRESS | GPS50;
 const L1_N = NAME | GPS50;
 const L1_T = PHONE | GPS50;
 const L1_A = ADDRESS | GPS50;
-const L2_NA = NAME | ADDRESS | GPS500;
+const L1_NA = NAME | ADDRESS | GPS500;
 const L2_NT = NAME | PHONE | GPS500;
 const L2_TA = PHONE | ADDRESS | GPS500;
 const L3_N = NAME | GPS500;
@@ -37,7 +37,7 @@ const keyLevelMap = {
     [L1_N]: 'L1-n',
     [L1_T]: 'L1-t',
     [L1_A]: 'L1-a',
-    [L2_NA]: 'L2-na',
+    [L1_NA]: 'L2-na',
     [L2_NT]: 'L2-nt',
     [L2_TA]: 'L2-ta',
     [L3_N]: 'L3-n',
@@ -56,7 +56,7 @@ const keyLevelMap = {
 const maskKeys = [ 
     L0_NT, L0_NA, 
     L1_N, L1_T, L1_A, 
-    L2_NA, L2_NT, L2_TA, 
+    L1_NA, L2_NT, L2_TA, 
     L3_N, L3_T, L3_A, 
     L4_NC, L4_TC, L4_AC, L4_WC, L4_N, L4_T, L4_A, L4_W 
 ];

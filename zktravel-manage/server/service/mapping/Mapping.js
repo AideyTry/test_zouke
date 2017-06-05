@@ -26,8 +26,9 @@ module.exports = class Mapping {
         return collection.find({
             [`${Pretreatment.field}._v`]: Pretreatment.version,
             //'status': 0,
-            'mode': { $ne: 'R' },
-            'map_state.invalid': { $ne: true }
+            'map_state.invalid': null,
+            'map_state.strict': null,
+            'map_state.offline':null
         });
     }
     //相似酒店
@@ -91,10 +92,12 @@ module.exports = class Mapping {
         await SpResolver.get(spHotel.supplier).resolveHotel(spHotel._id, MapState.createStrict(zkId, map_key));
     }
     async $fuzzy(spHotel, fuzzy){
-        await SpResolver.get(spHotel.supplier).resolveHotel(spHotel._id, MapState.createFuzzy(fuzzy));
+        await SpResolver.get(spHotel.supplier).resolveHotel(spHotel._id, MapState.createFuzzy(fuzzy, spHotel.map_state));
     }
     async $alone(spHotel){
-        await SpResolver.get(spHotel.supplier).resolveHotel(spHotel._id, MapState.createAlone());
+        if(!spHotel.map_state){
+            await SpResolver.get(spHotel.supplier).resolveHotel(spHotel._id, MapState.createAlone());
+        }
     }
 
     async $insert(spHotel){
@@ -109,16 +112,17 @@ module.exports = class Mapping {
         delete zkHotel.id;
         // 插入sai酒店库
         const zkId = await zkResolver.insert(zkHotel, spHotel.id);
-        console.log('zkId', zkId);
         // 更新sp酒店库匹配信息
         spResolver.resolveHotel(spHotel._id, MapState.createStrict(zkId, -1));
 
         const spCollection = await getSpHotelCollection();
         // 用新插入的酒店反查sp酒店库去重
         const remapResult = await this.$searchSimilarHotel(zkHotel, spCollection, {
-            'mode': 'R',
             _id: { $ne: spHotel._id },
-            'map_state.fuzzy': { $ne: null }
+            'map_state':{ $ne: null },
+            'map_state.invalid': null,
+            'map_state.strict': null,
+            'map_state.offline':null
         });
 
         for(let remapHotel of remapResult){
@@ -130,12 +134,7 @@ module.exports = class Mapping {
                     await this.$map(remapHotel.hotel, zkId, diffResult);
                 }else{
                     //返查更新fuzzy信息
-                    await spResolver.updateHotel(remapHotel.hotel._id, {
-                        $set: {
-                            'map_state.timestamp': new Date().valueOf(),
-                            [`map_state.fuzzy.${zkId}`]: diffResult
-                        }
-                    });
+                    await this.$fuzzy(remapHotel.hotel, {[zkId]: diffResult});
                 }
             }catch(e){
                 console.error(e);
@@ -148,23 +147,17 @@ module.exports = class Mapping {
         const zkCollection = await getZkHotelCollection();
         const spQuery = {
             'supplier': sp,
-            'map_state.invalid': {$ne:true},
-            'map_state.fuzzy': {$ne:null},
-            'mode': 'R'
+            'map_state.invalid': {$ne:true}
         };
-        switch(level){
-            case 'alone':
-                sqQuery['map_state.alone'] = true;
-                break;
-            case undefined:
-            case null:
-            case '':
-                break;
-            default:
-                sqQuery['map_state.fuzzy_level'] = level;
-                break;
+        if(level==='alone'){
+            spQuery['map_state.alone'] = true;
+        }else{
+            spQuery['map_state.fuzzy'] = { $ne:null };
+            if(level){ 
+                spQuery['map_state.fuzzy_level'] = level;
+            }
         }
-        const spFuzzyList = await spCollection.find(sqQuery,
+        const spFuzzyList = await spCollection.find(spQuery,
             { id:1, name:1, name_en:1, address:1, phone:1, url_web:1, map_state:1, gps: 1 }).toArray();
 
         const zkIds = new Set();
@@ -284,6 +277,7 @@ module.exports = class Mapping {
 
         const count = await hotelCursor.count();
         let updateCount = 0;
+        if(count===0) return;
 
         return new Promise(resolve=>{
             const end = ()=>{
