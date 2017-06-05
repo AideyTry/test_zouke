@@ -306,7 +306,7 @@
                     page: 1,
                     pageSize: 20,
                     keyword: '',
-                    valid: true
+                    status: 0
                 },
                 showdialog1: false,
                 sp: '',
@@ -332,12 +332,17 @@
         methods: {
             changetab(tab){
                 if (tab.name == 'throughing') {
-                    this.pager.valid = true;
+                    this.pager.status = 0;
+                    this.pager.keyword = '';
+                    this.$router.push({name: 'dashboard-zkhotel', params: {status: tab.name}});
+                    this.loadtable();
+                } else if(tab.name == 'unexamine'){
+                    this.pager.status = 1;
                     this.pager.keyword = '';
                     this.$router.push({name: 'dashboard-zkhotel', params: {status: tab.name}});
                     this.loadtable();
                 } else {
-                    this.pager.valid = false;
+                    this.pager.status = 9;
                     this.pager.keyword = '';
                     this.$router.push({name: 'dashboard-zkhotel', params: {status: tab.name}});
                     this.loadtable();
@@ -350,6 +355,14 @@
             },
             loadtable(){
                 let vm = this;
+                let tab= this.$route.params.status;
+                if (tab == 'throughing') {
+                    this.pager.status = 0;
+                }else if(tab == 'unexamine'){
+                    this.pager.status = 1;
+                }else {
+                    this.pager.status = 9;
+                }
                 ajax.post('/api/zk-hotel/query', vm.pager).then(
                     data => {
                         vm.currentdata = data.list;

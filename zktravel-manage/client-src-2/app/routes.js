@@ -2,6 +2,7 @@ import LoginPage from './Login.Page';
 import dashboardRoutes from './dashboard/routes';
 import fullpageRoutes from './fullpage/routes';
 
+
 export default [
     {
         path: 'login', component: LoginPage, name: 'login',
