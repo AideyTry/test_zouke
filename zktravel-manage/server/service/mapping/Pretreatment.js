@@ -83,11 +83,12 @@ module.exports = class Pretreatment{
     static get field(){
         return 'map_pretreatment_field';
     }
-    async run(){
-        const db = await dbclient.get();
-        const spCollection = await db.collection(sp_collection_name);
 
-        const spCursor = spCollection.find({
+    async _resolveCollection(name, resolveMode = false){
+        const db = await dbclient.get();
+        const collection = await db.collection(name);
+
+        const cursor = collection.find({
             $or:[
                 { [`${Pretreatment.field}._v`]: { $ne: Pretreatment.version } },
                 { mode: 'U' }
@@ -96,26 +97,42 @@ module.exports = class Pretreatment{
              name: 1, name_en: 1, phone: 1, url_web: 1, address: 1
         });
 
-        const count = await spCursor.count();
+        const count = await cursor.count();
         let updateCount = 0;
         if(count===0) return;
 
         return new Promise((resolve)=>{
-            spCursor.forEach(async hotel=>{
+            cursor.forEach(async hotel=>{
                 try{
-                    await spCollection.updateOne({ _id: hotel._id },{
-                        $set:{
-                            [Pretreatment.field]: Pretreatment.convert(hotel)
-                        }
-                    })
+                    const $set = {
+                        [Pretreatment.field]: Pretreatment.convert(hotel)
+                    };
+                    if(resolveMode){
+                        $set['mode'] = 'R';
+                    }
+                    await collection.updateOne({ _id: hotel._id },{
+                        $set
+                    });
                 }catch(e){
                     console.error(e);
                 }
                 ++updateCount;
+                if(updateCount%10000 === 0){
+                    console.log(updateCount);
+                }
                 if(updateCount>=count){
+                    console.log(count);
                     resolve();
                 }
             });
         });
+    }
+    async run(){
+        console.log('--> zk_hotel pretreatment start')
+        await this._resolveCollection(zk_collection_name, true);
+        console.log('<-- zk_hotel pretreatment end');
+        console.log('--> sp_hotel pretreatment start');
+        await this._resolveCollection(sp_collection_name);   
+        console.log('<-- sp_hotel pretreatment end');
     }
 }
