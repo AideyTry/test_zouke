@@ -36,10 +36,10 @@ module.exports = class ZkHotel {
         }
         return detail;
     }
-    async query(page, pageSize, { valid=true, keyword } = {} ){
+    async query(page, pageSize, { status = 0, keyword } = {} ){
 
         const findCondition = {
-            status: valid ? 0 : 1
+            status
         };
         if(keyword){
             const reg = new RegExp(keyword, 'i');
