@@ -390,7 +390,7 @@
         },
         beforeRouteEnter (to, from, next) {
             if (!to.params.status) {
-                next({name: 'dashboard-zkhotel', params: {status: 'throughing'}});
+                next({name: 'dashboard-zkhotel', params: {status: 'valid'}});
             } else {
                 next();
             }
