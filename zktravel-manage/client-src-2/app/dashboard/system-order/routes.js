@@ -1,3 +1,4 @@
-/**
- * Created by zouke-huajie on 2017/6/5.
- */
+import SysOrder from './SystemOrder.Page.vue'
+export default [
+    {path:'system-order',component:SysOrder,name:'dashboard-system-order'}
+]

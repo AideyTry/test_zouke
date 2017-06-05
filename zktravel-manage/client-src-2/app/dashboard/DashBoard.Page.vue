@@ -100,10 +100,10 @@
                     <el-submenu index="order">
                         <template slot="title">订单库</template>
                         <el-menu-item-group>
-                            <el-menu-item index="dashboard-order">
+                            <el-menu-item index="dashboard-group-order">
                                 团房订单
                             </el-menu-item>
-                            <el-menu-item index="dashboard-sys-order">
+                            <el-menu-item index="dashboard-system-order">
                                 系统订单
                             </el-menu-item>
                         </el-menu-item-group>
