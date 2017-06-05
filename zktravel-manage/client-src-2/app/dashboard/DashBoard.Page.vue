@@ -78,7 +78,7 @@
                     <el-submenu index="publish">
                         <template slot="title">团房需求</template>
                         <el-menu-item-group>
-                            <el-menu-item index="dashboard-publish-requirement">
+                            <el-menu-item index="dashboard-publish-require">
                                 发布需求
                             </el-menu-item>
                             <el-menu-item index="dashboard-my-publish">
