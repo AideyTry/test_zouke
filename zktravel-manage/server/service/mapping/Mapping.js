@@ -158,6 +158,7 @@ module.exports = class Mapping {
                 break;
             case undefined:
             case null:
+            case '':
                 break;
             default:
                 sqQuery['map_state.fuzzy_level'] = level;
@@ -166,11 +167,9 @@ module.exports = class Mapping {
         const spFuzzyList = await spCollection.find(sqQuery,
             { id:1, name:1, name_en:1, address:1, phone:1, url_web:1, map_state:1, gps: 1 }).toArray();
 
-        console.log(spFuzzyList.length);
-
         const zkIds = new Set();
 
-        for(let {map_state:{fuzzy}} of spFuzzyList){
+        for(let {map_state:{fuzzy}} of spFuzzyList.filter(sp=>!!sp.map_state.fuzzy)){
             const keys = Object.keys(fuzzy);
             for(let id of keys){
                 zkIds.add(parseInt(id));
@@ -190,6 +189,21 @@ module.exports = class Mapping {
         
         for(let sp of spFuzzyList){
             const map_state = sp.map_state;
+            if(map_state.alone){
+                result.push({
+                    sign: map_state.timestamp,
+                    sp: sp.supplier,
+                    spId: sp.id,
+                    spName: sp.name,
+                    spNameEn: sp.name_en,
+                    spAddress: sp.address,
+                    spPhone: sp.phone,
+                    spWeb: sp.url_web,
+                    spGPS: sp.gps,
+                })
+                continue;
+            }
+
             for(let zkId of Object.keys(map_state.fuzzy)){
                 const zk = zkHotelMap[zkId];
                 const key = map_state.fuzzy[zkId];

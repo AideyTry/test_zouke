@@ -2,7 +2,7 @@ const LController = requireRoot('common/LController');
 const Mapping = requireRoot('service/mapping/Mapping');
 
 
-module.exports = class VtMappingController extends LController {
+module.exports = class MappingController extends LController {
     async query(){
         const { sp, level } = this.request.body;
         const mapping = new Mapping();
