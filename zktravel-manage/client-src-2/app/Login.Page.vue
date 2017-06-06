@@ -36,6 +36,8 @@
  </template> -->
 <script>
     import store from 'root/store';
+    import auth from 'root/utils/auth';
+    import ajax from '@local/common/ajax';
 
     export default {
         data(){
@@ -91,7 +93,21 @@
         },
         beforeRouteEnter(to, from, next){
             if(store.getters['userInfo']){
-                //logined
+                r();
+                return;
+            }
+            auth.isLogin().then(result=>{
+                if(result){
+                    store.commit('initUserInfo', result);
+                    r();
+                } else {
+                    next();
+                }
+            }).catch(e=>{
+                next();
+            })
+
+            function r(){
                 let redirectRoute = { path:'/' }
                 if(to.query.redirect){
                     redirectRoute = JSON.parse(to.query.redirect)
@@ -99,9 +115,7 @@
                 next(Object.assign({
                     replace:true
                 }, redirectRoute));
-                return;
             }
-            next();
         }
     }
 </script>

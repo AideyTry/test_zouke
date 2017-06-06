@@ -9,7 +9,6 @@ const store = new Vuex.Store({
     /// #endif
     state:{
         userInfo: null,
-
         /*SAI酒店库数据start*/
         list:[],
         total:10,
@@ -33,6 +32,8 @@ const store = new Vuex.Store({
                 }
         },
         /*SAI酒店库数据end*/
+        /*        usergroup*/
+        requirementOrder:null
 
         /*我的发布start*/
         publish:{
@@ -55,6 +56,9 @@ const store = new Vuex.Store({
             return state.total;
         },
         /*SAI酒店库end*/
+        requirementOrder(state){
+            return state.requirementOrder;
+        }
         /*我的发布start*/
         publish(state){
             return state.publish;
@@ -87,6 +91,9 @@ const store = new Vuex.Store({
         },
 
         /*SAI酒店库end*/
+        initRequirementOrder(state,order){
+            state.order=order
+        }
         /*我的发布start*/
         publish(state,isTrue){
             state.publish.isTrue=isTrue;

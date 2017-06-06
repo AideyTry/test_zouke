@@ -3,13 +3,17 @@ const Router = require('./Router');
 const ActionTrigger = require('./ActionTrigger');
 const NotFoundError = require('./NotFoundError');
 
-
 module.exports = function(routerConfig){
     
     const router = new Router(routerConfig);
 
     return async (ctx, next) => {
         const route = router.match(ctx.path);
+
+        if(!route){
+            ctx.throw(404);
+            return;
+        }
 
         const actionTrigger = new ActionTrigger({
             ctx, route, router

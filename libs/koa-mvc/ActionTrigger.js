@@ -1,5 +1,5 @@
 const path = require('path');
-const utils = require('./utils');
+const { upperFirstLetter, camelCase } = require('./utils');
 const Controller = require('./Controller');
 const NotFoundError = require('./NotFoundError');
 
@@ -31,8 +31,8 @@ module.exports = class ActionTrigger{
         this._route = route;
         this._router = router;
 
-        this._controllerName = utils.upperFirstLetter(utils.camelCase(route.controller)) + 'Controller';
-        this._actionName = utils.camelCase(route.action);
+        this._controllerName = upperFirstLetter(camelCase(route.controller)) + 'Controller';
+        this._actionName = camelCase(route.action);
     }
     build(){
         const RouteController = findControllerByPath(path.resolve(

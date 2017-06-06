@@ -32,6 +32,8 @@ Vue.mixin({
     computed:{
         //$rootState:genStateGetter('$rootState','rootState'),
         $state(){
+            if(!this.$store) return undefined;
+            
             const namespace = this.$options.state;
             if(namespace) return getValue(this.$store.state, namespace);
 
