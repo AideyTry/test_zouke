@@ -36,6 +36,7 @@
  </template> -->
 <script>
     import store from 'root/store';
+    import auth from 'root/utils/auth';
 
     export default {
         data(){

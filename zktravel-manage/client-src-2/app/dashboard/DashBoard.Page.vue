@@ -39,6 +39,7 @@
             .content {
                 border-top: 1px solid #ccc;
                 overflow-y: scroll;
+                margin-bottom: 60px;
             }
         }
         .el-menu{
@@ -78,7 +79,7 @@
                     <el-submenu index="publish">
                         <template slot="title">团房需求</template>
                         <el-menu-item-group>
-                            <el-menu-item index="dashboard-publish-require">
+                            <el-menu-item index="dashboard-publish-require-proxy">
                                 发布需求
                             </el-menu-item>
                             <el-menu-item index="dashboard-my-publish">
@@ -111,13 +112,13 @@
                     <el-submenu index="dashboard">
                         <template slot="title">酒店数据管理</template>
                         <el-menu-item-group>
-                            <el-menu-item index="dashboard-hotel-mapping">
+                            <el-menu-item index="dashboard-hotel-mapping-proxy">
                                 待入库
                             </el-menu-item>
 <!--                            <el-menu-item index="dashboard-unmatched">
                                 未匹配
                             </el-menu-item>-->
-                            <el-menu-item index="dashboard-zkhotel">
+                            <el-menu-item index="dashboard-zkhotel-proxy">
                                 已入库
                             </el-menu-item>
                         </el-menu-item-group>
@@ -151,7 +152,7 @@
         },
         computed: {
             activemenu(){
-              return this.$route.name;
+              return this.$route.name+'-proxy';
             },
             userInfo(){
                 return this.$store.getters.userInfo;
