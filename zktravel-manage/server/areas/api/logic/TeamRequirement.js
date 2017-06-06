@@ -37,6 +37,11 @@ const validReqDataRule = {
 
 
 module.exports = class TeamRequirement {
+    $meta(){
+        return {
+            access: []
+        }
+    }
     async $getCollection(){
         const db = await dbclient.get();
         return await db.collection('offline_order');
