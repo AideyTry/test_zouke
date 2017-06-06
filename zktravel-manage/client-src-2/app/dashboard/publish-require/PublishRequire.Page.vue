@@ -179,7 +179,7 @@
 </template>
 <script>
     import ajax from '@local/common/ajax';
-    import DateCard from './datecard.vue'
+    import DateCard from './dateCard.vue'
     export default{
         props:['ordertype','orderid'],
         components: {

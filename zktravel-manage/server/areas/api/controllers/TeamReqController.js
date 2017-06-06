@@ -5,7 +5,6 @@ const triggerInsert = Symbol();
 
 // 团房需求
 module.exports = class TeamReqController extends LController {
-
     [triggerInsert](name){
         const requirement = teamRequirement.validRequirement(this.request.body);
         if(!requirement){
