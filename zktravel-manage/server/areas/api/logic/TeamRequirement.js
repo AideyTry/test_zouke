@@ -64,8 +64,8 @@ module.exports = class TeamRequirement {
         });
         return nextId;
     }
-    async validRequirement(data){
-        data = compare( validReqDataRule, data, { filter: false } )
+    validRequirement(data){
+        return compare( validReqDataRule, data, { filter: false } )
     }
     async publish(data, creator){
         return await this.$insert(data, 2, creator);
