@@ -48,16 +48,12 @@ ajax.config({
 });
 
 export default function starter(){
-    return new (
-        Vue.extend({
-            render(c){
-                return c('router-view');
-            }
-        })
-    )
-    ({
+    return new Vue({
         el: '#app',
         store,
-        router
+        router,
+        render(c){
+            return c('router-view');
+        }
     });
 }

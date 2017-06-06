@@ -37,7 +37,7 @@ const keyLevelMap = {
     [L1_N]: 'L1-n',
     [L1_T]: 'L1-t',
     [L1_A]: 'L1-a',
-    [L1_NA]: 'L2-na',
+    [L1_NA]: 'L1-na',
     [L2_NT]: 'L2-nt',
     [L2_TA]: 'L2-ta',
     [L3_N]: 'L3-n',
