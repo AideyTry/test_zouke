@@ -1,7 +1,7 @@
 <template>
     <div class="hotel-map">
         <el-tabs :active-name="$route.params.provider" @tab-click="changetab">
-            <el-select  clearable v-model="matchlv" placeholder="等级" @change="changelv">
+            <el-select  v-model="matchlv" placeholder="等级" @change="changelv">
                 <template v-for="(v,k) of lvmap">
                     <el-option :value="v"  :label="k"></el-option>
                 </template>

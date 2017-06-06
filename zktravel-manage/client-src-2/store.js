@@ -9,7 +9,6 @@ const store = new Vuex.Store({
     /// #endif
     state:{
         userInfo: null,
-
         /*SAI酒店库数据start*/
         list:[],
         total:10,
@@ -31,8 +30,10 @@ const store = new Vuex.Store({
                     flag:false,  //记录状态进行跳转页面使用
                     page:1
                 }
-        }
+        },
         /*SAI酒店库数据end*/
+        /*        usergroup*/
+        requirementOrder:null
     },
     getters: {
         userInfo(state){
@@ -47,8 +48,11 @@ const store = new Vuex.Store({
         },
         total(state){
             return state.total;
-        }
+        },
         /*SAI酒店库end*/
+        requirementOrder(state){
+            return state.requirementOrder;
+        }
     },
     mutations: {
         initUserInfo(state, info){
@@ -75,6 +79,9 @@ const store = new Vuex.Store({
         },
 
         /*SAI酒店库end*/
+        initRequirementOrder(state,order){
+            state.order=order
+        }
     },
     actions: {
         logout({ commit }){
