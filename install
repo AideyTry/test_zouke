@@ -47,8 +47,8 @@ $yarn
 
 link(){
     cd libs/$1
-    yarn unlink
-    yarn link
+    yarn unlink > /dev/null 2>&1
+    yarn link > /dev/null 2>&1
     cd ../../
     yarn link @local/$1
 }
@@ -61,5 +61,6 @@ link webpack-plugin-md5-hash
 link webpack-plugin-stats-writter
 link koa-mvc
 link des
+link compare
 
 npm rebuild node-sass
