@@ -10,7 +10,7 @@ const validReqDataRule = {
         '*avatar': 'img_url'
     },
     '*number': 3,
-    '*start_data': '2017-07-07',
+    '*start_date': '2017-07-07',
     '*star': 'star',
     '*breakfast': true,
     '*currency': 'EUR',
@@ -37,11 +37,6 @@ const validReqDataRule = {
 
 
 module.exports = class TeamRequirement {
-    $meta(){
-        return {
-            access: []
-        }
-    }
     async $getCollection(){
         const db = await dbclient.get();
         return await db.collection('offline_order');
@@ -52,6 +47,9 @@ module.exports = class TeamRequirement {
         const idReg = new RegExp(`^T${today}`);
         const maxIdResult = await collection.find({_id: idReg}, {_id: 1}).sort({ _id: -1 }).next();
 
+        const date = new Date().format('YYYY-MM-DD hh:mm:ss');
+        requirement.last_update = date;
+
         const nextId = maxIdResult ? `T${today}${ 
             (parseInt(maxIdResult._id.substr(today.length+1)) + 1).toString().padStart(3, '0')
         }` : `T${today}001`;
@@ -59,7 +57,8 @@ module.exports = class TeamRequirement {
         await collection.insertOne({
             _id: nextId,
             status,
-            create_time: new Date().format('YYYY-MM-DD hh:mm:ss'),
+            create_time: date,
+            last_update: date,
             creator,
             requirement
         });
