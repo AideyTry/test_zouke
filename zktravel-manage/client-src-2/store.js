@@ -31,8 +31,14 @@ const store = new Vuex.Store({
                     flag:false,  //记录状态进行跳转页面使用
                     page:1
                 }
-        }
+        },
         /*SAI酒店库数据end*/
+
+        /*我的发布start*/
+        publish:{
+            isTrue:true
+        }
+        /*我的发布end*/
     },
     getters: {
         userInfo(state){
@@ -47,8 +53,14 @@ const store = new Vuex.Store({
         },
         total(state){
             return state.total;
-        }
+        },
         /*SAI酒店库end*/
+        /*我的发布start*/
+        publish(state){
+            return state.publish;
+        }
+        /*我的发布end*/
+
     },
     mutations: {
         initUserInfo(state, info){
@@ -75,6 +87,11 @@ const store = new Vuex.Store({
         },
 
         /*SAI酒店库end*/
+        /*我的发布start*/
+        publish(state,isTrue){
+            state.publish.isTrue=isTrue;
+        }
+        /*我的发布end*/
     },
     actions: {
         logout({ commit }){
