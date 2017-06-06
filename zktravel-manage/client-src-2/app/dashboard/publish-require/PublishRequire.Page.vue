@@ -38,7 +38,7 @@
     <div class="publish-require" v-if="type==1">
         <el-row type="flex">
             <el-col :span="6">
-                <el-select size="small" v-model="params.level" placeholder="选择优先级">
+                <el-select size="small" v-model="params.priority" placeholder="选择优先级">
                     <el-option :value="1" label="优先级A+"></el-option>
                 </el-select>
             </el-col>
@@ -50,15 +50,22 @@
         <el-row type="flex">
             <el-col :span="6">
                 <span>需求来源<i class="red">*</i></span>
-                <el-select size="small" v-model="params.require_orign">
+                <el-select size="small" v-model="params.origin_from">
                     <el-option value="1" label="aaa"></el-option>
                 </el-select>
             </el-col>
             <el-col :span="6">
                 <span>用户名<i class="red">*</i></span>
-                <el-select size="small" placeholder="请选择" v-model="params.username">
+                <el-autocomplete
+                        size="small"
+                        class="inline-input"
+                        v-model="params.user"
+                        :fetch-suggestions="searchuser"
+                        placeholder="输入关键字选择"
+                ></el-autocomplete>
+<!--                <el-select size="small" placeholder="请选择" v-model="params.user">
                     <el-option value="1" label="aaa"></el-option>
-                </el-select>
+                </el-select>-->
             </el-col>
             <el-col :span="6">
                 <span>出发人数<i class="red">*</i></span>
@@ -179,7 +186,7 @@
 </template>
 <script>
     import ajax from '@local/common/ajax';
-    import DateCard from './datecard.vue'
+    import DateCard from './Card.vue'
     export default{
         props:['ordertype','orderid'],
         components: {
@@ -188,9 +195,9 @@
         data(){
             return {
                 params: {
-                    level: 1,
-                    require_orign: '',
-                    username: '',
+                    priority: 1,
+                    origin_from: '',
+                    user: null,
                     usernum: '',
                     startdate: new Date(),
                     hotelstar: '不限',
@@ -247,9 +254,6 @@
                 });
                 this.$store.commit('initRequirementOrder', this.params)
             },
-            cardChange(k){
-                console.info(k);
-            },
             cancelCard(k){
                 if(this.params.hotelcontent.length<2){
                     return
@@ -260,7 +264,6 @@
         },
         mounted(){
             this.$store.commit('initRequirementOrder', this.params);
-
         }
     }
 </script>
