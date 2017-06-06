@@ -1,24 +1,28 @@
 const LController = requireRoot('common/LController');
 const TeamRequirement = require('../logic/TeamRequirement');
 
+const triggerInsert = Symbol();
+
 // 团房需求
 module.exports = class TeamReqController extends LController {
-    async $beforeAction(){
-        const result = await super.$beforeAction();
-        if(result === false) return false;
 
-        const requirement = this.request.body;
-        //check
-        
+    [triggerInsert](name){
+        const requirement = teamRequirement.validRequirement(this.request.body);
+        if(!requirement){
+            this.renderJSON({code:1, msg: 'data check valid fail'});
+            return;
+        }
+
+        const { id: uid, name: uname } = this.userInfo;
+        const teamRequirement = new TeamRequirement();
+
+        const id = await teamRequirement[name](requirement, { id: uid, name: uname });
+        this.renderJSON({ code: 0, orderId: id });
     }
     async publish(){
-        const teamRequirement = new TeamRequirement();
-        const id = await teamRequirement.publish(this.request.body);
-        this.renderJSON({ code: 0, orderId: id });
+        this[triggerInsert]('publish');
     }
     async draft(){
-        const teamRequirement = new TeamRequirement();
-        const id = await teamRequirement.draft(this.request.body);
-        this.renderJSON({ code: 0, orderId: id });
+        this[triggerInsert]('draft');
     }
 }
