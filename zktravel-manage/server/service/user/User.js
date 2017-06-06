@@ -6,6 +6,18 @@ module.exports = class User {
      * field: name
      * field: p
     */
+
+    static get PERMISSION(){
+        return {
+            /* 团房 */
+            OFFLINE_ORDER:{
+                REQUIREMENT_PUBLISH: 1,
+                REQUIREMENT_UPDATE: 1<<1,
+                REQUIREMENT_DISPATCH: 1<<2
+            }
+        }
+    }
+
     static async get(id){
         const db = await dbclient.get();
         const userCollection = await db.collection('zkmanager_user');

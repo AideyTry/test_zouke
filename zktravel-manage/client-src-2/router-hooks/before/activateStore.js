@@ -7,7 +7,7 @@ export default function activateStore(to, from, next){
             registers.push(meta.store);
         }
     }
-    if(registers.length===0) next();
+    if(registers.length===0) return next();
 
     dispatch(0);
 
