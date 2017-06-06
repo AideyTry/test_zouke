@@ -9,6 +9,7 @@
         .card{
             display: inline-block;
             width:73%;
+            min-width: 760px;
             height:100%;
             padding: 10px  10px;
             background: #E5E9F2;
