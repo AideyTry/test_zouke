@@ -5,7 +5,7 @@ module.exports = class WxUserController extends LController {
     async query(){
         const { page=0, pageSize=10, keyword } = this.request.body;
         const wxUser = new WxUser();
-        const list = await wxUser.query(page, pageSize, keyword);
-        return this.renderJSON({code: 0, list});
+        const result = await wxUser.query(page, pageSize, keyword);
+        return this.renderJSON(Object.assign({code: 0}, result));
     }
 }

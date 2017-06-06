@@ -72,7 +72,9 @@ module.exports = class AuthController extends SController{
 
         this.renderJSON({ code: 0, userInfo: {
             name: user.name,
-            p: user.p
+            p: user.p,
+            role: user.role,
+            roleName: user.roleName
         } });
     }
     logout(){

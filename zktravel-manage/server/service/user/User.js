@@ -14,13 +14,20 @@ module.exports = class User {
             return null;
         }
 
-        return new User(id, user.name, user.p);
+        return new User(id, {
+            name: user.name,
+            p: user.p,
+            role: user.role,
+            roleName: user.role_name
+        });
     }
-    constructor(id, name, p){
+    constructor(id,  { name, p, role, roleName }){
         Object.defineProperties(this, {
             id: { value: id },
             name: { value: name },
-            p: { value: p }
+            p: { value: p },
+            role: { value: role },
+            roleName: { value: roleName }
         });
     }
 }
