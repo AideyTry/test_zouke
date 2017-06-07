@@ -38,7 +38,7 @@
             }
             .content {
                 border-top: 1px solid #ccc;
-                overflow-y: scroll;
+                overflow-y: auto;
                 margin-bottom: 60px;
             }
         }
@@ -72,7 +72,7 @@
         </el-row>
         <el-row class="main-body" type="flex">
             <el-col :span="3" class="nav-menu">
-                <el-menu :default-active="activemenu"    class="nav-memu" theme="dark" @select="handleSelect" @open="handleOpen" @close="handleClose">
+                <el-menu :default-active="activemenu"  :unique-opened="true"  class="nav-memu" theme="dark" @select="handleSelect" @open="handleOpen" @close="handleClose">
                     <el-menu-item index="home">
                             主页
                     </el-menu-item>
@@ -82,7 +82,7 @@
                             <el-menu-item index="dashboard-publish-require-proxy">
                                 发布需求
                             </el-menu-item>
-                            <el-menu-item index="dashboard-my-publish">
+                            <el-menu-item index="dashboard-my-publish-proxy">
                                 我的发布
                             </el-menu-item>
                             <el-menu-item index="dashboard-distributed-proxy">

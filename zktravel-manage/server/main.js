@@ -24,7 +24,8 @@ app.use(async (ctx, next) => {
     if(
         ctx.accepts(['html', 'image/*'])==='image/*'||                  // qr code
         ctx.path.startsWith('/trigger/')||                              // internal call
-        ctx.headers['x-requested-with'] === 'XMLHttpRequest'            // api ajax
+        ctx.headers['x-requested-with'] === 'XMLHttpRequest'||          // api ajax
+        (DEBUG&&ctx.path.startsWith('/test/'))
     ){
         await next();
     }else{
@@ -34,15 +35,17 @@ app.use(async (ctx, next) => {
 
 app.use(async (ctx, next)=>{
     console.log(`--> request ${ctx.originalUrl} start`);
-    await next();
-    console.log(`<-- request ${ctx.originalUrl} end`);
-})
-app.use(async (ctx, next)=>{
-    await next();
+    try{
+        await next();
+    }catch(e){
+        throw e;
+    }finally{
+        console.log(`<-- request ${ctx.originalUrl} end`);
+    }
 });
 app.use(koaMvc({
     routerConfig: {
-        areas: ['trigger', 'api']
+        areas: ['trigger', 'api', ... (DEBUG?['test']:[]) ]
     },
     sessionConfig: {
         key: SESS_KEY,

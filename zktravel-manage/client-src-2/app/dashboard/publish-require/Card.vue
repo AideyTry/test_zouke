@@ -71,20 +71,18 @@
                             v-model="startdate"
                             type="date"
                             size="small"
-                            format="yyyy-MM-DD"
                             placeholder="选择日期"
                             :picker-options="pickerOptions">
                     </el-date-picker>
                     -
                     <el-date-picker
                             v-model="enddate"
-                            format="yyyy-MM-DD"
                             type="date"
                             size="small"
                             placeholder="选择日期"
                             :picker-options="pickerOptions">
                     </el-date-picker>
-                    <span style="margin-right: 20px">x晚</span>
+                    <span style="margin-right: 20px">{{daterange}} 晚</span>
                     <span>城市 <i class="red">*</i></span>
                     <el-autocomplete
                             size="small"
@@ -217,6 +215,11 @@
             selecthotel:function (item) {
                 let arr = item.item;
                 this.myitem.hotel = arr;
+            }
+        },
+        computed:{
+            daterange(){
+                return this.enddate.getDay()-this.startdate.getDay();
             }
         },
         watch:{
