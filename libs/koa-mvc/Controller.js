@@ -28,8 +28,20 @@ module.exports = class Controller {
     get response(){
         return this.ctx.response;
     }
+    get session(){
+        return this.ctx.session;
+    }
+    set session(s){
+        this.ctx.session = s;
+    }
+    get sessionId(){
+        return this.ctx.sessionId;
+    }
     get cookies(){
         return this.ctx.cookies;
+    }
+    get query(){
+        return this.ctx.query;
     }
     throw(...arg){
         this.ctx.throw(...arg);

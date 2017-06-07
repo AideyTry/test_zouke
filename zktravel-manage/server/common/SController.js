@@ -4,15 +4,6 @@ const { SESS_KEY } = requireRoot('env');
 const logResponse = Symbol();
 
 module.exports = class SessionController extends Controller{
-    get session(){
-        return this.ctx.session;
-    }
-    set session(s){
-        this.ctx.session = s;
-    }
-    get sessionId(){
-        return this.ctx.sessionId;
-    }
     logResponse(){
         this[logResponse] = true;
     }
