@@ -47,12 +47,14 @@
                             v-model="startdate"
                             type="date"
                             size="small"
+                            format="yyyy-MM-DD"
                             placeholder="选择日期"
                             :picker-options="pickerOptions">
                     </el-date-picker>
                     -
                     <el-date-picker
                             v-model="enddate"
+                            format="yyyy-MM-DD"
                             type="date"
                             size="small"
                             placeholder="选择日期"

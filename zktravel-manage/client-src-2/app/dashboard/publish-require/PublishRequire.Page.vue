@@ -290,7 +290,7 @@
                     }).then(
                         data => {
                             let arr = []
-                            data.list.list.forEach(
+                            data.list.forEach(
                                 (v, k) => {
                                     arr.push({value: v.nick_name, item: v})
                                 }
