@@ -40,7 +40,7 @@
            <span>&nbsp&nbsp&nbsp&nbsp</span>
            <span>类别:&nbsp&nbsp</span>
             <el-col :span="3">
-                <el-select v-model="value2" @change="changeSelect">
+                <el-select v-model="value2" @change="changeSelect" @visible-change="changeClick">
                     <el-option
                             v-for="item in sorts"
                             :key="item.value"
@@ -155,11 +155,11 @@
     </div>
 </template>
 <script>
-import CommonTable from './CommonTable.vue'
 import ajax from '@local/common/ajax'
 export default{
     data(){
         return{
+            selectState:0,
             isTrue:true,
             value1:"",
             value2:"",
@@ -234,9 +234,6 @@ export default{
             total:0,
             currentData:[]
         }
-    },
-    components:{
-        CommonTable:CommonTable
     },
     computed:{
         dataList(){
@@ -401,6 +398,9 @@ export default{
             }
             this.currentData=arr;
         },
+        changeClick(){
+            this.selectState=1;
+        },
         changeSelect(value){
             if(value=='无效需求'){
                 this.isTrue=false;
@@ -411,7 +411,9 @@ export default{
                 this.isTrue=true;
                 this.$router.push({name:"dashboard-my-publish",params:{status:"wait-publish"}});
                 this.status=1;
-//                this.loadTable();
+                if(this.selectState===1){
+                    this.loadTable();
+                }
             }
         }
     },
