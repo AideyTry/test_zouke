@@ -44,7 +44,7 @@
                 </el-col>
                 <el-col :span="20">
                     <el-date-picker
-                            v-model="myitem.checkin"
+                            v-model="startdate"
                             type="date"
                             size="small"
                             placeholder="选择日期"
@@ -52,7 +52,7 @@
                     </el-date-picker>
                     -
                     <el-date-picker
-                            v-model="myitem.checkout"
+                            v-model="enddate"
                             type="date"
                             size="small"
                             placeholder="选择日期"
@@ -70,19 +70,19 @@
                     <div>指定的酒店<i class="red">*</i></div>
                 </el-col>
                 <el-col :span="20">
-                    <el-select size="small" placeholder="请选择" v-model="myitem.appiont">
+                    <el-select size="small" placeholder="请选择" v-model="myitem.hotel">
                         <el-option label="七天假日" value="七天假日">
                         </el-option>
                     </el-select>
                 </el-col>
             </el-row>
-            <template v-for="(v,k) of myitem.homegroup">
+            <template v-for="(v,k) of myitem.rooms">
                 <el-row>
                     <el-col :span="3">
                         <div>房型{{k+1}} <i class="red">*</i></div>
                     </el-col>
-                    <el-col :span="20">
-                        <el-select v-model="v.hometype" size="small">
+                    <el-col :span="19">
+                        <el-select v-model="v.type" size="small">
                             <el-option label="Single" value="Single" ></el-option>
                             <el-option label="Double" value="Double" ></el-option>
                             <el-option label="Triple" value="Triple" ></el-option>
@@ -90,15 +90,20 @@
                             <el-option label="Other" value="Other" ></el-option>
                         </el-select>
                         x
-                        <el-input v-model="v.homenum" size="small">
+                        <el-input v-model="v.number" type="number" size="small">
 
                         </el-input>
-                        <el-input v-model="v.homemark" size="small">
+                        <el-input v-model="v.mark" size="small">
 
                         </el-input>
                     </el-col>
+                    <el-col :span="1"></el-col>
                 </el-row>
             </template>
+            <div>
+                <el-button size="mini" type="info" @click="addroom">+新增房型</el-button>
+                <el-button size="mini" type="warming" @click="deleteroom">-删除房型</el-button>
+            </div>
         </div>
         <span class="cancel" @click="cancelthis">删除</span>
     </div>
@@ -113,21 +118,28 @@
                         return time.getTime() < Date.now() - 8.64e7;
                     }
                 },
-                myitem:this.item
-/*                hometype:['Single','Double','Twins','Triple','Other']*/
+                myitem:this.item,
+                startdate:new Date(),
+                enddate:new Date()
             }
         },
         methods:{
             cancelthis:function () {
                 this.$emit('cancelthis',this.index);
+            },
+            addroom:function (index) {
+                this.$emit('addroom',this.index);
+            },
+            deleteroom:function (index) {
+                this.$emit('deleteroom',this.index);
             }
         },
         watch:{
-            myitem(val){
-                let index=this.index;
-                let copyData=Object.assign({},this.$store.state.requirementOrder);
-                copyData.hotelcontent[index]=val;
-                this.$store.commit('initRequirementOrder',copyData)
+            startdate(val){
+                this.myitem.check_in=val.format('YYYY-MM-DD');
+            },
+            enddate(val){
+                this.myitem.check_out=val.format('YYYY-MM-DD');
             }
         }
     }
