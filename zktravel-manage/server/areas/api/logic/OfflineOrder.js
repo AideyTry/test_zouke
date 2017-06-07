@@ -25,4 +25,9 @@ module.exports = class OfflineOrder {
             };
         });
     }
+    async detail(id){
+        const db = await dbclient.get();
+        const collection = await db.collection('offline-order');
+        return await collection.findOne({ _id: id })
+    }
 }
