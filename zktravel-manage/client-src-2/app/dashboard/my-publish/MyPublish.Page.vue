@@ -66,7 +66,51 @@
         </el-row>
         <el-row type="flex">
             <el-col :span="24">
-                <CommonTable :currentData="dataList" :isTrue="isNo"></CommonTable>
+                <!--<CommonTable :currentData="dataList" :isTrue="isNo"></CommonTable>-->
+                <el-table
+                        :data="currentData"
+                        border
+                        style="width: 100%">
+                    <el-table-column
+                            prop="orderNum"
+                            label="订单号"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                            prop="userName"
+                            label="用户名"
+                    >
+                    </el-table-column>
+                    <el-table-column
+                            prop="orderTime"
+                            label="下单时间">
+                    </el-table-column>
+                    <el-table-column
+                            prop="priority"
+                            label="优先级">
+                    </el-table-column>
+                    <el-table-column
+                            prop="goOff"
+                            label="出发时间">
+                    </el-table-column>
+                    <el-table-column
+                            v-if="isTrue"
+                            prop="orderStatus"
+                            label="状态">
+                    </el-table-column>
+                    <el-table-column
+                            prop="quoter"
+                            label="报价员">
+                    </el-table-column>
+                    <el-table-column
+                            prop="orderAmount"
+                            label="订单金额">
+                    </el-table-column>
+                    <el-table-column
+                            prop="publishDate"
+                            label="发布日期">
+                    </el-table-column>
+                </el-table>
             </el-col>
         </el-row>
         <el-row type="flex">
@@ -118,6 +162,7 @@ export default{
                 ch:false,
                 ri:false
             },
+            status:1,
             tableData:[
                 {orderNum:"订单号1",userName:"用户名1",orderTime:"下单时间1",orderStatus:"状态1",priority:"优先级1"},
                 {orderNum:"订单号2",userName:"用户名2",orderTime:"下单时间2",orderStatus:"状态2",priority:"优先级2"},
@@ -154,6 +199,10 @@ export default{
                 {orderNum:"订单号33",userName:"用户名33",orderTime:"下单时间33",orderStatus:"状态33",priority:"优先级33"}
 
             ],
+            tableList:[
+                {orderNum:"1",userName:"1",orderTime:"1",orderStatus:"1",priority:"1"},
+                {orderNum:"2",userName:"2",orderTime:"2",orderStatus:"2",priority:"2"}
+            ],
             pageNum:1,
             pageSize:15,
             total:0,
@@ -176,19 +225,71 @@ export default{
     },
     methods:{
         loadTable(){
-            let arr=[];
-            ajax.post('/api/offline-order/query',{status:2}).then(json=>{
+
+            ajax.post('/api/offline-order/query',{status:1}).then(json=>{
                 console.log(json);
             })
-            for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
-                if(this.tableData[num]){
-                    arr.push(this.tableData[num]);
+
+            console.log(this.$route.path)
+            let newArr=[];
+                if(this.status===1){
+                    newArr=this.tableData;
+                }else if(this.status===2){
+                    newArr=this.tableList;
+                }
+                console.log(newArr);
+                let arr=[];
+                for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
+                    if(newArr[num]){
+                        arr.push(newArr[num]);
+                    }
+                }
+
+
+                this.currentData=arr;
+                this.total=newArr.length;
+        },
+        updateTab(){
+
+            if(this.$route.path=="/dashboard/my-publish/wait-publish"){
+                for(let obj of this.currentData){
+                    obj.orderStatus="待发布"
+                }
+                this.status=1;
+            }else if(this.$route.path=="/dashboard/my-publish/wait-distribution"){
+                for(let obj of this.currentData){
+                    obj.orderStatus="待分配"
+                }
+                this.status=2;
+            }else if(this.$route.path=="/dashboard/my-publish/quote"){
+                for(let obj of this.currentData){
+                    obj.orderStatus="报价中"
+                }
+            }else if(this.$route.path=="/dashboard/my-publish/wait-confirmed"){
+                for(let obj of this.currentData){
+                    obj.orderStatus="报价待确认"
+                }
+            }else if(this.$route.path=="/dashboard/my-publish/wait-gathering"){
+                for(let obj of this.currentData){
+                    obj.orderStatus="待收款"
+                }
+            }else if(this.$route.path=="/dashboard/my-publish/house-wait-distribution"){
+                for(let obj of this.currentData){
+                    obj.orderStatus="分房待确认"
+                }
+            }else if(this.$route.path=="/dashboard/my-publish/wait-control-house"){
+                for(let obj of this.currentData){
+                    obj.orderStatus="待控房"
+                }
+            }else if(this.$route.path=="/dashboard/my-publish/control-house"){
+                for(let obj of this.currentData){
+                    obj.orderStatus="已控房"
+                }
+            }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
+                for(let obj of this.currentData){
+                    obj.orderStatus="需开发票"
                 }
             }
-
-
-            this.currentData=arr;
-            this.total=this.tableData.length;
         },
 //        loadTab(){
 //            if(this.isTrue){
@@ -200,16 +301,10 @@ export default{
 //        },
         changeTabEffective(tab){
             this.$router.push({name:"dashboard-my-publish",params:{status:tab.name}});
+
             console.log(this.$route.path);
             console.log(this.publish.isTrue);
-//            if(tab.name==="wait-publish"){
-//                this.state.wp=true;
-//                this.state.wd=false;
-//            }else if(tab.name==="wait-distribution"){
-//                this.$store.commit('publish',false);
-//                this.state.wp=false;
-//                this.state.wd=true;
-//            }
+
         },
         changeTabNoneffective(tab){
 
@@ -243,18 +338,22 @@ export default{
         }
 
         this.loadTable();
-        console.log(this.publish.isTrue);
         if(this.publish.isTrue){
             this.value2=this.sorts[0].value;
         }else{
-//            this.value2='';
+            this.value2='';
         }
 
-
     },
-    beforeUpdate(){
-        this.value2=this.sorts[0].value;
+
+    updated(){
+        this.updateTab();
+        console.log(this.status);
+//        this.loadTable();
+
+//        this.update();
     }
+
 //    beforeRouteEnter (to, from, next) {
 //        if (!to.params.status) {
 //

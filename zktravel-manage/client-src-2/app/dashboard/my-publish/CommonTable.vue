@@ -66,6 +66,34 @@
                     for(let obj of this.currentData){
                         obj.orderStatus="待分配"
                     }
+                }else if(this.$route.path=="/dashboard/my-publish/quote"){
+                    for(let obj of this.currentData){
+                        obj.orderStatus="报价中"
+                    }
+                }else if(this.$route.path=="/dashboard/my-publish/wait-confirmed"){
+                    for(let obj of this.currentData){
+                        obj.orderStatus="报价待确认"
+                    }
+                }else if(this.$route.path=="/dashboard/my-publish/wait-gathering"){
+                    for(let obj of this.currentData){
+                        obj.orderStatus="待收款"
+                    }
+                }else if(this.$route.path=="/dashboard/my-publish/house-wait-distribution"){
+                    for(let obj of this.currentData){
+                        obj.orderStatus="分房待确认"
+                    }
+                }else if(this.$route.path=="/dashboard/my-publish/wait-control-house"){
+                    for(let obj of this.currentData){
+                        obj.orderStatus="待控房"
+                    }
+                }else if(this.$route.path=="/dashboard/my-publish/control-house"){
+                    for(let obj of this.currentData){
+                        obj.orderStatus="已控房"
+                    }
+                }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
+                    for(let obj of this.currentData){
+                        obj.orderStatus="需开发票"
+                    }
                 }
             }
         },
