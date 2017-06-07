@@ -144,7 +144,7 @@
             </el-row>
             <el-row type="flex" class="text-high">
                 <el-col :span="2">
-                    <div>取消要求<i class="red">*</i></div>
+                    <div>取消要求<i class="red"></i></div>
                 </el-col>
                 <el-col :span="14">
                     <el-input
@@ -157,7 +157,7 @@
             </el-row>
             <el-row type="flex" class="text-high">
                 <el-col :span="2">
-                    <div>位置要求<i class="red">*</i></div>
+                    <div>位置要求<i class="red"></i></div>
                 </el-col>
                 <el-col :span="14">
                     <el-input
@@ -170,7 +170,7 @@
             </el-row>
             <el-row type="flex" class="text-high">
                 <el-col :span="2">
-                    <div>其他要求<i class="red">*</i></div>
+                    <div>其他要求<i class="red"></i></div>
                 </el-col>
                 <el-col :span="14">
                     <el-input
@@ -242,7 +242,7 @@
                                 name:null
                             },
                             rooms: [{
-                                type: 'single',
+                                type: 'Single',
                                 number: 1,
                                 mark: ''
                             }]
@@ -273,7 +273,7 @@
                         city: '',
                         hotel: '',
                         rooms: [{
-                            type: 'single',
+                            type: 'Single',
                             number: 1,
                             mark: ''
                         }]
@@ -294,7 +294,7 @@
             searchuser: debounce(function (queryString, cb) {
                 if (queryString) {
                     ajax.postSilence('/api/wx-user/query', {
-                        keyword: queryString
+                        keyword: queryString.trim()
                     }).then(
                         data => {
                             let arr = []
