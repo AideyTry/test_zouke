@@ -177,7 +177,7 @@ export default{
     methods:{
         loadTable(){
             let arr=[];
-            ajax.post("offline-order/query ",{status:1}).then(json=>{
+            ajax.post('/api/offline-order/query',{status:2}).then(json=>{
                 console.log(json);
             })
             for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
@@ -247,23 +247,21 @@ export default{
         if(this.publish.isTrue){
             this.value2=this.sorts[0].value;
         }else{
-            this.value2='';
+//            this.value2='';
         }
 
 
     },
-    updated(){
-//        if(this.$route.path!="/dashboard/my-publish/wait-publish"){
-            this.$store.commit('publish',false);
-//        }
-    },
-    beforeRouteEnter (to, from, next) {
-        if (!to.params.status) {
-
-            next({name: 'dashboard-my-publish', params: {provider: 'wait-publish'}});
-        } else {
-            next();
-        }
+    beforeUpdate(){
+        this.value2=this.sorts[0].value;
     }
+//    beforeRouteEnter (to, from, next) {
+//        if (!to.params.status) {
+//
+//            next({name: 'dashboard-my-publish', params: {provider: 'wait-publish'}});
+//        } else {
+//            next();
+//        }
+//    }
 }
 </script>
