@@ -12,8 +12,24 @@
     .search-group{
         margin:5px 0 20px 0;
         .goTime{
-
+            height:36px;
+            line-height:36px;
+            text-align:center;
+            font-size:inherit;
         }
+    }
+
+    .el-pagination {
+        background-color: #fff;
+        text-align: right;
+        padding-right: 36px;
+        height: 50px;
+        padding-top: 10px;
+        position: fixed;
+        right: 0px;
+        width: 87.5%;
+        bottom: 0px;
+        z-index: 3;
     }
 
 </style>
@@ -214,7 +230,7 @@ export default{
                 {orderNum:"2",userName:"2",orderTime:"2",orderStatus:"2",priority:"2"}
             ],
             pageNum:1,
-            pageSize:15,
+            pageSize:18,
             total:0,
             currentData:[]
         }
@@ -395,7 +411,7 @@ export default{
                 this.isTrue=true;
                 this.$router.push({name:"dashboard-my-publish",params:{status:"wait-publish"}});
                 this.status=1;
-                this.loadTable();
+//                this.loadTable();
             }
         }
     },
