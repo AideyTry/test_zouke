@@ -9,6 +9,15 @@ function getValueType(value){
 module.exports = function compare (example, data, { requirePrefix = '*', filter = true } = {}){
     const exampleType = getValueType(example);
     const dataType = getValueType(data);
+
+    //字符串与数字与转
+    if(exampleType==='string'&&dataType==='number') return String(data);
+    if(exampleType==='number'&&dataType==='string'){
+        const transResult = Number(data);
+        if(isNaN(transResult)) return null;
+        else return transResult;
+    }
+
     if(exampleType!==dataType) return null;
 
     if(['number', 'boolean', 'string', 'date', 'regexp', 'undefined', 'function'].includes(exampleType)) return data;
