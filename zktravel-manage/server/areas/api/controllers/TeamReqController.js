@@ -5,6 +5,15 @@ const triggerInsert = Symbol();
 
 // 团房需求
 module.exports = class TeamReqController extends LController {
+    $meta(){
+        return {
+            access: {
+                default: {
+                    'offline_order': this.userInfo.PERMISSION.OFFLINE_ORDER.PUBLISH
+                }
+            }
+        }
+    }
     async [triggerInsert](name){
         const teamRequirement = new TeamRequirement();
         const requirement = teamRequirement.validRequirement(this.request.body);

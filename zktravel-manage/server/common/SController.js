@@ -9,7 +9,7 @@ module.exports = class SessionController extends Controller{
     }
     $beforeAction(){
         if(this.isAjax()){
-            console.log('\trequest data', this.request.body);
+            console.log('\trequest data', JSON.stringify(this.request.body));
         }
     }
     $afterAction(){

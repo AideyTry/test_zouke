@@ -55,6 +55,7 @@ module.exports = function compare (example, data, { requirePrefix = '*', filter 
         delete data[field];
 
         if(isRequire && dataValue==null) return null;
+        if(dataValue==undefined) continue;
         if(exampleValue==null) {
             d[field] = dataValue;
             continue;
