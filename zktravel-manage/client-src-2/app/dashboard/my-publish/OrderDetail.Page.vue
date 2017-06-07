@@ -70,6 +70,7 @@
 </template>
 
 <script>
+    import ajax  from '@local/common/ajax';
     export default{
         data(){
             return{
@@ -79,7 +80,19 @@
         methods:{
             changetab(){
 
+            },
+            getorder(){
+                ajax.post('/api/offline-order/detail',{
+                    id:'T170607001'
+                }).then(
+                    data=>{
+
+                    }
+                )
             }
+        },
+        mounted(){
+            this.getorder();
         }
     }
 </script>
