@@ -77,7 +77,7 @@
                 <el-col :span="6">
                     <span>出行时间<i class="red">*</i></span>
                     <el-date-picker
-                            v-model="params.start_date"
+                            v-model="startdate"
                             type="date"
                             size="small"
                             placeholder="选择日期"
@@ -280,7 +280,7 @@
                 if (this.params.stay_details.length < 2) {
                     return
                 }
-                this.params.stay_details.splice(k,1);
+                this.params.stay_details.splice(k);
 
             },
             searchuser: debounce(function (queryString, cb) {
