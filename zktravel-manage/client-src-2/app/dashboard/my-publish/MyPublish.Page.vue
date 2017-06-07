@@ -1,19 +1,28 @@
 <style lang="scss" scoped>
-    span{
-        display:block;
-        height:36px;
-        line-height:36px;
-        text-align:center;
-        font-size:inherit;
+    .requireSelect{
+        margin:10px 0;
+        span{
+            display:block;
+            height:36px;
+            line-height:36px;
+            text-align:center;
+            font-size:inherit;
+        }
     }
+    .search-group{
+        margin:5px 0 20px 0;
+        .goTime{
+
+        }
+    }
+
 </style>
 
 <template>
     <div>
-        <p></p>
-        <el-row type="flex">
-            <span>&nbsp&nbsp&nbsp&nbsp</span>
-            <span>类别:&nbsp&nbsp</span>
+        <el-row type="flex" class="requireSelect">
+           <span>&nbsp&nbsp&nbsp&nbsp</span>
+           <span>类别:&nbsp&nbsp</span>
             <el-col :span="3">
                 <el-select v-model="value2" @change="changeSelect">
                     <el-option
@@ -25,7 +34,7 @@
                 </el-select>
             </el-col>
         </el-row>
-        <el-tabs v-if="isTrue" v-model="$route.params.status" @tab-click="changeTabEffective">
+        <el-tabs v-if="isTrue"  v-model="$route.params.status" @tab-click="changeTabEffective">
             <el-tab-pane label="待发布" name="wait-publish"></el-tab-pane>
             <el-tab-pane label="待分配" name="wait-distribution"></el-tab-pane>
             <el-tab-pane label="报价中" name="quote"></el-tab-pane>
@@ -36,10 +45,11 @@
             <el-tab-pane label="已控房" name="control-house"></el-tab-pane>
             <el-tab-pane label="需要开票" name="require-invoice"></el-tab-pane>
         </el-tabs>
-        <el-tabs v-if="isTrue===false" v-model="$route.params.status" @tab-click="changeTabNoneffective">
+        <el-tabs v-if="isTrue===false" type="border-card" v-model="$route.params.status" @tab-click="changeTabNoneffective">
             <el-tab-pane label="无效需求" name="nonEffective-require"></el-tab-pane>
         </el-tabs>
         <el-row type="flex" class="search-group">
+            <span>&nbsp&nbsp&nbsp&nbsp</span>
             <el-col :span="6">
                 <el-input
                         placeholder="搜索用户名/订单号/订房员/创建人"
@@ -50,7 +60,7 @@
             </el-col>
             <el-col :span="3">
             </el-col>
-            <span>出发时间:&nbsp&nbsp</span>
+            <span class="goTime">出发时间:&nbsp&nbsp</span>
             <el-col :span="3">
 
                 <el-select v-model="value1" placeholder="全部">
@@ -229,15 +239,12 @@ export default{
             ajax.post('/api/offline-order/query',{status:1}).then(json=>{
                 console.log(json);
             })
-
-            console.log(this.$route.path)
             let newArr=[];
                 if(this.status===1){
                     newArr=this.tableData;
                 }else if(this.status===2){
                     newArr=this.tableList;
                 }
-                console.log(newArr);
                 let arr=[];
                 for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
                     if(newArr[num]){
@@ -245,50 +252,80 @@ export default{
                     }
                 }
 
-
                 this.currentData=arr;
                 this.total=newArr.length;
-        },
-        updateTab(){
-
+            for(let obj of this.currentData){
+                obj.orderStatus="待发布"
+            }
             if(this.$route.path=="/dashboard/my-publish/wait-publish"){
+
+                this.status=1;
                 for(let obj of this.currentData){
                     obj.orderStatus="待发布"
                 }
-                this.status=1;
             }else if(this.$route.path=="/dashboard/my-publish/wait-distribution"){
+
+                this.status=2;
                 for(let obj of this.currentData){
                     obj.orderStatus="待分配"
                 }
-                this.status=2;
             }else if(this.$route.path=="/dashboard/my-publish/quote"){
                 for(let obj of this.currentData){
                     obj.orderStatus="报价中"
                 }
+                this.status=3;
             }else if(this.$route.path=="/dashboard/my-publish/wait-confirmed"){
                 for(let obj of this.currentData){
                     obj.orderStatus="报价待确认"
                 }
+                this.status=4;
             }else if(this.$route.path=="/dashboard/my-publish/wait-gathering"){
                 for(let obj of this.currentData){
                     obj.orderStatus="待收款"
                 }
+                this.status=5;
             }else if(this.$route.path=="/dashboard/my-publish/house-wait-distribution"){
                 for(let obj of this.currentData){
                     obj.orderStatus="分房待确认"
                 }
+                this.status=6;
             }else if(this.$route.path=="/dashboard/my-publish/wait-control-house"){
                 for(let obj of this.currentData){
                     obj.orderStatus="待控房"
                 }
+                this.status=7;
             }else if(this.$route.path=="/dashboard/my-publish/control-house"){
                 for(let obj of this.currentData){
                     obj.orderStatus="已控房"
                 }
+                this.status=8;
             }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
                 for(let obj of this.currentData){
                     obj.orderStatus="需开发票"
                 }
+                this.status=9;
+            }
+
+        },
+        updateTab(){
+            if(this.$route.path=="/dashboard/my-publish/wait-publish"){
+                this.status=1;
+            }else if(this.$route.path=="/dashboard/my-publish/wait-distribution"){
+                this.status=2;
+            }else if(this.$route.path=="/dashboard/my-publish/quote"){
+                this.status=3;
+            }else if(this.$route.path=="/dashboard/my-publish/wait-confirmed"){
+                this.status=4;
+            }else if(this.$route.path=="/dashboard/my-publish/wait-gathering"){
+                this.status=5;
+            }else if(this.$route.path=="/dashboard/my-publish/house-wait-distribution"){
+                this.status=6;
+            }else if(this.$route.path=="/dashboard/my-publish/wait-control-house"){
+                this.status=7;
+            }else if(this.$route.path=="/dashboard/my-publish/control-house"){
+                this.status=8;
+            }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
+                this.status=9;
             }
         },
 //        loadTab(){
@@ -301,9 +338,35 @@ export default{
 //        },
         changeTabEffective(tab){
             this.$router.push({name:"dashboard-my-publish",params:{status:tab.name}});
+            if(this.$route.path=="/dashboard/my-publish/wait-publish"){
+                this.status=1;
+                this.loadTable();
+            }else if(this.$route.path=="/dashboard/my-publish/wait-distribution"){
+                this.status=2;
+                this.loadTable();
+            }else if(this.$route.path=="/dashboard/my-publish/quote"){
+                this.status=3;
+                this.loadTable();
+            }else if(this.$route.path=="/dashboard/my-publish/wait-confirmed"){
+                this.status=4;
+                this.loadTable();
+            }else if(this.$route.path=="/dashboard/my-publish/wait-gathering"){
+                this.status=5;
+                this.loadTable();
+            }else if(this.$route.path=="/dashboard/my-publish/house-wait-distribution"){
+                this.status=6;
+                this.loadTable();
+            }else if(this.$route.path=="/dashboard/my-publish/wait-control-house"){
+                this.status=7;
+                this.loadTable();
+            }else if(this.$route.path=="/dashboard/my-publish/control-house"){
+                this.status=8;
+                this.loadTable();
+            }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
+                this.status=9;
+                this.loadTable();
+            }
 
-            console.log(this.$route.path);
-            console.log(this.publish.isTrue);
 
         },
         changeTabNoneffective(tab){
@@ -326,34 +389,27 @@ export default{
             if(value=='无效需求'){
                 this.isTrue=false;
                 this.$router.push({name:"dashboard-my-publish",params:{status:"nonEffective-require"}});
-            }else{
+                this.status=10;
+                this.loadTable();
+            }else if(value=="有效需求"){
                 this.isTrue=true;
                 this.$router.push({name:"dashboard-my-publish",params:{status:"wait-publish"}});
+                this.status=1;
+                this.loadTable();
             }
         }
     },
     mounted(){
-        if(this.$route.params.status){
-//            this.loadTab();
-        }
-
         this.loadTable();
         if(this.publish.isTrue){
             this.value2=this.sorts[0].value;
         }else{
             this.value2='';
         }
-
     },
-
-    updated(){
+    created(){
         this.updateTab();
-        console.log(this.status);
-//        this.loadTable();
-
-//        this.update();
     }
-
 //    beforeRouteEnter (to, from, next) {
 //        if (!to.params.status) {
 //

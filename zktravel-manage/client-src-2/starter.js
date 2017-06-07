@@ -15,11 +15,10 @@ import ElementUI from 'element-ui'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'element-ui/lib/theme-default/index.css'
 /*引入需要的start*/
-
+Vue.use(ElementUI);
 /*引入需要的end*/
 /// #if DEBUG
 import * as core from '@local/common/core';
-Vue.use(ElementUI);
 window._g = {
     z: core,
     Vue,
