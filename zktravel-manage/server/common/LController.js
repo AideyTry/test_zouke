@@ -32,6 +32,7 @@ module.exports = class LoginController extends SController {
         if(!access) return;
 
         const actionAccess = access[action] || access.default;
+
         if(!actionAccess) return;
         
         for(let type of Object.keys(actionAccess)){
