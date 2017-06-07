@@ -1,13 +1,11 @@
 const SController = require('./SController');
 const User = requireRoot('service/user/User');
 
+const $$userInfo = Symbol('');
+
 module.exports = class LoginController extends SController {
     get userInfo(){
-        if(this._userInfo) return this._userInfo;
-
-        const uid = this.session.uid;
-        if(uid) return User.get(uid);
-        else return null;
+        return this[$$userInfo];
     }
 
     async $beforeAction(){
@@ -16,12 +14,31 @@ module.exports = class LoginController extends SController {
 
         if(this.ctx.headers['x-requested-with']!=='XMLHttpRequest') return false;
 
-        const userInfo = await this.userInfo;
+        const uid = this.session.uid;
+
+        let userInfo = null;
+        if(uid) userInfo = await User.get(uid);
+
         if(!userInfo){
             this.renderJSON({ code: -1, msg: 'not login' });
             return false; //pass
         }
 
-        console.log('\tuid: ',this.session.uid);
+        console.log('\tuid: ', uid);
+
+        this[$$userInfo] = userInfo;
+        const { access } = (this.$meta&&this.$meta()) || {};
+        const action = this.route.action;
+        if(!access) return;
+
+        const actionAccess = access[action] || access.default;
+        if(!actionAccess) return;
+        
+        for(let type of Object.keys(actionAccess)){
+            if(!userInfo.checkPermission(type, actionAccess[type])){
+                this.renderJSON({ code: -2, msg: 'access deny' })
+                return false;
+            }
+        }
     }
 }

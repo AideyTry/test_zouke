@@ -1,4 +1,4 @@
 import mypublish from './MyPublish.Page.vue'
 export default [
-    {path:'my-publish',component:mypublish,name:'dashboard-my-publish'}
+    {path:'my-publish/:status',component:mypublish,name:'dashboard-my-publish'}
 ]

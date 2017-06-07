@@ -96,9 +96,9 @@
                 r();
                 return;
             }
-            ajax.postSilence('/api/auth/is-login').then(result=>{
-                if(result.code===0){
-                    store.commit('initUserInfo', result.userInfo);
+            auth.isLogin().then(result=>{
+                if(result){
+                    store.commit('initUserInfo', result);
                     r();
                 } else {
                     next();

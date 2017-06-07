@@ -21,4 +21,4 @@ module.exports = class MappingController extends LController {
         const result = await mapping.insert(spId, sp, sign);
         this.renderJSON({ code: result });
     }
-}
+};

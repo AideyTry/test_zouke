@@ -1,7 +1,5 @@
 const dbclient = requireRoot('db');
 
-
-
 module.exports = class WxUser {
     async query(page, pageSize, keyword){
         const db = await dbclient.get();
