@@ -77,7 +77,7 @@
                 <el-col :span="6">
                     <span>出行时间<i class="red">*</i></span>
                     <el-date-picker
-                            v-model="startdate"
+                            v-model="params.start_date"
                             type="date"
                             size="small"
                             placeholder="选择日期"
