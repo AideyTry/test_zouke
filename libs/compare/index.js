@@ -6,16 +6,18 @@ function getValueType(value){
 }
 
 
-module.exports = function compare (example, data, { requirePrefix = '*', filter = true } = {}){
+module.exports = function compare (example, data, { requirePrefix = '*', filter = false, strict = false } = {}){
     const exampleType = getValueType(example);
     const dataType = getValueType(data);
 
     //字符串与数字与转
-    if(exampleType==='string'&&dataType==='number') return String(data);
-    if(exampleType==='number'&&dataType==='string'){
-        const transResult = Number(data);
-        if(isNaN(transResult)) return null;
-        else return transResult;
+    if(!strict){
+        if(exampleType==='string'&&dataType==='number') return String(data);
+        if(exampleType==='number'&&dataType==='string'){
+            const transResult = Number(data);
+            if(isNaN(transResult)) return null;
+            else return transResult;
+        }
     }
 
     if(exampleType!==dataType) return null;
@@ -30,7 +32,7 @@ module.exports = function compare (example, data, { requirePrefix = '*', filter 
 
         if(!exampleData) return data;
         for(let d of data){
-            const result = compare( exampleData, d, { requirePrefix, filter } );
+            const result = compare( exampleData, d, { requirePrefix, filter, strict } );
             if(result===null) return null;
             l.push(result);
         }
@@ -58,7 +60,7 @@ module.exports = function compare (example, data, { requirePrefix = '*', filter 
             continue;
         }
 
-        const r = compare(exampleValue, dataValue, { requirePrefix, filter });
+        const r = compare(exampleValue, dataValue, { requirePrefix, filter, strict });
         if(r===null) return null;
         d[field] = r;
     }
