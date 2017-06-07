@@ -2,18 +2,38 @@
     .card-container{
         padding: 0 25px;
         height:200px;
+        max-height: 200px;
+        overflow: hidden;
         margin-bottom: 30px;
+        min-width: 850px;
         .red{
             color:red;
         }
         .card{
+            overflow-y: auto;
             display: inline-block;
             width:73%;
             min-width: 760px;
             height:100%;
+            min-height: 210px;
             padding: 10px  10px;
             background: #E5E9F2;
             border-radius: 6px;
+            /*定义滚动条轨道 内阴影+圆角*/
+            ::-webkit-scrollbar-track
+            {
+                -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+                border-radius: 10px;
+                background-color: #F5F5F5;
+            }
+
+            /*定义滑块 内阴影+圆角*/
+            ::-webkit-scrollbar-thumb
+            {
+                border-radius: 10px;
+                -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+                background-color: #555;
+            }
             .title{
                 min-width: 95px;
             }
@@ -32,6 +52,10 @@
             margin-top: 100px;
             color: #33aaff;
             cursor: pointer;
+        }
+        .button-group{
+            height: 40px !important;
+            line-height: 35px !important;
         }
     }
 </style>
@@ -62,20 +86,29 @@
                     </el-date-picker>
                     <span style="margin-right: 20px">x晚</span>
                     <span>城市 <i class="red">*</i></span>
-                    <el-select size="small" v-model="myitem.city" placeholder="请选择">
-                        <el-option value="欧洲" label="欧洲"></el-option>
-                    </el-select>
+                    <el-autocomplete
+                            size="small"
+                            class="inline-input"
+                            v-model="city"
+                            :fetch-suggestions="searchcity"
+                            placeholder="输入关键字选择"
+                            @select="selectcity"
+                    ></el-autocomplete>
                 </el-col>
             </el-row>
             <el-row>
                 <el-col :span="3" class="title">
-                    <div>指定的酒店<i class="red">*</i></div>
+                    <div>指定的酒店<i class="red"></i></div>
                 </el-col>
                 <el-col :span="20">
-                    <el-select size="small" placeholder="请选择" v-model="myitem.hotel">
-                        <el-option label="七天假日" value="七天假日">
-                        </el-option>
-                    </el-select>
+                    <el-autocomplete
+                            size="small"
+                            class="inline-input"
+                            v-model="myitem.hotel.name"
+                            :fetch-suggestions="searchhotel"
+                            placeholder="输入关键字选择"
+                            @select="selecthotel"
+                    ></el-autocomplete>
                 </el-col>
             </el-row>
             <template v-for="(v,k) of myitem.rooms">
@@ -102,19 +135,26 @@
                     <el-col :span="1"></el-col>
                 </el-row>
             </template>
-            <div>
-                <el-button size="mini" type="info" @click="addroom">+新增房型</el-button>
-                <el-button size="mini" type="warming" @click="deleteroom">-删除房型</el-button>
-            </div>
+            <el-row class="button-group">
+                <el-col :span="3">
+                    <el-button size="mini" type="info" @click="addroom">+新增房型</el-button>
+                </el-col>
+                <el-col :span="3">
+                    <el-button size="mini" type="warming" @click="deleteroom">-删除房型</el-button>
+                </el-col>
+            </el-row>
         </div>
         <span class="cancel" @click="cancelthis">删除</span>
     </div>
 </template>
 <script>
+    import debounce from 'lodash/debounce';
+    import ajax from '@local/common/ajax';
     export default{
         props:['item','index'],
         data(){
             return{
+                city:null,
                 pickerOptions:{
                     disabledDate(time) {
                         return time.getTime() < Date.now() - 8.64e7;
@@ -122,7 +162,8 @@
                 },
                 myitem:this.item,
                 startdate:new Date(),
-                enddate:new Date()
+                enddate:new Date(),
+                hotelgroup:[]
             }
         },
         methods:{
@@ -134,6 +175,48 @@
             },
             deleteroom:function (index) {
                 this.$emit('deleteroom',this.index);
+            },
+            searchcity:debounce(function (queryString, cb) {
+                if (queryString) {
+                    ajax.postSilence('/api/city/query ', {
+                        keyword: queryString
+                    }).then(
+                        data => {
+                            let arr = []
+                            data.list.forEach(
+                                (v, k) => {
+                                    arr.push({value: v.name, item: v})
+                                }
+                            )
+                            cb(arr)
+                        }
+                    )
+                }
+            }, 1000),
+            selectcity:function (item) {
+                let arr = item.item;
+                this.myitem.city = arr;
+            },
+            searchhotel:debounce(function (queryString, cb) {
+                if (queryString) {
+                    ajax.postSilence('/api/zk-hotel/query', {
+                        keyword: queryString
+                    }).then(
+                        data => {
+                            let arr = []
+                            data.list.forEach(
+                                (v, k) => {
+                                    arr.push({value: v.name, item: v})
+                                }
+                            )
+                            cb(arr)
+                        }
+                    )
+                }
+            }, 1000),
+            selecthotel:function (item) {
+                let arr = item.item;
+                this.myitem.hotel = arr;
             }
         },
         watch:{

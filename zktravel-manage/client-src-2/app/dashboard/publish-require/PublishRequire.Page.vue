@@ -5,7 +5,7 @@
         .el-row {
             height: 56px;
             line-height: 56px;
-            padding: 0px 20px;
+            padding: 0px 20px 0px 40px;
         }
         .text-high {
             height: 100px;
@@ -31,6 +31,9 @@
         .el-textarea {
             vertical-align: text-top;
         }
+        .addcard{
+            margin-bottom: 40px;
+        }
     }
 </style>
 
@@ -40,12 +43,14 @@
             <el-row type="flex">
                 <el-col :span="6">
                     <el-select size="small" v-model="params.priority" placeholder="选择优先级">
-                        <el-option :value="1" label="优先级A+"></el-option>
+                        <el-option value="A+" label="优先级A+"></el-option>
+                        <el-option value="A" label="优先级A"></el-option>
+                        <el-option value="A-" label="优先级A-"></el-option>
                     </el-select>
                 </el-col>
                 <el-col :span="5">
                     <span>需求状态:</span>
-                    <span>优先级A+</span>
+                    <span>{{params.priority}}</span>
                 </el-col>
             </el-row>
             <el-row type="flex">
@@ -180,7 +185,7 @@
                 <date-card @cancelthis="cancelCard" @addroom="addroom" @deleteroom="deleteroom" :item="v"
                            :index="k"></date-card>
             </template>
-            <el-row>
+            <el-row class="addcard">
                 <el-col>
                     <el-button @click="addCard">添加</el-button>
                 </el-col>
@@ -191,13 +196,12 @@
                 </el-col>
                 <el-col :span="1"></el-col>
                 <el-col :span="2">
-                    <el-button type="info" @click="submitform">存为草稿</el-button>
+                    <el-button type="info" @click="submitdraft">存为草稿</el-button>
                 </el-col>
                 <el-col :span="19"></el-col>
             </el-row>
         </el-form>
     </div>
-
     <div class="publish-content" v-else="type==2">asdasd</div>
 </template>
 <script>
@@ -213,14 +217,14 @@
             return {
                 user: null,
                 params: {
-                    priority: 1,
+                    priority: 'A+',
                     origin_from: '',
                     user: null,
                     number: 1,
-                    start_date: new Date(),
+                    start_date: new Date().format('YYYY-MM-DD'),
                     star: '不限',
                     breakfast: true,
-                    currency: 'en',
+                    currency: 'EUR',
                     budget_min: null,
                     budget_max: null,
                     budget_mark: '',
@@ -229,10 +233,14 @@
                     other_req: '',
                     stay_details: [
                         {
-                            check_in: new Date(),
-                            check_out: new Date(),
-                            city: '',
-                            hotel: '',
+                            check_in: new Date().format('YYYY-MM-DD'),
+                            check_out: new Date().format('YYYY-MM-DD'),
+                            city: {
+                                name:null
+                            },
+                            hotel: {
+                                name:null
+                            },
                             rooms: [{
                                 type: 'single',
                                 number: 1,
@@ -285,7 +293,7 @@
             },
             searchuser: debounce(function (queryString, cb) {
                 if (queryString) {
-                    ajax.post('/api/wx-user/query', {
+                    ajax.postSilence('/api/wx-user/query', {
                         keyword: queryString
                     }).then(
                         data => {
@@ -303,15 +311,101 @@
             selectuser(item){
                 let arr = {
                     id: item.item._id,
-                    name: item.item.nick_name || item.item.name
+                    name: item.item.nick_name || item.item.name,
+                    avatar:item.item.head_image
                 }
                 this.params.user = arr;
 
             },
-            submitform(){
+            submitdraft(){
                 ajax.post('/api/team-req/draft', this.params).then(
                     data => {
-                        console.info(data)
+                        if(data.code==0){
+                            this.$notify({
+                                title: '保存成功',
+                                message: '已保存为草稿，请到我的发布中查看',
+                                type: 'success'
+                            });
+                            this.params={
+                                    priority: 'A+',
+                                    origin_from: '',
+                                    user: null,
+                                    number: 1,
+                                    start_date: new Date().format('YYYY-MM-DD'),
+                                    star: '不限',
+                                    breakfast: true,
+                                    currency: 'EUR',
+                                    budget_min: null,
+                                    budget_max: null,
+                                    budget_mark: '',
+                                    cancel_req: '',
+                                    position_req: '',
+                                    other_req: '',
+                                    stay_details: [
+                                    {
+                                        check_in: new Date().format('YYYY-MM-DD'),
+                                        check_out: new Date().format('YYYY-MM-DD'),
+                                        city: {
+                                            name:null
+                                        },
+                                        hotel: {
+                                            name:null
+                                        },
+                                        rooms: [{
+                                            type: 'single',
+                                            number: 1,
+                                            mark: ''
+                                        }]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                )
+            },
+            submitform(){
+                ajax.post('/api/team-req/publish', this.params).then(
+                    data => {
+                        if(data.code==0){
+                            this.$notify({
+                                title: '发布成功',
+                                message: '已成功发布，请到我的发布中查看',
+                                type: 'success'
+                            });
+                            this.params={
+                                priority: 'A+',
+                                origin_from: '',
+                                user: null,
+                                number: 1,
+                                start_date: new Date().format('YYYY-MM-DD'),
+                                star: '不限',
+                                breakfast: true,
+                                currency: 'EUR',
+                                budget_min: null,
+                                budget_max: null,
+                                budget_mark: '',
+                                cancel_req: '',
+                                position_req: '',
+                                other_req: '',
+                                stay_details: [
+                                    {
+                                        check_in: new Date().format('YYYY-MM-DD'),
+                                        check_out: new Date().format('YYYY-MM-DD'),
+                                        city: {
+                                            name:null
+                                        },
+                                        hotel: {
+                                            name:null
+                                        },
+                                        rooms: [{
+                                            type: 'single',
+                                            number: 1,
+                                            mark: ''
+                                        }]
+                                    }
+                                ]
+                            }
+                        }
                     }
                 )
             },
@@ -335,7 +429,7 @@
         },
         watch: {
             startdate(val){
-                this.params.startdate = val.format('YYYY-MM-DD');
+                this.params.start_date = val.format('YYYY-MM-DD');
             }
         }
     }
