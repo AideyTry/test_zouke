@@ -85,6 +85,9 @@
                             <el-menu-item index="dashboard-my-publish">
                                 我的发布
                             </el-menu-item>
+                            <el-menu-item index="dashboard-distributed-proxy">
+                                待发布
+                            </el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
                     <el-submenu index="wait">

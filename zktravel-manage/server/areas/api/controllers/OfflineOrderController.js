@@ -9,4 +9,10 @@ module.exports = class OfflineOrderController extends LController {
         const list = await offlineOrder.query(status, uid); 
         this.renderJSON({code:0, list});
     }
+    async detail(){
+        const { id } = this.request.body;
+        const offlineOrder = new OfflineOrder();
+        const detail = await offlineOrder.detail(id);
+        this.renderJSON({ code:0, detail });
+    }
 }
