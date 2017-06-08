@@ -27,6 +27,21 @@
             height: 100%;
             width: 100%;
             background: #F9FAFC;
+            padding: 0px 20px;
+            h4{
+                display: inline-block;
+                width: 80px;
+            }
+            .el-tag{
+                margin: 0 20px;
+            }
+        }
+        .creator-info{
+            height: 100%;
+            span{
+                display: inline-block;
+
+            }
         }
     }
 </style>
@@ -42,9 +57,21 @@
             </el-col>
         </el-row>
         <div class="order-detail">
-            <el-tabs  @tab-click="changetab">
+            <el-tabs  @tab-click="changetab" active-name="require-node">
                 <el-tab-pane label="需求记录" name="require-node">
-
+                    <el-row>
+                        <el-col :span="12">
+                            <h4>需求详情</h4>
+                            <el-tag key="优先级A+" type="gray">优先级A+</el-tag>
+                            <el-tag key="GTA" type="gray">GTA导游</el-tag>
+                        </el-col>
+                        <el-col :span="12" class="creator-info">
+                            <span>创建:</span>
+                            <span>{{user}}</span>
+                            <span>发布时间:</span>
+                            <span></span>
+                        </el-col>
+                    </el-row>
                 </el-tab-pane>
                 <el-tab-pane label="报价记录" name="offer-node">
 
@@ -74,25 +101,35 @@
     export default{
         data(){
             return{
-
+                orderdata:{
+                    creator:{
+                        name:''
+                    }
+                }
             }
         },
         methods:{
             changetab(){
 
             },
-            getorder(){
+            getorder(id){
+                let vm=this;
                 ajax.post('/api/offline-order/detail',{
-                    id:'T170607001'
+                    id:id
                 }).then(
                     data=>{
-
+                        vm.orderdata=data.detail;
                     }
                 )
             }
         },
+        computed:{
+            user(){
+                return this.orderdata.creator.name || '未知';
+            }
+        },
         mounted(){
-            this.getorder();
+            this.getorder(this.$route.params.orderid);
         }
     }
 </script>

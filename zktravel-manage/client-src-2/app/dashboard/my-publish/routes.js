@@ -12,7 +12,7 @@ export default [
         name: 'dashboard-my-publish',
     },
     {
-        path: 'order-detail',
+        path: 'order-detail/:orderid',
         component: orderDetail,
         name: 'dashboard-order-detail'
     }

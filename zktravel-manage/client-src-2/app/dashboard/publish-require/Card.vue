@@ -177,7 +177,7 @@
             searchcity:debounce(function (queryString, cb) {
                 if (queryString) {
                     ajax.postSilence('/api/city/query ', {
-                        keyword: queryString
+                        keyword: queryString.trim()
                     }).then(
                         data => {
                             let arr = []
@@ -198,7 +198,7 @@
             searchhotel:debounce(function (queryString, cb) {
                 if (queryString) {
                     ajax.postSilence('/api/zk-hotel/query', {
-                        keyword: queryString
+                        keyword: queryString.trim()
                     }).then(
                         data => {
                             let arr = []
