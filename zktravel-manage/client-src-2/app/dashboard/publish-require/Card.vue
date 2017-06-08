@@ -219,7 +219,7 @@
         },
         computed:{
             daterange(){
-                return this.enddate.getDay()-this.startdate.getDay();
+                return this.enddate.getDate()- this.startdate.getDate();
             }
         },
         watch:{

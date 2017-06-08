@@ -171,7 +171,7 @@
         },
         methods:{
             daterange(a,b){
-                return new Date(a).getDay()-new Date(b).getDay();
+                return new Date(a).getDate()-new Date(b).getDate();
             }
         }
 

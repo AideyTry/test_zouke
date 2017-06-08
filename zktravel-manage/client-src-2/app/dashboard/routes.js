@@ -6,6 +6,7 @@ import systemOrder from './system-order/routes';
 import groupOrder from  './group-order/routes';
 import publishRequire from './publish-require/routes';
 import myPublish from  './my-publish/routes';
+import distributed from './distributed/routes'
 export default [
     {
         path: 'dashboard', component: DashBoardPage, name: 'dashboard',redirect: { name: 'dashboard-hotel-mapping' },
@@ -16,7 +17,8 @@ export default [
             ...systemOrder,
             ...groupOrder,
             ...publishRequire,
-            ...myPublish
+            ...myPublish,
+            ...distributed
         ]
     }
 ]

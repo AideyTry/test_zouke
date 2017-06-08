@@ -86,7 +86,7 @@
                                 我的发布
                             </el-menu-item>
                             <el-menu-item index="dashboard-distributed-proxy">
-                                待发布
+                                待分配
                             </el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
