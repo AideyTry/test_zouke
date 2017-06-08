@@ -112,10 +112,10 @@
             changetab(){
 
             },
-            getorder(){
+            getorder(id){
                 let vm=this;
                 ajax.post('/api/offline-order/detail',{
-                    id:'T170607001'
+                    id:id
                 }).then(
                     data=>{
                         vm.orderdata=data.detail;
@@ -129,7 +129,7 @@
             }
         },
         mounted(){
-            this.getorder();
+            this.getorder(this.$route.params.orderid);
         }
     }
 </script>
