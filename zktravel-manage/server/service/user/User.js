@@ -42,8 +42,9 @@ module.exports = class User {
 
     checkPermission(type, permission){
         const p_type = this.p[type.toLowerCase()];
+        console.log(p_type, permission);
         if(!p_type) return false;
-        return p_type&permission === permission;
+        return (p_type&permission) === permission;
     }
 
     static async get(id){
