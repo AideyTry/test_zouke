@@ -200,46 +200,8 @@ export default{
                 ri:false
             },
             status:1,
-            tableData:[
-                {orderNum:"订单号1",userName:"用户名1",orderTime:"下单时间1",orderStatus:"状态1",priority:"优先级1"},
-                {orderNum:"订单号2",userName:"用户名2",orderTime:"下单时间2",orderStatus:"状态2",priority:"优先级2"},
-                {orderNum:"订单号3",userName:"用户名3",orderTime:"下单时间3",orderStatus:"状态3",priority:"优先级3"},
-                {orderNum:"订单号4",userName:"用户名4",orderTime:"下单时间4",orderStatus:"状态4",priority:"优先级4"},
-                {orderNum:"订单号5",userName:"用户名5",orderTime:"下单时间5",orderStatus:"状态5",priority:"优先级5"},
-                {orderNum:"订单号6",userName:"用户名6",orderTime:"下单时间6",orderStatus:"状态6",priority:"优先级6"},
-                {orderNum:"订单号7",userName:"用户名7",orderTime:"下单时间7",orderStatus:"状态7",priority:"优先级7"},
-                {orderNum:"订单号8",userName:"用户名8",orderTime:"下单时间8",orderStatus:"状态8",priority:"优先级8"},
-                {orderNum:"订单号9",userName:"用户名9",orderTime:"下单时间9",orderStatus:"状态9",priority:"优先级9"},
-                {orderNum:"订单号10",userName:"用户名10",orderTime:"下单时间10",orderStatus:"状态10",priority:"优先级10"},
-                {orderNum:"订单号11",userName:"用户名11",orderTime:"下单时间11",orderStatus:"状态11",priority:"优先级11"},
-                {orderNum:"订单号12",userName:"用户名12",orderTime:"下单时间12",orderStatus:"状态12",priority:"优先级12"},
-                {orderNum:"订单号13",userName:"用户名13",orderTime:"下单时间13",orderStatus:"状态13",priority:"优先级13"},
-                {orderNum:"订单号14",userName:"用户名14",orderTime:"下单时间14",orderStatus:"状态14",priority:"优先级14"},
-                {orderNum:"订单号15",userName:"用户名15",orderTime:"下单时间15",orderStatus:"状态15",priority:"优先级15"},
-                {orderNum:"订单号16",userName:"用户名16",orderTime:"下单时间16",orderStatus:"状态16",priority:"优先级16"},
-                {orderNum:"订单号17",userName:"用户名17",orderTime:"下单时间17",orderStatus:"状态17",priority:"优先级17"},
-                {orderNum:"订单号18",userName:"用户名18",orderTime:"下单时间18",orderStatus:"状态18",priority:"优先级18"},
-                {orderNum:"订单号19",userName:"用户名19",orderTime:"下单时间19",orderStatus:"状态19",priority:"优先级19"},
-                {orderNum:"订单号20",userName:"用户名20",orderTime:"下单时间20",orderStatus:"状态20",priority:"优先级20"},
-                {orderNum:"订单号21",userName:"用户名21",orderTime:"下单时间21",orderStatus:"状态21",priority:"优先级21"},
-                {orderNum:"订单号22",userName:"用户名22",orderTime:"下单时间22",orderStatus:"状态22",priority:"优先级22"},
-                {orderNum:"订单号23",userName:"用户名23",orderTime:"下单时间23",orderStatus:"状态23",priority:"优先级23"},
-                {orderNum:"订单号24",userName:"用户名24",orderTime:"下单时间24",orderStatus:"状态24",priority:"优先级24"},
-                {orderNum:"订单号25",userName:"用户名25",orderTime:"下单时间25",orderStatus:"状态25",priority:"优先级25"},
-                {orderNum:"订单号26",userName:"用户名26",orderTime:"下单时间26",orderStatus:"状态26",priority:"优先级26"},
-                {orderNum:"订单号27",userName:"用户名27",orderTime:"下单时间27",orderStatus:"状态27",priority:"优先级27"},
-                {orderNum:"订单号28",userName:"用户名28",orderTime:"下单时间28",orderStatus:"状态28",priority:"优先级28"},
-                {orderNum:"订单号29",userName:"用户名29",orderTime:"下单时间29",orderStatus:"状态29",priority:"优先级29"},
-                {orderNum:"订单号30",userName:"用户名30",orderTime:"下单时间30",orderStatus:"状态30",priority:"优先级30"},
-                {orderNum:"订单号31",userName:"用户名31",orderTime:"下单时间31",orderStatus:"状态31",priority:"优先级31"},
-                {orderNum:"订单号32",userName:"用户名32",orderTime:"下单时间32",orderStatus:"状态32",priority:"优先级32"},
-                {orderNum:"订单号33",userName:"用户名33",orderTime:"下单时间33",orderStatus:"状态33",priority:"优先级33"}
+            arr:[],
 
-            ],
-            tableList:[
-                {orderNum:"1",userName:"1",orderTime:"1",orderStatus:"1",priority:"1"},
-                {orderNum:"2",userName:"2",orderTime:"2",orderStatus:"2",priority:"2"}
-            ],
             pageNum:1,
             pageSize:15,
             total:0,
@@ -259,18 +221,17 @@ export default{
     },
     methods:{
         loadTable(){
-            let arr=[];
             let newArr=[];
             ajax.post('/api/offline-order/query',{status:this.status}).then(json=>{
-                newArr=json.list;
+                this.arr=json.list;
                     for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
-                        if(newArr[num]){
-                            arr.push(newArr[num]);
+                        if(this.arr[num]){
+                            newArr.push(this.arr[num]);
                         }
                     }
 
-                    this.currentData=arr;
-                    this.total=newArr.length;
+                    this.currentData=newArr;
+                    this.total=this.arr.length;
                 for(let obj of this.currentData){
                     if(obj.status===1){
                         obj.status="待发布";
@@ -315,6 +276,8 @@ export default{
                 this.status=8;
             }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
                 this.status=9;
+            }else if(this.$route.path=="/dashboard/my-publish/nonEffective-require"){
+                this.status=10;
             }
         },
         changeTabEffective(tab){
@@ -356,13 +319,13 @@ export default{
         },
         handleCurrentChange(page){
             this.pageNum=page;
-            let arr=[];
+            let newArr=[];
             for(let num=(this.pageNum-1)*this.pageSize;num<this.pageNum*this.pageSize;num++){
-                if(this.tableData[num]){
-                    arr.push(this.tableData[num]);
+                if(this.arr[num]){
+                    newArr.push(this.arr[num]);
                 }
             }
-            this.currentData=arr;
+            this.currentData=newArr;
         },
         changeClick(){
             this.selectState=1;
@@ -375,9 +338,9 @@ export default{
                 this.loadTable();
             }else if(value=="有效需求"){
                 this.isTrue=true;
-                this.$router.push({name:"dashboard-my-publish",params:{status:"wait-publish"}});
                 this.status=1;
                 if(this.selectState===1){
+                    this.$router.push({name:"dashboard-my-publish",params:{status:"wait-publish"}});
                     this.loadTable();
                 }
             }
