@@ -4,6 +4,7 @@
         width: 100%;
         padding: 0 30px;
         color: #1F2D3D;
+
         .title{
             height: 60px;
             font-size: 18px;
@@ -36,11 +37,18 @@
                 margin: 0 20px;
             }
         }
+
+        .detail-title{
+            height: 40px;
+            line-height: 40px;
+        }
+
         .creator-info{
-            height: 100%;
+            height: 40px;
+            line-height: 40px;
             span{
                 display: inline-block;
-
+                margin: 0 10px;
             }
         }
     }
@@ -59,7 +67,7 @@
         <div class="order-detail">
             <el-tabs  @tab-click="changetab" active-name="require-node">
                 <el-tab-pane label="需求记录" name="require-node">
-                    <el-row>
+                    <el-row style="height: 40px">
                         <el-col :span="12">
                             <h4>需求详情</h4>
                             <el-tag key="优先级A+" type="gray">优先级A+</el-tag>
@@ -67,9 +75,9 @@
                         </el-col>
                         <el-col :span="12" class="creator-info">
                             <span>创建:</span>
-                            <span>{{user}}</span>
+                            <span>{{orderdata.creator.name}}</span>
                             <span>发布时间:</span>
-                            <span></span>
+                            <span>{{orderdata.create_time}}</span>
                         </el-col>
                     </el-row>
                 </el-tab-pane>
@@ -124,11 +132,9 @@
             }
         },
         computed:{
-            user(){
-                return this.orderdata.creator.name || '未知';
-            }
+
         },
-        mounted(){
+        created(){
             this.getorder(this.$route.params.orderid);
         }
     }
