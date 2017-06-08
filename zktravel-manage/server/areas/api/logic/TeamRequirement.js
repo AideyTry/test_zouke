@@ -39,8 +39,7 @@ const validReqDataRule = {
 
 module.exports = class TeamRequirement extends BaseOfflineOrder {
     async $insert(requirement, status, creator){
-        const date = new Date().format('YYYY-MM-DD hh:mm:ss');
-        requirement.last_update = date;
+        requirement.last_update = this.$createTime();
 
         return await super.$insert({
             creator,
@@ -56,5 +55,36 @@ module.exports = class TeamRequirement extends BaseOfflineOrder {
     }
     async draft(data, creator){
         return await this.$insert(data, 1, creator);
+    }
+    async draftPublish(id, requirement){
+        const set = {
+            status: 2
+        }
+        if(requirement){
+            requirement.last_update = this.$createTime();
+            set.requirement = requirement;
+        }
+        return await this.$update({_id:id, status: 1}, { $set: set });
+    }
+    async update(id, requirement){
+        const collection = await this.$getCollection();
+        const { status } = await collection.findOne({id:_id}, { status:1 })
+        if(![1,2,3,4,5].includes(status)){
+            //已付款之后
+            return -1 //无法
+        }
+
+        requirement.last_update = this.$createTime();
+
+        const update = {
+            $set: { requirement }
+        };
+        if(status === 1 || status === 2){
+            //待发布
+        }
+
+        return await this.$update({ _id:id, status }, {
+            $set: { requirement }
+        })
     }
 }

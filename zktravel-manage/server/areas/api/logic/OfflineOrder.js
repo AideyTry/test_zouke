@@ -36,17 +36,19 @@ module.exports = class OfflineOrder extends BaseOfflineOrder {
         return detail;
     }
 
-    async updateStatus(id, status, ifQuery = {}){
-        ifQuery._id = id;
-        return await this.$update(ifQuery, { $set: { status } });
-    }
     async invalidReq(id){
-        //需求审核不通过
-        return await this.updateStatus(id, 1, { status: 2 })
+        //需求审核不通过 
+        return await this.$update({ _id: id, status: 2 }, { 
+            $set: { status: 1 },
+            $push: { logs: { type:'system:reject-requirement', time: this.$createTime() } }
+        });
     }
 
     async dispatch(id, user){
         //分配
-        return await this.$update({ _id:id, status:2 }, { $set: { booking_user: user } });
+        return await this.$update({ _id:id, status:2 }, { 
+            $set: { booking_user: user },
+            $push: { logs: { type:'system:dispatch-requirement', time: this.$createTime() } } 
+        });
     }
 }

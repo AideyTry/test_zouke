@@ -40,6 +40,37 @@ module.exports = class TeamReqController extends LController {
     async draft(){
         await this[triggerInsert]('draft');
     }
+    async draftPublish(){
+        const teamRequirement = new TeamRequirement();
+        const { id, requirement } = this.request.body;
+
+        let result = false;
+        if(requirement){
+            const transRequirement = teamRequirement.validRequirement(requirement);
+            if(!transRequirement){
+                this.renderJSON({ code:1, msg: 'data check valid fail' });
+                return;
+            }
+            result = await teamRequirement.draftPublish(id, transRequirement);
+        }else{
+            result = await teamRequirement.draftPublish(id);
+        }
+        if(result) this.renderJSON({ code:0 });
+        else this.renderJSON({ code:2, msg: 'can not publish this draft' });
+    }
+
+    async update(){
+        const teamRequirement = new TeamRequirement();
+        const { id, requirement } = this.request.body;
+        const transRequirement = teamRequirement.validRequirement(id, requirement);
+        if(!transRequirement){
+            this.renderJSON({ code:1, msg: 'data check valid fail' });
+            return;
+        }
+
+        const result = await teamRequirement.update(id, transRequirement);
+        //todo 
+    }
 
     async invalidReq(){
         //需求审核不通过
@@ -47,7 +78,7 @@ module.exports = class TeamReqController extends LController {
         const offlineOrder = new OfflineOrder();
         const result = await offlineOrder.invalidReq(id);
         if(result) this.renderJSON({ code:0 });
-        else this.renderJSON({ code:1, msg: 'can not invalid this req' });
+        else this.renderJSON({ code:2, msg: 'can not invalid this req' });
     }
     async dispatch(){
         //分配
@@ -57,6 +88,7 @@ module.exports = class TeamReqController extends LController {
         const result = await offlineOrder.dispatch(id, user);
 
         if(result) this.renderJSON({ code:0 });
-        else this.renderJSON({ code:1, msg: 'can not dispatch this order' });
+        else this.renderJSON({ code:2, msg: 'can not dispatch this order' });
     }
+
 }
