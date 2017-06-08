@@ -45,7 +45,7 @@
                     <el-select size="small" v-model="params.priority" placeholder="选择优先级">
                         <el-option value="A+" label="优先级A+"></el-option>
                         <el-option value="A" label="优先级A"></el-option>
-                        <el-option value="A-" label="优先级A-"></el-option>
+                        <el-option value="B" label="优先级A-"></el-option>
                     </el-select>
                 </el-col>
                 <el-col :span="5">
@@ -202,14 +202,13 @@
             </el-row>
         </el-form>
     </div>
-    <div class="publish-content" v-else="type==2">asdasd</div>
 </template>
 <script>
     import debounce from 'lodash/debounce'
     import ajax from '@local/common/ajax';
     import DateCard from './Card.vue'
     export default{
-        props: ['ordertype', 'orderid'],
+        props: ['ordertype', 'orderid','orderdata'],
         components: {
             DateCard
         },
@@ -424,8 +423,11 @@
             }
 
         },
-        mounted(){
-
+        created(){
+            if(this.orderdata){
+                this.params=this.orderdata.requirement;
+                this.user=this.orderdata.requirement.user.name;
+            }
 
         },
         watch: {

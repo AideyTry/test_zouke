@@ -73,7 +73,7 @@
         <el-row class="main-body" type="flex">
             <el-col :span="3" class="nav-menu">
                 <el-menu :default-active="activemenu"  :unique-opened="true"  class="nav-memu" theme="dark" @select="handleSelect" @open="handleOpen" @close="handleClose">
-                    <el-menu-item index="home">
+                    <el-menu-item index="dashboard-my-home-proxy">
                             主页
                     </el-menu-item>
                     <el-submenu index="publish">
@@ -86,7 +86,7 @@
                                 我的发布
                             </el-menu-item>
                             <el-menu-item index="dashboard-distributed-proxy">
-                                待发布
+                                待分配
                             </el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
@@ -143,7 +143,6 @@
         /*增加data*/
         data(){
             return {
-
                 isActive: true,
                 isTrue: false,
                 flag: 0,
