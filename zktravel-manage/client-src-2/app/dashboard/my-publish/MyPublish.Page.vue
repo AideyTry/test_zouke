@@ -31,7 +31,11 @@
         bottom: 0px;
         z-index: 3;
     }
-
+    .table{
+        a{
+            cursor:pointer;
+        }
+    }
 </style>
 
 <template>
@@ -40,7 +44,7 @@
            <span>&nbsp&nbsp&nbsp&nbsp</span>
            <span>类别:&nbsp&nbsp</span>
             <el-col :span="3">
-                <el-select v-model="value2" @change="changeSelect">
+                <el-select v-model="value2" @change="changeSelect" @visible-change="changeClick">
                     <el-option
                             v-for="item in sorts"
                             :key="item.value"
@@ -96,11 +100,18 @@
                 <el-table
                         :data="currentData"
                         border
+                        class="table"
                         style="width: 100%">
                     <el-table-column
-                            prop="orderNum"
+                            prop="orderId"
                             label="订单号"
+
                     >
+                        <template scope="scope">
+                            <a @click="cellClick(scope.row.orderId)">
+                                {{scope.row.orderId}}
+                            </a>
+                        </template>
                     </el-table-column>
                     <el-table-column
                             prop="userName"
@@ -108,7 +119,7 @@
                     >
                     </el-table-column>
                     <el-table-column
-                            prop="orderTime"
+                            prop=""
                             label="下单时间">
                     </el-table-column>
                     <el-table-column
@@ -116,24 +127,24 @@
                             label="优先级">
                     </el-table-column>
                     <el-table-column
-                            prop="goOff"
+                            prop="startDate"
                             label="出发时间">
                     </el-table-column>
                     <el-table-column
                             v-if="isTrue"
-                            prop="orderStatus"
+                            prop="status"
                             label="状态">
                     </el-table-column>
                     <el-table-column
-                            prop="quoter"
+                            prop=""
                             label="报价员">
                     </el-table-column>
                     <el-table-column
-                            prop="orderAmount"
+                            prop=""
                             label="订单金额">
                     </el-table-column>
                     <el-table-column
-                            prop="publishDate"
+                            prop="publishTime"
                             label="发布日期">
                     </el-table-column>
                 </el-table>
@@ -155,11 +166,11 @@
     </div>
 </template>
 <script>
-import CommonTable from './CommonTable.vue'
 import ajax from '@local/common/ajax'
 export default{
     data(){
         return{
+            selectState:0,
             isTrue:true,
             value1:"",
             value2:"",
@@ -230,13 +241,10 @@ export default{
                 {orderNum:"2",userName:"2",orderTime:"2",orderStatus:"2",priority:"2"}
             ],
             pageNum:1,
-            pageSize:18,
+            pageSize:15,
             total:0,
             currentData:[]
         }
-    },
-    components:{
-        CommonTable:CommonTable
     },
     computed:{
         dataList(){
@@ -251,77 +259,42 @@ export default{
     },
     methods:{
         loadTable(){
-
-            ajax.post('/api/offline-order/query',{status:1}).then(json=>{
-                console.log(json);
-            })
+            let arr=[];
             let newArr=[];
-                if(this.status===1){
-                    newArr=this.tableData;
-                }else if(this.status===2){
-                    newArr=this.tableList;
-                }
-                let arr=[];
-                for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
-                    if(newArr[num]){
-                        arr.push(newArr[num]);
+            ajax.post('/api/offline-order/query',{status:this.status}).then(json=>{
+                newArr=json.list;
+                    for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
+                        if(newArr[num]){
+                            arr.push(newArr[num]);
+                        }
+                    }
+
+                    this.currentData=arr;
+                    this.total=newArr.length;
+                for(let obj of this.currentData){
+                    if(obj.status===1){
+                        obj.status="待发布";
+                    }else if(obj.status===2){
+                        obj.status="待分配"
+                    }else if(obj.status===3){
+                        obj.status="待分配"
+                    }else if(obj.status===4){
+                        obj.status="待分配"
+                    }else if(obj.status===5){
+                        obj.status="待分配"
+                    }else if(obj.status===6){
+                        obj.status="待分配"
+                    }else if(obj.status===7){
+                        obj.status="待分配"
+                    }else if(obj.status===8){
+                        obj.status="待分配"
+                    }else if(obj.status===9){
+                        obj.status="待分配"
+                    }else if(obj.status===10){
+                        obj.status="待分配"
                     }
                 }
-
-                this.currentData=arr;
-                this.total=newArr.length;
-            for(let obj of this.currentData){
-                obj.orderStatus="待发布"
-            }
-            if(this.$route.path=="/dashboard/my-publish/wait-publish"){
-
-                this.status=1;
-                for(let obj of this.currentData){
-                    obj.orderStatus="待发布"
-                }
-            }else if(this.$route.path=="/dashboard/my-publish/wait-distribution"){
-
-                this.status=2;
-                for(let obj of this.currentData){
-                    obj.orderStatus="待分配"
-                }
-            }else if(this.$route.path=="/dashboard/my-publish/quote"){
-                for(let obj of this.currentData){
-                    obj.orderStatus="报价中"
-                }
-                this.status=3;
-            }else if(this.$route.path=="/dashboard/my-publish/wait-confirmed"){
-                for(let obj of this.currentData){
-                    obj.orderStatus="报价待确认"
-                }
-                this.status=4;
-            }else if(this.$route.path=="/dashboard/my-publish/wait-gathering"){
-                for(let obj of this.currentData){
-                    obj.orderStatus="待收款"
-                }
-                this.status=5;
-            }else if(this.$route.path=="/dashboard/my-publish/house-wait-distribution"){
-                for(let obj of this.currentData){
-                    obj.orderStatus="分房待确认"
-                }
-                this.status=6;
-            }else if(this.$route.path=="/dashboard/my-publish/wait-control-house"){
-                for(let obj of this.currentData){
-                    obj.orderStatus="待控房"
-                }
-                this.status=7;
-            }else if(this.$route.path=="/dashboard/my-publish/control-house"){
-                for(let obj of this.currentData){
-                    obj.orderStatus="已控房"
-                }
-                this.status=8;
-            }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
-                for(let obj of this.currentData){
-                    obj.orderStatus="需开发票"
-                }
-                this.status=9;
-            }
-
+            })
         },
         updateTab(){
             if(this.$route.path=="/dashboard/my-publish/wait-publish"){
@@ -344,14 +317,6 @@ export default{
                 this.status=9;
             }
         },
-//        loadTab(){
-//            if(this.isTrue){
-//                this.$router.push({name:"dashboard-my-publish",params:{status:"wait-publish"}});
-//            }else{
-//                this.$router.push({name:"dashboard-my-publish",params:{status:"nonEffective-require"}});
-//            }
-//
-//        },
         changeTabEffective(tab){
             this.$router.push({name:"dashboard-my-publish",params:{status:tab.name}});
             if(this.$route.path=="/dashboard/my-publish/wait-publish"){
@@ -382,8 +347,6 @@ export default{
                 this.status=9;
                 this.loadTable();
             }
-
-
         },
         changeTabNoneffective(tab){
 
@@ -401,6 +364,9 @@ export default{
             }
             this.currentData=arr;
         },
+        changeClick(){
+            this.selectState=1;
+        },
         changeSelect(value){
             if(value=='无效需求'){
                 this.isTrue=false;
@@ -411,8 +377,13 @@ export default{
                 this.isTrue=true;
                 this.$router.push({name:"dashboard-my-publish",params:{status:"wait-publish"}});
                 this.status=1;
-//                this.loadTable();
+                if(this.selectState===1){
+                    this.loadTable();
+                }
             }
+        },
+        cellClick(orderId){
+            this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId}});
         }
     },
     mounted(){
