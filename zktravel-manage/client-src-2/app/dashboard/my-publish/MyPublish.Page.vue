@@ -261,55 +261,27 @@ export default{
                     this.currentData=arr;
                     this.total=newArr.length;
                 for(let obj of this.currentData){
-                    obj.orderStatus="待发布"
-                }
-                if(this.$route.path=="/dashboard/my-publish/wait-publish"){
-
-                    this.status=1;
-                    for(let obj of this.currentData){
-                        obj.orderStatus="待发布"
+                    if(obj.status===1){
+                        obj.status="待发布";
+                    }else if(obj.status===2){
+                        obj.status="待分配"
+                    }else if(obj.status===3){
+                        obj.status="待分配"
+                    }else if(obj.status===4){
+                        obj.status="待分配"
+                    }else if(obj.status===5){
+                        obj.status="待分配"
+                    }else if(obj.status===6){
+                        obj.status="待分配"
+                    }else if(obj.status===7){
+                        obj.status="待分配"
+                    }else if(obj.status===8){
+                        obj.status="待分配"
+                    }else if(obj.status===9){
+                        obj.status="待分配"
+                    }else if(obj.status===10){
+                        obj.status="待分配"
                     }
-                }else if(this.$route.path=="/dashboard/my-publish/wait-distribution"){
-
-                    this.status=2;
-                    for(let obj of this.currentData){
-                        obj.orderStatus="待分配"
-                    }
-                }else if(this.$route.path=="/dashboard/my-publish/quote"){
-                    for(let obj of this.currentData){
-                        obj.orderStatus="报价中"
-                    }
-                    this.status=3;
-                }else if(this.$route.path=="/dashboard/my-publish/wait-confirmed"){
-                    for(let obj of this.currentData){
-                        obj.orderStatus="报价待确认"
-                    }
-                    this.status=4;
-                }else if(this.$route.path=="/dashboard/my-publish/wait-gathering"){
-                    for(let obj of this.currentData){
-                        obj.orderStatus="待收款"
-                    }
-                    this.status=5;
-                }else if(this.$route.path=="/dashboard/my-publish/house-wait-distribution"){
-                    for(let obj of this.currentData){
-                        obj.orderStatus="分房待确认"
-                    }
-                    this.status=6;
-                }else if(this.$route.path=="/dashboard/my-publish/wait-control-house"){
-                    for(let obj of this.currentData){
-                        obj.orderStatus="待控房"
-                    }
-                    this.status=7;
-                }else if(this.$route.path=="/dashboard/my-publish/control-house"){
-                    for(let obj of this.currentData){
-                        obj.orderStatus="已控房"
-                    }
-                    this.status=8;
-                }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
-                    for(let obj of this.currentData){
-                        obj.orderStatus="需开发票"
-                    }
-                    this.status=9;
                 }
             })
         },
