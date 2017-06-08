@@ -25,7 +25,7 @@ module.exports = class Mapping {
         const collection = await getSpHotelCollection();
         return collection.find({
             [`${Pretreatment.field}._v`]: Pretreatment.version,
-            //'status': 0,
+            'status': 0,
             'map_state.invalid': null,
             'map_state.strict': null,
             'map_state.offline':null
@@ -47,7 +47,7 @@ module.exports = class Mapping {
             query: {
                 $and: [
                     {
-                        //country_id: hotel.country_id,
+                        country_id: hotel.country_id,
                         $or: orQueryCondition
                     },
                     query
@@ -59,7 +59,7 @@ module.exports = class Mapping {
             const cityResults = await collection.find({
                 $and: [
                     {
-                        //country_id: hotel.country_id,
+                        country_id: hotel.country_id,
                         city_id: hotel.city_id,
                         _id: { $nin: queryResults.map(r=>r.hotel._id) },
                         $or: orQueryCondition
@@ -88,7 +88,7 @@ module.exports = class Mapping {
         if(spHotel.name) alias.push(spHotel.name);
         if(spHotel.name_en) alias.push(spHotel.name_en);
 
-        await ZkResolver.get(spHotel.supplier).map(zkId, spHotel.id, alias);
+        await ZkResolver.get(spHotel.supplier).map(zkId, spHotel, alias);
         await SpResolver.get(spHotel.supplier).resolveHotel(spHotel._id, MapState.createStrict(zkId, map_key));
     }
     async $fuzzy(spHotel, fuzzy){

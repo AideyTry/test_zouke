@@ -1,5 +1,6 @@
 const LController = requireRoot('common/LController');
 const TeamRequirement = require('../logic/TeamRequirement');
+const OfflineOrder = require('../logic/OfflineOrder');
 
 const triggerInsert = Symbol();
 
@@ -8,6 +9,12 @@ module.exports = class TeamReqController extends LController {
     $meta(){
         return {
             access: {
+                'invalid-req': {
+                    'offline_order': this.userInfo.PERMISSION.OFFLINE_ORDER.DISPATCH
+                },
+                'dispatch': {
+                    'offline_order': this.userInfo.PERMISSION.OFFLINE_ORDER.DISPATCH
+                },
                 default: {
                     'offline_order': this.userInfo.PERMISSION.OFFLINE_ORDER.PUBLISH
                 }
@@ -32,5 +39,24 @@ module.exports = class TeamReqController extends LController {
     }
     async draft(){
         await this[triggerInsert]('draft');
+    }
+
+    async invalidReq(){
+        //需求审核不通过
+        const { id } = this.request.body;
+        const offlineOrder = new OfflineOrder();
+        const result = await offlineOrder.invalidReq(id);
+        if(result) this.renderJSON({ code:0 });
+        else this.renderJSON({ code:1, msg: 'can not invalid this req' });
+    }
+    async dispatch(){
+        //分配
+        const { id, user } = this.request.body;
+        const offlineOrder = new OfflineOrder();
+
+        const result = await offlineOrder.dispatch(id, user);
+
+        if(result) this.renderJSON({ code:0 });
+        else this.renderJSON({ code:1, msg: 'can not dispatch this order' });
     }
 }

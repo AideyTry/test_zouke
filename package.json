@@ -41,6 +41,7 @@
     "element-ui": "^1.3.5",
     "fileapi": "^2.0.21",
     "js-base64": "^2.1.9",
+    "jsondiffpatch": "^0.2.4",
     "koa": "^2.2.0",
     "koa-bodyparser": "^4.2.0",
     "koa-compose": "^4.0.0",
