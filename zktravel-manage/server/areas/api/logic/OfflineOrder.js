@@ -1,9 +1,8 @@
-const dbclient = requireRoot('db');
+const BaseOfflineOrder = require('./BaseOfflineOrder');
 
-module.exports = class OfflineOrder {
+module.exports = class OfflineOrder extends BaseOfflineOrder {
     async query(status, { creatorId, bookingId, page=0, pageSize=10 } = {}){
-        const db = await dbclient.get();
-        const collection = await db.collection('offline_order');
+        const collection = await this.$getCollection();
 
         const findQuery = { status };
         if(creatorId) findQuery['creator.id'];
@@ -30,11 +29,24 @@ module.exports = class OfflineOrder {
         });
     }
     async detail(id){
-        const db = await dbclient.get();
-        const collection = await db.collection('offline_order');
+        const collection = await this.$getCollection();
         const detail = await collection.findOne({ _id: id })
         detail.id = detail._id;
         delete detail._id;
         return detail;
+    }
+
+    async updateStatus(id, status, ifQuery = {}){
+        ifQuery._id = id;
+        return await this.$update(ifQuery, { $set: { status } });
+    }
+    async invalidReq(id){
+        //需求审核不通过
+        return await this.updateStatus(id, 1, { status: 2 })
+    }
+
+    async dispatch(id, user){
+        //分配
+        return await this.$update({ _id:id, status:2 }, { $set: { booking_user: user } });
     }
 }
