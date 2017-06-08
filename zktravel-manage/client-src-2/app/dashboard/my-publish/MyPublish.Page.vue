@@ -31,7 +31,11 @@
         bottom: 0px;
         z-index: 3;
     }
-
+    .table{
+        a{
+            cursor:pointer;
+        }
+    }
 </style>
 
 <template>
@@ -96,6 +100,7 @@
                 <el-table
                         :data="currentData"
                         border
+                        class="table"
                         style="width: 100%">
                     <el-table-column
                             prop="orderId"
