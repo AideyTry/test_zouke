@@ -143,7 +143,6 @@
         /*增加data*/
         data(){
             return {
-
                 isActive: true,
                 isTrue: false,
                 flag: 0,

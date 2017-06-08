@@ -229,6 +229,12 @@
             enddate(val){
                 this.myitem.check_out=val.format('YYYY-MM-DD');
             }
+        },
+        created(){
+            if(this.item.city.name){
+               this.city=this.item.city.name;
+            }
+
         }
     }
 </script>
