@@ -318,6 +318,7 @@
 
             },
             submitdraft(){
+                let vm=this;
                 ajax.post('/api/team-req/draft', this.params).then(
                     data => {
                         if(data.code==0){
@@ -326,7 +327,7 @@
                                 message: '已保存为草稿，请到我的发布中查看',
                                 type: 'success'
                             });
-                            this.params={
+                            vm.params={
                                     priority: 'A+',
                                     origin_from: '',
                                     user: null,
