@@ -124,9 +124,11 @@
         computed:{
 
         },
-        method:{
+        methods:{
             loadTable(){
-
+                ajax.post("/api/offline-order/query",{status:1,page:1,pageSize:10}).then(json=>{
+                    console.log(json);
+                })
             },
             changeTab(tab){
                 this.$router.push({name:"dashboard-group-order",params:{status:tab.name}});
@@ -136,7 +138,7 @@
             }
         },
         mounted(){
-
+            this.loadTable();
         },
         beforeRouteEnter (to, from, next) {
             if (!to.params.status) {
