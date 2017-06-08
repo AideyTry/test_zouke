@@ -96,7 +96,6 @@
         </el-row>
         <el-row type="flex">
             <el-col :span="24">
-                <!--<CommonTable :currentData="dataList" :isTrue="isNo"></CommonTable>-->
                 <el-table
                         :data="currentData"
                         border

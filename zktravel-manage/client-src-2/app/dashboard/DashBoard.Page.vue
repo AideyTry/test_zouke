@@ -73,7 +73,7 @@
         <el-row class="main-body" type="flex">
             <el-col :span="3" class="nav-menu">
                 <el-menu :default-active="activemenu"  :unique-opened="true"  class="nav-memu" theme="dark" @select="handleSelect" @open="handleOpen" @close="handleClose">
-                    <el-menu-item index="home">
+                    <el-menu-item index="dashboard-my-home-proxy">
                             主页
                     </el-menu-item>
                     <el-submenu index="publish">
