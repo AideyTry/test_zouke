@@ -21,7 +21,7 @@ export default [
             ...publishRequire,
             ...myPublish,
             ...waitExamine,
-            ...waitOffer
+            ...waitOffer,
             ...myPublish,
             ...distributed
         ]
