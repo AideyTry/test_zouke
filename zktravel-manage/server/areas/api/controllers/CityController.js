@@ -1,5 +1,5 @@
 const LController = requireRoot('common/LController');
-const City = require('../logic/City');
+const City = require('../@logic/City');
 
 module.exports = class CityController extends LController {
     async query(){

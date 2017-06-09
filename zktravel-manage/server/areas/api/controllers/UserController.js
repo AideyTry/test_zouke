@@ -1,5 +1,5 @@
 const LController = requireRoot('common/LController');
-const WxUser = require('../logic/WxUser');
+const WxUser = require('../@logic/User');
 
 module.exports = class WxUserController extends LController {
     async query(){

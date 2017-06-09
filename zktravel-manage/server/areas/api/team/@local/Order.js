@@ -5,7 +5,8 @@ module.exports = class OfflineOrder extends BaseOfflineOrder {
         const collection = await this.$getCollection();
 
         const findQuery = { status };
-        if(creatorId) findQuery['creator.id'];
+        if(creatorId) findQuery['creator.id']=creatorId;
+        if(bookingId) findQuery['booking_user.id']=bookingId;
 
         const cursor = collection.find(findQuery, {
             'requirement.user.name': 1,

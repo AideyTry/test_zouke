@@ -1,5 +1,5 @@
 const LController = requireRoot('common/LController');
-const ZkHotel = require('../logic/ZkHotel');
+const ZkHotel = require('../@logic/ZkHotel');
 
 module.exports = class ZkHotelController extends LController {
     async detail(){

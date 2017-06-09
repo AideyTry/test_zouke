@@ -1,5 +1,5 @@
 const LController = requireRoot('common/LController');
-const SpHotel = require('../logic/SpHotel');
+const SpHotel = require('../@logic/SpHotel');
 
 module.exports = class SpHotelController extends LController {
     async detail(){

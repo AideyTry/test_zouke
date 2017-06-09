@@ -1,12 +1,12 @@
 const LController = requireRoot('common/LController');
-const SystemUser = require('../logic/SystemUser');
+const SystemUser = require('../@logic/User');
 
-module.exports = class SystemUserController extends LController{
+module.exports = class UserController extends LController{
     $meta(){
         return {
             access: {
                 default: {
-                    'offline_order': this.userInfo.PERMISSION.OFFLINE_ORDER.DISPATCH
+                    'offline_order': this.P.OFFLINE_ORDER.DISPATCH
                 }
             }
         }
