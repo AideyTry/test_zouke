@@ -73,9 +73,12 @@
         <div class="order-detail">
             <el-tabs  @tab-click="changetab" active-name="require-node">
                 <el-tab-pane label="需求记录" name="require-node">
-                    <div class="button-group">
+                    <div class="button-group" v-if="userole.UPDATE_ORDER">
                         <el-button type="info" size="small" @click="togglechange">{{change?'放弃修改':'修改'}}</el-button>
                         <el-button v-show="!change" style="color:#20a0ff;border-color:#20a0ff" size="small">发布</el-button>
+                    </div>
+                    <div class="button-group" v-if="userole.DISPATCH">
+                        <el-button type="info" size="small" @click="togglechange">分配</el-button>
                     </div>
                     <orderdetail v-if="orderdata&&!change" :orderdata="orderdata"> </orderdetail>
                     <changerequire v-if="orderdata&&change" :orderdata="orderdata"></changerequire>
@@ -140,6 +143,9 @@
         computed:{
             orderid(){
                 return this.$route.params.orderid;
+            },
+            userole(){
+                return this.$store.getters.offlineRole;
             }
         },
         created(){

@@ -111,7 +111,7 @@
         methods:{
             loadtable(){
                 let vm=this;
-                ajax.post('/api/offline-order/query',{status:2}).then(
+                ajax.post('/api/team/order',{status:2}).then(
                     data=>{
                         let arr=[];
                         vm.tabledata =  data.list;
@@ -138,7 +138,7 @@
                 vm.currentdata = arr;
             },
             distributed(id){
-                
+                this.$router.push({name:'dashboard-order-detail',params:{orderid:id}});
             }
         },
         mounted(){
