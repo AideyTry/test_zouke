@@ -22,7 +22,6 @@ export default [
             ...myPublish,
             ...waitExamine,
             ...waitOffer,
-            ...myPublish,
             ...distributed
         ]
     }
