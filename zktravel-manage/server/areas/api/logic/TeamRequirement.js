@@ -1,5 +1,6 @@
 const BaseOfflineOrder = require('./BaseOfflineOrder');
 const compare = require('@local/compare');
+const jsondiffpatch = require('jsondiffpatch');
 
 
 const validReqDataRule = {
@@ -51,40 +52,68 @@ module.exports = class TeamRequirement extends BaseOfflineOrder {
         return compare( validReqDataRule, data );
     }
     async publish(data, creator){
-        return await this.$insert(data, 2, creator);
+        return await this.$insert(data, this.status.WAIT_FOR_DISPATCH, creator);
     }
     async draft(data, creator){
-        return await this.$insert(data, 1, creator);
+        return await this.$insert(data, this.status.WAIT_FOR_PUBLISH, creator);
     }
     async draftPublish(id, requirement){
         const set = {
-            status: 2
+            status: this.status.WAIT_FOR_DISPATCH
         }
         if(requirement){
             requirement.last_update = this.$createTime();
             set.requirement = requirement;
         }
-        return await this.$update({_id:id, status: 1}, { $set: set });
+        return await this.$update({_id:id, status: this.status.WAIT_FOR_DISPATCH}, { $set: set });
     }
-    async update(id, requirement){
+    async update(id, requirement, user, all){
         const collection = await this.$getCollection();
-        const { status } = await collection.findOne({id:_id}, { status:1 })
-        if(![1,2,3,4,5].includes(status)){
-            //已付款之后
-            return -1 //无法
+        
+        const { 
+            WAIT_FOR_PUBLISH,
+            WAIT_FOR_DISPATCH, 
+            WAIT_FOR_GIVE_PRICE, 
+            WAIT_FOR_PRICE_CHECK,
+            WAIT_FOR_PRICE_CONFIRM,
+            WAIT_FOR_GATHERING
+        } = this.status;
+
+        const query = { _id: id, status: 
+            {
+                $in: [
+                    WAIT_FOR_PUBLISH,
+                    WAIT_FOR_DISPATCH, 
+                    WAIT_FOR_GIVE_PRICE, 
+                    WAIT_FOR_PRICE_CHECK,
+                    WAIT_FOR_PRICE_CONFIRM,
+                    WAIT_FOR_GATHERING
+                ]
+            } 
+        };
+        const result = await collection.findOne(query, { status:1, requirement:1 })
+        if(!result) return -1 //已付款之后,无法更改需求
+        const { status, requirement:_oldRequirement, creator } = result;
+
+
+        if(!all&&creator.id!==user.id){
+            return -2 //无权
         }
 
-        requirement.last_update = this.$createTime();
+        const nowTime = this.$createTime();
 
         const update = {
             $set: { requirement }
         };
-        if(status === 1 || status === 2){
-            //待发布
+        if(status !== WAIT_FOR_PUBLISH && status !== WAIT_FOR_DISPATCH){
+            update.$set.status = WAIT_FOR_GIVE_PRICE;
+            delete _oldRequirement.last_update;
+            const diff = jsondiffpatch.diff(_oldRequirement, requirement);
+            update.$push = { logs: { type: 'system:update-requirement', time: nowTime, diff, user } };
         }
 
-        return await this.$update({ _id:id, status }, {
-            $set: { requirement }
-        })
+        requirement.last_update = nowTime;
+
+        return await this.$update({ _id:id, status }, update)
     }
 }

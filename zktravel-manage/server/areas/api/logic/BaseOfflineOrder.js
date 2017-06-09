@@ -24,6 +24,19 @@ const ORDER_RESOLVE = 9;            //已控房
 
 
 module.exports = class BaseOfflineOrder{
+    get status(){
+        return {
+            WAIT_FOR_PUBLISH,
+            WAIT_FOR_DISPATCH,
+            WAIT_FOR_GIVE_PRICE,
+            WAIT_FOR_PRICE_CHECK,
+            WAIT_FOR_PRICE_CONFIRM,
+            WAIT_FOR_GATHERING,
+            WAIT_FOR_ROOM_PERSON,
+            WAIT_FOR_BOOKING,
+            ORDER_RESOLVE
+        }
+    }
     async $getCollection(){
         const db = await dbclient.get();
         return await db.collection('offline_order');

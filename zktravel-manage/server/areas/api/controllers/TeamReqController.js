@@ -10,13 +10,19 @@ module.exports = class TeamReqController extends LController {
         return {
             access: {
                 'invalid-req': {
-                    'offline_order': this.userInfo.PERMISSION.OFFLINE_ORDER.DISPATCH
+                    'offline_order': this.P.OFFLINE_ORDER.DISPATCH
                 },
                 'dispatch': {
-                    'offline_order': this.userInfo.PERMISSION.OFFLINE_ORDER.DISPATCH
+                    'offline_order': this.P.OFFLINE_ORDER.DISPATCH
+                },
+                'update': { 
+                    'offline_order': [
+                        this.P.OFFLINE_ORDER.UPDATE_SELF_REQUIREMENT,
+                        this.P.OFFLINE_ORDER.UPDATE_ALL_REQUIREMENT
+                    ] 
                 },
                 default: {
-                    'offline_order': this.userInfo.PERMISSION.OFFLINE_ORDER.PUBLISH
+                    'offline_order': this.P.OFFLINE_ORDER.PUBLISH
                 }
             }
         }
@@ -30,8 +36,8 @@ module.exports = class TeamReqController extends LController {
             return;
         }
 
-        const { id: uid, name: uname } = this.userInfo;
-        const id = await teamRequirement[name](requirement, { id: uid, name: uname });
+        const { id: uid, name: uname, role, role_name } = this.userInfo;
+        const id = await teamRequirement[name](requirement, { id: uid, name: uname, role, role_name });
         this.renderJSON({ code: 0, orderId: id });
     }
     async publish(){
@@ -68,7 +74,32 @@ module.exports = class TeamReqController extends LController {
             return;
         }
 
-        const result = await teamRequirement.update(id, transRequirement);
+        const { id: uid, name: uname, role, role_name } = this.userInfo;
+
+        const result = await teamRequirement.update(
+            id, 
+            transRequirement, 
+            { id:uid, uname:uname, role, role_name },
+            this.userInfo.checkPermission(
+                'offline_order', 
+                this.P.OFFLINE_ORDER.UPDATE_ALL_REQUIREMENT
+            )
+        );
+
+        switch(result){
+            case -1:
+                this.renderJSON({ code: 2, msg: 'can not update' })
+                return;
+            case -2:
+                this.renderJSON({ code: -2, msg: 'access deny' })
+                return;
+            case true:
+                this.renderJSON({ code: 0 });
+                return;
+            case false:
+                this.renderJSON({ code: 3, msg: 'status change' });
+                return;
+        }
         //todo 
     }
 
