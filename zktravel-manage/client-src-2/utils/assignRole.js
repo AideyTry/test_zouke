@@ -1,5 +1,4 @@
-import store from 'root/store';
-export default function assignRole(to, from, next) {
+export default function assignRole(code) {
     let role = {
         PUBLISH: false, //发布需求
         UPDATE_SELF_REQUIREMENT: false, //修改自己需求
@@ -23,7 +22,7 @@ export default function assignRole(to, from, next) {
         GATHERING: false, //收款
         REFUND: false, //退款
     };
-    let rolecode = store.getters.userInfo.p.offline_order.toString(2);
+    let rolecode = code.toString(2);
     let roleArr = rolecode.split('');
     let keyArr = [];
 
@@ -37,6 +36,5 @@ export default function assignRole(to, from, next) {
             role[keyArr[a]] = false;
         }
     }
-    store.commit('initRole',role);
-    next();
+    return role
 }

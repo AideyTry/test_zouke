@@ -73,6 +73,7 @@
                             width="180">
                     </el-table-column>
                     <el-table-column
+                            sortable
                             prop="publishTime"
                             label="发布时间">
                     </el-table-column>
@@ -96,6 +97,7 @@
                             width="180">
                     </el-table-column>
                     <el-table-column
+                            sortable
                             prop="orderTime"
                             label="预订时间"
                             width="180">

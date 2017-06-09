@@ -90,13 +90,13 @@
                             </el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
-                    <el-submenu index="wait">
+                    <el-submenu index="groupOffer">
                         <template slot="title">团房报价</template>
                         <el-menu-item-group>
-                            <el-menu-item index="dashboard-wait-offer">
+                            <el-menu-item index="dashboard-wait-offer-proxy">
                                 待报价/预订
                             </el-menu-item>
-                            <el-menu-item index="dashboard-wait-examine">
+                            <el-menu-item index="dashboard-wait-examine-proxy">
                                 待审核
                             </el-menu-item>
                         </el-menu-item-group>
@@ -104,10 +104,10 @@
                     <el-submenu index="order">
                         <template slot="title">订单库</template>
                         <el-menu-item-group>
-                            <el-menu-item index="dashboard-group-order">
+                            <el-menu-item index="dashboard-group-order-proxy">
                                 团房订单
                             </el-menu-item>
-                            <el-menu-item index="dashboard-system-order">
+                            <el-menu-item index="dashboard-system-order-proxy">
                                 系统订单
                             </el-menu-item>
                         </el-menu-item-group>

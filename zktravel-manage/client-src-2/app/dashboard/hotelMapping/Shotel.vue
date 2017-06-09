@@ -293,7 +293,6 @@
 </template>
 
 <script>
-	import store from './store'
 	import ajax from '@local/common/ajax';
 	export default {
 		props: ['updates', 'ids'],
@@ -326,7 +325,6 @@
 		methods: {
 			update() {
 				this.updates.isTrue.aisTrue = false;
-				store.commit('audit');
 			},
 			close() {
 				this.$emit('close');
