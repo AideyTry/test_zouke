@@ -292,7 +292,7 @@
             },
             searchuser: debounce(function (queryString, cb) {
                 if (queryString) {
-                    ajax.postSilence('/api/wx-user/query', {
+                    ajax.postSilence('/api/user/query', {
                         keyword: queryString.trim()
                     }).then(
                         data => {
@@ -318,7 +318,7 @@
             },
             submitdraft(){
                 let vm=this;
-                ajax.post('/api/team-req/draft', this.params).then(
+                ajax.post('/api/team/requirement/draft', this.params).then(
                     data => {
                         if(data.code==0){
                             this.$notify({
@@ -364,7 +364,7 @@
                 )
             },
             submitform(){
-                ajax.post('/api/team-req/publish', this.params).then(
+                ajax.post('/api/team/requirement/publish', this.params).then(
                     data => {
                         if(data.code==0){
                             this.$notify({

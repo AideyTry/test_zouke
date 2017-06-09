@@ -363,7 +363,7 @@
                 }else {
                     this.pager.status = 9;
                 }
-                ajax.post('/api/zk-hotel/query', vm.pager).then(
+                ajax.post('/api/hotel/zk-hotel/query', vm.pager).then(
                     data => {
                         vm.currentdata = data.list;
                         vm.total = data.count;
