@@ -173,6 +173,9 @@
             daterange(a,b){
                 return new Date(a).getDate()-new Date(b).getDate();
             }
+        },
+        created(){
+
         }
 
     }

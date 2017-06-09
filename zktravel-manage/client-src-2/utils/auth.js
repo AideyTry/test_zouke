@@ -20,5 +20,13 @@ export default {
                 redirect: JSON.stringify(current)
             }
         };
+    },
+    arrayFromMask (nMask) {
+        if (nMask > 0x7fffffff || nMask < -0x80000000) {
+            throw new TypeError("arrayFromMask - out of range");
+        }
+        for (let nShifted = nMask, aFromMask = []; nShifted;
+             aFromMask.push(Boolean(nShifted & 1)), nShifted >>>= 1);
+        return aFromMask;
     }
 }

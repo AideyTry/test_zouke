@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import ajax from '@local/common/ajax';
+import acessRole from './utils/assignRole';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -35,15 +36,13 @@ const store = new Vuex.Store({
     mutations: {
         initUserInfo(state, info){
             state.userInfo = info;
+            state.offlineRole =acessRole(info.p.offline_order);
         },
         /*我的发布start*/
         publish(state,isTrue){
             state.publish.isTrue=isTrue;
-        },
-        /*我的发布end*/
-        initRole(state,role){
-            state.offlineRole = role;
         }
+        /*我的发布end*/
     },
     actions: {
         logout({ commit }){

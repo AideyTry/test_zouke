@@ -1,6 +1,6 @@
 const LController = requireRoot('common/LController');
-const TeamRequirement = require('../logic/TeamRequirement');
-const OfflineOrder = require('../logic/OfflineOrder');
+const TeamRequirement = require('../@logic/Requirement');
+const OfflineOrder = require('../@logic/Order');
 
 const triggerInsert = Symbol();
 
