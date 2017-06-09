@@ -31,15 +31,14 @@ const store = new Vuex.Store({
                     page:1
                 }
         },
-        /*SAI酒店库数据end*/
-        /*        usergroup*/
-        requirementOrder:null,
-
         /*我的发布start*/
         publish:{
             isTrue:true
-        }
+        },
         /*我的发布end*/
+
+        /*用户权限管理*/
+        offlineRole:null
     },
     getters: {
         userInfo(state){
@@ -55,15 +54,14 @@ const store = new Vuex.Store({
         total(state){
             return state.total;
         },
-        /*SAI酒店库end*/
-        requirementOrder(state){
-            return state.requirementOrder;
-        },
         /*我的发布start*/
         publish(state){
             return state.publish;
-        }
+        },
         /*我的发布end*/
+        offlineRole(state){
+            return state.offlineRole;
+        }
 
     },
     mutations: {
@@ -89,16 +87,14 @@ const store = new Vuex.Store({
             // console.log("p=",state.counts.flag.page);
             // console.log("f=",state.counts.flag.flag);
         },
-
-        /*SAI酒店库end*/
-        initRequirementOrder(state,order){
-            state.order=order
-        },
         /*我的发布start*/
         publish(state,isTrue){
             state.publish.isTrue=isTrue;
-        }
+        },
         /*我的发布end*/
+        initRole(state,role){
+            state.offlineRole = role;
+        }
     },
     actions: {
         logout({ commit }){
