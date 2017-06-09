@@ -1,9 +1,10 @@
 <style lang="scss" scoped>
     .order-detail-container {
-        height: 100%;
+        height: 90%;
         width: 100%;
         padding: 0 30px;
         color: #1F2D3D;
+
         .title{
             height: 60px;
             font-size: 18px;
@@ -24,7 +25,7 @@
             }
         }
         .order-detail {
-            height: 100%;
+            min-width: 760px;
             width: 100%;
             background: #F9FAFC;
             padding: 0px 20px;
@@ -36,12 +37,25 @@
                 margin: 0 20px;
             }
         }
+
+        .detail-title{
+            height: 40px;
+            line-height: 40px;
+        }
+
         .creator-info{
-            height: 100%;
+            height: 40px;
+            line-height: 40px;
             span{
                 display: inline-block;
-
+                margin: 0 10px;
             }
+        }
+        .button-group{
+            position: absolute;
+            top: 1px;
+            right: 53px;
+            z-index: 99;
         }
     }
 </style>
@@ -59,19 +73,12 @@
         <div class="order-detail">
             <el-tabs  @tab-click="changetab" active-name="require-node">
                 <el-tab-pane label="需求记录" name="require-node">
-                    <el-row>
-                        <el-col :span="12">
-                            <h4>需求详情</h4>
-                            <el-tag key="优先级A+" type="gray">优先级A+</el-tag>
-                            <el-tag key="GTA" type="gray">GTA导游</el-tag>
-                        </el-col>
-                        <el-col :span="12" class="creator-info">
-                            <span>创建:</span>
-                            <span>{{user}}</span>
-                            <span>发布时间:</span>
-                            <span></span>
-                        </el-col>
-                    </el-row>
+                    <div class="button-group">
+                        <el-button type="info" size="small" @click="togglechange">{{change?'放弃修改':'修改'}}</el-button>
+                        <el-button v-show="!change" style="color:#20a0ff;border-color:#20a0ff" size="small">发布</el-button>
+                    </div>
+                    <orderdetail v-if="orderdata&&!change" :orderdata="orderdata"> </orderdetail>
+                    <changerequire v-if="orderdata&&change" :orderdata="orderdata"></changerequire>
                 </el-tab-pane>
                 <el-tab-pane label="报价记录" name="offer-node">
 
@@ -98,14 +105,17 @@
 
 <script>
     import ajax  from '@local/common/ajax';
+    import orderDetail from './details/Orderdetail';
+    import changeRequire from '../publish-require/PublishRequire.Page'
     export default{
+        components:{
+            orderdetail: orderDetail,
+            changerequire:changeRequire
+        },
         data(){
             return{
-                orderdata:{
-                    creator:{
-                        name:''
-                    }
-                }
+                change:false,
+                orderdata:null
             }
         },
         methods:{
@@ -121,14 +131,18 @@
                         vm.orderdata=data.detail;
                     }
                 )
+            },
+            togglechange(){
+                this.change=!this.change;
             }
+
         },
         computed:{
-            user(){
-                return this.orderdata.creator.name || '未知';
+            orderid(){
+                return this.$route.params.orderid;
             }
         },
-        mounted(){
+        created(){
             this.getorder(this.$route.params.orderid);
         }
     }

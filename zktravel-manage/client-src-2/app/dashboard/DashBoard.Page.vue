@@ -86,7 +86,7 @@
                                 我的发布
                             </el-menu-item>
                             <el-menu-item index="dashboard-distributed-proxy">
-                                待发布
+                                待分配
                             </el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
@@ -143,13 +143,18 @@
         /*增加data*/
         data(){
             return {
-
                 isActive: true,
                 isTrue: false,
                 flag: 0,
                 bgIstrue: {
                     mpIstrue: false,
                     zkIstrue: false
+                },
+                role:{
+                    'admin':0,
+                    'custom-service':1,
+                    'room-booking':2
+
                 }
             }
         },
@@ -162,6 +167,9 @@
             },
             selected(){
                 return this.$route.name
+            },
+            offlineRole(){
+                return this.$store.getters.offlineRole;
             }
         },
         methods: {

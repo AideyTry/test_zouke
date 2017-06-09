@@ -102,7 +102,7 @@
                     <el-autocomplete
                             size="small"
                             class="inline-input"
-                            v-model="myitem.hotel.name"
+                            v-model="hotel"
                             :fetch-suggestions="searchhotel"
                             placeholder="输入关键字选择"
                             @select="selecthotel"
@@ -153,6 +153,7 @@
         data(){
             return{
                 city:null,
+                hotel:null,
                 pickerOptions:{
                     disabledDate(time) {
                         return time.getTime() < Date.now() - 8.64e7;
@@ -161,7 +162,8 @@
                 myitem:this.item,
                 startdate:new Date(),
                 enddate:new Date(),
-                hotelgroup:[]
+                hotelgroup:[],
+                hotelflag:false
             }
         },
         methods:{
@@ -202,24 +204,28 @@
                     }).then(
                         data => {
                             let arr = []
-                            data.list.forEach(
-                                (v, k) => {
-                                    arr.push({value: v.name, item: v})
-                                }
-                            )
-                            cb(arr)
+                            if(data.list){
+                                data.list.forEach(
+                                    (v, k) => {
+                                        arr.push({value: v.name, item: v})
+                                    }
+                                )
+                                cb(arr)
+                            }
+
                         }
                     )
                 }
             }, 1000),
             selecthotel:function (item) {
                 let arr = item.item;
+                this.hotelflag=true;
                 this.myitem.hotel = arr;
             }
         },
         computed:{
             daterange(){
-                return this.enddate.getDay()-this.startdate.getDay();
+                return this.enddate.getDate()- this.startdate.getDate();
             }
         },
         watch:{
@@ -228,7 +234,22 @@
             },
             enddate(val){
                 this.myitem.check_out=val.format('YYYY-MM-DD');
+            },
+            hotel(val){
+                if(!this.hotelflag){
+                    this.myitem.hotel={name:val,custom:true}
+                }
+                this.hotelflag=false;
             }
+        },
+        created(){
+            if(this.item.city.name){
+               this.city=this.item.city.name;
+            }
+            if(this.item.hotel.name){
+               this.hotel= this.item.hotel.name;
+            }
+
         }
     }
 </script>

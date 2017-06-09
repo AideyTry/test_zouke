@@ -8,6 +8,7 @@ import publishRequire from './publish-require/routes';
 import myPublish from  './my-publish/routes';
 import waitExamine from './groupOffer/waitExamine/routes';
 import waitOffer from './groupOffer/waitOffer/routes';
+import distributed from './distributed/routes'
 export default [
     {
         path: 'dashboard', component: DashBoardPage, name: 'dashboard',redirect: { name: 'dashboard-hotel-mapping' },
@@ -21,6 +22,8 @@ export default [
             ...myPublish,
             ...waitExamine,
             ...waitOffer
+            ...myPublish,
+            ...distributed
         ]
     }
 ]
