@@ -411,7 +411,7 @@
             },
             loadtable(){
                 let vm = this;
-                ajax.post('/api/mapping/query',{sp:vm.$route.params.provider,level:vm.matchlv}).then(data => {
+                ajax.post('/api/hotel/mapping/query',{sp:vm.$route.params.provider,level:vm.matchlv},{timeout:20000}).then(data => {
                     let arr = [];
                     vm.currentpage = 1;
                     vm.tableData = Object.assign({}, data.list);
@@ -450,7 +450,7 @@
                 this.showdialog1=true;
             },
             matcheraction(){
-                ajax.post('/api/mapping/map ',{spId:this.actionarr.spId,zkId:this.actionarr.zkId,sp:this.$route.params.provider}).then(data=>{
+                ajax.post('/api/hotel/mapping/map ',{spId:this.actionarr.spId,zkId:this.actionarr.zkId,sp:this.$route.params.provider}).then(data=>{
                     if(data.code===0){
                         this.actionarr={};
                         this.showdialog1=false;
@@ -467,7 +467,7 @@
                 this.showdialog2=true;
             },
             updatesqlaction(){
-                ajax.post('/api/mapping/insert',{spId:this.actionarr.spId,sign:this.actionarr.sign,sp:this.$route.params.provider}).then(data=>{
+                ajax.post('/api/hotel/mapping/insert',{spId:this.actionarr.spId,sign:this.actionarr.sign,sp:this.$route.params.provider}).then(data=>{
                     if(data.code==0){
                         this.actionarr={};
                         this.showdialog2=false;
@@ -486,7 +486,7 @@
                 })
             },
             strictupdate(){
-                ajax.post('/api/mapping/insert',{spId:this.actionarr.spId,sign:0,sp:this.$route.params.provider}).then(data=>{
+                ajax.post('/api/hotel/mapping/insert',{spId:this.actionarr.spId,sign:0,sp:this.$route.params.provider}).then(data=>{
                     if(data.code==0){
                         this.actionarr={};
                         this.showdialog6=false;
@@ -503,7 +503,7 @@
                 this.showdialog3=true;
             },
             invdataaction(){
-                ajax.post('/api/vt-mapping/invalid',{spId:this.actionarr.spId,zkId:this.actionarr.zkId}).then(data=>{
+                ajax.post('/api/hotel/vt-mapping/invalid',{spId:this.actionarr.spId,zkId:this.actionarr.zkId}).then(data=>{
                     if(data.code===0){
                         this.actionarr={};
                         this.showdialog3=false;
