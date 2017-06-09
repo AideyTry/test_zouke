@@ -172,7 +172,7 @@
         },
         methods:{
             loadTable(){
-                ajax.post("/api/offline-order/query",{status:this.pager.status,page:this.pager.pageNum,pageSize:this.pager.pageSize}).then(json=>{
+                ajax.post("/api/team/order",{status:this.pager.status,page:this.pager.pageNum,pageSize:this.pager.pageSize}).then(json=>{
                     console.log(json);
 
                     if(this.pager.status===1){
@@ -218,13 +218,13 @@
         },
         mounted(){
             this.loadTable();
-        },
-        beforeRouteEnter (to, from, next) {
-            if (!to.params.status) {
-                next({name: 'dashboard-zkhotel', params: {status: 'valid'}});
-            } else {
-                next();
-            }
         }
+//        beforeRouteEnter (to, from, next) {
+//            if (!to.params.status) {
+//                next({name: 'dashboard-zkhotel', params: {status: 'valid'}});
+//            } else {
+//                next();
+//            }
+//        }
     }
 </script>
