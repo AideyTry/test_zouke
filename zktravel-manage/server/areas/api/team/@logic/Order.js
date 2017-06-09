@@ -1,4 +1,4 @@
-const BaseOfflineOrder = require('./BaseOfflineOrder');
+const BaseOfflineOrder = require('./BaseOrder');
 
 module.exports = class OfflineOrder extends BaseOfflineOrder {
     async query(status, { creatorId, bookingId, page=0, pageSize=10 } = {}){

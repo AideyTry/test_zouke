@@ -1,5 +1,5 @@
 const LController = requireRoot('common/LController');
-const OfflineOrder = require('../logic/OfflineOrder');
+const OfflineOrder = require('../@logic/Order');
 
 module.exports = class MyOfflineOrderController extends LController {
     async query(){

@@ -1,4 +1,4 @@
-const BaseOfflineOrder = require('./BaseOfflineOrder');
+const BaseOfflineOrder = require('./BaseOrder');
 const compare = require('@local/compare');
 const jsondiffpatch = require('jsondiffpatch');
 

@@ -71,6 +71,7 @@ module.exports = class AuthController extends SController{
         }
 
         this.renderJSON({ code: 0, userInfo: {
+            id: user.id,
             name: user.name,
             p: user.p,
             role: user.role,
