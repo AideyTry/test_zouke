@@ -1,11 +1,27 @@
 const SController = require('./SController');
 const User = requireRoot('service/user/User');
 
-const $$userInfo = Symbol('');
+const $$userInfo = Symbol('userInfo');
+const $$checkPermission = Symbol('checkPermission');
 
 module.exports = class LoginController extends SController {
     get userInfo(){
         return this[$$userInfo];
+    }
+    get P(){
+        return this.userInfo.PERMISSION;
+    }
+
+    [$$checkPermission](type, pValue){
+        if(!Array.isArray(pValue)){
+            pValue = [pValue];
+        }
+        for(let p of pValue){
+            if(!this.userInfo.checkPermission(type,p)){
+                return false;
+            }
+        }
+        return true;
     }
 
     async $beforeAction(){
@@ -36,7 +52,7 @@ module.exports = class LoginController extends SController {
         if(!actionAccess) return;
         
         for(let type of Object.keys(actionAccess)){
-            if(!userInfo.checkPermission(type, actionAccess[type])){
+            if(!this[$$checkPermission](type, actionAccess[type])){
                 this.renderJSON({ code: -2, msg: 'access deny' })
                 return false;
             }

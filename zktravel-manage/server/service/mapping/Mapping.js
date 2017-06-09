@@ -107,7 +107,7 @@ module.exports = class Mapping {
         const zkHotel = Object.assign({}, spHotel);
         delete zkHotel.mode;
         delete zkHotel.map_state;
-        zkHotel.supplier_from = zkHotel.supplier;
+        zkHotel.src = zkHotel.supplier;
         zkHotel.status = 1;
         delete zkHotel.supplier;
         delete zkHotel.id;
