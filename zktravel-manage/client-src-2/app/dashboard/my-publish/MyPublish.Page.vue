@@ -220,7 +220,7 @@ export default{
     methods:{
         loadTable(){
             let newArr=[];
-            ajax.post('/api/offline-order/query',{status:this.status}).then(json=>{
+            ajax.post('/api/team/my-publish',{status:this.status}).then(json=>{
                 this.arr=json.list;
                     for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
                         if(this.arr[num]){
