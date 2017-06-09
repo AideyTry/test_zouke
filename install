@@ -64,3 +64,4 @@ link des
 link compare
 
 npm rebuild node-sass
+npm rebuild opencc
