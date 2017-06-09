@@ -6,6 +6,8 @@ import systemOrder from './system-order/routes';
 import groupOrder from  './group-order/routes';
 import publishRequire from './publish-require/routes';
 import myPublish from  './my-publish/routes';
+import waitExamine from './groupOffer/waitExamine/routes';
+import waitOffer from './groupOffer/waitOffer/routes';
 export default [
     {
         path: 'dashboard', component: DashBoardPage, name: 'dashboard',redirect: { name: 'dashboard-hotel-mapping' },
@@ -16,7 +18,9 @@ export default [
             ...systemOrder,
             ...groupOrder,
             ...publishRequire,
-            ...myPublish
+            ...myPublish,
+            ...waitExamine,
+            ...waitOffer
         ]
     }
 ]
