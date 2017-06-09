@@ -149,6 +149,12 @@
                 bgIstrue: {
                     mpIstrue: false,
                     zkIstrue: false
+                },
+                role:{
+                    'admin':0,
+                    'custom-service':1,
+                    'room-booking':2
+
                 }
             }
         },
@@ -161,6 +167,9 @@
             },
             selected(){
                 return this.$route.name
+            },
+            offlineRole(){
+                return this.$store.getters.offlineRole;
             }
         },
         methods: {
