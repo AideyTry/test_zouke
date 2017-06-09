@@ -6,6 +6,8 @@ export default [
         redirect:{name:"dashboard-group-order-proxy",params:{status:'effective'}}
     },
     {
-        path:'group-order/:status',component:GroupOrder,name:'dashboard-group-order'
+        path:'group-order/:status',
+        component:GroupOrder,
+        name:'dashboard-group-order'
     }
 ]

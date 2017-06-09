@@ -172,7 +172,7 @@
         },
         methods:{
             loadTable(){
-                ajax.post("/api/team/order",{status:this.pager.status,page:this.pager.pageNum,pageSize:this.pager.pageSize}).then(json=>{
+                ajax.post("/api/team/order/query",{status:this.pager.status,page:this.pager.pageNum,pageSize:this.pager.pageSize}).then(json=>{
                     console.log(json);
 
                     if(this.pager.status===1){

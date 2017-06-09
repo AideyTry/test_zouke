@@ -220,7 +220,8 @@ export default{
     methods:{
         loadTable(){
             let newArr=[];
-            ajax.post('/api/team/my-publish',{status:this.status}).then(json=>{
+            ajax.post('/api/team/my-publish/query',{status:this.status}).then(json=>{
+                console.log(json);
                 this.arr=json.list;
                     for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
                         if(this.arr[num]){
