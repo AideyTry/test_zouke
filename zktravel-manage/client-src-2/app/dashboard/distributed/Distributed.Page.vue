@@ -138,7 +138,7 @@
                 vm.currentdata = arr;
             },
             distributed(id){
-                
+                this.$router.push({name:'dashboard-order-detail',params:{orderid:id}});
             }
         },
         mounted(){

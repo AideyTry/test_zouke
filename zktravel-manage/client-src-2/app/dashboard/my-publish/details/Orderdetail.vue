@@ -12,6 +12,7 @@
         .title{
             font-size: 15px;
             font-weight: 600;
+            min-width: 80px;
         }
         .el-tag {
             margin: 0 20px;
@@ -85,7 +86,7 @@
                 <el-col :span="5">
                     <div><span class="title">需求来源：</span>{{orderdata.requirement.origin_from}}</div>
                 </el-col>
-                <el-col :span="7">
+                <el-col :span="5">
                     <div><span class="title">用户名：</span>{{orderdata.requirement.user.name}}</div>
 
                 </el-col>
@@ -115,7 +116,7 @@
                 </el-col>
             </el-row>
             <el-row class="text-require" type="flex">
-                <el-col :span="2"><span class="title">取消要求：</span></el-col>
+                <el-col :span="2" class="title">取消要求：</el-col>
                 <el-col :span="22">{{orderdata.requirement.cancel_req}}</el-col>
             </el-row>
             <el-row class="text-require" type="flex">
