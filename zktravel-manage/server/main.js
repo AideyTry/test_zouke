@@ -45,7 +45,13 @@ app.use(async (ctx, next)=>{
 });
 app.use(koaMvc({
     routerConfig: {
-        areas: ['trigger', 'api', ... (DEBUG?['test']:[]) ]
+        areas: [
+            'trigger', 
+            'api', 
+            'api/team',         //团房
+            'api/hotel',        //酒店
+            'api/system',       //系统管理
+            ... (DEBUG?['test']:[]) ]
     },
     sessionConfig: {
         key: SESS_KEY,

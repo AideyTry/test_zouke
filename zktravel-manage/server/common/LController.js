@@ -13,6 +13,7 @@ module.exports = class LoginController extends SController {
     }
 
     [$$checkPermission](type, pValue){
+        console.log(type,pValue);
         if(!Array.isArray(pValue)){
             pValue = [pValue];
         }
