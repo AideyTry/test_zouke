@@ -113,10 +113,10 @@ module.exports = class TeamReqController extends LController {
     }
     async dispatch(){
         //分配
-        const { id, user } = this.request.body;
+        const { id, user, dead_line } = this.request.body;
         const offlineOrder = new OfflineOrder();
 
-        const result = await offlineOrder.dispatch(id, user);
+        const result = await offlineOrder.dispatch(id, user, dead_line);
 
         if(result) this.renderJSON({ code:0 });
         else this.renderJSON({ code:2, msg: 'can not dispatch this order' });
