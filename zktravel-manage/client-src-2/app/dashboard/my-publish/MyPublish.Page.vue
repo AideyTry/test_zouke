@@ -118,14 +118,12 @@
                     >
                     </el-table-column>
                     <el-table-column
-                            prop=""
-                            label="下单时间">
-                    </el-table-column>
-                    <el-table-column
+                            sortable
                             prop="priority"
                             label="优先级">
                     </el-table-column>
                     <el-table-column
+                            sortable
                             prop="startDate"
                             label="出发时间">
                     </el-table-column>
@@ -143,6 +141,7 @@
                             label="订单金额">
                     </el-table-column>
                     <el-table-column
+                            sortable
                             prop="publishTime"
                             label="发布日期">
                     </el-table-column>

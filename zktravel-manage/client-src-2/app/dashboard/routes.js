@@ -6,6 +6,8 @@ import systemOrder from './system-order/routes';
 import groupOrder from  './group-order/routes';
 import publishRequire from './publish-require/routes';
 import myPublish from  './my-publish/routes';
+import waitExamine from './groupOffer/waitExamine/routes';
+import waitOffer from './groupOffer/waitOffer/routes';
 import distributed from './distributed/routes'
 export default [
     {
@@ -17,6 +19,9 @@ export default [
             ...systemOrder,
             ...groupOrder,
             ...publishRequire,
+            ...myPublish,
+            ...waitExamine,
+            ...waitOffer,
             ...myPublish,
             ...distributed
         ]
