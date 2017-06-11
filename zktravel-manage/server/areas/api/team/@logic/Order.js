@@ -39,7 +39,7 @@ module.exports = class OfflineOrder extends BaseOfflineOrder {
 
     async invalidReq(id){
         //需求审核不通过 
-        return await this.$update({ _id: id, status: 2 }, { 
+        return await this.$update({ _id: id, status: this.status.WAIT_FOR_DISPATCH }, { 
             $set: { status: 1 },
             $push: { logs: { type:'system:reject-requirement', time: this.$createTime() } }
         });
@@ -47,8 +47,8 @@ module.exports = class OfflineOrder extends BaseOfflineOrder {
 
     async dispatch(id, user, dead_line){
         //分配
-        return await this.$update({ _id:id, status:2 }, { 
-            $set: { booking_user: user, booking_dead_line: dead_line },
+        return await this.$update({ _id:id, status:this.status.WAIT_FOR_DISPATCH }, { 
+            $set: { booking_user: user, booking_dead_line: dead_line, status:this.status.WAIT_FOR_GIVE_PRICE },
             $push: { logs: { type:'system:dispatch-requirement', time: this.$createTime() } } 
         });
     }

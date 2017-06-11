@@ -29,6 +29,10 @@ const testCase = [
     {
         before: { phone: '123456' },
         after: { phone: '86123456' }
+    },
+    {
+        before: { phone: '+12456' },
+        after: { phone: '8612456' }
     }
 ].map( r => { r.isSai=true; r.areaCode='86'; return r; } );
 

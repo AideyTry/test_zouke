@@ -51,7 +51,7 @@ function convertChName(chName){
 
 function convertPhone(phone, areaCode=''){
     phone = phone.replace(/\s+|[-.:/()（）a-zA-Z]/g, '');
-    phone = phone.replace(/^\+?0+/,'');
+    phone = phone.replace(/^\+?0*/,'');
     if(areaCode&&!phone.startsWith(areaCode)) phone = areaCode + phone;
     return phone;
 }
