@@ -19,6 +19,7 @@
                 text-indent: 30px;
             }
             .user-info {
+                min-width: 200px;
                 i {
                     font-size: 14px;
                 }
@@ -57,11 +58,11 @@
                     超级行程单
                 </div>
             </el-col>
-            <el-col :span="17">
+            <el-col :span="16">
                 <div class="title">
                 </div>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="5">
                 <div class="user-info">
                     <i class="el-icon-message"></i>
                     <span>用户名</span>
@@ -79,13 +80,13 @@
                     <el-submenu index="publish">
                         <template slot="title">团房需求</template>
                         <el-menu-item-group>
-                            <el-menu-item index="dashboard-publish-require-proxy">
+                            <el-menu-item index="dashboard-publish-require-proxy" v-if="userInfo.roleName=='客服'||userInfo.roleName=='超级管理员'">
                                 发布需求
                             </el-menu-item>
-                            <el-menu-item index="dashboard-my-publish-proxy">
+                            <el-menu-item index="dashboard-my-publish-proxy" v-if="userInfo.roleName=='客服'||userInfo.roleName=='超级管理员'">
                                 我的发布
                             </el-menu-item>
-                            <el-menu-item index="dashboard-distributed-proxy">
+                            <el-menu-item index="dashboard-distributed-proxy" v-if="userInfo.roleName=='管理员'||userInfo.roleName=='超级管理员'">
                                 待分配
                             </el-menu-item>
                         </el-menu-item-group>

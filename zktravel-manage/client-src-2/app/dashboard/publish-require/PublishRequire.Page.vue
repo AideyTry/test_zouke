@@ -39,13 +39,13 @@
 
 <template>
     <div class="publish-require" v-if="type==1">
-        <el-form ref="params" :rules="rule" :model="params" label-width="80px">
+        <el-form  ref="ruleForm" :rules="rule" :model="params" label-width="80px">
             <el-row type="flex">
                 <el-col :span="6">
                     <el-select size="small" v-model="params.priority" placeholder="选择优先级">
                         <el-option value="A+" label="优先级A+"></el-option>
                         <el-option value="A" label="优先级A"></el-option>
-                        <el-option value="B" label="优先级A-"></el-option>
+                        <el-option value="B" label="优先级B"></el-option>
                     </el-select>
                 </el-col>
                 <el-col :span="5">
@@ -71,9 +71,6 @@
                             placeholder="输入关键字选择"
                             @select="selectuser"
                     ></el-autocomplete>
-                    <!--                <el-select size="small" placeholder="请选择" v-model="params.user">
-                                        <el-option value="1" label="aaa"></el-option>
-                                    </el-select>-->
                 </el-col>
                 <el-col :span="6">
                     <span>出发人数<i class="red">*</i></span>
@@ -190,7 +187,7 @@
                     <el-button @click="addCard">添加</el-button>
                 </el-col>
             </el-row>
-            <el-row>
+            <el-row v-if="!orderdata">
                 <el-col :span="2">
                     <el-button type="success" @click="submitform">发布</el-button>
                 </el-col>
@@ -248,7 +245,9 @@
                         }
                     ]
                 },
-                rule: {},
+                rule: {
+
+                },
                 pickerOptions: {
                     disabledDate(time) {
                         return time.getTime() < Date.now() - 8.64e7;
@@ -267,8 +266,8 @@
             addCard(){
                 this.params.stay_details.push(
                     {
-                        check_in: new Date(),
-                        check_out: new Date(),
+                        check_in: new Date().format('YYYY-MM-DD'),
+                        check_out: new Date().format('YYYY-MM-DD'),
                         city: '',
                         hotel: '',
                         rooms: [{

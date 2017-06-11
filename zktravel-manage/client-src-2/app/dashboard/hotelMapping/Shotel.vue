@@ -309,7 +309,7 @@
 			}
 		},
 		created() {
-			ajax.post('/api/zk-hotel/detail', {
+			ajax.post('/api/hotel/zk-hotel/detail', {
 				id: this.ids
 			}).then(json => {
 				if(json.code === 0) {

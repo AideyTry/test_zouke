@@ -227,7 +227,7 @@
             }
         },
         created() {
-            ajax.post('/api/sp-hotel/detail', {
+            ajax.post('/api/hotel/sp-hotel/detail', {
                 id: this.idp,
                 sp: this.sp
             }).then(json => {

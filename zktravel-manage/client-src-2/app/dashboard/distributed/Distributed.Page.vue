@@ -1,8 +1,8 @@
 <style lang="scss" scoped>
         .distributed{
-            padding: 0 20px;
         }
         .el-row{
+            padding: 0 20px;
             height: 56px;
             line-height: 56px;
         }
@@ -16,6 +16,9 @@
             position: fixed;
             bottom: 0px;
             right: 0px;
+        }
+        .point{
+            cursor: pointer;
         }
 </style>
 
@@ -53,7 +56,7 @@
                         prop="orderId"
                         label="订单号">
                     <template scope="scope">
-                        <a @click="distributed(scope.row.orderId)">
+                        <a class="point" @click="distributed(scope.row.orderId)">
                             {{scope.row.orderId}}
                         </a>
                     </template>
