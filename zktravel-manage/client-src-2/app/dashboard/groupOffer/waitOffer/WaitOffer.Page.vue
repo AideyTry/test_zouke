@@ -233,23 +233,23 @@
         },
         methods:{
             loadTable(){
-                ajax.post("/api/offline-order/query",{status:this.pager.status,page:this.pager.pageNum,pageSize:this.pager.pageSize}).then(json=>{
-                    console.log(json);
-
-                    if(this.pager.status===1){
-                        this.pager.total=12;
-                        if(this.pager.pageNum===1){
-                            this.currentData=this.tableData;
-                        }else if(this.pager.pageNum===2){
-                            this.currentData=this.tableData1;
-                        }
-                    }else if(this.pager.status===2){
-                        this.pager.total=7;
-                        this.currentData=this.tableData2;
-                    }else if(this.pager.status===3){
-                        this.pager.total=3;
-                        this.currentData=this.tableData3;
-                    }
+                ajax.post("/api/team/order/query",{status:this.pager.status,page:this.pager.pageNum,pageSize:this.pager.pageSize}).then(json=>{
+//                    console.log(json);
+                    this.currentData=json.list;
+//                    if(this.pager.status===1){
+//                        this.pager.total=12;
+//                        if(this.pager.pageNum===1){
+//                            this.currentData=this.tableData;
+//                        }else if(this.pager.pageNum===2){
+//                            this.currentData=this.tableData1;
+//                        }
+//                    }else if(this.pager.status===2){
+//                        this.pager.total=7;
+//                        this.currentData=this.tableData2;
+//                    }else if(this.pager.status===3){
+//                        this.pager.total=3;
+//                        this.currentData=this.tableData3;
+//                    }
 
                 })
             },

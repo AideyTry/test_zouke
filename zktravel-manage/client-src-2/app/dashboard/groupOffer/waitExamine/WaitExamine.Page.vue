@@ -224,10 +224,11 @@
         },
         methods:{
             loadTable(){
-                ajax.post("/api/offline-order/query",{status:this.pager.status,page:this.pager.pageNum,pageSize:this.pager.pageSize}).then(json=>{
-                    console.log(json);
+                ajax.post("/api/team/order/query",{status:this.pager.status,page:this.pager.pageNum,pageSize:this.pager.pageSize}).then(json=>{
+//                    console.log(json);
                     this.pager.total=3;
-                    this.currentData=this.tableData3;
+//                    this.currentData=this.tableData3;
+                    this.currentData=json.list;
                 })
             },
             updateTab(){
