@@ -31,15 +31,26 @@
         .el-textarea {
             vertical-align: text-top;
         }
-        .addcard{
+        .addcard {
             margin-bottom: 40px;
         }
+        .el-form-item {
+            display: inline-block;
+        }
     }
+</style>
+<style lang="scss">
+    .publish-require {
+        .el-form-item__content {
+            margin-left: 0 !important;
+        }
+    }
+
 </style>
 
 <template>
     <div class="publish-require" v-if="type==1">
-        <el-form  ref="ruleForm" :rules="rule" :model="params" label-width="80px">
+        <el-form ref="ruleForm" :rules="rule" :model="params" label-width="80px">
             <el-row type="flex">
                 <el-col :span="6">
                     <el-select size="small" v-model="params.priority" placeholder="选择优先级">
@@ -63,14 +74,17 @@
                 </el-col>
                 <el-col :span="6" style="min-width: 228px">
                     <span>用户名<i class="red">*</i></span>
-                    <el-autocomplete
-                            size="small"
-                            class="inline-input"
-                            v-model="user"
-                            :fetch-suggestions="searchuser"
-                            placeholder="输入关键字选择"
-                            @select="selectuser"
-                    ></el-autocomplete>
+                    <el-form-item prop="user">
+                        <el-autocomplete
+                                size="small"
+                                class="inline-input"
+                                v-model="user"
+                                :fetch-suggestions="searchuser"
+                                placeholder="输入关键字选择"
+                                @select="selectuser"
+                        ></el-autocomplete>
+                    </el-form-item>
+
                 </el-col>
                 <el-col :span="6">
                     <span>出发人数<i class="red">*</i></span>
@@ -205,7 +219,7 @@
     import ajax from '@local/common/ajax';
     import DateCard from './Card.vue'
     export default{
-        props: ['ordertype', 'orderid','orderdata'],
+        props: ['ordertype', 'orderid', 'orderdata'],
         components: {
             DateCard
         },
@@ -232,10 +246,10 @@
                             check_in: new Date().format('YYYY-MM-DD'),
                             check_out: new Date().format('YYYY-MM-DD'),
                             city: {
-                                name:null
+                                name: null
                             },
                             hotel: {
-                                name:null
+                                name: null
                             },
                             rooms: [{
                                 type: 'Single',
@@ -246,7 +260,7 @@
                     ]
                 },
                 rule: {
-
+                    user:[{type:'object',required: true, message: '请输入活动名称', trigger: 'change'}]
                 },
                 pickerOptions: {
                     disabledDate(time) {
@@ -310,68 +324,22 @@
                 let arr = {
                     id: item.item._id,
                     name: item.item.nick_name || item.item.name,
-                    avatar:item.item.head_image
+                    avatar: item.item.head_image
                 }
                 this.params.user = arr;
 
             },
             submitdraft(){
-                let vm=this;
+                let vm = this;
                 ajax.post('/api/team/requirement/draft', this.params).then(
                     data => {
-                        if(data.code==0){
+                        if (data.code == 0) {
                             this.$notify({
                                 title: '保存成功',
                                 message: '已保存为草稿，请到我的发布中查看',
                                 type: 'success'
                             });
-                            vm.params={
-                                    priority: 'A+',
-                                    origin_from: '',
-                                    user: null,
-                                    number: 1,
-                                    start_date: new Date().format('YYYY-MM-DD'),
-                                    star: '不限',
-                                    breakfast: true,
-                                    currency: 'EUR',
-                                    budget_min: null,
-                                    budget_max: null,
-                                    budget_mark: '',
-                                    cancel_req: '',
-                                    position_req: '',
-                                    other_req: '',
-                                    stay_details: [
-                                    {
-                                        check_in: new Date().format('YYYY-MM-DD'),
-                                        check_out: new Date().format('YYYY-MM-DD'),
-                                        city: {
-                                            name:null
-                                        },
-                                        hotel: {
-                                            name:null
-                                        },
-                                        rooms: [{
-                                            type: 'single',
-                                            number: 1,
-                                            mark: ''
-                                        }]
-                                    }
-                                ]
-                            }
-                        }
-                    }
-                )
-            },
-            submitform(){
-                ajax.post('/api/team/requirement/publish', this.params).then(
-                    data => {
-                        if(data.code==0){
-                            this.$notify({
-                                title: '发布成功',
-                                message: '已成功发布，请到我的发布中查看',
-                                type: 'success'
-                            });
-                            this.params={
+                            vm.params = {
                                 priority: 'A+',
                                 origin_from: '',
                                 user: null,
@@ -391,10 +359,56 @@
                                         check_in: new Date().format('YYYY-MM-DD'),
                                         check_out: new Date().format('YYYY-MM-DD'),
                                         city: {
-                                            name:null
+                                            name: null
                                         },
                                         hotel: {
-                                            name:null
+                                            name: null
+                                        },
+                                        rooms: [{
+                                            type: 'single',
+                                            number: 1,
+                                            mark: ''
+                                        }]
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                )
+            },
+            submitform(){
+                ajax.post('/api/team/requirement/publish', this.params).then(
+                    data => {
+                        if (data.code == 0) {
+                            this.$notify({
+                                title: '发布成功',
+                                message: '已成功发布，请到我的发布中查看',
+                                type: 'success'
+                            });
+                            this.params = {
+                                priority: 'A+',
+                                origin_from: '',
+                                user: null,
+                                number: 1,
+                                start_date: new Date().format('YYYY-MM-DD'),
+                                star: '不限',
+                                breakfast: true,
+                                currency: 'EUR',
+                                budget_min: null,
+                                budget_max: null,
+                                budget_mark: '',
+                                cancel_req: '',
+                                position_req: '',
+                                other_req: '',
+                                stay_details: [
+                                    {
+                                        check_in: new Date().format('YYYY-MM-DD'),
+                                        check_out: new Date().format('YYYY-MM-DD'),
+                                        city: {
+                                            name: null
+                                        },
+                                        hotel: {
+                                            name: null
                                         },
                                         rooms: [{
                                             type: 'single',
@@ -416,16 +430,16 @@
                 })
             },
             deleteroom(k){
-                if (this.params.stay_details[k].rooms.length>1) {
+                if (this.params.stay_details[k].rooms.length > 1) {
                     this.params.stay_details[k].rooms.pop();
                 }
             }
 
         },
         created(){
-            if(this.orderdata){
-                this.params=this.orderdata.requirement;
-                this.user=this.orderdata.requirement.user.name;
+            if (this.orderdata) {
+                this.params = this.orderdata.requirement;
+                this.user = this.orderdata.requirement.user.name;
             }
 
         },

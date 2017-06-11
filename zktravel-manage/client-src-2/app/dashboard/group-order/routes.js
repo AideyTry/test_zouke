@@ -3,7 +3,7 @@ export default [
     {
         path:'group-order-proxy',
         name:'dashboard-group-order-proxy',
-        redirect:{name:"dashboard-group-order-proxy",params:{status:'effective'}}
+        redirect:{name:"dashboard-group-order",params:{status:'effective'}}
     },
     {
         path:'group-order/:status',
