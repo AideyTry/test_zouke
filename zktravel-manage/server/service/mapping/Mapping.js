@@ -22,7 +22,7 @@ module.exports = class Mapping {
     }
 
     async $findSpNotResolve(){
-        const collection = await getSpHotelCollection();
+        const collection = await getSpHotelCollection(true);
         return collection.find({
             [`${Pretreatment.field}._v`]: Pretreatment.version,
             'status': 0,

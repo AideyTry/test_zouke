@@ -8,17 +8,18 @@ const $$db = Symbol('db');
 const cache = {};
 
 module.exports = class DB {
-    static async use(connectString){
-        if(!cache[connectString]){
+    static async use(connectString, token=''){
+        const cacheString = connectString + token;
+        if(!cache[cacheString]){
             const db = new DB(createToken, connectString);
             await db[$$connect]();
             db[$$db].on('close', () => {
-                delete cache[connectString];
+                delete cache[cacheString];
             });
-            cache[connectString] = db;
+            cache[cacheString] = db;
             return db;
         }
-        return cache[connectString];
+        return cache[cacheString];
     }
 
     async [$$connect](){
