@@ -180,7 +180,7 @@
                 page:3,
                 activeName:'wp',
                 pager:{
-                    status:1,
+                    status:3,
                     pageNum:1,
                     pageSize:8,
                     total:0,
@@ -255,24 +255,24 @@
             },
             updateTab(){
                 if(this.$route.path=="/dashboard/wait-offer/wp"){
-                    this.pager.status=1;
-                }else if(this.$route.path=="/dashboard/wait-offer/wv"){
-                    this.pager.status=2;
-                }
-                if(this.$route.path=="/dashboard/wait-offer/we"){
                     this.pager.status=3;
+                }else if(this.$route.path=="/dashboard/wait-offer/we"){
+                    this.pager.status=4;
+                }
+                if(this.$route.path=="/dashboard/wait-offer/wv"){
+                    this.pager.status=8;
                 }
             },
             changeTab(tab){
                 this.$router.push({name:"dashboard-wait-offer",params:{status:tab.name}});
                 if(this.$route.path=="/dashboard/wait-offer/wp"){
-                    this.pager.status=1;
-                    this.loadTable();
-                }else if(this.$route.path=="/dashboard/wait-offer/wv"){
-                    this.pager.status=2;
+                    this.pager.status=3;
                     this.loadTable();
                 }else if(this.$route.path=="/dashboard/wait-offer/we"){
-                    this.pager.status=3;
+                    this.pager.status=4;
+                    this.loadTable();
+                }else if(this.$route.path=="/dashboard/wait-offer/wv"){
+                    this.pager.status=8;
                     this.loadTable();
                 }
 
