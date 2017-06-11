@@ -178,7 +178,7 @@
                 page:3,
                 activeName:'wp',
                 pager:{
-                    status:1,
+                    status:4,
                     pageNum:1,
                     pageSize:8,
                     total:0,
@@ -226,17 +226,10 @@
             loadTable(){
                 ajax.post("/api/team/order/query",{status:this.pager.status,page:this.pager.pageNum,pageSize:this.pager.pageSize}).then(json=>{
 //                    console.log(json);
-                    this.pager.total=3;
+//                    this.pager.total=3;
 //                    this.currentData=this.tableData3;
                     this.currentData=json.list;
                 })
-            },
-            updateTab(){
-                if(this.$route.path=="/dashboard/wait-offer/wp"){
-                    this.pager.status=1;
-                }else if(this.$route.path=="/dashboard/wait-offer/wv"){
-                    this.pager.status=2;
-                }
             },
             changeTab(tab){
 
