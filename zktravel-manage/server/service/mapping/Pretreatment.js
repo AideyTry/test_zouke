@@ -1,5 +1,6 @@
 const { sp_collection_name, zk_collection_name } = require('../config');
-//const dbclient = requireRoot('db');
+const dbclient = requireRoot('db');
+const AreaCode = require('./AreaCode');
 
 const charMapStr = 'Ä-A、ä-a、Á-A、á-a、À-A、à-a、Â-A、â-a、Ą-A、ą-a、Å-A、 å-a、Ã-A、ã-a、Ă-A、ă-a、Ç-C、ç-c、Ć-C、ć-c、Č-C、č-c、Ď-D、ď-d、ð-d、Ё -E、ë-e、È=E、è-e、É-E、é-e、Ê-E、ê-e、Ę-E、ę-e、Ě-E、ě-e、Ğ-G、ğ-g、Î-I、î-i、Ì-I、ì-i、Í-I、í-i、Ï-I、ï-i、Ł-L、ł-l、Й-N、й-n、Ň-N、ň-n、Ń-N、ń-n、Ó-O、ó-o、Ò-O、ò-o、Ô-O、ô-o、Ö-O、ö-o、ø-o、Õ-O、õ-o、Ř-R、ř-r、Š-S、š-s、Ş-S、ş-s、Ś-S、ś-s、Ș-S、ș-s、ß-ss、Ť-T、ť-t、Ț-T、ţ-t、Ű-U、ű-u、Ü-U、ü-u、Ú-U、ú-u、Ù-U、ù-u、Ů-U、ů-u、Ÿ-Y 、ÿ-y、Ý-Y、ý-y、Ź-Z、ź-z、Ż-Z、ż-z、Ž-Z、ž-z、Æ-AE、æ-ae、Ǽ-AE、Ǣ-AE 、Dž-Dz、dź-dz';
 
@@ -97,7 +98,7 @@ module.exports = class Pretreatment{
         return 'map_pretreatment_field';
     }
 
-    async _resolveCollection(name, resolveMode = false){
+    async _resolveCollection(name, { resolveMode = false, isSai = false } = {}){
         const db = await dbclient.get();
         const collection = await db.collection(name);
 
@@ -107,7 +108,7 @@ module.exports = class Pretreatment{
                 { mode: 'U' }
             ]
         },{
-             name: 1, name_en: 1, phone: 1, url_web: 1, address: 1
+             name: 1, name_en: 1, phone: 1, url_web: 1, address: 1, country_id: 1
         });
 
         const count = await cursor.count();
@@ -118,7 +119,7 @@ module.exports = class Pretreatment{
             cursor.forEach(async hotel=>{
                 try{
                     const $set = {
-                        [Pretreatment.field]: Pretreatment.convert(hotel)
+                        [Pretreatment.field]: Pretreatment.convert(hotel, { isSai, areaCode: AreaCode.get(hotel.country_id) })
                     };
                     if(resolveMode){
                         $set['mode'] = 'R';
@@ -142,7 +143,7 @@ module.exports = class Pretreatment{
     }
     async run(){
         console.log('--> zk_hotel pretreatment start')
-        await this._resolveCollection(zk_collection_name, true);
+        await this._resolveCollection(zk_collection_name, { resolveMode: true, isSai: true });
         console.log('<-- zk_hotel pretreatment end');
         console.log('--> sp_hotel pretreatment start');
         await this._resolveCollection(sp_collection_name);   

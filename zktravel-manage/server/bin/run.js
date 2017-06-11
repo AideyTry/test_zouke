@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-
+/*
 require('../requireRoot');
 require('@local/common/core/w/prototype');
 
@@ -44,3 +44,4 @@ async function run(){
 
 
 run();
+*/
