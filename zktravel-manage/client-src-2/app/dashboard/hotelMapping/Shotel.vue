@@ -1,18 +1,18 @@
 <style lang="scss" scoped>
-    .sHotel{
-        .picture{
-            height:150px;
-            width:100%;
-            list-style:none;
-            overflow-x:scroll;
+    .sHotel {
+        .picture {
+            height: 150px;
+            width: 100%;
+            list-style: none;
+            overflow-x: scroll;
             white-space: nowrap;
-             li{
-                height:150px;
-                width:150px;
-                display:inline-block;
-                white-space:nowrap;
-                padding:4px;
-                img{
+            li {
+                height: 150px;
+                width: 150px;
+                display: inline-block;
+                white-space: nowrap;
+                padding: 4px;
+                img {
                     width: 100%;
                     height: 100%;
                     display: inline-block;
@@ -132,14 +132,14 @@
                 <span>酒店介绍</span>
             </el-col>
             <el-col :span="23">
-                <textarea  cols="100" rows="10">{{detailData.description}}</textarea>
+                <textarea cols="100" rows="10">{{detailData.description}}</textarea>
             </el-col>
         </el-row>
         <el-row type="flex">
             <el-col :span="6" gutter="20">
                 <p>
                     <span>入住时间</span>
-                    <input type="text" disabled="true" >
+                    <input type="text" disabled="true">
                 </p>
             </el-col>
             <el-col :span="6" gutter="20">
@@ -176,25 +176,56 @@
         <el-row type="flex">
             <el-col :span="12" gutter="20">
                 <span>mapping信息</span>
-                <el-table>
-                    :data="tableData"
-                    border
-                    style="width:80%"
-                    <el-table-column>
-                        prop="vt_id"
-                        label="vt-id"
+                <el-table
+                        :data="tableData"
+                        border
+                        style="width:100%"
+                >
+
+                    <el-table-column
+                            prop="vt"
+                            label="vt_id"
+                    >
+                        <template scope="scope">
+                            <router-link :to="{name: 'fullpage-vtids', params:{spid: scope.row.vt}}">{{scope.row.vt}}
+                            </router-link>
+                        </template>
                     </el-table-column>
-                    <el-table-column>
-                        prop="vt_id"
-                        label="mk-id"
+                    <el-table-column
+                            prop="mk"
+                            label="mk_id"
+                    >
+                        <template scope="scope">
+                            <router-link :to="{name: 'fullpage-vtids', params:{spid: scope.row.mk}}">{{scope.row.mk}}
+                            </router-link>
+                        </template>
                     </el-table-column>
-                    <el-table-column>
-                        prop="dl_id"
-                        label="dl-id"
+                    <el-table-column
+                            prop="dl"
+                            label="dl_id"
+                    >
+                        <template scope="scope">
+                            <router-link :to="{name: 'fullpage-vtids', params:{spid: scope.row.dl}}">{{scope.row.dl}}
+                            </router-link>
+                        </template>
                     </el-table-column>
-                    <el-table-column>
-                        prop="booking"
-                        label="booking"
+                    <el-table-column
+                            prop="gt"
+                            label="gt_id"
+                    >
+                        <template scope="scope">
+                            <router-link :to="{name: 'fullpage-vtids', params:{spid: scope.row.gt}}">{{scope.row.gt}}
+                            </router-link>
+                        </template>
+                    </el-table-column>
+                    <el-table-column
+                            prop="bk"
+                            label="booking"
+                    >
+                        <template scope="scope">
+                            <router-link :to="{name: 'fullpage-vtids', params:{spid: scope.row.bk}}">{{scope.row.bk}}
+                            </router-link>
+                        </template>
                     </el-table-column>
                 </el-table>
             </el-col>
@@ -205,53 +236,62 @@
 <script>
     import ajax from '@local/common/ajax';
     export default{
-        props:["ids"],
+        props: ["ids"],
         data(){
             return {
-                detailData:{
-                    name:'',
-                    name_en:'',
-                    cityName:'',
-                    cityName_en:'',
-                    countryName:'',
-                    countryName_en:'',
-                    address:'',
-                    photos:null,
-                    description:'',
+                detailData: {
+                    name: '',
+                    name_en: '',
+                    cityName: '',
+                    cityName_en: '',
+                    countryName: '',
+                    countryName_en: '',
+                    address: '',
+                    photos: null,
+                    description: '',
 
                 },
-                tableData:[
+                tableData: [
                     {
-                        vt_id:null,
-                        mk_id:null,
-                        dl_id:null,
-                        booking:null
+                        vt: "",
+                        mk: "",
+                        dl: "",
+                        bk: "",
+                        gt: ""
                     }
 
                 ]
 
             }
         },
-        methods:{
+        methods: {
             loadData(){
-                ajax.post("/api/hotel/zk-hotel/detail",{
+                ajax.post("/api/hotel/zk-hotel/detail", {
                     id: this.ids
-                }).then(json=>{
+                }).then(json => {
                     console.log(json);
-                    this.detailData.name=json.detail.name;
-                    this.detailData.name_en=json.detail.name_en;
-                    this.detailData.cityName=json.detail.city_name;
-                    this.detailData.cityName_en=json.detail.city_name_en;
-                    this.detailData.countryName=json.detail.country_name;
-                    this.detailData.countryName_en=json.detail.country_name_en;
-                    this.detailData.address=json.detail.address;
-                    this.detailData.photos=json.detail.photos;
-                    this.detailData.description=json.detail.description;
-                    console.log(this.detailData.description);
+
+                    this.detailData.name = json.detail.name;
+                    this.detailData.name_en = json.detail.name_en;
+                    this.detailData.cityName = json.detail.city_name;
+                    this.detailData.cityName_en = json.detail.city_name_en;
+                    this.detailData.countryName = json.detail.country_name;
+                    this.detailData.countryName_en = json.detail.country_name_en;
+                    this.detailData.address = json.detail.address;
+                    this.detailData.photos = json.detail.photos;
+                    this.detailData.description = json.detail.description;
+
+                    this.tableData[0].vt = json.detail.sp_id.vt_id[0];
+                    this.tableData[0].mk = json.detail.sp_id.mk_id[0];
+                    this.tableData[0].dl = json.detail.sp_id.dl_id[0];
+                    this.tableData[0].bk = json.detail.sp_id.bk_id[0];
+                    this.tableData[0].gt = json.detail.sp_id.gt_id[0];
+                    console.log(this.tableData[0].bk);
+
                 })
             }
         },
-        mounted(){
+        created(){
             this.loadData();
         }
     }
