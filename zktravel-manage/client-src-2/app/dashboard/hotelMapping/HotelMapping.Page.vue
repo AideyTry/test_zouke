@@ -295,7 +295,7 @@
         <el-dialog title="酒店详情" :visible.sync="showdialog4">
             <photel class="hotel"  v-if="showdialog4" :idp="pid" :sp="sp"></photel>
         </el-dialog>
-        <el-dialog title="酒店详情" :visible.sync="showdialog5">
+        <el-dialog title="酒店详情" :visible.sync="showdialog5" size="large">
             <shotel class="hotel"  v-if="showdialog5" :ids="sid"></shotel>
         </el-dialog>
         <el-dialog title="强制入库" :visible.sync="showdialog6" size="tiny">

@@ -110,7 +110,7 @@
                     </el-button>
                 </div>
                 <div class="dialog-group">
-                    <dialog1 :dialoggroup="dialoggroup" :pickerOptions="pickerOptions"></dialog1>
+                    <dialog1 @closedialog="closedialog" :dialoggroup="dialoggroup"  v-if="userole.DISPATCH" :pickerOptions="pickerOptions"></dialog1>
                 </div>
             </el-tabs>
         </div>
@@ -169,11 +169,17 @@
             showdialog(n){
                 this.dialoggroup[n-1].show=true;
             },
+            closedialog(n){
+                this.dialoggroup[n-1].show=false;
+            },
             updateorder(){
                 ajax.post('/api/team/requirement/update',{
                     id:this.$route.params.orderid,
                     requirement:orderdata
                 })
+            },
+            updatedraft(){
+
             }
 
         },

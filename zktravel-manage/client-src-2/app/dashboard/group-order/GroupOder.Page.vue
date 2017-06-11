@@ -191,7 +191,7 @@
                 })
             },
             changeTab(tab){
-                this.$router.push({name:"dashboard-group-order",params:{status:tab.name}});
+                this.$router.push({name:"dashboard-group-order",params:{order:tab.name}});
                 if(tab.name=="effective"){
                     this.pager.status=1;
                     this.loadTable();
