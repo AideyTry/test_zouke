@@ -13,6 +13,7 @@ function readAllTestModule(dir){
     
     for(let name of fsList){
         if(name==='index.js') continue;
+        if(name.endsWith('.i.js')) continue;
 
         const p = path.resolve(root, name);
         if(fs.statSync(p).isFile()){
@@ -25,9 +26,7 @@ function readAllTestModule(dir){
 
 async function run(){
     for(let m of readAllTestModule('./')){
-        let result = m.test();
-        if(result.then) result = await result;
-        result = result || 'ok';
+        let result = (await m.test())||'ok';
         console.log(`  ${m.name}: ${result}`);
     }
 }
