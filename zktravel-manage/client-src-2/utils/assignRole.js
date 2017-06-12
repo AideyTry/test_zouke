@@ -1,40 +1,29 @@
-export default function assignRole(code) {
-    let role = {
-        PUBLISH: false, //发布需求
-        UPDATE_SELF_REQUIREMENT: false, //修改自己需求
-        UPDATE_ALL_REQUIREMENT: false, //修改所有需求
-        DISPATCH: false, //分配需求
-        TOGGLE_VALID: false, //设置需求有效/无效
+export default function assignRole(number) {
+    let OFFLINE_ORDER= {
+            PUBLISH: filter(1,number), //发布需求
+            UPDATE_SELF_REQUIREMENT: filter(1<<1,number), //修改自己需求
+            UPDATE_ALL_REQUIREMENT: filter(1<<2,number), //修改所有需求
+            DISPATCH: filter(1<<3,number), //分配需求
+            TOGGLE_VALID: filter(1<<4,number), //设置需求有效/无效
 
-        FILL_PRICE: false, //填写报价
-        APPLY_HISTORY_PRICE: false, //应用历史报价
-        UPDATE_PRICE: false, //修改报价
-        CHECK_PRICE: false, //审核报价
-        CONFIRM_PRICE: false,//确定用户是否同意报价
+            FILL_PRICE: filter(1<<5,number), //填写报价
+            APPLY_HISTORY_PRICE: filter(1<<6,number), //应用历史报价
+            UPDATE_PRICE: filter(1<<7,number), //修改报价
+            CHECK_PRICE: filter(1<<8,number), //审核报价
+            CONFIRM_PRICE: filter(1<<9,number), //确定用户是否同意报价
 
-        FILL_ORDER: false, //填写订单
-        VIEW_SP_INFO: false, //查看订单供应商信息
-        VIEW_USER_TERM: false, //查看订单用户条款
-        UPDATE_ORDER: false, //修改订单
-        EXPORT_VOUCHER: false, //导出voucher
+            FILL_ORDER: filter(1<<10,number), //填写订单
+            VIEW_SP_INFO: filter(1<<11,number), //查看订单供应商信息
+            VIEW_USER_TERM: filter(1<<12,number), //查看订单用户条款
+            UPDATE_ORDER: filter(1<<13,number), //修改订单
+            EXPORT_VOUCHER: filter(1<<14,number), //导出voucher
 
-        UPDATE_ROOM_PERSON: false, //填写分房名单
-        GATHERING: false, //收款
-        REFUND: false, //退款
+            UPDATE_ROOM_PERSON: filter(1<<15,number), //填写分房名单
+            GATHERING: filter(1<<16,number), //收款
+            REFUND: filter(1<<17,number), //退款
     };
-    let rolecode = code.toString(2);
-    let roleArr = rolecode.split('');
-    let keyArr = [];
-
-    for (let k in role) {
-        keyArr.push(k)
+    function filter(code,number) {
+       return (code&number)===code;
     }
-    for (let a = 0; a < roleArr.length; a++) {
-        if (roleArr[a] === '1') {
-            role[keyArr[a]] = true;
-        } else {
-            role[keyArr[a]] = false;
-        }
-    }
-    return role
+    return OFFLINE_ORDER
 }
