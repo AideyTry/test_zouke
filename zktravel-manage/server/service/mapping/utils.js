@@ -47,16 +47,16 @@ module.exports = {
     async genZkId(){
         return await (await dbclient.get()).genId(zk_collection_name);
     },
-    async getZkHotelCollection(single = false){
+    async getZkHotelCollection(){
         if(!_zkCollection){
-            const db = await dbclient.get(single?{token:'#mapping#'}:{});
+            const db = await dbclient.get();
             _zkCollection = await db.collection(zk_collection_name);
         }
         return _zkCollection;
     },
-    async getSpHotelCollection(single = false){
+    async getSpHotelCollection(){
         if(!_spCollection){
-            const db = await dbclient.get(single?{token:'#mapping#'}:{});
+            const db = await dbclient.get();
             _spCollection = await db.collection(sp_collection_name);
         }
         return _spCollection;

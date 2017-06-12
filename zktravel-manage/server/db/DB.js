@@ -8,25 +8,24 @@ const $$db = Symbol('db');
 const cache = {};
 
 module.exports = class DB {
-    static async use(connectString, token=''){
-        const cacheString = connectString + token;
-        if(!cache[cacheString]){
+    static async use(connectString){
+        if(!cache[connectString]){
             const db = new DB(createToken, connectString);
             await db[$$connect]();
             db[$$db].on('close', () => {
-                delete cache[cacheString];
+                delete cache[connectString];
             });
-            cache[cacheString] = db;
+            cache[connectString] = db;
             return db;
         }
-        return cache[cacheString];
+        return cache[connectString];
     }
 
     async [$$connect](){
         const db = await mongodb.MongoClient.connect(
             this[$$connectString],
             {
-                poolSize: 2
+                poolSize: 4
             }
         );
         this[$$db] = db;
