@@ -95,7 +95,7 @@
 
                 </el-tab-pane>
                 <el-tab-pane label="留言/操作" name="message-node">
-
+                    <messageDetail></messageDetail>
                 </el-tab-pane>
                 <div class="button-group">
                     <el-button v-if="userole.DISPATCH&&activetabs=='require-node'" @click="showdialog(1)" type="info" size="small">分配</el-button>
@@ -122,13 +122,16 @@
     import requireDetail from './details/RequireDetail';
     import changeRequire from '../publish-require/PublishRequire.Page';
     import dialog1 from './dialogs/DistributeDialog';
-    import offerDetail from './details/OfferDetail'
+    import offerDetail from './details/OfferDetail';
+    import messageDetail from './details/MessageDetail';
     export default{
         components: {
             requiredetail: requireDetail,
             changerequire: changeRequire,
             dialog1:dialog1,
-            offerdetail:offerDetail
+            offerdetail:offerDetail,
+            dialog1:dialog1,
+            messageDetail:messageDetail
         },
         data(){
             return {

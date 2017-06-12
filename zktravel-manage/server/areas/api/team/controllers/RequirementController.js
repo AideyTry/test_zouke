@@ -36,8 +36,8 @@ module.exports = class TeamReqController extends LController {
             return;
         }
 
-        const { id: uid, name: uname, role, role_name } = this.userInfo;
-        const id = await teamRequirement[name](requirement, { id: uid, name: uname, role, role_name });
+        const { id: uid, name: uname, role, roleName } = this.userInfo;
+        const id = await teamRequirement[name](requirement, { id: uid, name: uname, role, roleName });
         this.renderJSON({ code: 0, orderId: id });
     }
     async publish(){

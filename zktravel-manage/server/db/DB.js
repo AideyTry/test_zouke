@@ -22,10 +22,11 @@ module.exports = class DB {
     }
 
     async [$$connect](){
+        if(!this[$$connectString]) return;
         const db = await mongodb.MongoClient.connect(
             this[$$connectString],
             {
-                poolSize: 2
+                poolSize: 4
             }
         );
         this[$$db] = db;
@@ -51,6 +52,11 @@ module.exports = class DB {
     }
     async command(...arg){
         return await this[$$db].command(...arg);
+    }
+    db(name){
+        const db = new DB(createToken,'');
+        db[$$db] = this[$$db].db(name);
+        return db;
     }
     async genId(col_name){
         const cfg_counters_collection = await this.collection('cfg_counters');
