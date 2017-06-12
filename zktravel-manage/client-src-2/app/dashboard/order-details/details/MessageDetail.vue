@@ -1,34 +1,51 @@
 <style lang="scss" scoped>
     .message{
+        .msgH{
+            position:relative;
+            strong{
+                font-size:20px;
+                font-family:Microsoft YaHei;
+            }
+            .el-button{
+                position:absolute;
+                right:0;
+            }
+        }
+        .msgMain{
+            margin-top:20px;
+        }
         .fixed{
             position:fixed;
             top:0;
             left:0;
         }
         .msgList{
-            /*height:50px;*/
             .avatar{
                 display:inline-block;
-                width:30px;
-                height:30px;
+                width:50px;
+                height:50px;
                 border:1px solid #999;
                 border-radius:50%;
                 background-color: #999;
+                position:relative;
+                top:10px;
+            }
+            span{
+                padding-left:15px;
+                display:inline-block;
+                font-size:16px;
+                font-family:Microsoft YaHei;
             }
             .line{
                 width:100%;
-                /*display:inline-block;*/
-                /*height:1px;*/
                 margin-top:5px;
-                border:1px solid #ccc;
+                border-top:1px solid #ccc;
             }
         }
         .el-pagination{
             background-color: #fff;
             text-align:right;
-            position:fixed;
-            bottom:0;
-            right:5%;
+
         }
     }
 </style>
@@ -36,23 +53,18 @@
 <template>
     <div class="message">
         <div>
-            <el-row type="flex">
-                <el-col :span="3">
-                    <strong>留言</strong>
+            <el-row type="flex" class="msgH">
+                <el-col :span="2">
+                    <strong>留言:</strong>
                 </el-col>
-                <el-col :span="12">
+                <el-col :span="20">
 
                 </el-col>
-                <el-col :span="3">
+                <el-col :span="2">
                     <el-button type="primary" @click="btn()">添加留言</el-button>
                 </el-col>
             </el-row>
-            <el-row type="flex">
-                <el-col :span="24">
-                    <p></p>
-                </el-col>
-            </el-row>
-            <el-row type="flex">
+            <el-row type="flex" class="msgMain">
                 <el-col :span="24">
                     <el-input
                             type="textarea"
@@ -75,9 +87,10 @@
             <el-col :span="24">
                 <div v-for="item of currentList" :key="item" class="msgList">
                     <span class="avatar"></span>
-                    <span style="display:inline-block">{{item}}</span>
+                    <span>{{item}}</span>
                     <el-row type="flex">
-                        <el-col :span="24"><p class="line"></p></el-col>
+                        <el-col :span="1"></el-col>
+                        <el-col :span="22"><p class="line"></p></el-col>
                     </el-row>
                 </div>
             </el-col>

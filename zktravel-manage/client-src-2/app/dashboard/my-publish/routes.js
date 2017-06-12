@@ -1,5 +1,4 @@
 import mypublish from './MyPublish.Page.vue'
-import orderDetail from './OrderDetail.Page.vue'
 export default [
     {
         path: 'my-publish-proxy',
@@ -10,10 +9,5 @@ export default [
         path: 'my-publish/:status',
         component: mypublish,
         name: 'dashboard-my-publish',
-    },
-    {
-        path: 'order-detail/:orderid',
-        component: orderDetail,
-        name: 'dashboard-order-detail'
     }
 ]

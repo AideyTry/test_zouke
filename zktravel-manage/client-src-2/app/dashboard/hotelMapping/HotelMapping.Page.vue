@@ -221,46 +221,6 @@
                 <el-pagination layout="total, prev, pager, next, jumper" @current-change="changepage" :total="total"
                                :page-size="currentlimit"></el-pagination>
             </el-tab-pane>
-            <!--            <el-tab-pane label="Booking" name="bk">
-                            <el-table
-                                    :data="currentdata"
-                                    border
-                                    style="width: 100%">
-                                <el-table-column
-                                        prop="level"
-                                        label="匹配等级">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="spName"
-                                        label="SAI名">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="zkName"
-                                        label="miki名">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="spAddress"
-                                        label="SAI地址">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="zkAddress"
-                                        label="miki地址">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="spPhone"
-                                        label="SAI电话">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="zkPhone"
-                                        label="miki电话">
-                                </el-table-column>
-                                <el-table-column
-                                        prop="spGPS"
-                                        label="坐标地址">
-                                </el-table-column>
-                            </el-table>
-                            <el-pagination  layout="prev,pager,next"  @current-change="currentpage" :total="total" :page-size="15"></el-pagination>
-                        </el-tab-pane>-->
         </el-tabs>
         <el-dialog
                 title="提示"

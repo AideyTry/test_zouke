@@ -74,13 +74,13 @@
             </el-col>
         </el-row>
         <div class="order-detail">
-            <el-tabs @tab-click="changetab" active-name="require-node">
+            <el-tabs @tab-click="changetab" :active-name="activetabs">
                 <el-tab-pane label="需求记录" name="require-node">
-                    <orderdetail v-if="orderdata&&!change" :orderdata="orderdata"></orderdetail>
+                    <requiredetail v-if="orderdata&&!change" :orderdata="orderdata"></requiredetail>
                     <changerequire v-if="orderdata&&change" :orderdata="orderdata"></changerequire>
                 </el-tab-pane>
                 <el-tab-pane label="报价记录" name="offer-node">
-
+                    <offerdetail v-if="activetabs=='offer-node'"></offerdetail>
                 </el-tab-pane>
                 <el-tab-pane label="订单详情" name="order-detail">
 
@@ -98,14 +98,14 @@
                     <messageDetail></messageDetail>
                 </el-tab-pane>
                 <div class="button-group">
-                    <el-button v-if="userole.DISPATCH" @click="showdialog(1)" type="info" size="small">分配</el-button>
-                    <el-button v-if="userole.UPDATE_ALL_REQUIREMENT" type="info" size="small" @click="togglechange">
+                    <el-button v-if="userole.DISPATCH&&activetabs=='require-node'" @click="showdialog(1)" type="info" size="small">分配</el-button>
+                    <el-button v-if="userole.UPDATE_ALL_REQUIREMENT&&activetabs=='require-node'" type="info" size="small" @click="togglechange">
                         {{change ? '放弃修改' : '修改'}}
                     </el-button>
-                    <el-button v-if="userole.UPDATE_ALL_REQUIREMENT" v-show="change" @click="updateorder" style="color:#20a0ff;border-color:#20a0ff"
+                    <el-button v-if="userole.UPDATE_ALL_REQUIREMENT&&activetabs=='require-node'" v-show="change" @click="updateorder" style="color:#20a0ff;border-color:#20a0ff"
                                size="small">发布
                     </el-button>
-                    <el-button v-if="userole.UPDATE_ALL_REQUIREMENT" v-show="change" @click="updatedraft" style="color:#20a0ff;border-color:#20a0ff"
+                    <el-button v-if="userole.UPDATE_ALL_REQUIREMENT&&activetabs=='require-node'" v-show="change" @click="updatedraft" style="color:#20a0ff;border-color:#20a0ff"
                                size="small">存为草稿
                     </el-button>
                 </div>
@@ -119,14 +119,17 @@
 
 <script>
     import ajax  from '@local/common/ajax';
-    import orderDetail from './details/Orderdetail';
+    import requireDetail from './details/RequireDetail';
     import changeRequire from '../publish-require/PublishRequire.Page';
-    import dialog1 from './dialogs/DistributeDialog'
-    import messageDetail from './details/MessageDetail'
+    import dialog1 from './dialogs/DistributeDialog';
+    import offerDetail from './details/OfferDetail';
+    import messageDetail from './details/MessageDetail';
     export default{
         components: {
-            orderdetail: orderDetail,
+            requiredetail: requireDetail,
             changerequire: changeRequire,
+            dialog1:dialog1,
+            offerdetail:offerDetail,
             dialog1:dialog1,
             messageDetail:messageDetail
         },
@@ -148,18 +151,22 @@
                         },
                         rule:null
                     }
-                ]
+                ],
+                tab:null,
+                activetabs:'require-node'
             }
         },
         methods: {
             changetab(tab){
-                this.$router.push({name:"dashboard-order-detail",params:{orderid:tab.name}});
+                this.tab=tab.name;
+                this.activetabs=tab.name;
+                this.$router.push({name:'dashboard-order-detail',params:{id:this.$route.params.orderid,status:tab.name}})
             },
             getorder(id){
                 let vm = this;
                 ajax.post('/api/team/order/detail', {
                     id: id
-                }).then(
+                },{lock:false}).then(
                     data => {
                         vm.orderdata = data.detail;
                     }
@@ -193,8 +200,9 @@
                 return this.$store.getters.offlineRole;
             }
         },
-        created(){
+        mounted(){
             this.getorder(this.$route.params.orderid);
+            this.activetabs=this.$route.params.status;
         }
     }
 </script>

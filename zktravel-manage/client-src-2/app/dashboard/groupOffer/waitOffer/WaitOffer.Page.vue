@@ -7,7 +7,7 @@
             background-color: #f00;
             color:#f00;
         }
-        .pagination {
+        .el-pagination{
             background-color: #fff;
             text-align: right;
             padding-right: 36px;
@@ -18,9 +18,11 @@
             width: 87.5%;
             bottom: 0px;
             z-index: 3;
+            margin: 0;
         }
         .search-group{
-            margin:5px 0 20px 0;
+            padding-left: 20px;
+            margin:0px 0 15px 0;
             .goTime{
                 height:36px;
                 line-height:36px;
@@ -28,145 +30,99 @@
                 font-size:inherit;
             }
         }
+        .el-group{
+            padding-left: 20px;
+            line-height: 36px;
+            .el-tag{
+                margin: 0 5px;
+            }
+        }
         .div{
-            width:100000px;
+            width:100%;
             height:20px;
         }
-        .bgc1{
-            display:block;
-            background-color: deeppink;
-            color:deeppink;
+        .warning{
+            color: #fff;
+            background: #F7BA2A;
         }
-        .bgc2{
-            display:block;
-            background-color: orange;
-            color:orange;
+        .danger{
+            color: #fff;
+            background: #FF4949;
         }
-        .bgc3{
-            display:block;
-            background-color: yellow;
-            color:yellow;
+        .primary{
+            color: #fff;
+            background: #1D8CE0;
         }
-        .bgc4{
-            display:block;
-            background-color: purple;
-            color:purple;
+        .overdead{
+            color: #fff;
+            background: #324057;
         }
     }
 
 </style>
 <template>
     <div class="wait-offer">
-        <el-tabs v-model="$route.params.offer"  @tab-click="changeTab">
+        <el-tabs :active-name="$route.params.offer"  @tab-click="changeTab">
             <el-tab-pane label="待报价" name="wp"></el-tab-pane>
             <el-tab-pane label="待审核" name="we"></el-tab-pane>
             <el-tab-pane label="待控房" name="wv"></el-tab-pane>
         </el-tabs>
         <el-row type="flex" class="search-group">
-            <span>&nbsp&nbsp&nbsp&nbsp</span>
             <el-col :span="6">
                 <el-input
                         placeholder="搜索用户名/订单号/订房员/创建人"
                         icon="search"
-
                         :on-icon-click="searchOrder">
                 </el-input>
             </el-col>
         </el-row>
-        <p class="div">
-
-        </p>
         <el-row type="flex">
             <el-col :span="24">
                 <el-table
-                        :data="currentData"
+                        :data="tableData"
                         border
                         style="width: 100%">
                     <el-table-column
-                            prop="order"
                             label="紧急度"
-                            v-if="true"
-
-                    >
+                            v-if="true">
                         <template scope="scope">
-                            <span v-bind:class="[{bgc1:scope.row.order===1},{bgc2:scope.row.order===2},{bgc3:scope.row.order===3},{bgc4:scope.row.order===4}]">
-                                {{scope.row.order}}
-                            </span>
+                            <el-tag v-if="scope.row._class=='danger'" color="#FF4949">8小时完成</el-tag>
+                            <el-tag v-if="scope.row._class=='warming'" color="#F7BA2A">24小时完成</el-tag>
+                            <el-tag v-if="scope.row._class=='primary'" color="#1D8CE0">48小时完成</el-tag>
+                            <el-tag v-if="scope.row._class=='success'" type="success">48小时以上</el-tag>
+                            <el-tag v-if="scope.row._class=='overdead'" color="#324057">已超时</el-tag>
                         </template>
                     </el-table-column>
-
                     <el-table-column
-                            prop="name"
-                            label="订单号"
-                            width="180">
+                            prop="orderId"
+                            label="订单号">
                     </el-table-column>
                     <el-table-column
-
-                            prop="name"
+                            prop="userName"
                             label="用户名">
                     </el-table-column>
                     <el-table-column
-                            sortable
-                            prop="优先级"
-                            label="状态"
-                            width="180">
+                            prop="priority"
+                            label="状态">
                     </el-table-column>
                     <el-table-column
-                            prop="状态"
-                            label="金额"
-                            width="180">
+                            prop="price"
+                            label="金额">
                     </el-table-column>
                     <el-table-column
-                            prop="creater"
+                            prop="publish"
                             label="创建人">
                     </el-table-column>
                     <el-table-column
-                            sortable
-                            prop="quoter"
-                            label="完成时间"
-                            width="180">
+                            prop="startDate"
+                            label="完成时间">
                     </el-table-column>
-
                 </el-table>
-
-                <el-row type="flex">
-                    <el-col :span="1"></el-col>
-                    <el-col :span="15">
-                        <el-row type="flex">
-                            <el-col :span="3"><span>报价紧急度</span></el-col>
-                            <el-col :span="5">
-                                <el-row type="flex">
-                                    <el-col :span="10" v-bind:class="{bgc1:true}"></el-col>
-                                    <span>8小时内完成</span>
-                                </el-row>
-                            </el-col>
-                            <el-col :span="5">
-                                <el-row type="flex">
-                                    <el-col :span="10" v-bind:class="{bgc2:true}"></el-col>
-                                    <span>24小时内完成</span>
-                                </el-row>
-                            </el-col>
-                            <el-col :span="5">
-                                <el-row type="flex">
-                                    <el-col :span="10" v-bind:class="{bgc3:true}"></el-col>
-                                    <span>48小时内完成</span>
-                                </el-row>
-                            </el-col>
-                            <el-col :span="5">
-                                <el-row type="flex">
-                                    <el-col :span="10" v-bind:class="{bgc4:true}"></el-col>
-                                    <span>已超时</span>
-                                </el-row>
-                            </el-col>
-                        </el-row>
-                    </el-col>
-                </el-row>
                 <el-pagination
                         layout="total, prev, pager, next, jumper"
                         class="pagination"
                         @current-change="changePage"
-                        :total="pager.total"
-                >
+                        :total="pager.total">
                 </el-pagination>
             </el-col>
         </el-row>
@@ -181,51 +137,21 @@
                 activeName:'wp',
                 pager:{
                     status:3,
-                    pageNum:1,
+                    pageNum:0,
                     pageSize:8,
                     total:0,
                     keyword:'',
                     valid:true
                 },
-                value1:'',
-                orderStates:[
-                    {}
-                ],
-                currentData:[],
-                tableData:[
-                    {order:1,name:1,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:2,name:2,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:3,name:3,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:4,name:4,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:1,name:5,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:1,name:6,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:3,name:7,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:3,name:8,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1}
-//                    {order:9,name:9,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-//                    {order:10,name:10,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-//                    {order:11,name:5,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-//                    {order:12,name:6,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-//                    {order:13,name:7,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-//                    {order:14,name:8,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-//                    {order:15,name:9,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1}
-                ],
-                tableData1:[
-                    {order:4,name:11,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:2,name:12,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1}
-                ],
-                tableData2:[
-                    {order:3,name:1,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:2,name:2,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:1,name:3,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:4,name:4,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:1,name:5,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:3,name:6,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1}
-                ],
-                tableData3:[
-                    {order:3,name:1,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:2,name:2,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:1,name:3,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1}
-                ]
+                orderStates:[],
+                currentData:null,
+                tableData:[],
+                statusmap:{
+                    wp:3,
+                    we:4,
+                    wv:5
+                },
+                isPrimary:'danger'
             }
         },
         computed:{
@@ -233,50 +159,34 @@
         },
         methods:{
             loadTable(){
-                ajax.post("/api/team/order/query",{status:this.pager.status,page:this.pager.pageNum,pageSize:this.pager.pageSize}).then(json=>{
-//                    console.log(json);
-                    this.currentData=json.list;
-//                    if(this.pager.status===1){
-//                        this.pager.total=12;
-//                        if(this.pager.pageNum===1){
-//                            this.currentData=this.tableData;
-//                        }else if(this.pager.pageNum===2){
-//                            this.currentData=this.tableData1;
-//                        }
-//                    }else if(this.pager.status===2){
-//                        this.pager.total=7;
-//                        this.currentData=this.tableData2;
-//                    }else if(this.pager.status===3){
-//                        this.pager.total=3;
-//                        this.currentData=this.tableData3;
-//                    }
-
-                })
-            },
-            updateTab(){
-                if(this.$route.path=="/dashboard/wait-offer/wp"){
-                    this.pager.status=3;
-                }else if(this.$route.path=="/dashboard/wait-offer/we"){
-                    this.pager.status=4;
-                }
-                if(this.$route.path=="/dashboard/wait-offer/wv"){
-                    this.pager.status=8;
-                }
+                ajax.post("/api/team/order/query",{
+                    status:this.statusmap[this.$route.params.offer],
+                    page:this.pager.pageNum,
+                    pageSize:this.pager.pageSize}).then(
+                    data=>{
+                        this.tableData=data.list;
+                        this.tableData.forEach(
+                            v=>{
+                                let hour=Math.floor((new Date(v.startDate)-new Date())/3600000);
+                                if(hour<=8){
+                                    v._class='danger'
+                                }else if(8<hour&&hour<=24){
+                                    v._class='warming'
+                                }else if(24<hour&&hour<=48){
+                                    v._class='primary'
+                                }else if(hour<0){
+                                    v._class='overdead'
+                                }else {
+                                    v._class='success'
+                                }
+                            }
+                        )
+                    }
+                )
             },
             changeTab(tab){
-                this.$router.push({name:"dashboard-wait-offer",params:{status:tab.name}});
-                if(this.$route.path=="/dashboard/wait-offer/wp"){
-                    this.pager.status=3;
-                    this.loadTable();
-                }else if(this.$route.path=="/dashboard/wait-offer/we"){
-                    this.pager.status=4;
-                    this.loadTable();
-                }else if(this.$route.path=="/dashboard/wait-offer/wv"){
-                    this.pager.status=8;
-                    this.loadTable();
-                }
-
-
+                this.$router.push({name:"dashboard-wait-offer",params:{offer:tab.name}});
+                this.loadTable();
             },
             searchOrder(){
 
@@ -286,18 +196,8 @@
                 this.loadTable();
             }
         },
-        created(){
-            this.updateTab();
-        },
         mounted(){
             this.loadTable();
         }
-//        beforeRouteEnter (to, from, next) {
-//            if (!to.params.status) {
-//                next({name: 'dashboard-zkhotel', params: {status: 'valid'}});
-//            } else {
-//                next();
-//            }
-//        }
     }
 </script>

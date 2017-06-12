@@ -77,27 +77,27 @@
                     <el-menu-item index="dashboard-my-home-proxy">
                             主页
                     </el-menu-item>
-                    <el-submenu index="publish">
+                    <el-submenu index="publish" v-if="offlineRole.PUBLISH||offlineRole.DISPATCH">
                         <template slot="title">团房需求</template>
                         <el-menu-item-group>
-                            <el-menu-item index="dashboard-publish-require-proxy" v-if="userInfo.roleName=='客服'||userInfo.roleName=='超级管理员'">
+                            <el-menu-item index="dashboard-publish-require-proxy" v-if="offlineRole.PUBLISH">
                                 发布需求
                             </el-menu-item>
-                            <el-menu-item index="dashboard-my-publish-proxy" v-if="userInfo.roleName=='客服'||userInfo.roleName=='超级管理员'">
+                            <el-menu-item index="dashboard-my-publish-proxy" v-if="offlineRole.PUBLISH">
                                 我的发布
                             </el-menu-item>
-                            <el-menu-item index="dashboard-distributed-proxy" v-if="userInfo.roleName=='管理员'||userInfo.roleName=='超级管理员'">
+                            <el-menu-item index="dashboard-distributed-proxy" v-if="offlineRole.DISPATCH">
                                 待分配
                             </el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
-                    <el-submenu index="groupOffer">
+                    <el-submenu index="groupOffer" v-if="offlineRole.FILL_PRICE||offlineRole.CHECK_PRICE">
                         <template slot="title">团房报价</template>
                         <el-menu-item-group>
-                            <el-menu-item index="dashboard-wait-offer-proxy">
+                            <el-menu-item index="dashboard-wait-offer-proxy" v-if="offlineRole.FILL_PRICE">
                                 待报价/预订
                             </el-menu-item>
-                            <el-menu-item index="dashboard-wait-examine-proxy">
+                            <el-menu-item index="dashboard-wait-examine-proxy" v-if="offlineRole.CHECK_PRICE">
                                 待审核
                             </el-menu-item>
                         </el-menu-item-group>
