@@ -5,6 +5,7 @@ const { diff, getSpHotelCollection, getZkHotelCollection, getDb } = require('./u
 const MapState = require('./MapState');
 const Pretreatment = require('./Pretreatment');
 const MappingLevel = require('./MappingLevel');
+const TaskQueue = require('@local/task-queue');
 
 module.exports = class Mapping {
 
@@ -22,7 +23,7 @@ module.exports = class Mapping {
     }
 
     async $findSpNotResolve(){
-        const collection = await getSpHotelCollection(true);
+        const collection = await getSpHotelCollection();
         return collection.find({
             [`${Pretreatment.field}._v`]: Pretreatment.version,
             'status': 0,
@@ -280,81 +281,79 @@ module.exports = class Mapping {
         return 0;
     }
 
-    async autoMap(){
-        const hotelCursor = await  this.$findSpNotResolve();
+    async $autoMapHotel(spHotel){
         const zkHotelCollection = await getZkHotelCollection();
 
-        const count = await hotelCursor.count();
-        let updateCount = 0;
-        if(count===0) return;
+        if(spHotel.mode==='D'){
+            // offline sp hotel
+            try{
+                this.$logInc('offline');
+                console.log(`autoMap: offline ${spHotel.supplier} hotel -> spId|${spHotel.id}`)
+                await this.$offline(spHotel);
+            }catch(e){
+                console.error(e);
+            }
+            return
+        }
 
-        return new Promise(resolve=>{
-            const end = ()=>{
-                ++updateCount;
-                if(updateCount>=count){
-                    console.log('autoMap stat: ', this._stat);
-                    resolve();
-                }
-            };
-            
-            hotelCursor.forEach(async spHotel=>{
-                if(spHotel.mode==='D'){
-                    // offline sp hotel
-                    try{
-                        this.$logInc('offline');
-                        console.log(`autoMap: offline ${spHotel.supplier} hotel -> spId|${spHotel.id}`)
-                        await this.$offline(spHotel);
-                    }catch(e){
-                        console.error(e);
-                    }
-                    return end();
-                }
-
-                const similarZkHotels = await this.$searchSimilarHotel(spHotel, zkHotelCollection);
-                if(similarZkHotels.length===0){
-                    /*
-                    * doesn't map
-                    * insert as new
-                    */
-                    try{
-                        this.$logInc('alone');
-                        console.log(`autoMap: ${spHotel.supplier} hotel not map any sai hotel -> spId|${spHotel.id}`);
-                        this.$alone(spHotel);
-                        //await this.$insert(spHotel);
-                    }catch(e){
-                        console.log(e);
-                    }
-                    return end();
-                }
+        const similarZkHotels = await this.$searchSimilarHotel(spHotel, zkHotelCollection);
+        if(similarZkHotels.length===0){
+            /*
+            * doesn't map
+            * insert as new
+            */
+            try{
+                this.$logInc('alone');
+                console.log(`autoMap: ${spHotel.supplier} hotel not map any sai hotel -> spId|${spHotel.id}`);
+                this.$alone(spHotel);
+                //await this.$insert(spHotel);
+            }catch(e){
+                console.error(e);
+            }
+            return
+        }
 
 
-                const fuzzy = {};
+        const fuzzy = {};
 
-                for(let zkHotelResult of similarZkHotels){
-                    const diffResult = diff(zkHotelResult, spHotel);
-                    if(MappingLevel.isHighest(diffResult)){
-                        //免审
-                        this.$logInc('map');
-                        console.log(`autoMap: ${spHotel.supplier} hotel auto map sai hotel -> spId|${spHotel.id} == zkId|${zkHotelResult.hotel._id}`);
-                        try{
-                            await this.$map(spHotel, zkHotelResult.hotel._id, diffResult);
-                        }catch(e){
-                            console.error(e);
-                        }
-                        return end();
-                    }
-                    fuzzy[zkHotelResult.hotel._id] = diffResult;
-                }
-
-                this.$logInc('fuzzy');
-                console.log(`autoMap: ${spHotel.supplier} hotel fuzzy map sai hotel -> spId|${spHotel.id}`);
+        for(let zkHotelResult of similarZkHotels){
+            const diffResult = diff(zkHotelResult, spHotel);
+            if(MappingLevel.isHighest(diffResult)){
+                //免审
+                this.$logInc('map');
+                console.log(`autoMap: ${spHotel.supplier} hotel auto map sai hotel -> spId|${spHotel.id} == zkId|${zkHotelResult.hotel._id}`);
                 try{
-                    await this.$fuzzy(spHotel, fuzzy);
+                    await this.$map(spHotel, zkHotelResult.hotel._id, diffResult);
                 }catch(e){
                     console.error(e);
                 }
-                return end();
-            });
-        });
+                return;
+            }
+            fuzzy[zkHotelResult.hotel._id] = diffResult;
+        }
+
+        this.$logInc('fuzzy');
+        console.log(`autoMap: ${spHotel.supplier} hotel fuzzy map sai hotel -> spId|${spHotel.id}`);
+        try{
+            await this.$fuzzy(spHotel, fuzzy);
+        }catch(e){
+            console.error(e);
+        }
+        return;
+    }
+
+    async autoMap(){
+        const hotelCursor = await  this.$findSpNotResolve();
+
+        const taskQueue = new TaskQueue(4);
+        while(await hotelCursor.hasNext()){
+            if(!taskQueue.isFree()){
+                await taskQueue.race();
+            }
+            taskQueue.push(this.$autoMapHotel(await hotelCursor.next()));
+        }
+        await taskQueue.all();
+        console.log('autoMap stat: ', this._stat)
+        return;
     }
 }
