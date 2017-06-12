@@ -345,15 +345,8 @@ module.exports = class Mapping {
     async autoMap(){
         const hotelCursor = await  this.$findSpNotResolve();
 
-        const taskQueue = new TaskQueue(4);
-        while(await hotelCursor.hasNext()){
-            if(!taskQueue.isFree()){
-                await taskQueue.race();
-            }
-            taskQueue.push(this.$autoMapHotel(await hotelCursor.next()));
-        }
-        await taskQueue.all();
-        console.log('autoMap stat: ', this._stat)
-        return;
+        await TaskQueue.run(hotelCursor, async spHotel=>await this.$autoMapHotel(spHotel));
+
+        console.log('autoMap stat: ', this._stat);
     }
 }

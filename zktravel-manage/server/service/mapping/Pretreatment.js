@@ -64,6 +64,8 @@ function convertUrl(url){
     return url;
 }
 
+const TaskQueue = require('@local/task-queue');
+
 module.exports = class Pretreatment{
     static convert(hotel, { isSai=false, areaCode='' } = {}){
         const pret = {
@@ -111,35 +113,30 @@ module.exports = class Pretreatment{
              name: 1, name_en: 1, phone: 1, url_web: 1, address: 1, country_id: 1
         });
 
-        const count = await cursor.count();
         let updateCount = 0;
-        if(count===0) return;
 
-        return new Promise((resolve)=>{
-            cursor.forEach(async hotel=>{
-                try{
-                    const $set = {
-                        [Pretreatment.field]: Pretreatment.convert(hotel, { isSai, areaCode: AreaCode.get(hotel.country_id) })
-                    };
-                    if(resolveMode){
-                        $set['mode'] = 'R';
-                    }
-                    await collection.updateOne({ _id: hotel._id },{
-                        $set
-                    });
-                }catch(e){
-                    console.error(e);
+        await TaskQueue.run(cursor, async hotel=>{
+            try{
+                const $set = {
+                    [Pretreatment.field]: Pretreatment.convert(hotel, { isSai, areaCode: AreaCode.get(hotel.country_id) })
+                };
+                if(resolveMode){
+                    $set['mode'] = 'R';
                 }
+                await collection.updateOne({ _id: hotel._id },{
+                    $set
+                });
                 ++updateCount;
                 if(updateCount%10000 === 0){
                     console.log(updateCount);
                 }
-                if(updateCount>=count){
-                    console.log(count);
-                    resolve();
-                }
-            });
-        });
+            }catch(e){
+                console.error(e);
+            }
+        }, 32);
+        if(updateCount>0){
+            console.log(updateCount);
+        }
     }
     async run(){
         console.log('--> zk_hotel pretreatment start')
