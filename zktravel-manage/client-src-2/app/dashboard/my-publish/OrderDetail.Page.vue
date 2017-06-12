@@ -95,7 +95,7 @@
 
                 </el-tab-pane>
                 <el-tab-pane label="留言/操作" name="message-node">
-
+                    <messageDetail></messageDetail>
                 </el-tab-pane>
                 <div class="button-group">
                     <el-button v-if="userole.DISPATCH" @click="showdialog(1)" type="info" size="small">分配</el-button>
@@ -122,11 +122,13 @@
     import orderDetail from './details/Orderdetail';
     import changeRequire from '../publish-require/PublishRequire.Page';
     import dialog1 from './dialogs/DistributeDialog'
+    import messageDetail from './details/MessageDetail'
     export default{
         components: {
             orderdetail: orderDetail,
             changerequire: changeRequire,
-            dialog1:dialog1
+            dialog1:dialog1,
+            messageDetail:messageDetail
         },
         data(){
             return {
@@ -150,8 +152,8 @@
             }
         },
         methods: {
-            changetab(){
-
+            changetab(tab){
+                this.$router.push({name:"dashboard-order-detail",params:{orderid:tab.name}});
             },
             getorder(id){
                 let vm = this;
