@@ -15,4 +15,14 @@ module.exports = class ZkHotelController extends LController {
 
         this.renderJSON(Object.assign({code:0}, result))
     }
+    async search(){
+        const { keyword } = this.request.body;
+        const zkHotel = new ZkHotel();
+        const { list } = await zkHotel.query(0, 10, { keyword });
+
+        this.renderJSON({ code:0, list:list.map(h=>({
+            id: h._id,
+            name: h.name
+        }))})
+    }
 }
