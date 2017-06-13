@@ -1,4 +1,4 @@
-const BaseOfflineOrder = require('./BaseOrder');
+const BaseOrder = require('./BaseOrder');
 const compare = require('@local/compare');
 const jsondiffpatch = require('jsondiffpatch');
 
@@ -38,7 +38,7 @@ const validReqDataRule = {
 }
 
 
-module.exports = class TeamRequirement extends BaseOfflineOrder {
+module.exports = class TeamRequirement extends BaseOrder {
     async $insert(requirement, status, creator){
         requirement.last_update = this.$createTime();
 
@@ -89,11 +89,11 @@ module.exports = class TeamRequirement extends BaseOfflineOrder {
                     WAIT_FOR_PRICE_CONFIRM,
                     WAIT_FOR_GATHERING
                 ]
-            } 
+            }
         };
-        const result = await collection.findOne(query, { status:1, requirement:1 })
+        const result = await collection.findOne(query, { status:1, requirement:1, creator:1, price_history:1 })
         if(!result) return -1 //已付款之后,无法更改需求
-        const { status, requirement:_oldRequirement, creator } = result;
+        const { status, requirement:_oldRequirement, creator, price_history } = result;
 
 
         if(!all&&creator.id!==user.id){
@@ -102,10 +102,18 @@ module.exports = class TeamRequirement extends BaseOfflineOrder {
 
         const nowTime = this.$createTime();
 
+        const updateQuery = {
+            _id: id,
+            status
+        };
         const update = {
-            $set: { requirement, 'price_history.$.disable_apply': true },
+            $set: { requirement },
             $unset: { price: 1 }
         };
+        if(price_history&&price_history.length>0){
+            updateQuery['price_history.disable_apply'] = { $in: [ null, true, false ] };
+            update.$set['price_history.$.disable_apply'] = true;
+        }
         if(status !== WAIT_FOR_PUBLISH && status !== WAIT_FOR_DISPATCH){
             update.$set.status = WAIT_FOR_GIVE_PRICE;
             delete _oldRequirement.last_update;
@@ -115,6 +123,6 @@ module.exports = class TeamRequirement extends BaseOfflineOrder {
 
         requirement.last_update = nowTime;
 
-        return await this.$update({ _id:id, status }, update)
+        return await this.$update(updateQuery, update)
     }
 }
