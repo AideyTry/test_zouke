@@ -13,7 +13,6 @@ module.exports = class LoginController extends SController {
     }
 
     [$$checkPermission](type, pValue){
-        console.log(type,pValue);
         if(!Array.isArray(pValue)){
             pValue = [pValue];
         }
@@ -53,7 +52,6 @@ module.exports = class LoginController extends SController {
         if(!actionAccess) return;
         
         for(let type of Object.keys(actionAccess)){
-            console.log(type, actionAccess);
             if(!this[$$checkPermission](type, actionAccess[type])){
                 this.renderJSON({ code: -2, msg: 'access deny' })
                 return false;
