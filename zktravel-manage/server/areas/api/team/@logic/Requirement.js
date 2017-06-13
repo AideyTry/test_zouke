@@ -103,7 +103,8 @@ module.exports = class TeamRequirement extends BaseOfflineOrder {
         const nowTime = this.$createTime();
 
         const update = {
-            $set: { requirement }
+            $set: { requirement, 'price_history.$.disable_apply': true },
+            $unset: { price: 1 }
         };
         if(status !== WAIT_FOR_PUBLISH && status !== WAIT_FOR_DISPATCH){
             update.$set.status = WAIT_FOR_GIVE_PRICE;

@@ -8,6 +8,8 @@ module.exports = class OfflineOrder extends BaseOfflineOrder {
         if(creatorId) findQuery['creator.id']=creatorId;
         if(bookingId) findQuery['booking_user.id']=bookingId;
 
+        const count = await collection.find(findQuery).count()
+
         const cursor = collection.find(findQuery, {
             'requirement.user.name': 1,
             'requirement.priority': 1,
@@ -18,16 +20,19 @@ module.exports = class OfflineOrder extends BaseOfflineOrder {
 
         const list = await cursor.toArray();
 
-        return list.map(item=>{
-            return {
-                orderId: item._id,
-                userName: item.requirement.user.name,
-                priority: item.requirement.priority,
-                startDate: item.requirement.start_date,
-                status: item.status,
-                publishTime: item.create_time
-            };
-        });
+        return { 
+            count, 
+            list: list.map(item=>{
+                return {
+                    orderId: item._id,
+                    userName: item.requirement.user.name,
+                    priority: item.requirement.priority,
+                    startDate: item.requirement.start_date,
+                    status: item.status,
+                    publishTime: item.create_time
+                };
+            })
+        };
     }
     async detail(id){
         const collection = await this.$getCollection();
@@ -35,14 +40,6 @@ module.exports = class OfflineOrder extends BaseOfflineOrder {
         detail.id = detail._id;
         delete detail._id;
         return detail;
-    }
-
-    async invalidReq(id){
-        //需求审核不通过 
-        return await this.$update({ _id: id, status: this.status.WAIT_FOR_DISPATCH }, { 
-            $set: { status: 1 },
-            $push: { logs: { type:'system:reject-requirement', time: this.$createTime() } }
-        });
     }
 
     async dispatch(id, user, dead_line){
