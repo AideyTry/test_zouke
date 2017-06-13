@@ -3,6 +3,9 @@
         height: 768px;
         width: 100%;
     }
+    .offer-container{
+        height: 100%;
+    }
 </style>
 <template>
     <div class="offer-detail-container">
@@ -20,9 +23,9 @@
                     :label="item.title"
                     :name="item.title">
                 <div class="offer-container">
-                    <el-tabs v-model="countryTabs" type="border-card" active-name="1">
+                    <el-tabs v-model="countryTabs" type="border-card" :active-name="countryTabs">
                         <template v-for="(v,k) in item.order">
-                            <el-tab-pane :label="v.city.name" :name="k">
+                            <el-tab-pane :label="v.city.name" :name="v.city.name+k">
                                 <city :i="index" :k="k" :order="v" :params="editableTabs[index].params[k]"></city>
                             </el-tab-pane>
                         </template>
@@ -50,7 +53,7 @@
                 }],
                 orderdata: null,
                 countryTabs: null,
-                offergroup: 1,
+                offergroup: 1
             }
         },
         methods: {
@@ -67,13 +70,13 @@
                             order: data.detail.requirement.stay_details,
                             params: []
                         }]
-                        vm.countryTabs = data.detail.requirement.stay_details[0].city.name
+                        vm.countryTabs = data.detail.requirement.stay_details[0].city.name+'0'
                         data.detail.requirement.stay_details.forEach(
                             (v, k) => {
                                 vm.editableTabs[0].params.push({city: '', hotel: '', room: []})
                                 v.rooms.forEach(
                                     (l, y) => {
-                                        vm.editableTabs[0].params[k].room.push({tyep: '', num: 0, mark: ''})
+                                        vm.editableTabs[0].params[k].room.push({cost: '', bk: '', offer: ''})
                                     }
                                 )
                             })
@@ -94,7 +97,7 @@
                     title: '方案' + this.tabnum,
                     name: '方案' + this.tabnum,
                     order: this.orderdata.requirement.stay_details,
-                    params: []
+                    params: this.editableTabs[0].params
                 })
             },
             closetab(targetName){
@@ -111,6 +114,9 @@
                     }
                 });
             }
+        },
+        computed:{
+
         },
         mounted(){
             this.loadorder(this.$route.params.orderid);

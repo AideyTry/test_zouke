@@ -35,7 +35,7 @@
             }
         }
         .content{
-            height: 560px;
+            height: 800px;
             overflow-y: auto;
             padding-top: 20px;
             .text-line{
