@@ -66,11 +66,9 @@
 <template>
     <div class="order-detail-container">
         <el-row class="title">
-            <el-col :span="4">
+            <el-col :span="5">
                 <span class="title">我的需求 > 订单详情</span>
-            </el-col>
-            <el-col :span="4">
-                <span class="status">待发布</span>
+                <span class="status">{{orderdata?orderstatus[orderdata.status]:'待发布'}}</span>
             </el-col>
         </el-row>
         <div class="order-detail">
@@ -98,16 +96,16 @@
                     <messageDetail></messageDetail>
                 </el-tab-pane>
                 <div class="button-group">
-                    <el-button v-if="userole.DISPATCH&&activetabs=='require-node'&&!change" @click="showdialog(1)" type="info" size="small">分配</el-button>
-                    <el-button v-if="userole.UPDATE_ALL_REQUIREMENT&&activetabs=='require-node'" type="info" size="small" @click="togglechange">
-                        {{change ? '放弃修改' : '修改'}}
-                    </el-button>
-                    <el-button v-if="userole.UPDATE_ALL_REQUIREMENT&&activetabs=='require-node'"  @click="updateorder" style="color:#20a0ff;border-color:#20a0ff"
-                               size="small">发布
+                    <el-button v-if="userole.UPDATE_ALL_REQUIREMENT&&activetabs=='require-node'" v-show="!change" type="info" size="small" @click="togglechange">
+                        修改
                     </el-button>
                     <el-button v-if="userole.UPDATE_ALL_REQUIREMENT&&activetabs=='require-node'" v-show="change" @click="updatedraft" style="color:#20a0ff;border-color:#20a0ff"
-                               size="small">存为草稿
+                               size="small">保存
                     </el-button>
+                    <el-button v-if="userole.UPDATE_ALL_REQUIREMENT&&activetabs=='require-node'"  @click="publishorder" style="color:#20a0ff;border-color:#20a0ff"
+                               size="small">发布
+                    </el-button>
+                    <el-button v-if="userole.DISPATCH&&activetabs=='require-node'&&!change&&orderdata.status==2" @click="showdialog(1)" type="info" size="small">分配</el-button>
                 </div>
                 <div class="dialog-group">
                     <dialog1 @closedialog="closedialog" :dialoggroup="dialoggroup"  v-if="userole.DISPATCH" :pickerOptions="pickerOptions"></dialog1>
@@ -130,8 +128,7 @@
             changerequire: changeRequire,
             dialog1:dialog1,
             offerdetail:offerDetail,
-            messageDetail:messageDetail,
-            orderstatus:['待发布','待分配','待报价']
+            messageDetail:messageDetail
         },
         data(){
             return {
@@ -153,7 +150,8 @@
                     }
                 ],
                 tab:null,
-                activetabs:'require-node'
+                activetabs:'require-node',
+                orderstatus:['','待发布','待分配','待报价','报价待审核','报价待确认','待收款','分房待确认','待控房','已控房']
             }
         },
         methods: {
@@ -181,13 +179,23 @@
             closedialog(n){
                 this.dialoggroup[n-1].show=false;
             },
-            updateorder(){
-                ajax.post('/api/team/requirement/draft-publish',{
-                    id:this.$route.params.orderid
-                })
-            },
             updatedraft(){
-
+                ajax.post('/api/team/requirement/update',{
+                    id:this.$route.params.orderid,
+                    requirement:this.orderdata.requirement
+                }).then(
+                    data=>{
+                        if(data.code=0){
+                            this.getorder(this.$route.params.orderid);
+                        }
+                    }
+                )
+            },
+            publishorder(){
+                ajax.post('/api/team/requirement/draft-publish',{
+                    id:this.$route.params.orderid,
+                    requirement:this.orderdata.requirement
+                })
             }
 
         },

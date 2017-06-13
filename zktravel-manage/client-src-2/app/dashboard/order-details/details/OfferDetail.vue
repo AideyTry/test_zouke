@@ -20,9 +20,9 @@
                     :label="item.title"
                     :name="item.title">
                 <div class="offer-container">
-                    <el-tabs v-model="countryTabs" type="border-card" active-name="countryTabs">
+                    <el-tabs v-model="countryTabs" type="border-card" active-name="1">
                         <template v-for="(v,k) in item.order">
-                            <el-tab-pane :label="v.city.name" :name="v.city.name">
+                            <el-tab-pane :label="v.city.name" :name="k">
                                 <city :i="index" :k="k" :order="v" :params="editableTabs[index].params[k]"></city>
                             </el-tab-pane>
                         </template>
