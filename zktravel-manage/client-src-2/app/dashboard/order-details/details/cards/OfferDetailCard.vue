@@ -1,24 +1,83 @@
-<style>
-
+<style lang="scss" scoped>
+    .country{
+        .el-row{
+          height: 40px;
+        }
+    }
 </style>
 <template>
     <div class="country">
         <el-row>
             <el-col :span="3">入住/离店：</el-col>
-            <el-col :span="9">2017.05.30 - 2017.06.03 4晚</el-col>
-            <el-col :span="12">指定的酒店：假日皇冠大酒店</el-col>
+            <el-col :span="9">{{order.check_in}} - {{order.check_out}} 4晚</el-col>
+            <el-col :span="12">指定的酒店：{{order.hotel.name}}</el-col>
         </el-row>
         <el-row>
-            <el-col :span="10">酒店：</el-col>
-            <el-col :span="6">
-
+            <el-col :span="3"><div>酒店：</div></el-col>
+            <el-col :span="9" style="padding-right: 10px">
+                <el-autocomplete
+                        size="small"
+                        class="inline-input"
+                        v-model="hotel"
+                        :fetch-suggestions="searchhotel"
+                        placeholder="输入关键字选择"
+                        @select="selecthotel"
+                ></el-autocomplete>
             </el-col>
+            <el-col :span="12">B评分：9.0</el-col>
         </el-row>
+        <div class="card">
+            <el-row>
+                <el-col></el-col>
+            </el-row>
+        </div>
     </div>
 </template>
 <script>
+    import debounce from 'lodash/debounce';
+    import ajax from '@local/common/ajax';
     export default{
-        props:['v','k'],
+        props:['i','k','order','params'],
+        data(){
+            return{
+                hotel:'',
+                hotelflag:false
+            }
+        },
+        methods:{
+            searchhotel:debounce(function (queryString, cb) {
+                if (queryString) {
+                    ajax.postSilence('/api/hotel/zk-hotel/query', {
+                        keyword: queryString.trim()
+                    }).then(
+                        data => {
+                            let arr = []
+                            if(data.list){
+                                data.list.forEach(
+                                    (v, k) => {
+                                        arr.push({value: v.name, item: v})
+                                    }
+                                )
+                                cb(arr)
+                            }
 
+                        }
+                    )
+                }
+            }, 1000),
+            selecthotel:function (item) {
+                let arr = item.item;
+                this.hotelflag=true;
+                this.params.hotel = arr;
+            }
+        },
+        watch:{
+            hotel(val){
+                if(!this.hotelflag){
+                    this.params.hotel={name:val,custom:true}
+                }
+                this.hotelflag=false;
+            }
+        }
     }
 </script>

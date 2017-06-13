@@ -53,7 +53,7 @@
         .button-group {
             position: absolute;
             top: -50px;
-            right: 70px;
+            right: 30px;
             z-index: 99;
         }
     }
@@ -98,11 +98,11 @@
                     <messageDetail></messageDetail>
                 </el-tab-pane>
                 <div class="button-group">
-                    <el-button v-if="userole.DISPATCH&&activetabs=='require-node'" @click="showdialog(1)" type="info" size="small">分配</el-button>
+                    <el-button v-if="userole.DISPATCH&&activetabs=='require-node'&&!change" @click="showdialog(1)" type="info" size="small">分配</el-button>
                     <el-button v-if="userole.UPDATE_ALL_REQUIREMENT&&activetabs=='require-node'" type="info" size="small" @click="togglechange">
                         {{change ? '放弃修改' : '修改'}}
                     </el-button>
-                    <el-button v-if="userole.UPDATE_ALL_REQUIREMENT&&activetabs=='require-node'" v-show="change" @click="updateorder" style="color:#20a0ff;border-color:#20a0ff"
+                    <el-button v-if="userole.UPDATE_ALL_REQUIREMENT&&activetabs=='require-node'"  @click="updateorder" style="color:#20a0ff;border-color:#20a0ff"
                                size="small">发布
                     </el-button>
                     <el-button v-if="userole.UPDATE_ALL_REQUIREMENT&&activetabs=='require-node'" v-show="change" @click="updatedraft" style="color:#20a0ff;border-color:#20a0ff"
@@ -130,7 +130,8 @@
             changerequire: changeRequire,
             dialog1:dialog1,
             offerdetail:offerDetail,
-            messageDetail:messageDetail
+            messageDetail:messageDetail,
+            orderstatus:['待发布','待分配','待报价']
         },
         data(){
             return {
@@ -181,9 +182,8 @@
                 this.dialoggroup[n-1].show=false;
             },
             updateorder(){
-                ajax.post('/api/team/requirement/update',{
-                    id:this.$route.params.orderid,
-                    requirement:orderdata
+                ajax.post('/api/team/requirement/draft-publish',{
+                    id:this.$route.params.orderid
                 })
             },
             updatedraft(){

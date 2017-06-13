@@ -23,7 +23,7 @@
                     <el-tabs v-model="countryTabs" type="border-card" active-name="countryTabs">
                         <template v-for="(v,k) in item.order">
                             <el-tab-pane :label="v.city.name" :name="v.city.name">
-                                <city :v="v" :k="k"> </city>
+                                <city :i="index" :k="k" :order="v" :params="editableTabs[index].params[k]"></city>
                             </el-tab-pane>
                         </template>
                     </el-tabs>
@@ -36,18 +36,21 @@
     import ajax from '@local/common/ajax';
     import city from './cards/OfferDetailCard'
     export default{
-        component:{
-          city:city
+        components: {
+            city: city
         },
         data(){
             return {
                 tabnum: 1,
                 editableTabsValue: null,
-                editableTabs: [{title: '方案1', name: '方案1'}],
+                editableTabs: [{
+                    title: '方案1',
+                    name: '方案1',
+                    params: []
+                }],
                 orderdata: null,
                 countryTabs: null,
                 offergroup: 1,
-                params:[]
             }
         },
         methods: {
@@ -58,14 +61,19 @@
                 }, {lock: false}).then(
                     data => {
                         vm.orderdata = data.detail;
-                        vm.editableTabs = [{title: '方案1', name: '方案1', order: data.detail.requirement.stay_details}]
+                        vm.editableTabs = [{
+                            title: '方案1',
+                            name: '方案1',
+                            order: data.detail.requirement.stay_details,
+                            params: []
+                        }]
                         vm.countryTabs = data.detail.requirement.stay_details[0].city.name
                         data.detail.requirement.stay_details.forEach(
                             (v, k) => {
+                                vm.editableTabs[0].params.push({city: '', hotel: '', room: []})
                                 v.rooms.forEach(
-                                    (l,y)=>{
-                                        vm.params.push({room:[],hotel:''})
-                                        vm.params[k].room.push({bk:''})
+                                    (l, y) => {
+                                        vm.editableTabs[0].params[k].room.push({tyep: '', num: 0, mark: ''})
                                     }
                                 )
                             })
@@ -85,7 +93,8 @@
                 this.editableTabs.push({
                     title: '方案' + this.tabnum,
                     name: '方案' + this.tabnum,
-                    order: this.orderdata.requirement.stay_details
+                    order: this.orderdata.requirement.stay_details,
+                    params: []
                 })
             },
             closetab(targetName){

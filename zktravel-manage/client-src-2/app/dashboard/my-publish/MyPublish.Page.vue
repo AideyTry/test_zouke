@@ -344,7 +344,7 @@ export default{
             }
         },
         cellClick(orderId){
-            this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId}});
+            this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'require-node'}});
         }
     },
     mounted(){
