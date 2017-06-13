@@ -178,7 +178,7 @@
             },
             searchcity:debounce(function (queryString, cb) {
                 if (queryString) {
-                    ajax.postSilence('/api/city/query ', {
+                    ajax.postSilence('/api/city/search', {
                         keyword: queryString.trim()
                     }).then(
                         data => {
