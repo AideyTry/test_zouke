@@ -21,13 +21,9 @@
                     :name="item.title">
                 <div class="offer-container">
                     <el-tabs v-model="countryTabs" type="border-card" active-name="countryTabs">
-                        <template  v-for="(v,k) in item.order">
-                            <el-tab-pane  :label="v.city.name" :name="v.city.name">
-                                <div class="country">
-                                    <el-row>
-                                        <el-col :span="12"></el-col>
-                                    </el-row>
-                                </div>
+                        <template v-for="(v,k) in item.order">
+                            <el-tab-pane :label="v.city.name" :name="v.city.name">
+                                <city :v="v" :k="k"> </city>
                             </el-tab-pane>
                         </template>
                     </el-tabs>
@@ -37,16 +33,20 @@
     </div>
 </template>
 <script>
-    import ajax from '@local/common/ajax'
+    import ajax from '@local/common/ajax';
+    import city from './cards/OfferDetailCard'
     export default{
+        component:{
+          city:city
+        },
         data(){
             return {
                 tabnum: 1,
-                editableTabsValue:null,
-                editableTabs:[{title: '方案1', name: '方案1'}],
-                orderdata:null,
-                countryTabs:null,
-                offergroup:1,
+                editableTabsValue: null,
+                editableTabs: [{title: '方案1', name: '方案1'}],
+                orderdata: null,
+                countryTabs: null,
+                offergroup: 1,
                 params:[]
             }
         },
@@ -55,11 +55,20 @@
                 let vm = this;
                 ajax.post('/api/team/order/detail', {
                     id: id
-                },{lock:false}).then(
+                }, {lock: false}).then(
                     data => {
                         vm.orderdata = data.detail;
-                        vm.editableTabs=[{title: '方案1', name: '方案1',order:data.detail.requirement.stay_details}]
-                        vm.countryTabs=data.detail.requirement.stay_details[0].city.name
+                        vm.editableTabs = [{title: '方案1', name: '方案1', order: data.detail.requirement.stay_details}]
+                        vm.countryTabs = data.detail.requirement.stay_details[0].city.name
+                        data.detail.requirement.stay_details.forEach(
+                            (v, k) => {
+                                v.rooms.forEach(
+                                    (l,y)=>{
+                                        vm.params.push({room:[],hotel:''})
+                                        vm.params[k].room.push({bk:''})
+                                    }
+                                )
+                            })
                     }
                 )
             },
@@ -73,20 +82,24 @@
             },
             addtab(){
                 this.tabnum += 1;
-                this.editableTabs.push({title: '方案' + this.tabnum, name: '方案' + this.tabnum,order:this.orderdata.requirement.stay_details})
+                this.editableTabs.push({
+                    title: '方案' + this.tabnum,
+                    name: '方案' + this.tabnum,
+                    order: this.orderdata.requirement.stay_details
+                })
             },
             closetab(targetName){
                 let tabs = this.editableTabs;
                 let activeName = this.editableTabsValue;
                 tabs.forEach((tab, index) => {
-                        if (tab.name === targetName) {
-                            let nextTab = tabs[index + 1] || tabs[index - 1];
-                            if (nextTab) {
-                                activeName = nextTab.name;
-                                tabs.splice(index,1);
-                                this.tabnum -= 1;
-                            }
+                    if (tab.name === targetName) {
+                        let nextTab = tabs[index + 1] || tabs[index - 1];
+                        if (nextTab) {
+                            activeName = nextTab.name;
+                            tabs.splice(index, 1);
+                            this.tabnum -= 1;
                         }
+                    }
                 });
             }
         },

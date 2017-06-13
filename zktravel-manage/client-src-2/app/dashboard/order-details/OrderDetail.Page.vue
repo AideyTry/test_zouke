@@ -130,7 +130,6 @@
             changerequire: changeRequire,
             dialog1:dialog1,
             offerdetail:offerDetail,
-            dialog1:dialog1,
             messageDetail:messageDetail
         },
         data(){
