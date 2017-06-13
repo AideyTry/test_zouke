@@ -42,7 +42,7 @@ module.exports = class BaseOfflineOrder{
         return await db.collection('offline_order');
     }
     $createTime(){
-        return new Date().format('YYYY-MM-DD hh:mm:ss');
+        return new Date().format('YYYY-MM-DD HH:mm:ss');
     }
     async $insert(order){
         const collection = await this.$getCollection();
