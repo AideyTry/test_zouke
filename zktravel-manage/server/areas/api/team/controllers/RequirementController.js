@@ -72,7 +72,7 @@ module.exports = class TeamReqController extends LController {
     async update(){
         const teamRequirement = new TeamRequirement();
         const { id, requirement } = this.request.body;
-        const transRequirement = teamRequirement.validRequirement(id, requirement);
+        const transRequirement = teamRequirement.validRequirement(requirement);
         if(!transRequirement){
             this.renderJSON({ code:1, msg: 'data check valid fail' });
             return;
