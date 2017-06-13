@@ -1,4 +1,4 @@
-const BaseOfflineOrder = require('./BaseOrder');
+const BaseOrder = require('./BaseOrder');
 const compare = require('@local/compare');
 const jsondiffpatch = require('jsondiffpatch');
 
@@ -38,7 +38,7 @@ const validReqDataRule = {
 }
 
 
-module.exports = class TeamRequirement extends BaseOfflineOrder {
+module.exports = class TeamRequirement extends BaseOrder {
     async $insert(requirement, status, creator){
         requirement.last_update = this.$createTime();
 
