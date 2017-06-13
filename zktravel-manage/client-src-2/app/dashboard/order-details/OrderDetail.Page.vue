@@ -105,7 +105,7 @@
                     <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'||userole.UPDATE_ALL_REQUIREMENT"  @click="publishorder" style="color:#20a0ff;border-color:#20a0ff"
                                size="small">发布
                     </el-button>
-                    <el-button v-if="userole.DISPATCH&&activetabs=='require-node'&&!change&&orderdata.status==2" @click="showdialog(1)" type="info" size="small">分配</el-button>
+                    <el-button v-if="userole.DISPATCH&&activetabs=='require-node'&&!change&&orderdatastatus==2" @click="showdialog(1)" type="info" size="small">分配</el-button>
                 </div>
                 <div class="dialog-group">
                     <dialog1 @closedialog="closedialog" :dialoggroup="dialoggroup"  v-if="userole.DISPATCH" :pickerOptions="pickerOptions"></dialog1>
@@ -207,6 +207,9 @@
             },
             userole(){
                 return this.$store.getters.offlineRole;
+            },
+            orderdatastatus(){
+                return  this.orderdata? this.orderdata.status:'0'
             }
         },
         created(){

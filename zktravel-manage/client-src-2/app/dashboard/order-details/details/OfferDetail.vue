@@ -1,6 +1,6 @@
 <style lang="scss" scoped>
     .offer-detail-container {
-        height: 768px;
+        height: 800px;
         width: 100%;
     }
     .offer-container{
