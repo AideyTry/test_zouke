@@ -114,17 +114,10 @@
         methods:{
             loadtable(){
                 let vm=this;
-                ajax.post('/api/team/order/query',{status:2}).then(
+                ajax.post('/api/team/order/query',{status:2,page:vm.currentpage-1,pageSize:vm.currentlimit}).then(
                     data=>{
-                        let arr=[];
                         vm.tabledata =  data.list;
-                        for (let num = (vm.currentpage - 1) * vm.currentlimit; num < vm.currentlimit * vm.currentpage; num++) {
-                            if (vm.tabledata[num]) {
-                                arr.push(vm.tabledata[num]);
-                            }
-                        }
-                        vm.currentdata = arr;
-                        vm.total = data.list.length;
+                        vm.total = data.total;
                     }
                 )
             },

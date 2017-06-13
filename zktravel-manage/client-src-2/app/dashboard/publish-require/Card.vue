@@ -199,7 +199,7 @@
             },
             searchhotel:debounce(function (queryString, cb) {
                 if (queryString) {
-                    ajax.postSilence('/api/hotel/zk-hotel/query', {
+                    ajax.postSilence('/api/hotel/zk-hotel/search', {
                         keyword: queryString.trim()
                     }).then(
                         data => {

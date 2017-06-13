@@ -207,9 +207,6 @@
             },
             userole(){
                 return this.$store.getters.offlineRole;
-            },
-            orderstatus(){
-
             }
         },
         created(){
