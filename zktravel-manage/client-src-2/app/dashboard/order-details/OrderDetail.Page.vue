@@ -66,7 +66,7 @@
 <template>
     <div class="order-detail-container">
         <el-row class="title">
-            <el-col :span="5">
+            <el-col>
                 <span class="title">我的需求 > 订单详情</span>
                 <span class="status">{{orderdata?orderstatus[orderdata.status]:'待发布'}}</span>
             </el-col>
@@ -96,13 +96,13 @@
                     <messageDetail></messageDetail>
                 </el-tab-pane>
                 <div class="button-group">
-                    <el-button v-if="userole.UPDATE_ALL_REQUIREMENT&&activetabs=='require-node'" v-show="!change" type="info" size="small" @click="togglechange">
+                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'||userole.UPDATE_ALL_REQUIREMENT" v-show="!change" type="info" size="small" @click="togglechange">
                         修改
                     </el-button>
-                    <el-button v-if="userole.UPDATE_ALL_REQUIREMENT&&activetabs=='require-node'" v-show="change" @click="updatedraft" style="color:#20a0ff;border-color:#20a0ff"
+                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'||userole.UPDATE_ALL_REQUIREMENT" v-show="change" @click="updatedraft" style="color:#20a0ff;border-color:#20a0ff"
                                size="small">保存
                     </el-button>
-                    <el-button v-if="userole.UPDATE_ALL_REQUIREMENT&&activetabs=='require-node'"  @click="publishorder" style="color:#20a0ff;border-color:#20a0ff"
+                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'||userole.UPDATE_ALL_REQUIREMENT"  @click="publishorder" style="color:#20a0ff;border-color:#20a0ff"
                                size="small">发布
                     </el-button>
                     <el-button v-if="userole.DISPATCH&&activetabs=='require-node'&&!change&&orderdata.status==2" @click="showdialog(1)" type="info" size="small">分配</el-button>
@@ -180,13 +180,15 @@
                 this.dialoggroup[n-1].show=false;
             },
             updatedraft(){
+                let vm=this;
                 ajax.post('/api/team/requirement/update',{
-                    id:this.$route.params.orderid,
-                    requirement:this.orderdata.requirement
+                    id:vm.$route.params.orderid,
+                    requirement:vm.orderdata.requirement
                 }).then(
                     data=>{
                         if(data.code=0){
-                            this.getorder(this.$route.params.orderid);
+                            vm.getorder(vm.$route.params.orderid);
+                            vm.change=false;
                         }
                     }
                 )
@@ -205,9 +207,12 @@
             },
             userole(){
                 return this.$store.getters.offlineRole;
+            },
+            orderstatus(){
+
             }
         },
-        mounted(){
+        created(){
             this.getorder(this.$route.params.orderid);
             this.activetabs=this.$route.params.status;
         }
