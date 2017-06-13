@@ -1,6 +1,6 @@
 const LController = requireRoot('common/LController');
 const TeamRequirement = require('../@logic/Requirement');
-const OfflineOrder = require('../@logic/Order');
+const Order = require('../@logic/Order');
 
 const triggerInsert = Symbol();
 
@@ -107,20 +107,12 @@ module.exports = class TeamReqController extends LController {
         //todo 
     }
 
-    async invalidReq(){
-        //需求审核不通过
-        const { id } = this.request.body;
-        const offlineOrder = new OfflineOrder();
-        const result = await offlineOrder.invalidReq(id);
-        if(result) this.renderJSON({ code:0 });
-        else this.renderJSON({ code:2, msg: 'can not invalid this req' });
-    }
     async dispatch(){
         //分配
         const { id, user, dead_line } = this.request.body;
-        const offlineOrder = new OfflineOrder();
+        const order = new Order();
 
-        const result = await offlineOrder.dispatch(id, user, dead_line);
+        const result = await order.dispatch(id, user, dead_line);
 
         if(result) this.renderJSON({ code:0 });
         else this.renderJSON({ code:2, msg: 'can not dispatch this order' });
