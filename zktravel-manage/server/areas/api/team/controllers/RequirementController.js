@@ -27,6 +27,10 @@ module.exports = class TeamReqController extends LController {
             }
         }
     }
+    $beforeAction(){
+        this.logResponse();
+        return super.$beforeAction();
+    }
     async [triggerInsert](name){
         const teamRequirement = new TeamRequirement();
         const requirement = teamRequirement.validRequirement(this.request.body);
@@ -50,7 +54,7 @@ module.exports = class TeamReqController extends LController {
         const teamRequirement = new TeamRequirement();
         const { id, requirement } = this.request.body;
 
-        let result = false;
+        let result = false; 
         if(requirement){
             const transRequirement = teamRequirement.validRequirement(requirement);
             if(!transRequirement){

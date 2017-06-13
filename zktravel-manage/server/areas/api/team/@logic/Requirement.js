@@ -65,7 +65,7 @@ module.exports = class TeamRequirement extends BaseOfflineOrder {
             requirement.last_update = this.$createTime();
             set.requirement = requirement;
         }
-        return await this.$update({_id:id, status: this.status.WAIT_FOR_DISPATCH}, { $set: set });
+        return await this.$update({_id:id, status: this.status.WAIT_FOR_PUBLISH}, { $set: set });
     }
     async update(id, requirement, user, all){
         const collection = await this.$getCollection();
