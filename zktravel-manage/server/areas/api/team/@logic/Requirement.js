@@ -67,7 +67,7 @@ module.exports = class TeamRequirement extends BaseOrder {
         }
         return await this.$update({_id:id, status: this.status.WAIT_FOR_PUBLISH}, { $set: set });
     }
-    async update(id, requirement, user, all){
+    async update(id, requirement, user/*更新者*/, all/*是否能更新所有需求*/){
         const collection = await this.$getCollection();
         
         const { 
