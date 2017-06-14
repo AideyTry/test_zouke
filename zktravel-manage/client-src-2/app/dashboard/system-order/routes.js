@@ -3,8 +3,11 @@ export default [
     {
         path:'system-order-proxy',
         name:'dashboard-system-order-proxy',
-        component:SysOrder
-        // redirect:{name:"dashboard-system-order-proxy",params:{status:'effective'}}
+        redirect:{name:"dashboard-system-order",params:{order:'effective'}}
     },
-    // {path:'system-order/:status',component:SysOrder,name:'dashboard-system-order'}
+    {
+        path:"system-order/:order",
+        component:SysOrder,
+        name:'dashboard-system-order'
+    }
 ]

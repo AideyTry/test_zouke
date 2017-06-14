@@ -81,7 +81,7 @@
                     <offerdetail ref="offerdetaildata" v-if="activetabs=='offer-node'"></offerdetail>
                 </el-tab-pane>
                 <el-tab-pane label="订单详情" name="order-detail">
-
+                    <orderDetail :orderData="orderdata"></orderDetail>
                 </el-tab-pane>
                 <el-tab-pane label="收入/支出" name="in-out">
 
@@ -122,6 +122,7 @@
     import changeRequire from '../publish-require/PublishRequire.Page';
     import dialog1 from './dialogs/DistributeDialog';
     import offerDetail from './details/OfferDetail';
+    import orderDetail from './details/orderDetail'
     import messageDetail from './details/MessageDetail';
     export default{
         components: {
@@ -129,6 +130,7 @@
             changerequire: changeRequire,
             dialog1:dialog1,
             offerdetail:offerDetail,
+            orderDetail:orderDetail,
             messageDetail:messageDetail
         },
         data(){
