@@ -221,7 +221,8 @@
                 )
                 ajax.post('/api/team/price/update',{
                     id:this.$route.params.orderid,
-                    price:{cases:params}
+                    price:{cases:params},
+                    requirementLastTime:this.orderdata.last_update
                 }).then(
                     data=>{
 
