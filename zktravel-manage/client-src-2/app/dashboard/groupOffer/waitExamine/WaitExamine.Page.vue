@@ -29,28 +29,24 @@
             }
         }
         .div{
-            width:100000px;
+            width:100%;
             height:20px;
         }
-        .bgc1{
-            display:block;
-            background-color: deeppink;
-            color:deeppink;
+        .warning{
+            color: #fff;
+            background: #F7BA2A;
         }
-        .bgc2{
-            display:block;
-            background-color: orange;
-            color:orange;
+        .danger{
+            color: #fff;
+            background: #FF4949;
         }
-        .bgc3{
-            display:block;
-            background-color: yellow;
-            color:yellow;
+        .primary{
+            color: #fff;
+            background: #1D8CE0;
         }
-        .bgc4{
-            display:block;
-            background-color: purple;
-            color:purple;
+        .overdead{
+            color: #fff;
+            background: #324057;
         }
     }
 
@@ -81,46 +77,46 @@
                         border
                         style="width: 100%">
                     <el-table-column
-                            prop="order"
                             label="紧急度"
                             v-if="true"
-
                     >
                         <template scope="scope">
-                            <span v-bind:class="[{bgc1:scope.row.order===1},{bgc2:scope.row.order===2},{bgc3:scope.row.order===3},{bgc4:scope.row.order===4}]">
-                                {{scope.row.order}}
-                            </span>
+                            <el-tag v-if="scope.row._class=='danger'" color="#FF4949">8小时完成</el-tag>
+                            <el-tag v-if="scope.row._class=='warming'" color="#F7BA2A">24小时完成</el-tag>
+                            <el-tag v-if="scope.row._class=='primary'" color="#1D8CE0">48小时完成</el-tag>
+                            <el-tag v-if="scope.row._class=='success'" type="success">48小时以上</el-tag>
+                            <el-tag v-if="scope.row._class=='overdead'" color="#324057">已超时</el-tag>
                         </template>
                     </el-table-column>
 
                     <el-table-column
-                            prop="name"
+                            prop="orderId"
                             label="订单号"
                             width="180">
                     </el-table-column>
                     <el-table-column
 
-                            prop="name"
+                            prop="userName"
                             label="用户名">
                     </el-table-column>
                     <el-table-column
                             sortable
-                            prop="优先级"
+                            prop="priority"
                             label="状态"
                             width="180">
                     </el-table-column>
                     <el-table-column
-                            prop="状态"
+                            prop=""
                             label="金额"
                             width="180">
                     </el-table-column>
                     <el-table-column
-                            prop="creater"
+                            prop=""
                             label="创建人">
                     </el-table-column>
                     <el-table-column
                             sortable
-                            prop="quoter"
+                            prop="startDate"
                             label="完成时间"
                             width="180">
                     </el-table-column>
@@ -130,33 +126,6 @@
                 <el-row type="flex">
                     <el-col :span="1"></el-col>
                     <el-col :span="15">
-                        <el-row type="flex">
-                            <el-col :span="3"><span>报价紧急度</span></el-col>
-                            <el-col :span="5">
-                                <el-row type="flex">
-                                    <el-col :span="10" v-bind:class="{bgc1:true}"></el-col>
-                                    <span>8小时内完成</span>
-                                </el-row>
-                            </el-col>
-                            <el-col :span="5">
-                                <el-row type="flex">
-                                    <el-col :span="10" v-bind:class="{bgc2:true}"></el-col>
-                                    <span>24小时内完成</span>
-                                </el-row>
-                            </el-col>
-                            <el-col :span="5">
-                                <el-row type="flex">
-                                    <el-col :span="10" v-bind:class="{bgc3:true}"></el-col>
-                                    <span>48小时内完成</span>
-                                </el-row>
-                            </el-col>
-                            <el-col :span="5">
-                                <el-row type="flex">
-                                    <el-col :span="10" v-bind:class="{bgc4:true}"></el-col>
-                                    <span>已超时</span>
-                                </el-row>
-                            </el-col>
-                        </el-row>
                     </el-col>
                 </el-row>
                 <el-pagination
@@ -179,7 +148,7 @@
                 activeName:'wp',
                 pager:{
                     status:4,
-                    pageNum:1,
+                    pageNum:0,
                     pageSize:8,
                     total:0,
                     keyword:'',
@@ -189,34 +158,8 @@
                 orderStates:[
                     {}
                 ],
-                currentData:[],
-                tableData:[
-                    {order:1,name:1,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:2,name:2,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:3,name:3,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:4,name:4,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:1,name:5,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:1,name:6,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:3,name:7,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:3,name:8,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1}
-                ],
-                tableData1:[
-                    {order:4,name:11,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:2,name:12,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1}
-                ],
-                tableData2:[
-                    {order:3,name:1,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:2,name:2,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:1,name:3,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:4,name:4,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:1,name:5,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:3,name:6,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1}
-                ],
-                tableData3:[
-                    {order:3,name:1,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:2,name:2,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1},
-                    {order:1,name:3,publishTime:1,state:1,amount:1,creater:1,quoter:1,orderTime:1}
-                ]
+                currentData:[]
+
             }
         },
         computed:{
@@ -225,10 +168,21 @@
         methods:{
             loadTable(){
                 ajax.post("/api/team/order/query",{status:this.pager.status,page:this.pager.pageNum,pageSize:this.pager.pageSize}).then(json=>{
-//                    console.log(json);
-//                    this.pager.total=3;
-//                    this.currentData=this.tableData3;
                     this.currentData=json.list;
+                    this.currentData.forEach(v=>{
+                        let hour=Math.floor((new Date(v.startDate)-new Date())/3600000);
+                        if(hour<=8){
+                            v._class='danger'
+                        }else if(8<hour&&hour<=24){
+                            v._class='warming'
+                        }else if(24<hour&&hour<=48){
+                            v._class='primary'
+                        }else if(hour<0){
+                            v._class='overdead'
+                        }else {
+                            v._class='success'
+                        }
+                    });
                 })
             },
             changeTab(tab){
