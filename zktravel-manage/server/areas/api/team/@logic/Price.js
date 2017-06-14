@@ -4,7 +4,7 @@ const compare = require('@local/compare');
 const priceRule = {
     '*cases':[
         {
-            '*booking_policy':'订房政策',
+            '*booking_channel':'订房政策',
             '*payment_policy': '付款政策',
             '*cancel_policy': '取消政策',
             remark: '备注',
