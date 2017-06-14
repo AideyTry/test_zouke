@@ -209,7 +209,7 @@
                         params.push([]);
                         v.params.forEach(
                             (a,b)=>{
-                                params[k].push({hotel:{name:'asjdkajs'},rooms:[]})
+                                params[k].push({hotel:{name:'sadsa'},rooms:[]})
                                 a.room.forEach(
                                     (l,d)=>{
                                         params[k][b].rooms.push({price:l})
@@ -222,7 +222,7 @@
                 ajax.post('/api/team/price/commit',{
                     id:this.$route.params.orderid,
                     price:{cases:params},
-                    requirementLastTime:this.orderdata.last_update
+                    requirementLastTime:this.orderdata.requirement.last_update
                 }).then(
                     data=>{
 
