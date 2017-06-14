@@ -1,5 +1,5 @@
 const path = require('path');
-const { upperFirstLetter, camelCase } = require('./utils');
+const { upperFirstLetter, camelCase, parseMethodArgs } = require('./utils');
 const Controller = require('./Controller');
 const NotFoundError = require('./NotFoundError');
 
@@ -23,6 +23,14 @@ function findControllerByPath(p){
         throw new Error('required controller class is not drive from koa-mvc/Controller');
     
     return RouteController;
+}
+
+function parseArgs(fn){
+    const args = parseMethodArgs(fn);
+    return args.map(arg=>{
+        const matchResult = /^\/\*\s*?param\s*?\:\s*?([\s\S]+?)\s*?\*\//.exec(arg);
+        return matchResult?matchResult[1]:arg
+    });
 }
 
 module.exports = class ActionTrigger{
@@ -54,7 +62,8 @@ module.exports = class ActionTrigger{
             let result = await controller.$beforeAction();
 
             if(result!==false){
-                const actionResult = await controller[this._actionName]();
+                const args = parseArgs(controller[this._actionName]).map(key=>controller.request.body[key]);
+                const actionResult = await controller[this._actionName](...args);
             }
             await controller.$afterAction(); 
             
