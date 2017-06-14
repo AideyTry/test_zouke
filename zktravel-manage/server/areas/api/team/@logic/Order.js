@@ -42,11 +42,11 @@ module.exports = class OfflineOrder extends BaseOfflineOrder {
         return detail;
     }
 
-    async dispatch(id, user, dead_line){
+    async dispatch(id, user, dead_line, logUser){
         //分配
         return await this.$update({ _id:id, status:this.status.WAIT_FOR_DISPATCH }, { 
             $set: { booking_user: user, booking_dead_line: dead_line, status:this.status.WAIT_FOR_GIVE_PRICE },
-            $push: { logs: { type:'system:dispatch-requirement', time: this.$createTime() } } 
+            $push: { logs: { type:'system:dispatch-requirement', time: this.$createTime(), user:logUser } } 
         });
     }
 }

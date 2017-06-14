@@ -1,4 +1,4 @@
-const BaseOfflineOrder = require('./BaseOrder');
+const BaseOrder = require('./BaseOrder');
 const compare = require('@local/compare');
 const jsondiffpatch = require('jsondiffpatch');
 
@@ -38,7 +38,7 @@ const validReqDataRule = {
 }
 
 
-module.exports = class TeamRequirement extends BaseOfflineOrder {
+module.exports = class TeamRequirement extends BaseOrder {
     async $insert(requirement, status, creator){
         requirement.last_update = this.$createTime();
 
@@ -67,7 +67,7 @@ module.exports = class TeamRequirement extends BaseOfflineOrder {
         }
         return await this.$update({_id:id, status: this.status.WAIT_FOR_PUBLISH}, { $set: set });
     }
-    async update(id, requirement, user, all){
+    async update(id, requirement, user/*更新者*/, all/*是否能更新所有需求*/){
         const collection = await this.$getCollection();
         
         const { 

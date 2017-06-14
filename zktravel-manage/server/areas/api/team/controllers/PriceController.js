@@ -1,12 +1,45 @@
 const LController = requireRoot('common/LController');
-const OfflineOrder = require('../@logic/Order');
+const Price = require('../@logic/Price');
 
 module.exports = class MyOfflineOrderController extends LController {
-    async query(){
-        const { status = 1 } = this.request.body;
-        const offlineOrder = new OfflineOrder();
-        const uid = this.userInfo.id;
-        const list = await offlineOrder.query(status, { creatorId: uid, pageSize: 100 }); 
-        this.renderJSON({code:0, list});
+    $meta(){
+        return {
+            access: {
+                'update': {
+                    'offline_order': this.P.OFFLINE_ORDER.UPDATE_PRICE
+                },
+                'commit': {
+                    'offline_order': this.P.OFFLINE_ORDER.UPDATE_PRICE
+                },
+                'check-price': { 
+                    'offline_order': this.P.OFFLINE_ORDER.CHECK_PRICE
+                },
+                'confirm-price': {
+                    'offline_order': this.P.OFFLINE_ORDER.CONFIRM_PRICE
+                }
+            }
+        }
+    }
+    async update(){
+        const { id, requirementLastTime, price } = this.request.body;
+        const s_price = new Price();
+        const transPrice = s_price.validPrice(price)
+        if(!transPrice) return this.renderJSON({ code:1, msg: 'data check valid fail' });
+
+        const updateSuccess = await s_price.update(id, requirementLastTime, transPrice);
+        if(!updateSuccess) return this.renderJSON({ code:2, msg: 'can not update' });
+
+        this.renderJSON({ code: 0 });
+    }
+    // commit for check by admin
+    async commit(){
+
+    }
+    async checkPrice(){
+
+    }
+    // confirm price
+    async confirmPrice(){
+
     }
 }

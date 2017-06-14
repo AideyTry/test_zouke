@@ -17,13 +17,13 @@ module.exports = class User {
                 DISPATCH: 1<<3,                 //分配需求
                 TOGGLE_VALID: 1<<4,             //设置需求有效/无效
 
-                FILL_PRICE: 1<<5,               //填写报价
+                //FILL_PRICE: 1<<5,             //填写报价
                 APPLY_HISTORY_PRICE: 1<<6,      //应用历史报价
                 UPDATE_PRICE: 1<<7,             //修改自己报价
                 CHECK_PRICE: 1<<8,              //审核报价
                 CONFIRM_PRICE: 1<<9,            //确定用户是否同意报价
 
-                FILL_ORDER: 1<<10,              //填写订单
+                //FILL_ORDER: 1<<10,            //填写订单
                 VIEW_SP_INFO: 1<<11,            //查看订单供应商信息
                 VIEW_USER_TERM: 1<<12,          //查看订单用户条款
                 UPDATE_ORDER: 1<<13,            //修改订单
