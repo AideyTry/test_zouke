@@ -96,13 +96,13 @@
                     <messageDetail></messageDetail>
                 </el-tab-pane>
                 <div class="button-group">
-                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'||userole.UPDATE_ALL_REQUIREMENT" v-show="!change" type="info" size="small" @click="togglechange">
+                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'" v-show="!change" type="info" size="small" @click="togglechange">
                         修改
                     </el-button>
-                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'||userole.UPDATE_ALL_REQUIREMENT" v-show="change" @click="updatedraft" style="color:#20a0ff;border-color:#20a0ff"
+                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'" v-show="change" @click="updatedraft" style="color:#20a0ff;border-color:#20a0ff"
                                size="small">保存
                     </el-button>
-                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'||userole.UPDATE_ALL_REQUIREMENT"  @click="publishorder" style="color:#20a0ff;border-color:#20a0ff"
+                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'"  @click="publishorder" style="color:#20a0ff;border-color:#20a0ff"
                                size="small">发布
                     </el-button>
                     <el-button v-if="userole.DISPATCH&&activetabs=='require-node'&&!change&&orderdatastatus==2" @click="showdialog(1)" type="info" size="small">分配</el-button>
@@ -207,7 +207,7 @@
                         params.push([]);
                         v.params.forEach(
                             (a,b)=>{
-                                params[k].push({hotel:a.hotel,rooms:[]})
+                                params[k].push({hotel:{name:'asjdkajs'},rooms:[]})
                                 a.room.forEach(
                                     (l,d)=>{
                                         params[k][b].rooms.push({price:l})
@@ -219,7 +219,7 @@
                 )
                 ajax.post('/api/team/price/update',{
                     id:this.$route.params.orderid,
-                    price:params
+                    price:{cases:params}
                 }).then(
                     data=>{
 
