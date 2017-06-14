@@ -29,17 +29,30 @@ module.exports = class Price extends BaseOrder {
             { $set:{ price } }
         );
     }
-    commit(id, logUser, requirementLastTime, price ){
+    async commit(id, logUser, requirementLastTime, /*opt*/price ){
         const nowTime = this.$createTime();
-        price.last_update = nowTime;
-        return this.$update(
+        if(!price){
+            const order = await (await this.$getCollection()).find({
+                _id: id,
+                status: this.status.WAIT_FOR_GIVE_PRICE,
+                price:{$ne: null}
+            });
+            if(!order) return false;
+            price = order.price;
+        }else{
+            price.last_update = nowTime;
+        }
+        return await this.$update(
             {   
                 _id: id, 'requirement.last_update': requirementLastTime, 
                 status: this.status.WAIT_FOR_GIVE_PRICE
             },
             { 
-                $set: Object.assign({ status: this.status.WAIT_FOR_PRICE_CHECK }, price?{price}: {}),
-                $push: { logs: { type: 'system:commit-price', time: nowTime, user: logUser} }
+                $set: Object.assign({ status: this.status.WAIT_FOR_PRICE_CHECK }, price ),
+                $push: { 
+                    logs: { type: 'system:commit-price', time: nowTime, user: logUser},
+                    price_history: price
+                }
             }
         );
     }
@@ -47,7 +60,7 @@ module.exports = class Price extends BaseOrder {
      * @params
      *      price: true | false | priceObject
     */
-    checkPrice(id, price){
+    checkPrice(id, result, price){
 
     }
 

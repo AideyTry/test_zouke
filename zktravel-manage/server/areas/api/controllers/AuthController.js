@@ -46,8 +46,6 @@ module.exports = class AuthController extends SController{
         const now = new Date();
         const { [codeKey]: code, [codeExpriesKey]:codeExpries, uid } = this.session;
 
-        this.logResponse();
-
         if(code&&codeExpries>=now.valueOf()){
             this.renderJSON({code:1, msg:'not login'});
             return;
