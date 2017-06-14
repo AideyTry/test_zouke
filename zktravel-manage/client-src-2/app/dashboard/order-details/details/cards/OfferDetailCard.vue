@@ -29,7 +29,7 @@
             <el-col :span="12">B评分：9.0</el-col>
         </el-row>
         <template v-for="(v,k) in params.room">
-            <room @computedcost="computedcost" :v="v" :k="k"></room>
+            <room  :v="v" :k="k"></room>
         </template>
     </div>
 </template>
@@ -73,9 +73,6 @@
                 let arr = item.item;
                 this.hotelflag=true;
                 this.params.hotel = arr;
-            },
-            computedcost:function () {
-                this.$emit('computedcost');
             }
         },
         watch:{
