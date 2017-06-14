@@ -177,7 +177,6 @@
             },
             groupOrder(id){
                 this.$router.push({name:'dashboard-order-detail',params:{orderid:id,status:'require-node'}});
-                this.$store.commit("orderInfo",id);
             }
         },
         mounted(){

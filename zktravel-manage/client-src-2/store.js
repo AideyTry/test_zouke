@@ -18,9 +18,6 @@ const store = new Vuex.Store({
 
         /*用户权限管理*/
         offlineRole:null,
-        /*订单详情start*/
-        orderInfo:null
-        /*订单详情end*/
     },
     getters: {
         userInfo(state){
@@ -33,15 +30,7 @@ const store = new Vuex.Store({
         /*我的发布end*/
         offlineRole(state){
             return state.offlineRole;
-        },
-        /*订单详情start*/
-        orderInfo(state){
-            return state.orderInfo;
-        },
-        orderDetail(){
-
         }
-        /*订单详情end*/
 
     },
     mutations: {
@@ -52,16 +41,8 @@ const store = new Vuex.Store({
         /*我的发布start*/
         publish(state,isTrue){
             state.publish.isTrue=isTrue;
-        },
-        /*我的发布end*/
-        /*订单详情start*/
-        orderInfo(state,info){
-            state.orderInfo=info;
-        },
-        orderDetail(){
-
         }
-        /*订单详情end*/
+        /*我的发布end*/
     },
     actions: {
         logout({ commit }){
