@@ -100,7 +100,7 @@ module.exports = class Pretreatment{
         return 'map_pretreatment_field';
     }
 
-    async _resolveCollection(name, { resolveMode = false, isSai = false } = {}){
+    async _resolveCollection(name, { resolveMode = 'R',isSai = false } = {}){
         const db = await dbclient.get();
         const collection = await db.collection(name);
 
@@ -120,11 +120,11 @@ module.exports = class Pretreatment{
                 const $set = {
                     [Pretreatment.field]: Pretreatment.convert(hotel, { isSai, areaCode: AreaCode.get(hotel.country_id) })
                 };
-                if(resolveMode){
-                    $set['mode'] = 'R';
-                }
                 await collection.updateOne({ _id: hotel._id },{
-                    $set
+                    $set: {
+                        [Pretreatment.field]: Pretreatment.convert(hotel, { isSai, areaCode: AreaCode.get(hotel.country_id) }),
+                        mode: resolveMode
+                    }
                 });
                 ++updateCount;
                 if(updateCount%10000 === 0){
@@ -140,10 +140,10 @@ module.exports = class Pretreatment{
     }
     async run(){
         console.log('--> zk_hotel pretreatment start')
-        await this._resolveCollection(zk_collection_name, { resolveMode: true, isSai: true });
+        await this._resolveCollection(zk_collection_name, { isSai: true });
         console.log('<-- zk_hotel pretreatment end');
         console.log('--> sp_hotel pretreatment start');
-        await this._resolveCollection(sp_collection_name);   
+        await this._resolveCollection(sp_collection_name, { resolveMode: 'I' });   
         console.log('<-- sp_hotel pretreatment end');
     }
 }
