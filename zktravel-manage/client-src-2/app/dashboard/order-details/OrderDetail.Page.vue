@@ -217,9 +217,9 @@
                         )
                     }
                 )
-                ajax.post('/api/team/price/commit',{
-                    id:vm.$route.params.orderid,
-                    requirement:params
+                ajax.post('/api/team/price/update',{
+                    id:this.$route.params.orderid,
+                    price:params
                 }).then(
                     data=>{
 
