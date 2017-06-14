@@ -21,47 +21,47 @@ module.exports = class Price extends BaseOrder {
     validPrice(price){
         return compare(priceRule, price);
     }
-    update(id, requirementLastTime, price){
-        price.last_update = this.$createTime();
-        return this.$update(
-            { _id: id, 'requirement.last_update': requirementLastTime, 
-                status: this.status.WAIT_FOR_GIVE_PRICE },
-            { $set:{ price } }
-        );
-    }
-    async commit(id, logUser, requirementLastTime, /*opt*/price ){
+    async commit(id, requirementLastTime, price, logUser ){
         const nowTime = this.$createTime();
-        if(!price){
-            const order = await (await this.$getCollection()).find({
-                _id: id,
-                status: this.status.WAIT_FOR_GIVE_PRICE,
-                price:{$ne: null}
-            });
-            if(!order) return false;
-            price = order.price;
-        }else{
-            price.last_update = nowTime;
-        }
+        price.last_update = nowTime;
+
         return await this.$update(
             {   
                 _id: id, 'requirement.last_update': requirementLastTime, 
                 status: this.status.WAIT_FOR_GIVE_PRICE
             },
             { 
-                $set: Object.assign({ status: this.status.WAIT_FOR_PRICE_CHECK }, price ),
+                $set: { status: this.status.WAIT_FOR_PRICE_CHECK, price },
                 $push: { 
-                    logs: { type: 'system:commit-price', time: nowTime, user: logUser},
-                    price_history: price
+                    logs: { type: 'system:commit-price', time: nowTime, user: logUser}
                 }
             }
         );
     }
-    /*
-     * @params
-     *      price: true | false | priceObject
-    */
-    checkPrice(id, result, price){
-
+    
+    async checkPrice(id, result, logUser, price ){
+        /*
+        const nowTime = this.$createTime();
+        const update = {
+            $set: {},
+            $push: {}
+        };
+        if(result){
+            update.$set.status = this.status.WAIT_FOR_PRICE_CONFIRM;
+            if(price){
+                price.last_update = nowTime;
+                update.$set.price = price;
+            }
+        }else{
+            update.$set.status = this.status.WAIT_FOR_GIVE_PRICE;
+        }
+        return await this.$update({
+            _id: id,
+            status: this.status.WAIT_FOR_PRICE_CHECK
+        },{
+            
+        })
+        */
     }
 
     confirmPrice(id, confirm){
