@@ -219,7 +219,7 @@
                         )
                     }
                 )
-                ajax.post('/api/team/price/update',{
+                ajax.post('/api/team/price/commit',{
                     id:this.$route.params.orderid,
                     price:{cases:params},
                     requirementLastTime:this.orderdata.last_update
