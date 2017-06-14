@@ -28,7 +28,7 @@
                     <el-tabs v-model="countryTabs" type="border-card" :active-name="countryTabs">
                         <template v-for="(v,k) in item.order">
                             <el-tab-pane :label="v.city.name" :name="v.city.name+k">
-                                <city @computedcost="computedcost" :i="index" :k="k" :order="v"
+                                <city  :i="index" :k="k" :order="v"
                                       :params="editableTabs[index].params[k]"></city>
                             </el-tab-pane>
                         </template>
@@ -128,32 +128,6 @@
                         }
                     }
                 });
-            },
-            _computedcost(arr) {
-                let _arr = [];
-                arr.forEach(
-                    (v, k) => {
-                        _arr.push({cost: 0, bk: 0, quoted: 0})
-                        v.params.forEach(
-                            (n) => {
-                                n.room.forEach(
-                                    (a) => {
-                                        _arr[k].cost += a.cost * 1;
-                                        _arr[k].bk += a.bk * 1;
-                                        _arr[k].quoted += a.quoted * 1;
-                                    }
-                                )
-                            }
-                        )
-                    }
-                )
-                return _arr;
-            },
-            computedcost(){
-                this.$commit('initCost', this._computedcost(this.editableTabs))
-            },
-            submitoffer(){
-                this.$emit('submitoffer',this.editableTabs);
             }
         },
         computed: {},

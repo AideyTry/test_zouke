@@ -32,14 +32,21 @@
         },
         computed:{
             mycost(){
-                if(this.$store.getters.orderCost){
-                    if(this.$store.getters.orderCost.length>=this.index+1){
-                        return this.$store.getters.orderCost[this.index?this.index:0];
-                    }
-                }else {
-                    return {bk:0,quoted:0,cost:0}
-                }
+                let _arr={cost: 0, bk: 0, quoted: 0};
+                this.params.forEach(
+                    (a,b)=>{
+                        a.room.forEach(
+                            (v, k) => {
 
+                                _arr.cost+=v.cost*1;
+                                _arr.bk+=v.bk*1;
+                                _arr.quoted+=v.quoted*1
+                            }
+                        )
+                    }
+
+                )
+                return _arr;
             }
         },
         watch:{

@@ -17,8 +17,7 @@ const store = new Vuex.Store({
         /*我的发布end*/
 
         /*用户权限管理*/
-        offlineRole:null,
-        orderCost:null
+        offlineRole:null
     },
     getters: {
         userInfo(state){
@@ -31,9 +30,6 @@ const store = new Vuex.Store({
         /*我的发布end*/
         offlineRole(state){
             return state.offlineRole;
-        },
-        orderCost(state){
-            return state.orderCost;
         }
 
     },
@@ -45,9 +41,6 @@ const store = new Vuex.Store({
         /*我的发布start*/
         publish(state,isTrue){
             state.publish.isTrue=isTrue;
-        },
-        initCost(state,info){
-            state.orderCost=info;
         }
         /*我的发布end*/
     },
