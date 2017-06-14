@@ -32,15 +32,15 @@
         <el-row>
             <el-col class="cost">
                 <span>成本：</span>
-                <el-input v-model="v.cost" size="mini">
+                <el-input v-model="v.cost" type="number"  size="mini" @change="computedCost">
                 </el-input>
                 €
                 <span>bk价：</span>
-                <el-input v-model="v.bk" size="mini">
+                <el-input v-model="v.bk" type="number"  size="mini" @change="computedCost">
                 </el-input>
                 €
                 <span>报价：</span>
-                <el-input v-model="v.offer" size="mini"></el-input>
+                <el-input v-model="v.quoted" type="number"  size="mini" @change="computedCost"></el-input>
                 €
             </el-col>
 
@@ -55,6 +55,11 @@
                 rule:{
 
                 }
+            }
+        },
+        methods:{
+            computedCost(){
+                this.$emit('computedcost');
             }
         }
     }

@@ -3,9 +3,11 @@
         height: 800px;
         width: 100%;
     }
-    .offer-container{
+
+    .offer-container {
         height: 100%;
     }
+
 </style>
 <template>
     <div class="offer-detail-container">
@@ -26,10 +28,12 @@
                     <el-tabs v-model="countryTabs" type="border-card" :active-name="countryTabs">
                         <template v-for="(v,k) in item.order">
                             <el-tab-pane :label="v.city.name" :name="v.city.name+k">
-                                <city :i="index" :k="k" :order="v" :params="editableTabs[index].params[k]"></city>
+                                <city @computedcost="computedcost" :i="index" :k="k" :order="v"
+                                      :params="editableTabs[index].params[k]"></city>
                             </el-tab-pane>
                         </template>
                     </el-tabs>
+                    <computed :params="item.params" :index="index" :cost="item.cost"></computed>
                 </div>
             </el-tab-pane>
         </el-tabs>
@@ -38,9 +42,11 @@
 <script>
     import ajax from '@local/common/ajax';
     import city from './cards/OfferDetailCard'
+    import computed from './cards/ComputedCard'
     export default{
         components: {
-            city: city
+            city: city,
+            computed: computed
         },
         data(){
             return {
@@ -53,7 +59,8 @@
                 }],
                 orderdata: null,
                 countryTabs: null,
-                offergroup: 1
+                offergroup: 1,
+                paramsModel:null
             }
         },
         methods: {
@@ -70,16 +77,18 @@
                             order: data.detail.requirement.stay_details,
                             params: []
                         }]
-                        vm.countryTabs = data.detail.requirement.stay_details[0].city.name+'0'
+                        vm.countryTabs = data.detail.requirement.stay_details[0].city.name + '0'
                         data.detail.requirement.stay_details.forEach(
                             (v, k) => {
                                 vm.editableTabs[0].params.push({city: '', hotel: '', room: []})
                                 v.rooms.forEach(
                                     (l, y) => {
-                                        vm.editableTabs[0].params[k].room.push({cost: '', bk: '', offer: ''})
+                                        vm.editableTabs[0].params[k].room.push({cost: 0, bk: 0, quoted: 0})
                                     }
                                 )
-                            })
+                            }
+                        )
+                        vm.paramsModel=JSON.parse(JSON.stringify(vm.editableTabs[0].params));
                     }
                 )
             },
@@ -92,12 +101,12 @@
 
             },
             addtab(){
-                this.tabnum += 1;
+                this.tabnum = this.editableTabs.length + 1;
                 this.editableTabs.push({
                     title: '方案' + this.tabnum,
                     name: '方案' + this.tabnum,
-                    order: this.orderdata.requirement.stay_details,
-                    params: this.editableTabs[0].params
+                    order: JSON.parse(JSON.stringify(this.orderdata.requirement.stay_details)),
+                    params: JSON.parse(JSON.stringify(this.paramsModel))
                 })
             },
             closetab(targetName){
@@ -106,18 +115,48 @@
                 tabs.forEach((tab, index) => {
                     if (tab.name === targetName) {
                         let nextTab = tabs[index + 1] || tabs[index - 1];
-                        if (nextTab) {
+                        if (nextTab && targetName != '方案1') {
                             activeName = nextTab.name;
                             tabs.splice(index, 1);
                             this.tabnum -= 1;
+                            tabs.forEach(
+                                (v, k) => {
+                                    v.title = '方案' + (k + 1);
+                                    v.name = '方案' + (k + 1);
+                                }
+                            )
                         }
                     }
                 });
+            },
+            _computedcost(arr) {
+                let _arr = [];
+                arr.forEach(
+                    (v, k) => {
+                        _arr.push({cost: 0, bk: 0, quoted: 0})
+                        v.params.forEach(
+                            (n) => {
+                                n.room.forEach(
+                                    (a) => {
+                                        _arr[k].cost += a.cost * 1;
+                                        _arr[k].bk += a.bk * 1;
+                                        _arr[k].quoted += a.quoted * 1;
+                                    }
+                                )
+                            }
+                        )
+                    }
+                )
+                return _arr;
+            },
+            computedcost(){
+                this.$commit('initCost', this._computedcost(this.editableTabs))
+            },
+            submitoffer(){
+                this.$emit('submitoffer',this.editableTabs);
             }
         },
-        computed:{
-
-        },
+        computed: {},
         mounted(){
             this.loadorder(this.$route.params.orderid);
         }

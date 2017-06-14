@@ -78,7 +78,7 @@
                     <changerequire v-if="orderdata&&change" :orderdata="orderdata"></changerequire>
                 </el-tab-pane>
                 <el-tab-pane label="报价记录" name="offer-node">
-                    <offerdetail v-if="activetabs=='offer-node'"></offerdetail>
+                    <offerdetail ref="offerdetaildata" v-if="activetabs=='offer-node'"></offerdetail>
                 </el-tab-pane>
                 <el-tab-pane label="订单详情" name="order-detail">
 
@@ -106,6 +106,7 @@
                                size="small">发布
                     </el-button>
                     <el-button v-if="userole.DISPATCH&&activetabs=='require-node'&&!change&&orderdatastatus==2" @click="showdialog(1)" type="info" size="small">分配</el-button>
+                    <el-button @click="submitoffer" size="small">提交报价</el-button>
                 </div>
                 <div class="dialog-group">
                     <dialog1 @closedialog="closedialog" :dialoggroup="dialoggroup"  v-if="userole.DISPATCH" :pickerOptions="pickerOptions"></dialog1>
@@ -198,6 +199,32 @@
                     id:this.$route.params.orderid,
                     requirement:this.orderdata.requirement
                 })
+            },
+            submitoffer(){
+                let params=[];
+                this.$refs.offerdetaildata.editableTabs.forEach(
+                    (v,k)=>{
+                        params.push([]);
+                        v.params.forEach(
+                            (a,b)=>{
+                                params[k].push({hotel:a.hotel,rooms:[]})
+                                a.room.forEach(
+                                    (l,d)=>{
+                                        params[k][b].rooms.push({price:l})
+                                    }
+                                )
+                            }
+                        )
+                    }
+                )
+                ajax.post('/api/team/price/commit',{
+                    id:vm.$route.params.orderid,
+                    requirement:params
+                }).then(
+                    data=>{
+
+                    }
+                )
             }
 
         },

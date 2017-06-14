@@ -29,7 +29,7 @@
             <el-col :span="12">B评分：9.0</el-col>
         </el-row>
         <template v-for="(v,k) in params.room">
-            <room :v="v" :k="k"></room>
+            <room @computedcost="computedcost" :v="v" :k="k"></room>
         </template>
     </div>
 </template>
@@ -51,7 +51,7 @@
         methods:{
             searchhotel:debounce(function (queryString, cb) {
                 if (queryString) {
-                    ajax.postSilence('/api/hotel/zk-hotel/query', {
+                    ajax.postSilence('/api/hotel/zk-hotel/search', {
                         keyword: queryString.trim()
                     }).then(
                         data => {
@@ -73,6 +73,9 @@
                 let arr = item.item;
                 this.hotelflag=true;
                 this.params.hotel = arr;
+            },
+            computedcost:function () {
+                this.$emit('computedcost');
             }
         },
         watch:{
