@@ -252,7 +252,7 @@
         watch:{
             hotel(val){
                 if(!this.hotelFlag){
-                    this.params.hotel={name:val,custom:true}
+//                    this.params.hotel={name:val,custom:true}
                 }
                 this.hotelFlag=false;
             }
