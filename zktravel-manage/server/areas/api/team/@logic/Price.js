@@ -3,16 +3,22 @@ const compare = require('@local/compare');
 
 const priceRule = {
     '*cases':[
-        [
-            {
-                '*hotel': { '*name': '' },
-                '*rooms': [
-                    { '*price':{ '*cost': 100, '*bk': 120, '*quoted': 110 } },
-                    { min: 1 }
-                ]
-            },
-            {min: 1}
-        ],
+        {
+            '*booking_channel':'订房政策',
+            '*payment_policy': '付款政策',
+            '*cancel_policy': '取消政策',
+            remark: '备注',
+            price: [
+                {
+                    '*hotel': { '*name': '' },
+                    '*rooms': [
+                        { '*price':{ '*cost': 100, '*bk': 120, '*quoted': 110 } },
+                        { min: 1 }
+                    ]
+                },
+                {min: 1}
+            ]
+        },
         { min: 1 }
     ]
 }
