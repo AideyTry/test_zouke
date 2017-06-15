@@ -34,6 +34,7 @@
                         </template>
                     </el-tabs>
                     <computed :params="item.params" :index="index" :cost="item.cost"></computed>
+                    <provider :provider="item.provider" :index="index"></provider>
                 </div>
             </el-tab-pane>
         </el-tabs>
@@ -43,10 +44,12 @@
     import ajax from '@local/common/ajax';
     import city from './cards/OfferDetailCard'
     import computed from './cards/ComputedCard'
+    import provider from './cards/ProviderCard'
     export default{
         components: {
             city: city,
-            computed: computed
+            computed: computed,
+            provider: provider
         },
         data(){
             return {
@@ -75,7 +78,13 @@
                             title: '方案1',
                             name: '方案1',
                             order: data.detail.requirement.stay_details,
-                            params: []
+                            params: [],
+                            provider:{
+                                booking_channel:'',
+                                payment_policy:'',
+                                cancel_policy:'',
+                                remark:''
+                            }
                         }]
                         vm.countryTabs = data.detail.requirement.stay_details[0].city.name + '0'
                         data.detail.requirement.stay_details.forEach(
@@ -106,7 +115,13 @@
                     title: '方案' + this.tabnum,
                     name: '方案' + this.tabnum,
                     order: JSON.parse(JSON.stringify(this.orderdata.requirement.stay_details)),
-                    params: JSON.parse(JSON.stringify(this.paramsModel))
+                    params: JSON.parse(JSON.stringify(this.paramsModel)),
+                    provider:{
+                        booking_channel:'',
+                        payment_policy:'',
+                        cancel_policy:'',
+                        remark:''
+                    }
                 })
             },
             closetab(targetName){
