@@ -45,7 +45,7 @@
             <userchannel v-if="offlineRole.CHECK_PRICE" :userchannel="userchannel"> </userchannel>
             <history :history="history"> </history>
         </div>
-        <div class="offer-detail-booking" v-if="offlineRole.CONFIRM_PRICE">
+        <div class="offer-detail-booking" v-if="offlineRole.CONFIRM_PRICE&&orderstatus>4">
             <template v-for="(o,p) in editableTabs">
                 <el-row style="height: 40px" type="flex">
                     <el-col :span="9">
@@ -197,6 +197,14 @@
         computed: {
             offlineRole(){
                 return this.$store.getters.offlineRole;
+            },
+            orderstatus(){
+                if(this.orderdata){
+                    return this.orderdata.status;
+                }else {
+                    return 0
+                }
+
             }
         },
         mounted(){
