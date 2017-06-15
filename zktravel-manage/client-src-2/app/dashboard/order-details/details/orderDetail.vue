@@ -129,9 +129,6 @@
         },
         mounted(){
             this.dateRange();
-            console.log(this.$route.params);
-            console.log(this.orderData);
-            console.log(this.orderData.requirement.stay_details);
         }
     }
 </script>
