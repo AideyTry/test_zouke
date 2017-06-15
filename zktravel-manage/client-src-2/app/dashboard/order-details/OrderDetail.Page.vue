@@ -28,6 +28,8 @@
             width: 100%;
             background: #F9FAFC;
             padding: 0px 20px;
+            overflow-y: auto;
+            margin-bottom: 80px;
             h4 {
                 display: inline-block;
                 width: 80px;
@@ -68,7 +70,7 @@
         <el-row class="title">
             <el-col>
                 <span class="title">我的需求 > 订单详情</span>
-                <span class="status">{{orderdata?orderstatus[orderdata.status]:'待发布'}}</span>
+                <span class="status">{{orderdata ? orderstatus[orderdata.status] : '待发布'}}</span>
             </el-col>
         </el-row>
         <div class="order-detail">
@@ -96,20 +98,26 @@
                     <messageDetail></messageDetail>
                 </el-tab-pane>
                 <div class="button-group">
-                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'" v-show="!change" type="info" size="small" @click="togglechange">
+                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'" v-show="!change"
+                               type="info" size="small" @click="togglechange">
                         修改
                     </el-button>
-                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'" v-show="change" @click="updatedraft" style="color:#20a0ff;border-color:#20a0ff"
+                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'" v-show="change"
+                               @click="updatedraft" style="color:#20a0ff;border-color:#20a0ff"
                                size="small">保存
                     </el-button>
-                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'"  @click="publishorder" style="color:#20a0ff;border-color:#20a0ff"
+                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'&&orderdatastatus==1" @click="publishorder"
+                               style="color:#20a0ff;border-color:#20a0ff"
                                size="small">发布
                     </el-button>
-                    <el-button v-if="userole.DISPATCH&&activetabs=='require-node'&&!change&&orderdatastatus==2" @click="showdialog(1)" type="info" size="small">分配</el-button>
-                    <el-button @click="submitoffer" size="small">提交报价</el-button>
+                    <el-button v-if="userole.DISPATCH&&activetabs=='require-node'&&!change&&orderdatastatus==2"
+                               @click="showdialog(1)" type="info" size="small">分配
+                    </el-button>
+                    <el-button type="info" @click="submitoffer" size="small" v-if="userole.UPDATE_PRICE&&activetabs=='offer-node'&&orderdatastatus>2">提交报价</el-button>
                 </div>
                 <div class="dialog-group">
-                    <dialog1 @closedialog="closedialog" :dialoggroup="dialoggroup"  v-if="userole.DISPATCH" :pickerOptions="pickerOptions"></dialog1>
+                    <dialog1 @closedialog="closedialog" :dialoggroup="dialoggroup" v-if="userole.DISPATCH"
+                             :pickerOptions="pickerOptions"></dialog1>
                 </div>
             </el-tabs>
         </div>
@@ -128,10 +136,10 @@
         components: {
             requiredetail: requireDetail,
             changerequire: changeRequire,
-            dialog1:dialog1,
-            offerdetail:offerDetail,
-            orderDetail:orderDetail,
-            messageDetail:messageDetail
+            dialog1: dialog1,
+            offerdetail: offerDetail,
+            orderDetail: orderDetail,
+            messageDetail: messageDetail
         },
         data(){
             return {
@@ -142,32 +150,35 @@
                         return time.getTime() < Date.now() - 8.64e7;
                     }
                 },
-                dialoggroup:[
+                dialoggroup: [
                     {
-                        show:false,
-                        model:{
-                            action:null,
-                            date:new Date()
+                        show: false,
+                        model: {
+                            action: null,
+                            date: new Date()
                         },
-                        rule:null
+                        rule: null
                     }
                 ],
-                tab:null,
-                activetabs:'require-node',
-                orderstatus:['','待发布','待分配','待报价','报价待审核','报价待确认','待收款','分房待确认','待控房','已控房']
+                tab: null,
+                activetabs: 'require-node',
+                orderstatus: ['', '待发布', '待分配', '待报价', '报价待审核', '报价待确认', '待收款', '分房待确认', '待控房', '已控房']
             }
         },
         methods: {
             changetab(tab){
-                this.tab=tab.name;
-                this.activetabs=tab.name;
-                this.$router.push({name:'dashboard-order-detail',params:{id:this.$route.params.orderid,status:tab.name}})
+                this.tab = tab.name;
+                this.activetabs = tab.name;
+                this.$router.push({
+                    name: 'dashboard-order-detail',
+                    params: {id: this.$route.params.orderid, status: tab.name}
+                })
             },
             getorder(id){
                 let vm = this;
                 ajax.post('/api/team/order/detail', {
                     id: id
-                },{lock:false}).then(
+                }, {lock: false}).then(
                     data => {
                         vm.orderdata = data.detail;
                     }
@@ -177,55 +188,85 @@
                 this.change = !this.change;
             },
             showdialog(n){
-                this.dialoggroup[n-1].show=true;
+                this.dialoggroup[n - 1].show = true;
             },
             closedialog(n){
-                this.dialoggroup[n-1].show=false;
+                this.dialoggroup[n - 1].show = false;
             },
             updatedraft(){
-                let vm=this;
-                ajax.post('/api/team/requirement/update',{
-                    id:vm.$route.params.orderid,
-                    requirement:vm.orderdata.requirement
+                let vm = this;
+                ajax.post('/api/team/requirement/update', {
+                    id: vm.$route.params.orderid,
+                    requirement: vm.orderdata.requirement
                 }).then(
-                    data=>{
-                        if(data.code=0){
+                    data => {
+                        if (data.code == 0) {
                             vm.getorder(vm.$route.params.orderid);
-                            vm.change=false;
+                            vm.change = false;
+                            this.$notify({
+                                title: '更新成功',
+                                message: '已更新需求',
+                                type: 'success'
+                            });
                         }
                     }
                 )
             },
             publishorder(){
-                ajax.post('/api/team/requirement/draft-publish',{
-                    id:this.$route.params.orderid,
-                    requirement:this.orderdata.requirement
-                })
+                ajax.post('/api/team/requirement/draft-publish', {
+                    id: this.$route.params.orderid,
+                    requirement: this.orderdata.requirement
+                }).then(
+                    data => {
+                        if (data.code == 0) {
+                            vm.getorder(vm.$route.params.orderid);
+                            vm.change = false;
+                            this.$notify({
+                                title: '发布成功',
+                                message: '已成功发布，等待分配',
+                                type: 'success'
+                            });
+                        }
+                    }
+                )
             },
             submitoffer(){
-                let params=[];
+                let params = [];
                 this.$refs.offerdetaildata.editableTabs.forEach(
-                    (v,k)=>{
-                        params.push([]);
+                    (v, k) => {
+                        params.push({
+                                booking_channel: v.provider.booking_channel,
+                                payment_policy: v.provider.payment_policy,
+                                cancel_policy: v.provider.cancel_policy,
+                                remark: v.provider.remark,
+                                price: []
+                            }
+                        );
                         v.params.forEach(
-                            (a,b)=>{
-                                params[k].push({hotel:{name:'sadsa'},rooms:[]})
-                                a.room.forEach(
-                                    (l,d)=>{
-                                        params[k][b].rooms.push({price:l})
+                            (a, b) => {
+                                params[k].price.push({hotel: {name: 'sadsa'}, rooms: []})
+                                a.rooms.forEach(
+                                    (l, d) => {
+                                        params[k].price[b].rooms.push(l)
                                     }
                                 )
                             }
                         )
                     }
                 )
-                ajax.post('/api/team/price/commit',{
-                    id:this.$route.params.orderid,
-                    price:{cases:params},
-                    requirementLastTime:this.orderdata.requirement.last_update
+                ajax.post('/api/team/price/commit', {
+                    id: this.$route.params.orderid,
+                    price: {cases: params},
+                    requirementLastTime: this.orderdata.requirement.last_update
                 }).then(
-                    data=>{
-
+                    data => {
+                        if(data.code==0){
+                            this.$notify({
+                                title: '报价成功',
+                                message: '已成功更新报价，等待通过',
+                                type: 'success'
+                            });
+                        }
                     }
                 )
             }
@@ -239,12 +280,12 @@
                 return this.$store.getters.offlineRole;
             },
             orderdatastatus(){
-                return  this.orderdata? this.orderdata.status:'0'
+                return this.orderdata ? this.orderdata.status : '0'
             }
         },
         created(){
             this.getorder(this.$route.params.orderid);
-            this.activetabs=this.$route.params.status;
+            this.activetabs = this.$route.params.status;
         }
     }
 </script>
