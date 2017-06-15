@@ -107,38 +107,23 @@
                 currentdata:[],
                 tabledata:[],
                 currentpage: 1,
-                currentlimit: 10,
+                currentlimit: 15,
                 total:100
             }
         },
         methods:{
             loadtable(){
                 let vm=this;
-                ajax.post('/api/team/order/query',{status:2}).then(
+                ajax.post('/api/team/order/query',{status:2,page:vm.currentpage-1,pageSize:vm.currentlimit}).then(
                     data=>{
-                        let arr=[];
-                        vm.tabledata =  data.list;
-                        for (let num = (vm.currentpage - 1) * vm.currentlimit; num < vm.currentlimit * vm.currentpage; num++) {
-                            if (vm.tabledata[num]) {
-                                arr.push(vm.tabledata[num]);
-                            }
-                        }
-                        vm.currentdata = arr;
-                        vm.total = data.list.length;
+                        vm.currentdata =  data.list;
+                        vm.total = data.count;
                     }
                 )
             },
             changepage(page){
-                let vm = this;
-                vm.currentpage = page;
-                let arr = [];
-                for (let num = (vm.currentpage - 1) * vm.currentlimit; num < vm.currentlimit * vm.currentpage; num++) {
-                    if (vm.tableData[num]) {
-                        arr.push(vm.tableData[num]);
-
-                    }
-                }
-                vm.currentdata = arr;
+                this.currentpage = page;
+                this.loadtable();
             },
             distributed(id){
                 this.$router.push({name:'dashboard-order-detail',params:{orderid:id,status:'require-node'}});

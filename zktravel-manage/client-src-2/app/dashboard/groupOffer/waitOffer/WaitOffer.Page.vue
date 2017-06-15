@@ -94,8 +94,12 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-                            prop="orderId"
                             label="订单号">
+                        <template scope="scope">
+                            <a @click="cellClick(scope.row.orderId)">
+                                {{scope.row.orderId}}
+                            </a>
+                        </template>
                     </el-table-column>
                     <el-table-column
                             prop="userName"
@@ -197,6 +201,9 @@
             changePage(page){
                 this.pager.pageNum=page;
                 this.loadTable();
+            },
+            cellClick(orderId){
+                this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'offer-node'}});
             }
         },
         mounted(){

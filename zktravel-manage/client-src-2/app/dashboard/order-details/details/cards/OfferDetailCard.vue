@@ -1,5 +1,7 @@
 <style lang="scss" scoped>
     .country{
+        height:400px;
+        overflow-y: auto;
         .el-row{
           height: 40px;
         }
@@ -26,17 +28,19 @@
             </el-col>
             <el-col :span="12">B评分：9.0</el-col>
         </el-row>
-        <div class="card">
-            <el-row>
-                <el-col></el-col>
-            </el-row>
-        </div>
+        <template v-for="(v,k) in params.room">
+            <room  :v="v" :k="k"></room>
+        </template>
     </div>
 </template>
 <script>
     import debounce from 'lodash/debounce';
     import ajax from '@local/common/ajax';
+    import room from './Room'
     export default{
+        components:{
+            room:room
+        },
         props:['i','k','order','params'],
         data(){
             return{
@@ -47,7 +51,7 @@
         methods:{
             searchhotel:debounce(function (queryString, cb) {
                 if (queryString) {
-                    ajax.postSilence('/api/hotel/zk-hotel/query', {
+                    ajax.postSilence('/api/hotel/zk-hotel/search', {
                         keyword: queryString.trim()
                     }).then(
                         data => {

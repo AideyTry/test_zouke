@@ -28,7 +28,6 @@ module.exports = class TeamReqController extends LController {
         }
     }
     $beforeAction(){
-        this.logResponse();
         return super.$beforeAction();
     }
     async [triggerInsert](name){

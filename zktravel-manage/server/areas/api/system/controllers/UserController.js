@@ -11,9 +11,8 @@ module.exports = class UserController extends LController{
             }
         }
     }
-    async list(){
+    async list(role){
         const systemUser = new SystemUser();
-        const { role } = this.request.body;
         const list = await systemUser.list(role);
         this.renderJSON({code:0, list});
     }

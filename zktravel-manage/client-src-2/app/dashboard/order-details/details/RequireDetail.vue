@@ -35,7 +35,7 @@
             }
         }
         .content{
-            height: 560px;
+            height: 800px;
             overflow-y: auto;
             padding-top: 20px;
             .text-line{
@@ -62,6 +62,10 @@
             div{
                 display: inline-block;
             }
+        }
+        .room{
+            display: block !important;
+            height: 30px;
         }
     }
 </style>
@@ -139,12 +143,12 @@
                         <el-col :span="8"><span class="title">指定的酒店：</span>{{v.hotel.name}}</el-col>
                     </el-row>
                     <template v-for="(k,w) in v.rooms">
-                        <el-row>
-                            <el-col>
-                                <div class="title">房型：{{w+1}}</div>
-                                <div>{{k.type}}X{{k.number}}</div>
-                                <div class="title">备注：</div>
-                                <div>{{k.mark}}</div>
+                        <el-row class="room">
+                            <el-col :span="24">
+                                <span class="title">房型：{{w+1}}</span>
+                                <span>{{k.type}}X{{k.number}}</span>
+                                <span class="title">备注：</span>
+                                <span>{{k.mark}}</span>
                             </el-col>
                         </el-row>
                     </template>

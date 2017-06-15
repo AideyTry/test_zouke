@@ -78,7 +78,7 @@
                     <changerequire v-if="orderdata&&change" :orderdata="orderdata"></changerequire>
                 </el-tab-pane>
                 <el-tab-pane label="报价记录" name="offer-node">
-                    <offerdetail v-if="activetabs=='offer-node'"></offerdetail>
+                    <offerdetail ref="offerdetaildata" v-if="activetabs=='offer-node'"></offerdetail>
                 </el-tab-pane>
                 <el-tab-pane label="订单详情" name="order-detail">
                     <orderDetail :orderData="orderdata"></orderDetail>
@@ -96,16 +96,17 @@
                     <messageDetail></messageDetail>
                 </el-tab-pane>
                 <div class="button-group">
-                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'||userole.UPDATE_ALL_REQUIREMENT" v-show="!change" type="info" size="small" @click="togglechange">
+                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'" v-show="!change" type="info" size="small" @click="togglechange">
                         修改
                     </el-button>
-                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'||userole.UPDATE_ALL_REQUIREMENT" v-show="change" @click="updatedraft" style="color:#20a0ff;border-color:#20a0ff"
+                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'" v-show="change" @click="updatedraft" style="color:#20a0ff;border-color:#20a0ff"
                                size="small">保存
                     </el-button>
-                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'||userole.UPDATE_ALL_REQUIREMENT"  @click="publishorder" style="color:#20a0ff;border-color:#20a0ff"
+                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'"  @click="publishorder" style="color:#20a0ff;border-color:#20a0ff"
                                size="small">发布
                     </el-button>
-                    <el-button v-if="userole.DISPATCH&&activetabs=='require-node'&&!change&&orderdata.status==2" @click="showdialog(1)" type="info" size="small">分配</el-button>
+                    <el-button v-if="userole.DISPATCH&&activetabs=='require-node'&&!change&&orderdatastatus==2" @click="showdialog(1)" type="info" size="small">分配</el-button>
+                    <el-button @click="submitoffer" size="small">提交报价</el-button>
                 </div>
                 <div class="dialog-group">
                     <dialog1 @closedialog="closedialog" :dialoggroup="dialoggroup"  v-if="userole.DISPATCH" :pickerOptions="pickerOptions"></dialog1>
@@ -200,6 +201,33 @@
                     id:this.$route.params.orderid,
                     requirement:this.orderdata.requirement
                 })
+            },
+            submitoffer(){
+                let params=[];
+                this.$refs.offerdetaildata.editableTabs.forEach(
+                    (v,k)=>{
+                        params.push([]);
+                        v.params.forEach(
+                            (a,b)=>{
+                                params[k].push({hotel:{name:'sadsa'},rooms:[]})
+                                a.room.forEach(
+                                    (l,d)=>{
+                                        params[k][b].rooms.push({price:l})
+                                    }
+                                )
+                            }
+                        )
+                    }
+                )
+                ajax.post('/api/team/price/commit',{
+                    id:this.$route.params.orderid,
+                    price:{cases:params},
+                    requirementLastTime:this.orderdata.requirement.last_update
+                }).then(
+                    data=>{
+
+                    }
+                )
             }
 
         },
@@ -210,8 +238,8 @@
             userole(){
                 return this.$store.getters.offlineRole;
             },
-            orderstatus(){
-
+            orderdatastatus(){
+                return  this.orderdata? this.orderdata.status:'0'
             }
         },
         created(){

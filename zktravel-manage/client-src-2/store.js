@@ -17,7 +17,7 @@ const store = new Vuex.Store({
         /*我的发布end*/
 
         /*用户权限管理*/
-        offlineRole:null,
+        offlineRole:null
     },
     getters: {
         userInfo(state){
