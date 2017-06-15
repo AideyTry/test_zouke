@@ -81,7 +81,7 @@
                     <offerdetail ref="offerdetaildata" v-if="activetabs=='offer-node'"></offerdetail>
                 </el-tab-pane>
                 <el-tab-pane label="订单详情" name="order-detail">
-                    <orderDetail :orderData="orderdata"></orderDetail>
+                    <orderDetail v-if="orderdata" :orderData="orderdata"></orderDetail>
                 </el-tab-pane>
                 <el-tab-pane label="收入/支出" name="in-out">
 

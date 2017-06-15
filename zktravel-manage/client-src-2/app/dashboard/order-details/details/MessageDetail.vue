@@ -140,7 +140,6 @@
                 }else {
                     this.msg='';
                     this.list.unshift(this.newMsg);
-                    console.log(this.list);
                     this.loading();
                 }
 

@@ -269,8 +269,6 @@
                 ajax.post("/api/hotel/zk-hotel/detail", {
                     id: this.ids
                 }).then(json => {
-                    console.log(json);
-
                     this.detailData.name = json.detail.name;
                     this.detailData.name_en = json.detail.name_en;
                     this.detailData.cityName = json.detail.city_name;
@@ -286,7 +284,6 @@
                     this.tableData[0].dl = json.detail.sp_id.dl_id[0];
                     this.tableData[0].bk = json.detail.sp_id.bk_id[0];
                     this.tableData[0].gt = json.detail.sp_id.gt_id[0];
-                    console.log(this.tableData[0].bk);
 
                 })
             }
