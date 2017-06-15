@@ -4,10 +4,23 @@
             margin:0;
             padding:0;
         }
-        .orderForm{
+        .box-card{
+            margin:10px 0 15px 0;
+            .clearfix:before,
+            .clearfix:after {
+                display: table;
+                content: "";
+            }
+            .clearfix:after {
+                clear: both
+            }
             .card{
 
             }
+        }
+        p{
+            border-top:1px solid #8492A6;
+            margin:30px 0;
         }
     }
 </style>
@@ -23,18 +36,75 @@
                 <span>{{orderId}}</span>
             </el-col>
         </el-row>
-        <el-card class="orderForm">
-            <el-row type="flex">
-                <el-col :span="2">
-                    <h4>入住单</h4>
-                </el-col>
+        <el-card class="box-card" v-for="(v,index) in orderData.requirement.stay_details" :index="index" :v="v">
+            <el-row type="flex" slot="header" class="clearfix">
+                <h4>入住单{{index+1}}</h4>
             </el-row>
-            <div class="card">
+            <div>
                 <el-row type="flex">
-                    <el-col :span="5">
-                        <span>入住/离店</span>
+                    <el-col :span="8">
+                        <strong>入住/离店:</strong>
+                        <span>{{v.check_in}}-{{v.check_out}}</span>
+                        <span>{{dateRange(v.check_out,v.check_in)}}晚</span>
+                    </el-col>
+                    <el-col :span="8">
+                        <strong>入住酒店:</strong>
+                        <span>{{v.hotel.name}}</span>
                     </el-col>
                 </el-row>
+                <el-row type="flex">
+                    <el-col :span="8">
+                        <strong>酒店电话:</strong>
+                        <span>{{}}</span>
+                    </el-col>
+                    <el-col :span="8">
+                        <strong>酒店地址:</strong>
+                        <span>{{v.hotel.address}}</span>
+                    </el-col>
+                    <el-col :span="8">
+                        <strong>是否含早:</strong>
+                        <span>{{orderData.requirement.breakfast?"含早":"不含"}}</span>
+                    </el-col>
+                </el-row>
+                <el-row type="flex">
+                    <el-col :span="8">
+                        <strong>入住确认号:</strong>
+                        <span></span>
+                    </el-col>
+                    <el-col :span="8">
+                        <strong>备注确认号:</strong>
+                        <span></span>
+                    </el-col>
+                </el-row>
+                <el-row type="flex">
+                    <el-col :span="8">
+                        <strong>酒店入住时间:</strong>
+                        <span></span>
+                    </el-col>
+                    <el-col :span="8">
+                        <strong>酒店退房时间:</strong>
+                        <span></span>
+                    </el-col>
+                </el-row>
+                <el-row type="flex">
+                    <el-col :span="6">
+                        <strong>房间:</strong>
+                        <span></span>
+                    </el-col>
+                    <el-col :span="6">
+                        <strong>入住人:</strong>
+                        <span></span>
+                    </el-col>
+                </el-row>
+            </div>
+        </el-card>
+        <p></p>
+        <el-card class="box-card">
+            <el-row type="flex" slot="header" class="clearfix">
+                <h4>用户条款</h4>
+            </el-row>
+            <div class="">
+
             </div>
         </el-card>
     </div>
@@ -53,11 +123,12 @@
             }
         },
         methods:{
-
+            dateRange(a,b){
+                return new Date(a).getDate()-new Date(b).getDate();
+            }
         },
         mounted(){
-            console.log(this.$route.params);
-            console.log(this.orderData);
+            this.dateRange();
         }
     }
 </script>
