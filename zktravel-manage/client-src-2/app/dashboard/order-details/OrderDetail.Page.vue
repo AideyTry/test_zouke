@@ -76,8 +76,8 @@
         <div class="order-detail">
             <el-tabs @tab-click="changetab" :active-name="activetabs">
                 <el-tab-pane label="需求记录" name="require-node">
-                    <requiredetail v-if="orderdata&&!change" :orderdata="orderdata"></requiredetail>
-                    <changerequire v-if="orderdata&&change" :orderdata="orderdata"></changerequire>
+                    <requiredetail v-if="orderdata&&!change&&activetabs=='require-node'" :orderdata="orderdata"></requiredetail>
+                    <changerequire v-if="orderdata&&change&&activetabs=='require-node'" :orderdata="orderdata"></changerequire>
                 </el-tab-pane>
                 <el-tab-pane label="报价记录" name="offer-node">
                     <offerdetail ref="offerdetaildata" v-if="activetabs=='offer-node'"></offerdetail>
