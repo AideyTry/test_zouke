@@ -175,7 +175,7 @@
                         this.tableData.forEach(
                             v=>{
                                 let hour=Math.floor((new Date(v.startDate)-new Date())/3600000);
-                                if(hour<=8){
+                                if(hour<=8&&0<hour){
                                     v._class='danger'
                                 }else if(8<hour&&hour<=24){
                                     v._class='warming'

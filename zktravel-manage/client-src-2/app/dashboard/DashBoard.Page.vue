@@ -91,10 +91,10 @@
                             </el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
-                    <el-submenu index="groupOffer" v-if="offlineRole.FILL_PRICE||offlineRole.CHECK_PRICE">
+                    <el-submenu index="groupOffer" v-if="offlineRole.UPDATE_PRICE||offlineRole.CHECK_PRICE">
                         <template slot="title">团房报价</template>
                         <el-menu-item-group>
-                            <el-menu-item index="dashboard-wait-offer-proxy" v-if="offlineRole.FILL_PRICE">
+                            <el-menu-item index="dashboard-wait-offer-proxy" v-if="offlineRole.UPDATE_PRICE">
                                 待报价/预订
                             </el-menu-item>
                             <el-menu-item index="dashboard-wait-examine-proxy" v-if="offlineRole.CHECK_PRICE">

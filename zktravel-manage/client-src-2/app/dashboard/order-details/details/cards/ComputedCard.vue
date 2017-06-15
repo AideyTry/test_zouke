@@ -35,12 +35,11 @@
                 let _arr={cost: 0, bk: 0, quoted: 0};
                 this.params.forEach(
                     (a,b)=>{
-                        a.room.forEach(
+                        a.rooms.forEach(
                             (v, k) => {
-
-                                _arr.cost+=v.cost*1;
-                                _arr.bk+=v.bk*1;
-                                _arr.quoted+=v.quoted*1
+                                _arr.cost+=v.price.cost*1;
+                                _arr.bk+=v.price.bk*1;
+                                _arr.quoted+=v.price.quoted*1
                             }
                         )
                     }

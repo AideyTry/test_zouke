@@ -106,14 +106,14 @@
                                @click="updatedraft" style="color:#20a0ff;border-color:#20a0ff"
                                size="small">保存
                     </el-button>
-                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'" @click="publishorder"
+                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'&&orderdatastatus==1" @click="publishorder"
                                style="color:#20a0ff;border-color:#20a0ff"
                                size="small">发布
                     </el-button>
                     <el-button v-if="userole.DISPATCH&&activetabs=='require-node'&&!change&&orderdatastatus==2"
                                @click="showdialog(1)" type="info" size="small">分配
                     </el-button>
-                    <el-button @click="submitoffer" size="small">提交报价</el-button>
+                    <el-button type="info" @click="submitoffer" size="small" v-if="userole.UPDATE_PRICE&&activetabs=='offer-node'&&orderdatastatus>2">提交报价</el-button>
                 </div>
                 <div class="dialog-group">
                     <dialog1 @closedialog="closedialog" :dialoggroup="dialoggroup" v-if="userole.DISPATCH"
@@ -200,9 +200,14 @@
                     requirement: vm.orderdata.requirement
                 }).then(
                     data => {
-                        if (data.code = 0) {
+                        if (data.code == 0) {
                             vm.getorder(vm.$route.params.orderid);
                             vm.change = false;
+                            this.$notify({
+                                title: '更新成功',
+                                message: '已更新需求',
+                                type: 'success'
+                            });
                         }
                     }
                 )
@@ -211,7 +216,19 @@
                 ajax.post('/api/team/requirement/draft-publish', {
                     id: this.$route.params.orderid,
                     requirement: this.orderdata.requirement
-                })
+                }).then(
+                    data => {
+                        if (data.code == 0) {
+                            vm.getorder(vm.$route.params.orderid);
+                            vm.change = false;
+                            this.$notify({
+                                title: '发布成功',
+                                message: '已成功发布，等待分配',
+                                type: 'success'
+                            });
+                        }
+                    }
+                )
             },
             submitoffer(){
                 let params = [];
@@ -228,9 +245,9 @@
                         v.params.forEach(
                             (a, b) => {
                                 params[k].price.push({hotel: {name: 'sadsa'}, rooms: []})
-                                a.room.forEach(
+                                a.rooms.forEach(
                                     (l, d) => {
-                                        params[k].price[b].rooms.push({price: l})
+                                        params[k].price[b].rooms.push(l)
                                     }
                                 )
                             }
@@ -243,7 +260,13 @@
                     requirementLastTime: this.orderdata.requirement.last_update
                 }).then(
                     data => {
-
+                        if(data.code==0){
+                            this.$notify({
+                                title: '报价成功',
+                                message: '已成功更新报价，等待通过',
+                                type: 'success'
+                            });
+                        }
                     }
                 )
             }
