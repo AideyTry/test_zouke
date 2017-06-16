@@ -1,9 +1,15 @@
-
 const Router = require('./Router');
 const ActionTrigger = require('./ActionTrigger');
 const NotFoundError = require('./NotFoundError');
 
-module.exports = function(routerConfig){
+const Decorator = require('./reflect/Decorator');
+const paramFrom = require('./decorators/paramFrom');
+const params = require('./decorators/params');
+Decorator.register('query', paramFrom('query'));
+Decorator.register('post', paramFrom('post'));
+Decorator.register('params', params);
+
+module.exports = function(routerConfig, decorator){
     
     const router = new Router(routerConfig);
 
@@ -16,7 +22,7 @@ module.exports = function(routerConfig){
         }
 
         const actionTrigger = new ActionTrigger({
-            ctx, route, router
+            ctx, route, router, decorator
         });
         try{
             await actionTrigger.trigger();

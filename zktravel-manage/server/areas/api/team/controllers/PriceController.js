@@ -26,7 +26,17 @@ module.exports = class MyOfflineOrderController extends LController {
         const { id: uid, name: uname, role, roleName } = this.userInfo;
 
         const result = await s_price.commit(id, requirementLastTime, transPrice, { id:uid, name: uname, role, roleName });
-        if(!result) return this.renderJSON({ code:2, msg: 'can not commit' });
+        if(!result) return this.renderJSON({ code:2, msg: 'can not commit price' });
+
+        this.renderJSON({ code: 0 });
+    }
+    async reject(id, reason){
+        const s_price = new Price();
+
+        const { id: uid, name: uname, role, roleName } = this.userInfo;
+
+        const result = await s_price.reject(id, { id:uid, name: uname, role, roleName }, reason);
+        if(!result) return this.renderJSON({ code:2, msg: 'can not reject price' });
 
         this.renderJSON({ code: 0 });
     }
