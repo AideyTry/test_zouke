@@ -11,14 +11,6 @@
                 label="编号">
         </el-table-column>
         <el-table-column
-                prop="name"
-                label="管理员审核状态">
-        </el-table-column>
-        <el-table-column
-                prop="address"
-                label="用户是否通过方案">
-        </el-table-column>
-        <el-table-column
                 prop="address"
                 label="订房员">
         </el-table-column>

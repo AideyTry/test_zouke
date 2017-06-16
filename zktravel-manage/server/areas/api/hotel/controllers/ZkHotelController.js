@@ -16,7 +16,7 @@ module.exports = class ZkHotelController extends LController {
     }
     async search(keyword){
         const zkHotel = new ZkHotel();
-        const { list } = await zkHotel.query(0, 10, { keyword });
+        const { list } = await zkHotel.query(0, 10, { keyword }, false);
 
         this.renderJSON({ code:0, list:list.map(h=>({
             id: h._id,

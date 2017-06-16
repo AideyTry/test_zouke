@@ -6,6 +6,9 @@
         width: 100%;
         background-color: #eef1f6;
         overflow: hidden;
+        .min-left{
+            min-width: 180px;
+        }
         .header {
             height: 60px;
             line-height: 60px;
@@ -49,10 +52,16 @@
     }
 
 </style>
+<style>
+    .el-pagination{
+        max-width: calc(100% - 180px) !important;
+        width: 100% !important;
+    }
+</style>
 <template>
     <div class="dashboard">
         <el-row class="header" type="flex">
-            <el-col :span="3">
+            <el-col :span="3" class="min-left">
                 <i></i>
                 <div class="main-title">
                     超级行程单
@@ -72,7 +81,7 @@
             </el-col>
         </el-row>
         <el-row class="main-body" type="flex">
-            <el-col :span="3" class="nav-menu">
+            <el-col :span="3" class="nav-menu min-left" >
                 <el-menu :default-active="activemenu"  :unique-opened="true"  class="nav-memu" theme="dark" @select="handleSelect" @open="handleOpen" @close="handleClose">
                     <el-menu-item index="dashboard-my-home-proxy">
                             主页
