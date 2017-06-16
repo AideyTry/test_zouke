@@ -138,13 +138,13 @@
              <el-col :span="12"><strong>为您节省：</strong>{{bk-cost}}</el-col>
          </el-row>
          <el-row class="computed">
-             <el-col :span="24"><strong>取消政策：</strong></el-col>
+             <el-col :span="24"><strong>取消政策：</strong>{{tab.provider.cancel_policy}}</el-col>
          </el-row>
          <el-row class="computed">
-             <el-col :span="24"><strong>付款政策：</strong></el-col>
+             <el-col :span="24"><strong>付款政策：</strong>{{tab.provider.payment_policy}}</el-col>
          </el-row>
          <el-row class="computed">
-             <el-col :span="24"><strong>报价说明：</strong></el-col>
+             <el-col :span="24"><strong>报价说明：</strong>{{tab.provider.remark}}</el-col>
          </el-row>
      </div>
 
