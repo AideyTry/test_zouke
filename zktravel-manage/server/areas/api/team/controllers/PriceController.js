@@ -65,12 +65,15 @@ module.exports = class MyOfflineOrderController extends LController {
         this.renderJSON({ code: 0 });
     }
     //用户同意报价
-    async agree(){
+    async agree(id, userSelectCase){
         const price = new Price();
-        
+        const { id: uid, name: uname, role, roleName } = this.userInfo;
+        const result = await price.agree(id, userSelectCase, { id:uid, name: uname, role, roleName })
     }
     //用户不同意报价
     async disagree(){
-
+        const price = new Price();
+        const { id: uid, name: uname, role, roleName } = this.userInfo;
+        const result = await price.disagree(id, { id:uid, name: uname, role, roleName })
     }
 }

@@ -99,7 +99,7 @@ module.exports = class Price extends BaseOrder {
         }, update);
     }
 
-    async agree(id, user){
+    async agree(id, userSelectCase, user){
         return this.$update(
             {
                 _id: id,
@@ -107,7 +107,7 @@ module.exports = class Price extends BaseOrder {
                 'creator.id': user.id
             },
             {
-                $set: { status: this.status.WAIT_FOR_GATHERING },
+                $set: { status: this.status.WAIT_FOR_GATHERING, user_select_case: userSelectCase },
                 $push: {
                     logs: { type: 'system:agree-price', time: this.$createTime(), user }
                 }
@@ -128,34 +128,5 @@ module.exports = class Price extends BaseOrder {
                 }
             }
         )
-    }
-    
-    async agreePrice(id, result, logUser, price ){
-        /*
-        const nowTime = this.$createTime();
-        const update = {
-            $set: {},
-            $push: {}
-        };
-        if(result){
-            update.$set.status = this.status.WAIT_FOR_PRICE_CONFIRM;
-            if(price){
-                price.last_update = nowTime;
-                update.$set.price = price;
-            }
-        }else{
-            update.$set.status = this.status.WAIT_FOR_GIVE_PRICE;
-        }
-        return await this.$update({
-            _id: id,
-            status: this.status.WAIT_FOR_PRICE_CHECK
-        },{
-            
-        })
-        */
-    }
-
-    confirmPrice(id, confirm){
-
     }
 }
