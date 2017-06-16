@@ -8,28 +8,35 @@ module.exports = class MyOfflineOrderController extends LController {
                 'commit': {
                     'offline_order': this.P.OFFLINE_ORDER.UPDATE_PRICE
                 },
-                'check-price': { 
+                'reject': {
                     'offline_order': this.P.OFFLINE_ORDER.CHECK_PRICE
                 },
-                'confirm-price': {
+                'resolve': { 
+                    'offline_order': this.P.OFFLINE_ORDER.CHECK_PRICE
+                },
+                'agree': {
                     'offline_order': this.P.OFFLINE_ORDER.CONFIRM_PRICE
-                }
+                },
+                'disagree': {
+                    'offline_order': this.P.OFFLINE_ORDER.CONFIRM_PRICE
+                },
             }
         }
     }
     // commit for check by admin
     async commit(id, requirementLastTime, price){
         const s_price = new Price();
-        const transPrice = price?s_price.validPrice(price):null;
-        if(price&&!transPrice) return this.renderJSON({ code:1, msg: 'data check valid fail' });
+        price = s_price.validPrice(price);
+        if(!price) return this.renderJSON({ code:1, msg: 'data check valid fail' });
 
         const { id: uid, name: uname, role, roleName } = this.userInfo;
 
-        const result = await s_price.commit(id, requirementLastTime, transPrice, { id:uid, name: uname, role, roleName });
+        const result = await s_price.commit(id, requirementLastTime, price, { id:uid, name: uname, role, roleName });
         if(!result) return this.renderJSON({ code:2, msg: 'can not commit price' });
 
         this.renderJSON({ code: 0 });
     }
+    //管理员审核不通过
     async reject(id, reason){
         const s_price = new Price();
 
@@ -40,15 +47,30 @@ module.exports = class MyOfflineOrderController extends LController {
 
         this.renderJSON({ code: 0 });
     }
-    async checkPrice(id, price){
-        /*
+    //管理员审核通过
+    async resolve(id, price, userPolicy){
         const s_price = new Price();
-        const transPrice = price?s_price.validPrice(price):null;
-        if(price&&!transPrice) return this.renderJSON({ code:1, msg: 'data check valid fail' });
-        */
+        userPolicy = s_price.validUserPolicy(userPolicy);
+        if(!userPolicy) this.renderJSON({ code:1, msg: 'data check valid fail' });
+        if(price){
+            price = s_price.validPrice(price);
+            if(!price) return this.renderJSON({ code:1, msg: 'data check valid fail' });
+        }
+
+        const { id: uid, name: uname, role, roleName } = this.userInfo;
+
+        const result = await s_price.resolve(id, { id:uid, name: uname, role, roleName }, userPolicy, price);
+        if(!result) return this.renderJSON({ code:2, msg: 'can not reject price' });
+
+        this.renderJSON({ code: 0 });
     }
-    // confirm price
-    async confirmPrice(){
+    //用户同意报价
+    async agree(){
+        const price = new Price();
+        
+    }
+    //用户不同意报价
+    async disagree(){
 
     }
 }
