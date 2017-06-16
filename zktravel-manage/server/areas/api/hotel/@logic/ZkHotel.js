@@ -36,7 +36,7 @@ module.exports = class ZkHotel {
         }
         return detail;
     }
-    async query(page, pageSize, { status = 0, keyword } = {} ){
+    async query(page, pageSize, { status = 0, keyword } = {}, requireCount = true ){
 
         const findCondition = {
             status
@@ -51,7 +51,8 @@ module.exports = class ZkHotel {
 
         const db = await dbclient.get();
         const zkCollection = await db.collection(zk_collection_name);
-        const count = await zkCollection.find(findCondition).count();
+        
+        const count = requireCount ? (await zkCollection.find(findCondition).count()): -1;
 
         const skipNum = page * pageSize;
         const list = await zkCollection.find(findCondition,

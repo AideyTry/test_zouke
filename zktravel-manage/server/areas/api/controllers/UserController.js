@@ -2,7 +2,7 @@ const LController = requireRoot('common/LController');
 const User = require('../@logic/User');
 
 module.exports = class UserController extends LController {
-    async query(page, pageSize, keyword){
+    async query(page=0, pageSize=0, keyword){
         const user = new User();
         const result = await user.query(page, pageSize, keyword);
         return this.renderJSON(Object.assign({code: 0}, result));

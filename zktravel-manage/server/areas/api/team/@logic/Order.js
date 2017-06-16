@@ -1,10 +1,10 @@
-const BaseOfflineOrder = require('./BaseOrder');
+const BaseOrder = require('./BaseOrder');
 
-module.exports = class OfflineOrder extends BaseOfflineOrder {
+module.exports = class Order extends BaseOrder {
     async query(status, { creatorId, bookingId, page=0, pageSize=10 } = {}){
         const collection = await this.$getCollection();
 
-        const findQuery = { status };
+        const findQuery = Array.isArray(status)?{ status: {$in:status} }:{ status };
         if(creatorId) findQuery['creator.id']=creatorId;
         if(bookingId) findQuery['booking_user.id']=bookingId;
 
@@ -36,7 +36,8 @@ module.exports = class OfflineOrder extends BaseOfflineOrder {
     }
     async detail(id){
         const collection = await this.$getCollection();
-        const detail = await collection.findOne({ _id: id })
+        const detail = await collection.findOne({ _id: id });
+        if(!detail) return null;
         detail.id = detail._id;
         delete detail._id;
         return detail;

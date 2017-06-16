@@ -1,4 +1,4 @@
-const LController = requireRoot('common/LController');
+const TeamController = require('../TeamController');
 const TeamRequirement = require('../@logic/Requirement');
 const Order = require('../@logic/Order');
 
@@ -36,8 +36,7 @@ module.exports = class TeamReqController extends LController {
             return;
         }
 
-        const { id: uid, name: uname, role, roleName } = this.userInfo;
-        const id = await teamRequirement[name](requirement, { id: uid, name: uname, role, roleName });
+        const id = await teamRequirement[name](requirement, this.$getUser());
         this.renderJSON({ code: 0, orderId: id });
     }
     async publish(){
@@ -72,12 +71,10 @@ module.exports = class TeamReqController extends LController {
             return;
         }
 
-        const { id: uid, name: uname, role, role_name } = this.userInfo;
-
         const result = await teamRequirement.update(
             id, 
             transRequirement, 
-            { id:uid, uname:uname, role, role_name },
+            this.$getUser(),
             this.userInfo.checkPermission(
                 'offline_order', 
                 this.P.OFFLINE_ORDER.UPDATE_ALL_REQUIREMENT
@@ -105,9 +102,7 @@ module.exports = class TeamReqController extends LController {
         //分配
         const order = new Order();
 
-        const { id: uid, name: uname, role, role_name } = this.userInfo;
-
-        const result = await order.dispatch(id, user, dead_line,  { id:uid, uname:uname, role, role_name });
+        const result = await order.dispatch(id, user, dead_line,  this.$getUser());
 
         if(result) this.renderJSON({ code:0 });
         else this.renderJSON({ code:2, msg: 'can not dispatch this order' });
