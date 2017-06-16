@@ -25,12 +25,15 @@ const priceRule = {
     ]
 }
 const userPolicyRule = {
-    '*payment': { 
-        '*type': 'installment/full',
-        '*dead_line': '2017-08-08'
-     },
-     '*cancel': '取消政策',
-     'explain': '报价说明'
+    '*payment': [
+        {
+            '*dead_line': '2017-08-08',
+            '*price': 200
+        },
+        { min:1 }
+    ],
+    '*cancel': '取消政策',
+    'explain': '报价说明'
 }
 
 module.exports = class Price extends BaseOrder {
