@@ -46,7 +46,7 @@
         methods:{
             submit(){
                 let vm=this;
-                ajax.post('/api/team/price/reject',{
+                ajax.post('/api/team/price/agree',{
                     id:this.$route.params.orderid,
                     userSelectCase:this.orderdata[this.selectnum]
                 }).then(
@@ -54,8 +54,8 @@
                         if(data.code==0){
                             vm.close();
                             vm.$notify({
-                                title: '驳回成功',
-                                message: '已成功驳回',
+                                title: '操作成功',
+                                message: '已成功通过报价',
                                 type: 'success'
                             });
                         }else {

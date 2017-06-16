@@ -267,6 +267,7 @@
             },
             submitoffer(){
                 let params = [];
+                let vm=this;
                 this.$refs.offerdetaildata.editableTabs.forEach(
                     (v, k) => {
                         params.push({
@@ -354,6 +355,7 @@
                                 message: '报价通过，等待用户同意',
                                 type: 'success'
                             });
+                            vm.getorder(vm.$route.params.orderid);
                         } else {
                             vm.$notify({
                                 title: '连接失败',
@@ -369,7 +371,14 @@
                     id: this.$route.params.orderid
                 }).then(
                     data => {
-
+                        if(data.code==0){
+                            vm.$notify({
+                                title: '成功驳回报价',
+                                message: '成功驳回报价，等待重新报价',
+                                type: 'success'
+                            });
+                            this.getorder(vm.$route.params.orderid);
+                        }
                     }
                 )
             }
