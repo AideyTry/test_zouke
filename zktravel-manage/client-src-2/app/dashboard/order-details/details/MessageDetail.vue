@@ -149,23 +149,26 @@
         methods:{
             loading(id){
                 let arr=[];
-                console.log("orderData=",this.orderData);
+//                console.log("orderData=",this.orderData);
                 ajax.post("/api/team/order/detail",{id:id},{lock:false}).then(json=>{
-                    console.log("logs=",json.detail.logs);
+//                    console.log("logs=",json.detail.logs);
                     this.logs=json.detail.logs;
-                    console.log("this.logs=",this.logs);
+//                    console.log("this.logs=",this.logs);
                     this.pageNum=1;
                     this.list=this.logs;
-                    console.log("this.list=",this.list);
+                    this.list.reverse();
+//                    console.log("this.list=",this.list);
                     for(let v of this.list){
                         if(typeof(v.user)=='undefined'||!v.user){
                             v.user='';
                         }
-                        console.log(v.user);
+//                        console.log(v.user);
                         switch(v.type.split(":")[0]){
                             case "system":
                                 v.newType=this.types.system;
                                 break;
+                            case "user":
+                                v.newType=this.types.user;
                         }
                         switch(v.type.split(":")[1]){
                             case "dispatch-requirement":
@@ -185,6 +188,9 @@
                                 break;
                             case "agree-price":
                                 v.content=this.content.agreePrice;
+                                break;
+                            case "message":
+                                v.content=v.message;
                                 break;
                         }
 
@@ -208,7 +214,7 @@
                 }else {
                     this.msg='';
                     ajax.post("/api/team/order/log",{id:this.orderId,message:this.newMsg},{lock:false}).then(json=>{
-                        console.log(json);
+                        this.loading(this.orderId);
                     })
 //                    this.loading();
                 }

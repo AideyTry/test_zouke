@@ -229,7 +229,6 @@ export default{
                     }
                     this.currentData=newArr;
                     this.total=this.arr.length;
-                    console.log(this.currentData);
                 for(let obj of this.currentData){
                     if(obj.status===1){
                         obj.newStatus="待发布";
@@ -287,7 +286,7 @@ export default{
                 this.status=2;
                 this.loadTable();
             }else if(this.$route.path=="/dashboard/my-publish/quote"){
-                this.status=3;
+                this.status=[3,4];
                 this.loadTable();
             }else if(this.$route.path=="/dashboard/my-publish/wait-confirmed"){
                 this.status=5;
