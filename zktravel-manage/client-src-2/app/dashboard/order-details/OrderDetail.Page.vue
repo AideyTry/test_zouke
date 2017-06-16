@@ -100,36 +100,47 @@
                     <messageDetail></messageDetail>
                 </el-tab-pane>
                 <div class="button-group">
+                    <!--客服发布-->
                     <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'" v-show="!change"
-                               type="info" size="small" @click="togglechange">
-                        修改
+                               type="info" size="small" @click="togglechange">修改
                     </el-button>
                     <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'" v-show="change"
                                @click="updatedraft" style="color:#20a0ff;border-color:#20a0ff"
                                size="small">保存
                     </el-button>
                     <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'&&orderdatastatus==1"
-                               @click="publishorder"
-                               style="color:#20a0ff;border-color:#20a0ff"
+                               @click="publishorder" style="color:#20a0ff;border-color:#20a0ff"
                                size="small">发布
                     </el-button>
+                    <!--管理员分配-->
                     <el-button v-if="userole.DISPATCH&&activetabs=='require-node'&&!change&&orderdatastatus==2"
                                @click="showdialog(1)" type="info" size="small">分配
                     </el-button>
+                    <!--订房员报价-->
                     <el-button type="info" @click="submitoffer" size="small"
-                               v-if="userole.UPDATE_PRICE&&activetabs=='offer-node'&&orderdatastatus==2">提交报价
+                               v-if="userole.UPDATE_PRICE&&activetabs=='offer-node'&&orderdatastatus==3">提交报价
+                    </el-button>
+                    <!--管理员审核-->
+                    <el-button type="success" @click="passOffer" size="small"
+                               v-if="userole.CHECK_PRICE&&activetabs=='offer-node'&&orderdatastatus==4">审核通过
                     </el-button>
                     <el-button type="danger" @click="showdialog(2)" size="small"
-                               v-if="userole.CHECK_PRICE&&activetabs=='offer-node'&&orderdatastatus>2">重新报价
+                               v-if="userole.CHECK_PRICE&&activetabs=='offer-node'&&orderdatastatus==4">重新报价
                     </el-button>
-                    <el-button type="success" @click="passOffer" size="small"
-                               v-if="userole.CHECK_PRICE&&activetabs=='offer-node'&&orderdatastatus>2">审核通过
+                    <!--客服审核-->
+                    <el-button type="success" @click="showdialog(3)" size="small"
+                               v-if="userole.CONFIRM_PRICE&&activetabs=='offer-node'&&orderdatastatus==5">报价通过
+                    </el-button>
+                    <el-button type="danger" @click="customRejectOffer" size="small"
+                               v-if="userole.CONFIRM_PRICE&&activetabs=='offer-node'&&orderdatastatus==5">重新报价
                     </el-button>
                 </div>
                 <div class="dialog-group">
                     <dialog1 @closedialog="closedialog" :dialoggroup="dialoggroup" v-if="userole.DISPATCH"
                              :pickerOptions="pickerOptions"></dialog1>
                     <dialog2 @closedialog="closedialog" :dialoggroup="dialoggroup"></dialog2>
+                    <dialog3 @closedialog="closedialog" :dialoggroup="dialoggroup"
+                             v-if="userole.CONFIRM_PRICE&&activetabs=='offer-node'&&orderdatastatus==5"></dialog3>
                 </div>
             </el-tabs>
         </div>
@@ -141,7 +152,8 @@
     import requireDetail from './details/RequireDetail';
     import changeRequire from '../publish-require/PublishRequire.Page';
     import dialog1 from './dialogs/DistributeDialog';
-    import dialog2 from './dialogs/RejectOfferDialog'
+    import dialog2 from './dialogs/RejectOfferDialog';
+    import dialog3 from './dialogs/CustomerPassDialog';
     import offerDetail from './details/OfferDetail';
     import orderDetail from './details/orderDetail'
     import messageDetail from './details/MessageDetail';
@@ -151,6 +163,7 @@
             changerequire: changeRequire,
             dialog1: dialog1,
             dialog2: dialog2,
+            dialog3: dialog3,
             offerdetail: offerDetail,
             orderDetail: orderDetail,
             messageDetail: messageDetail
@@ -164,6 +177,7 @@
                         return time.getTime() < Date.now() - 8.64e7;
                     }
                 },
+                /*弹出框*/
                 dialoggroup: [
                     {
                         show: false,
@@ -212,7 +226,7 @@
             },
             closedialog(n){
                 this.dialoggroup[n - 1].show = false;
-                this.getorder();
+                this.getorder(this.$route.params.orderid);
             },
             updatedraft(){
                 let vm = this;
@@ -289,15 +303,15 @@
                                 message: '已成功更新报价，等待通过',
                                 type: 'success'
                             });
-                            this.getorder();
+                            vm.getorder(vm.$route.params.orderid);
                         }
                     }
                 )
             },
             passOffer(){
-                let vm=this;
+                let vm = this;
                 let params = [];
-                let user=JSON.parse(JSON.stringify(this.$refs.offerdetaildata.userchannel));
+                let user = JSON.parse(JSON.stringify(this.$refs.offerdetaildata.userchannel));
                 this.$refs.offerdetaildata.editableTabs.forEach(
                     (v, k) => {
                         params.push({
@@ -323,24 +337,24 @@
                     }
                 )
                 user.payment.forEach(
-                    (v,k)=>{
-                        v.dead_line=new Date(v.dead_line).format('YYYY-MM-DD')
+                    (v, k) => {
+                        v.dead_line = new Date(v.dead_line).format('YYYY-MM-DD')
                     }
                 )
-                let _params={
-                    userPolicy:user,
-                    id:this.$route.params.orderid,
-                    price:{cases: params}
+                let _params = {
+                    userPolicy: user,
+                    id: this.$route.params.orderid,
+                    price: {cases: params}
                 };
-                ajax.post('/api/team/price/resolve',_params).then(
-                    data=>{
-                        if(data.code==0){
+                ajax.post('/api/team/price/resolve', _params).then(
+                    data => {
+                        if (data.code == 0) {
                             vm.$notify({
                                 title: '报价通过',
                                 message: '报价通过，等待用户同意',
                                 type: 'success'
                             });
-                        }else {
+                        } else {
                             vm.$notify({
                                 title: '连接失败',
                                 message: data.msg,
@@ -349,8 +363,16 @@
                         }
                     }
                 )
-            }
+            },
+            customRejectOffer(){
+                ajax.post('/api/team/price/disagree', {
+                    id: this.$route.params.orderid
+                }).then(
+                    data => {
 
+                    }
+                )
+            }
         },
         computed: {
             orderid(){
