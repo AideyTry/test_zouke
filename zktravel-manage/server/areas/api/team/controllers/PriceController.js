@@ -66,14 +66,19 @@ module.exports = class MyOfflineOrderController extends LController {
     }
     //用户同意报价
     async agree(id, userSelectCase){
+        if(!userSelectCase) return this.renderJSON({ code:1, msg:'no user select case' });
         const price = new Price();
         const { id: uid, name: uname, role, roleName } = this.userInfo;
         const result = await price.agree(id, userSelectCase, { id:uid, name: uname, role, roleName })
+        if(result) this.renderJSON({ code:0 });
+        else this.renderJSON({ code:2, msg:'can not agree this order price' });
     }
     //用户不同意报价
-    async disagree(){
+    async disagree(id){
         const price = new Price();
         const { id: uid, name: uname, role, roleName } = this.userInfo;
         const result = await price.disagree(id, { id:uid, name: uname, role, roleName })
+        if(result) this.renderJSON({ code:0 });
+        else this.renderJSON({ code:2, msg:'can not disagree this order price' });
     }
 }

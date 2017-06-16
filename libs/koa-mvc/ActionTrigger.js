@@ -78,7 +78,6 @@ module.exports = class ActionTrigger{
 
                     return undefined;
                 });
-                console.log(args);
                 const actionResult = await controller[this._actionName](...args);
             }
             await controller.$afterAction(); 
