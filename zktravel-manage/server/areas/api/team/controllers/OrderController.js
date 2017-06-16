@@ -1,7 +1,7 @@
-const LController = requireRoot('common/LController');
+const TeamController = require('../TeamController');
 const Order = require('../@logic/Order');
 
-module.exports = class OrderController extends LController {
+module.exports = class OrderController extends TeamController {
     async query(page, pageSize, status){
         const order = new Order();
         const { list, count } = await order.query(status, { page, pageSize }); 
@@ -14,7 +14,8 @@ module.exports = class OrderController extends LController {
     }
     async log(id, message){
         const order = new Order();
-        const { id: uid, name: uname, role, roleName } = this.userInfo;
-        const result = order.log(id, { id:uid, uname:uname, role, role_name }, message);
+        const result = order.log(id, this.$getUser(), message);
+        if(result) this.renderJSON({ code:0 });
+        else this.renderJSON({ code:2, msg:"can not log" });
     }
 }

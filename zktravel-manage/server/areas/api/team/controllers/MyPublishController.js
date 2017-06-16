@@ -1,7 +1,7 @@
-const LController = requireRoot('common/LController');
+const TeamController = require('../TeamController');
 const Order = require('../@logic/Order');
 
-module.exports = class MyPublishController extends LController {
+module.exports = class MyPublishController extends TeamController {
     async query(status=1){
         const order = new Order();
         const uid = this.userInfo.id;
