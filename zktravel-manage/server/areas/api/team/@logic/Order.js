@@ -36,7 +36,8 @@ module.exports = class Order extends BaseOrder {
     }
     async detail(id){
         const collection = await this.$getCollection();
-        const detail = await collection.findOne({ _id: id })
+        const detail = await collection.findOne({ _id: id });
+        if(!detail) return null;
         detail.id = detail._id;
         delete detail._id;
         return detail;
