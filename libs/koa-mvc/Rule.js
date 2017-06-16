@@ -9,6 +9,12 @@ function validAction(actionName){
 }
 
 module.exports = class Rule {
+    static validController(name){
+        return validController(name);
+    }
+    static validAction(name){
+        return validAction(name)
+    }
     //_string : {{controller:home}}
     //_part
     //_minlength
