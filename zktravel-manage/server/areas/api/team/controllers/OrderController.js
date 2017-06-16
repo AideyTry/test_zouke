@@ -12,4 +12,9 @@ module.exports = class OrderController extends LController {
         const detail = await order.detail(id);
         this.renderJSON({ code:0, detail });
     }
+    async log(id, message){
+        const order = new Order();
+        const { id: uid, name: uname, role, roleName } = this.userInfo;
+        const result = order.log(id, { id:uid, uname:uname, role, role_name }, message);
+    }
 }

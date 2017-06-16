@@ -51,7 +51,7 @@ module.exports = class OfflineOrder extends BaseOfflineOrder {
     }
 
     async log(id, user, msg){
-        this.$update({ _id:id }, {
+        return this.$update({ _id:id }, {
             $push: { logs:{ type: 'user:message', time:this.$createTime(), user, message: msg } }
         })
     }
