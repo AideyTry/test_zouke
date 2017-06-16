@@ -18,16 +18,33 @@
     <div class="provider">
         <el-form>
             <el-form-item label="付款政策">
-                <el-radio-group v-model="userchannel">
-                    <el-radio label="全款"></el-radio>
-                    <el-radio label="分期"></el-radio>
+                <el-radio-group v-model="userchannel.type">
+                    <el-radio label="全款" value="全款"></el-radio>
+                    <el-radio label="分期" value="分期"></el-radio>
                 </el-radio-group>
             </el-form-item>
-            <el-form-item label="取消政策" prop="desc">
-                <el-input type="textarea" v-model="userchannel"></el-input>
+            <template v-for="(v,k) in userchannel.payment">
+                <el-form-item label="截止时间">
+                    <el-date-picker
+                            v-model="v.dead_line"
+                            type="date"
+                            size="small"
+                            placeholder="选择日期">
+                    </el-date-picker>
+                    <span>前支付</span>
+                    <el-input type="number" v-model="v.price">
+
+                    </el-input>
+                </el-form-item>
+            </template>
+            <el-row>
+                <el-button @click="addchannel" v-if="userchannel.type=='分期'" type="info">新增政策</el-button>
+            </el-row>
+            <el-form-item label="取消政策">
+                <el-input type="textarea" v-model="userchannel.cancel"></el-input>
             </el-form-item>
-            <el-form-item label="报价说明" prop="desc">
-                <el-input type="textarea" v-model="userchannel"></el-input>
+            <el-form-item label="报价说明">
+                <el-input type="textarea" v-model="userchannel.explain"></el-input>
             </el-form-item>
         </el-form>
     </div>
@@ -38,6 +55,16 @@
         data(){
             return{
 
+            }
+        },
+        methods:{
+            addchannel(){
+                this.userchannel.payment.push(
+                    {
+                        dead_line:new Date,
+                        price:0
+                    }
+                )
             }
         }
     }

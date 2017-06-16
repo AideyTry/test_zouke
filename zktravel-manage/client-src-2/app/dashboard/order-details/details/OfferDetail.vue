@@ -42,7 +42,7 @@
                     <h4>用户政策</h4>
                 </el-col>
             </el-row>
-            <userchannel v-if="offlineRole.CHECK_PRICE" :userchannel="userchannel"> </userchannel>
+            <userchannel v-if="offlineRole.CHECK_PRICE&&userchannel" :userchannel="userchannel"> </userchannel>
             <history :history="history"> </history>
         </div>
         <div class="offer-detail-booking" v-if="offlineRole.CONFIRM_PRICE&&orderstatus>4">
@@ -89,7 +89,17 @@
                 countryTabs: null,
                 offergroup: 1,
                 paramsModel:null,
-                userchannel:null,
+                userchannel:{
+                    payment:[
+                        {
+                            dead_line:new Date,
+                            price:0
+                        }
+                    ],
+                    cancel:'',
+                    explain:'',
+                    type:'全款'
+                },
                 history:[]
             }
         },
@@ -111,10 +121,10 @@
                                         order: data.detail.requirement.stay_details,
                                         params: a.price,
                                         provider:{
-                                            booking_channel:a.booking_channel,
-                                            payment_policy:a.payment_policy,
-                                            cancel_policy:a.cancel_policy,
-                                            remark:a.remark
+                                            booking_channel:a.sp_policy.booking_channel,
+                                            payment_policy:a.sp_policy.payment,
+                                            cancel_policy:a.sp_policy.cancel,
+                                            remark:a.sp_policy.remark
                                         },
                                         cost:{cost: 0, bk: 0, quoted: 0}
                                     })

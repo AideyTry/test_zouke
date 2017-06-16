@@ -76,8 +76,10 @@
         <div class="order-detail">
             <el-tabs @tab-click="changetab" :active-name="activetabs">
                 <el-tab-pane label="需求记录" name="require-node">
-                    <requiredetail v-if="orderdata&&!change&&activetabs=='require-node'" :orderdata="orderdata"></requiredetail>
-                    <changerequire v-if="orderdata&&change&&activetabs=='require-node'" :orderdata="orderdata"></changerequire>
+                    <requiredetail v-if="orderdata&&!change&&activetabs=='require-node'"
+                                   :orderdata="orderdata"></requiredetail>
+                    <changerequire v-if="orderdata&&change&&activetabs=='require-node'"
+                                   :orderdata="orderdata"></changerequire>
                 </el-tab-pane>
                 <el-tab-pane label="报价记录" name="offer-node">
                     <offerdetail ref="offerdetaildata" v-if="activetabs=='offer-node'"></offerdetail>
@@ -106,18 +108,28 @@
                                @click="updatedraft" style="color:#20a0ff;border-color:#20a0ff"
                                size="small">保存
                     </el-button>
-                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'&&orderdatastatus==1" @click="publishorder"
+                    <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'&&orderdatastatus==1"
+                               @click="publishorder"
                                style="color:#20a0ff;border-color:#20a0ff"
                                size="small">发布
                     </el-button>
                     <el-button v-if="userole.DISPATCH&&activetabs=='require-node'&&!change&&orderdatastatus==2"
                                @click="showdialog(1)" type="info" size="small">分配
                     </el-button>
-                    <el-button type="info" @click="submitoffer" size="small" v-if="userole.UPDATE_PRICE&&activetabs=='offer-node'&&orderdatastatus>2">提交报价</el-button>
+                    <el-button type="info" @click="submitoffer" size="small"
+                               v-if="userole.UPDATE_PRICE&&activetabs=='offer-node'&&orderdatastatus==2">提交报价
+                    </el-button>
+                    <el-button type="danger" @click="showdialog(2)" size="small"
+                               v-if="userole.CHECK_PRICE&&activetabs=='offer-node'&&orderdatastatus>2">重新报价
+                    </el-button>
+                    <el-button type="success" @click="passOffer" size="small"
+                               v-if="userole.CHECK_PRICE&&activetabs=='offer-node'&&orderdatastatus>2">审核通过
+                    </el-button>
                 </div>
                 <div class="dialog-group">
                     <dialog1 @closedialog="closedialog" :dialoggroup="dialoggroup" v-if="userole.DISPATCH"
                              :pickerOptions="pickerOptions"></dialog1>
+                    <dialog2 @closedialog="closedialog" :dialoggroup="dialoggroup"></dialog2>
                 </div>
             </el-tabs>
         </div>
@@ -129,6 +141,7 @@
     import requireDetail from './details/RequireDetail';
     import changeRequire from '../publish-require/PublishRequire.Page';
     import dialog1 from './dialogs/DistributeDialog';
+    import dialog2 from './dialogs/RejectOfferDialog'
     import offerDetail from './details/OfferDetail';
     import orderDetail from './details/orderDetail'
     import messageDetail from './details/MessageDetail';
@@ -137,6 +150,7 @@
             requiredetail: requireDetail,
             changerequire: changeRequire,
             dialog1: dialog1,
+            dialog2: dialog2,
             offerdetail: offerDetail,
             orderDetail: orderDetail,
             messageDetail: messageDetail
@@ -158,6 +172,12 @@
                             date: new Date()
                         },
                         rule: null
+                    },
+                    {
+                        show: false
+                    },
+                    {
+                        show: false
                     }
                 ],
                 tab: null,
@@ -192,6 +212,7 @@
             },
             closedialog(n){
                 this.dialoggroup[n - 1].show = false;
+                this.getorder();
             },
             updatedraft(){
                 let vm = this;
@@ -235,10 +256,12 @@
                 this.$refs.offerdetaildata.editableTabs.forEach(
                     (v, k) => {
                         params.push({
-                                booking_channel: v.provider.booking_channel,
-                                payment_policy: v.provider.payment_policy,
-                                cancel_policy: v.provider.cancel_policy,
-                                remark: v.provider.remark,
+                                sp_policy: {
+                                    booking_channel: v.provider.booking_channel,
+                                    payment: v.provider.payment_policy,
+                                    cancel: v.provider.cancel_policy,
+                                    remark: v.provider.remark,
+                                },
                                 price: []
                             }
                         );
@@ -260,11 +283,68 @@
                     requirementLastTime: this.orderdata.requirement.last_update
                 }).then(
                     data => {
-                        if(data.code==0){
+                        if (data.code == 0) {
                             this.$notify({
                                 title: '报价成功',
                                 message: '已成功更新报价，等待通过',
                                 type: 'success'
+                            });
+                            this.getorder();
+                        }
+                    }
+                )
+            },
+            passOffer(){
+                let vm=this;
+                let params = [];
+                let user=JSON.parse(JSON.stringify(this.$refs.offerdetaildata.userchannel));
+                this.$refs.offerdetaildata.editableTabs.forEach(
+                    (v, k) => {
+                        params.push({
+                                sp_policy: {
+                                    booking_channel: v.provider.booking_channel,
+                                    payment: v.provider.payment_policy,
+                                    cancel: v.provider.cancel_policy,
+                                    remark: v.provider.remark,
+                                },
+                                price: []
+                            }
+                        );
+                        v.params.forEach(
+                            (a, b) => {
+                                params[k].price.push({hotel: {name: 'sadsa'}, rooms: []})
+                                a.rooms.forEach(
+                                    (l, d) => {
+                                        params[k].price[b].rooms.push(l)
+                                    }
+                                )
+                            }
+                        )
+                    }
+                )
+                user.payment.forEach(
+                    (v,k)=>{
+                        v.dead_line=new Date(v.dead_line).format('YYYY-MM-DD')
+                    }
+                )
+                let _params={
+                    userPolicy:user,
+                    id:this.$route.params.orderid,
+                    price:{cases: params}
+                };
+                ajax.post('/api/team/price/resolve',_params).then(
+                    data=>{
+                        if(data.code==0){
+                            vm.$notify({
+                                title: '报价通过',
+                                message: '报价通过，等待用户同意',
+                                type: 'success'
+                            });
+                        }else {
+                            vm.$notify({
+                                title: '连接失败',
+                                message: data.msg,
+                                type: 'error'
                             });
                         }
                     }
