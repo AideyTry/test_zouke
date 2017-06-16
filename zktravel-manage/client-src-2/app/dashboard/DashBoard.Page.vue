@@ -52,6 +52,12 @@
     }
 
 </style>
+<style>
+    .el-pagination{
+        max-width: calc(100% - 180px) !important;
+        width: 100% !important;
+    }
+</style>
 <template>
     <div class="dashboard">
         <el-row class="header" type="flex">
