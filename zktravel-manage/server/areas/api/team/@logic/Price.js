@@ -34,7 +34,8 @@ module.exports = class Price extends BaseOrder {
         return await this.$update(
             {   
                 _id: id, 'requirement.last_update': requirementLastTime, 
-                status: this.status.WAIT_FOR_GIVE_PRICE
+                status: this.status.WAIT_FOR_GIVE_PRICE,
+                'booking_user.id': user.id
             },
             { 
                 $set: { status: this.status.WAIT_FOR_PRICE_CHECK, price },
@@ -44,8 +45,24 @@ module.exports = class Price extends BaseOrder {
             }
         );
     }
+
+    async reject(id, user, reason){
+        return await this.$update(
+            {
+                _id:id,
+                status: this.status.WAIT_FOR_PRICE_CHECK
+            },
+            {
+                $set: { status: this.status.WAIT_FOR_GIVE_PRICE },
+                $push: {
+                    logs: { type: 'system:reject-price', time: this.$createTime(), user, reason}
+                }
+            }
+
+        )
+    }
     
-    async checkPrice(id, result, logUser, price ){
+    async agreePrice(id, result, logUser, price ){
         /*
         const nowTime = this.$createTime();
         const update = {

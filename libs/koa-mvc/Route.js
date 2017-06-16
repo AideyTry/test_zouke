@@ -1,5 +1,5 @@
 const path = require('path');
-const utils = require('./utils');
+const { appRoot, upperFirstLetter, camelCase } = require('./utils');
 
 module.exports = class Route {
     //_params
@@ -7,10 +7,13 @@ module.exports = class Route {
     //_controllersRoot
     //_viewsRoot
     constructor(params, area = ''){
+        params.controller = upperFirstLetter(camelCase(params.controller)) + 'Controller';
+        params.action = camelCase(params.action);
+
         this._params = params;
         this._area = area;
 
-        let moduleRoot = utils.appRoot;
+        let moduleRoot = appRoot;
         if(area){
             moduleRoot = path.resolve(moduleRoot, `areas/${area}`); 
         }
