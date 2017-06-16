@@ -160,22 +160,25 @@
                         rule: null
                     }
                 ],
-                tab:null,
-                activetabs:'require-node',
-                orderstatus:['','待发布','待分配','待报价','报价待审核','报价待确认','待收款','分房待确认','待控房','已控房']
+                tab: null,
+                activetabs: 'require-node',
+                orderstatus: ['', '待发布', '待分配', '待报价', '报价待审核', '报价待确认', '待收款', '分房待确认', '待控房', '已控房']
             }
         },
         methods: {
             changetab(tab){
-                this.tab=tab.name;
-                this.activetabs=tab.name;
-                this.$router.push({name:'dashboard-order-detail',params:{id:this.$route.params.orderid,status:tab.name}})
+                this.tab = tab.name;
+                this.activetabs = tab.name;
+                this.$router.push({
+                    name: 'dashboard-order-detail',
+                    params: {id: this.$route.params.orderid, status: tab.name}
+                })
             },
             getorder(id){
                 let vm = this;
                 ajax.post('/api/team/order/detail', {
                     id: id
-                },{lock:false}).then(
+                }, {lock: false}).then(
                     data => {
                         vm.orderdata = data.detail;
                     }
@@ -185,55 +188,85 @@
                 this.change = !this.change;
             },
             showdialog(n){
-                this.dialoggroup[n-1].show=true;
+                this.dialoggroup[n - 1].show = true;
             },
             closedialog(n){
-                this.dialoggroup[n-1].show=false;
+                this.dialoggroup[n - 1].show = false;
             },
             updatedraft(){
-                let vm=this;
-                ajax.post('/api/team/requirement/update',{
-                    id:vm.$route.params.orderid,
-                    requirement:vm.orderdata.requirement
+                let vm = this;
+                ajax.post('/api/team/requirement/update', {
+                    id: vm.$route.params.orderid,
+                    requirement: vm.orderdata.requirement
                 }).then(
-                    data=>{
-                        if(data.code=0){
+                    data => {
+                        if (data.code == 0) {
                             vm.getorder(vm.$route.params.orderid);
-                            vm.change=false;
+                            vm.change = false;
+                            this.$notify({
+                                title: '更新成功',
+                                message: '已更新需求',
+                                type: 'success'
+                            });
                         }
                     }
                 )
             },
             publishorder(){
-                ajax.post('/api/team/requirement/draft-publish',{
-                    id:this.$route.params.orderid,
-                    requirement:this.orderdata.requirement
-                })
+                ajax.post('/api/team/requirement/draft-publish', {
+                    id: this.$route.params.orderid,
+                    requirement: this.orderdata.requirement
+                }).then(
+                    data => {
+                        if (data.code == 0) {
+                            vm.getorder(vm.$route.params.orderid);
+                            vm.change = false;
+                            this.$notify({
+                                title: '发布成功',
+                                message: '已成功发布，等待分配',
+                                type: 'success'
+                            });
+                        }
+                    }
+                )
             },
             submitoffer(){
-                let params=[];
+                let params = [];
                 this.$refs.offerdetaildata.editableTabs.forEach(
-                    (v,k)=>{
-                        params.push([]);
+                    (v, k) => {
+                        params.push({
+                                booking_channel: v.provider.booking_channel,
+                                payment_policy: v.provider.payment_policy,
+                                cancel_policy: v.provider.cancel_policy,
+                                remark: v.provider.remark,
+                                price: []
+                            }
+                        );
                         v.params.forEach(
-                            (a,b)=>{
-                                params[k].push({hotel:{name:'sadsa'},rooms:[]})
-                                a.room.forEach(
-                                    (l,d)=>{
-                                        params[k][b].rooms.push({price:l})
+                            (a, b) => {
+                                params[k].price.push({hotel: {name: 'sadsa'}, rooms: []})
+                                a.rooms.forEach(
+                                    (l, d) => {
+                                        params[k].price[b].rooms.push(l)
                                     }
                                 )
                             }
                         )
                     }
                 )
-                ajax.post('/api/team/price/commit',{
-                    id:this.$route.params.orderid,
-                    price:{cases:params},
-                    requirementLastTime:this.orderdata.requirement.last_update
+                ajax.post('/api/team/price/commit', {
+                    id: this.$route.params.orderid,
+                    price: {cases: params},
+                    requirementLastTime: this.orderdata.requirement.last_update
                 }).then(
-                    data=>{
-
+                    data => {
+                        if(data.code==0){
+                            this.$notify({
+                                title: '报价成功',
+                                message: '已成功更新报价，等待通过',
+                                type: 'success'
+                            });
+                        }
                     }
                 )
             }
@@ -247,12 +280,12 @@
                 return this.$store.getters.offlineRole;
             },
             orderdatastatus(){
-                return  this.orderdata? this.orderdata.status:'0'
+                return this.orderdata ? this.orderdata.status : '0'
             }
         },
         created(){
             this.getorder(this.$route.params.orderid);
-            this.activetabs=this.$route.params.status;
+            this.activetabs = this.$route.params.status;
         }
     }
 </script>
