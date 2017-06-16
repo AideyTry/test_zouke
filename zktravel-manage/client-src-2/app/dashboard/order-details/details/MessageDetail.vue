@@ -86,8 +86,10 @@
         <el-row type="flex">
             <el-col :span="24">
                 <div v-for="item of currentList" :key="item" class="msgList">
-                    <span class="avatar"></span>
-                    <span>{{item}}</span>
+                    <span class="avatar">{{item.newType}}</span>
+                    <span>{{item.time}}</span>
+                    <span>{{item.user.name}}</span>
+                    <span>{{item.content}}</span>
                     <el-row type="flex">
                         <el-col :span="1"></el-col>
                         <el-col :span="22"><p class="line"></p></el-col>
@@ -103,7 +105,9 @@
 </template>
 
 <script>
+    import ajax from '@local/common/ajax';
     export default{
+        props:['orderData'],
         data(){
             return {
                 msg:'',
@@ -112,23 +116,85 @@
                 currentList:[],
                 total:null,
                 pageNum:1,
-                pageSize:10
+                pageSize:10,
+                logs:{
+                    type:'',
+                    time:'',
+                    user:{
+                        id:'',
+                        name:'',
+                        role:'',
+                        roleName:''
+                    }
+                },
+                types:{
+                    system:'系',
+                    user:'头'
+                },
+                content:{
+                    dispatchRequirement:"发布需求",
+                    updateRequirement:"修改需求",
+                    commitPrice:"提交报价",
+                    rejectPrice:"未通过报价",
+                    resolvePrice:"通过报价",
+                    agreePrice:"同意报价"
+                }
             }
         },
         computed:{
 
         },
         methods:{
-            loading(){
+            loading(id){
                 let arr=[];
-                this.pageNum=1;
-                for(let num=(this.pageNum-1)*this.pageSize;num<this.pageNum*this.pageSize;num++){
-                    if(this.list[num]){
-                        arr.push(this.list[num]);
+                console.log("orderData=",this.orderData);
+                ajax.post("/api/team/order/detail",{id:id}).then(json=>{
+                    console.log("logs=",json.detail.logs);
+                    this.logs=json.detail.logs;
+                    console.log("this.logs=",this.logs);
+                    this.pageNum=1;
+                    this.list=this.logs;
+                    console.log("this.list=",this.list);
+                    for(let v of this.list){
+                        if(typeof(v.user)=='undefined'||!v.user){
+                            v.user='';
+                        }
+                        console.log(v.user);
+                        switch(v.type.split(":")[0]){
+                            case "system":
+                                v.newType=this.types.system;
+                                break;
+                        }
+                        switch(v.type.split(":")[1]){
+                            case "dispatch-requirement":
+                                v.content=this.content.dispatchRequirement;
+                                break;
+                            case "update-requirement":
+                                v.content=this.content.updateRequirement;
+                                break;
+                            case "commit-price":
+                                v.content=this.content.commitPrice;
+                                break;
+                            case "reject-price":
+                                v.content=this.content.rejectPrice;
+                                break;
+                            case "resolve-price":
+                                v.content=this.content.resolvePrice;
+                                break;
+                            case "agree-price":
+                                v.content=this.content.agreePrice;
+                                break;
+                        }
+
                     }
-                }
-                this.currentList=Object.assign({},arr);
-                this.total=this.list.length;
+                    for(let num=(this.pageNum-1)*this.pageSize;num<this.pageNum*this.pageSize;num++){
+                        if(this.list[num]){
+                            arr.push(this.list[num]);
+                        }
+                    }
+                    this.currentList=Object.assign({},arr);
+                    this.total=this.list.length;
+                });
             },
             btn(){
                 this.newMsg=this.msg;
@@ -160,7 +226,7 @@
         },
 
         mounted(){
-            this.loading();
+            this.loading(this.$route.params.orderid);
         },
         updated(){
 

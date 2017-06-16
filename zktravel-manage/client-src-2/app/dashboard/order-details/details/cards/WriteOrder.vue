@@ -15,8 +15,18 @@
     }
     .orderContent{
         .city{
+            .el-row{
+                padding:2px 0;
+            }
             .red{
                 color:#f00;
+            }
+            .delete{
+                color:#f00;
+
+            }
+            .delete:hover{
+                cusor:pointer;
             }
         }
     }
@@ -57,7 +67,7 @@
                                 </el-row>
                                 <el-row type="flex">
                                     <el-col :span="2"><strong>酒店<i class="red">*</i></strong></el-col>
-                                    <el-col :span="9">
+                                    <el-col :span="8">
                                         <el-autocomplete
                                                 size="small"
                                                 v-model="hotel"
@@ -67,6 +77,21 @@
                                         >
 
                                         </el-autocomplete>
+                                    </el-col>
+                                    <el-col :span="3">
+                                        <span>B评分:</span>
+                                        <span>{{}}</span>
+                                        <span class="delete" @click="clickDelete()">删除</span>
+                                    </el-col>
+                                </el-row>
+                                <el-row type="flex">
+                                    <el-col :span="2">
+                                        <strong>备注确认号:</strong>
+                                    </el-col>
+                                    <el-col :span="10">
+                                        <el-input v-model="input" placeholder="确认用户备注后，填写相应的编号，用';'隔开">
+
+                                        </el-input>
                                     </el-col>
                                 </el-row>
                             </div>
@@ -88,7 +113,8 @@
                 cityTabs:null,
                 orders:null,
                 hotel:'',
-                hotelFlag:false
+                hotelFlag:false,
+                input:''
             }
         },
         computed:{
@@ -96,12 +122,10 @@
         },
         methods:{
             loadOrder(id){
-                console.log(id);
                 ajax.post("/api/team/order/detail",{id:id}).then(json=>{
                     console.log("json=",json);
                     this.orders=json.detail.requirement.stay_details;
                     this.cityTabs=json.detail.requirement.stay_details[0].city.name;
-                    console.log(this.cityTabs);
                 })
             },
             dateRange(a,b){
@@ -114,7 +138,6 @@
                         keyword: queryString.trim()
                     }).then(
                         data => {
-                            console.log(data);
                             let arr = []
                             if(data.list){
                                 data.list.forEach(
@@ -130,13 +153,15 @@
                 }
             }, 1000),
             selectHotel(item){
-                let arr = item.item;
-                this.hotelflag=true;
-                this.params.hotel = arr;
+
+
             },
             /*search end*/
             write(){
                 this.change=!this.change;
+            },
+            clickDelete(){
+
             }
         },
         watch:{

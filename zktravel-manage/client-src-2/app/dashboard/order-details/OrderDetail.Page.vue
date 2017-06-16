@@ -95,7 +95,7 @@
 
                 </el-tab-pane>
                 <el-tab-pane label="留言/操作" name="message-node">
-                    <messageDetail></messageDetail>
+                    <messageDetail v-if="orderdata&&activetabs=='message-node'" :orderData="orderdata"></messageDetail>
                 </el-tab-pane>
                 <div class="button-group">
                     <el-button v-if="userole.UPDATE_SELF_REQUIREMENT&&activetabs=='require-node'" v-show="!change"
