@@ -77,7 +77,7 @@ module.exports = class Price extends BaseOrder {
     async resolve(id, user, userPolicy, price){
         const nowTime = this.$createTime();
         const update = {
-            $set: { user_policy: userPolicy, status: this.status.WAIT_FOR_GATHERING },
+            $set: { user_policy: userPolicy, status: this.status.WAIT_FOR_PRICE_CONFIRM },
             $push: {
                 logs: { type: 'system:resolve-price', time: nowTime, user, change_price: !!price }
             }
@@ -99,11 +99,35 @@ module.exports = class Price extends BaseOrder {
         }, update);
     }
 
-    async agree(){
-
+    async agree(id, user){
+        return this.$update(
+            {
+                _id: id,
+                status: this.status.WAIT_FOR_PRICE_CONFIRM,
+                'creator.id': user.id
+            },
+            {
+                $set: { status: this.status.WAIT_FOR_GATHERING },
+                $push: {
+                    logs: { type: 'system:agree-price', time: this.$createTime(), user }
+                }
+            }
+        )
     }
-    async disagree(){
-
+    async disagree(id, user){
+        return this.$update(
+            {
+                _id: id,
+                status: this.status.WAIT_FOR_PRICE_CONFIRM,
+                'creator.id': user.id
+            },
+            {
+                $set: { status: this.status.WAIT_FOR_GIVE_PRICE },
+                $push: {
+                    logs: { type: 'system:disagree-price', time: this.$createTime(), user }
+                }
+            }
+        )
     }
     
     async agreePrice(id, result, logUser, price ){

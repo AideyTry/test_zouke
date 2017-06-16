@@ -66,7 +66,8 @@ module.exports = class MyOfflineOrderController extends LController {
     }
     //用户同意报价
     async agree(){
-
+        const price = new Price();
+        
     }
     //用户不同意报价
     async disagree(){
