@@ -27,7 +27,7 @@ module.exports = class Price extends BaseOrder {
     validPrice(price){
         return compare(priceRule, price);
     }
-    async commit(id, requirementLastTime, price, logUser ){
+    async commit(id, requirementLastTime, price, user ){
         const nowTime = this.$createTime();
         price.last_update = nowTime;
 
@@ -40,7 +40,7 @@ module.exports = class Price extends BaseOrder {
             { 
                 $set: { status: this.status.WAIT_FOR_PRICE_CHECK, price },
                 $push: { 
-                    logs: { type: 'system:commit-price', time: nowTime, user: logUser}
+                    logs: { type: 'system:commit-price', time: nowTime, user}
                 }
             }
         );
@@ -60,6 +60,30 @@ module.exports = class Price extends BaseOrder {
             }
 
         )
+    }
+    async resolve(id, user, userPolicy, price){
+        const nowTime = this.$createTime();
+        const update = {
+            $set: { user_policy: userPolicy, status: this.status.WAIT_FOR_GATHERING },
+            $push: {
+                logs: { type: 'system:resolve-price', time: nowTime, user, change_price: !!price }
+            }
+        }
+        if(price){
+            price.last_update = nowTime;
+            update.$set.price = price;
+        }
+        return await this.$update({
+            _id: id,
+            status: this.status.WAIT_FOR_PRICE_CHECK
+        }, update);
+    }
+
+    async agree(){
+
+    }
+    async disagree(){
+
     }
     
     async agreePrice(id, result, logUser, price ){
