@@ -44,16 +44,6 @@ module.exports = class BaseOfflineOrder{
     $createTime(){
         return new Date().format('YYYY-MM-DD HH:mm:ss');
     }
-    test(){
-
-    }
-    async test1(){
-
-    }
-    constructor
-    (){
-
-    }
     async $insert(order){
         const collection = await this.$getCollection();
         const today = new Date().format('YYMMDD');
