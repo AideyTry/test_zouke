@@ -37,7 +37,7 @@
                     </div>
                 </el-tab-pane>
             </el-tabs>
-            <el-row style="height: 40px" type="flex">
+            <el-row style="height: 40px" v-if="offlineRole.CHECK_PRICE" type="flex">
                 <el-col :span="9">
                     <h4>用户政策</h4>
                 </el-col>
