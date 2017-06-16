@@ -72,7 +72,14 @@ module.exports = class Price extends BaseOrder {
         if(price){
             price.last_update = nowTime;
             update.$set.price = price;
+        }else{
+            const queryResult = await (await this.$getCollection()).findOne({
+                 _id:id, status: this.$status.WAIT_FOR_PRICE_CHECK });
+            if(!queryResult) return null;
+            price = queryResult.price;
         }
+        update.$push.price_history = price;
+        
         return await this.$update({
             _id: id,
             status: this.status.WAIT_FOR_PRICE_CHECK
