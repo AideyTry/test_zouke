@@ -26,12 +26,12 @@ module.exports = class MyOfflineOrderController extends LController {
     // commit for check by admin
     async commit(id, requirementLastTime, price){
         const s_price = new Price();
-        const transPrice = price?s_price.validPrice(price):null;
-        if(price&&!transPrice) return this.renderJSON({ code:1, msg: 'data check valid fail' });
+        price = s_price.validPrice(price);
+        if(!price) return this.renderJSON({ code:1, msg: 'data check valid fail' });
 
         const { id: uid, name: uname, role, roleName } = this.userInfo;
 
-        const result = await s_price.commit(id, requirementLastTime, transPrice, { id:uid, name: uname, role, roleName });
+        const result = await s_price.commit(id, requirementLastTime, price, { id:uid, name: uname, role, roleName });
         if(!result) return this.renderJSON({ code:2, msg: 'can not commit price' });
 
         this.renderJSON({ code: 0 });
@@ -50,10 +50,12 @@ module.exports = class MyOfflineOrderController extends LController {
     //管理员审核通过
     async resolve(id, price, userPolicy){
         const s_price = new Price();
+        userPolicy = s_price.validUserPolicy(userPolicy);
+        if(!userPolicy) this.renderJSON({ code:1, msg: 'data check valid fail' });
         if(price){
             price = s_price.validPrice(price);
+            if(!price) return this.renderJSON({ code:1, msg: 'data check valid fail' });
         }
-        if(price) return this.renderJSON({ code:1, msg: 'data check valid fail' });
 
         const { id: uid, name: uname, role, roleName } = this.userInfo;
 
@@ -69,12 +71,5 @@ module.exports = class MyOfflineOrderController extends LController {
     //用户不同意报价
     async disagree(){
 
-    }
-    async checkPrice(id, price){
-        /*
-        const s_price = new Price();
-        const transPrice = price?s_price.validPrice(price):null;
-        if(price&&!transPrice) return this.renderJSON({ code:1, msg: 'data check valid fail' });
-        */
     }
 }

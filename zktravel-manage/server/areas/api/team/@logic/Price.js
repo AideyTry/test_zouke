@@ -4,10 +4,12 @@ const compare = require('@local/compare');
 const priceRule = {
     '*cases':[
         {
-            '*booking_channel':'订房政策',
-            '*payment_policy': '付款政策',
-            '*cancel_policy': '取消政策',
-            remark: '备注',
+            '*sp_policy':{
+                '*booking_channel':'订房政策',
+                '*payment': '付款政策',
+                '*cancel': '取消政策',
+                remark: '备注',
+            },
             price: [
                 {
                     '*hotel': { '*name': '' },
@@ -22,10 +24,21 @@ const priceRule = {
         { min: 1 }
     ]
 }
+const userPolicyRule = {
+    '*payment': { 
+        '*type': 'installment/full',
+        '*dead_line': '2017-08-08'
+     },
+     '*cancel': '取消政策',
+     'explain': '报价说明'
+}
 
 module.exports = class Price extends BaseOrder {
     validPrice(price){
         return compare(priceRule, price);
+    }
+    validUserPolicy(policy){
+        return compare(userPolicyRule, policy);
     }
     async commit(id, requirementLastTime, price, user ){
         const nowTime = this.$createTime();
@@ -79,7 +92,7 @@ module.exports = class Price extends BaseOrder {
             price = queryResult.price;
         }
         update.$push.price_history = price;
-        
+
         return await this.$update({
             _id: id,
             status: this.status.WAIT_FOR_PRICE_CHECK
