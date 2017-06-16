@@ -4,10 +4,12 @@ const compare = require('@local/compare');
 const priceRule = {
     '*cases':[
         {
-            '*booking_channel':'订房政策',
-            '*payment_policy': '付款政策',
-            '*cancel_policy': '取消政策',
-            remark: '备注',
+            '*sp_policy':{
+                '*booking_channel':'订房政策',
+                '*payment': '付款政策',
+                '*cancel': '取消政策',
+                remark: '备注',
+            },
             price: [
                 {
                     '*hotel': { '*name': '' },
@@ -22,12 +24,26 @@ const priceRule = {
         { min: 1 }
     ]
 }
+const userPolicyRule = {
+    '*payment': [
+        {
+            '*dead_line': '2017-08-08',
+            '*price': 200
+        },
+        { min:1 }
+    ],
+    '*cancel': '取消政策',
+    'explain': '报价说明'
+}
 
 module.exports = class Price extends BaseOrder {
     validPrice(price){
         return compare(priceRule, price);
     }
-    async commit(id, requirementLastTime, price, logUser ){
+    validUserPolicy(policy){
+        return compare(userPolicyRule, policy);
+    }
+    async commit(id, requirementLastTime, price, user ){
         const nowTime = this.$createTime();
         price.last_update = nowTime;
 
@@ -40,7 +56,7 @@ module.exports = class Price extends BaseOrder {
             { 
                 $set: { status: this.status.WAIT_FOR_PRICE_CHECK, price },
                 $push: { 
-                    logs: { type: 'system:commit-price', time: nowTime, user: logUser}
+                    logs: { type: 'system:commit-price', time: nowTime, user}
                 }
             }
         );
@@ -61,33 +77,59 @@ module.exports = class Price extends BaseOrder {
 
         )
     }
-    
-    async agreePrice(id, result, logUser, price ){
-        /*
+    async resolve(id, user, userPolicy, price){
         const nowTime = this.$createTime();
         const update = {
-            $set: {},
-            $push: {}
-        };
-        if(result){
-            update.$set.status = this.status.WAIT_FOR_PRICE_CONFIRM;
-            if(price){
-                price.last_update = nowTime;
-                update.$set.price = price;
+            $set: { user_policy: userPolicy, status: this.status.WAIT_FOR_PRICE_CONFIRM },
+            $push: {
+                logs: { type: 'system:resolve-price', time: nowTime, user, change_price: !!price }
             }
-        }else{
-            update.$set.status = this.status.WAIT_FOR_GIVE_PRICE;
         }
+        if(price){
+            price.last_update = nowTime;
+            update.$set.price = price;
+        }else{
+            const queryResult = await (await this.$getCollection()).findOne({
+                 _id:id, status: this.$status.WAIT_FOR_PRICE_CHECK });
+            if(!queryResult) return null;
+            price = queryResult.price;
+        }
+        update.$push.price_history = price;
+
         return await this.$update({
             _id: id,
             status: this.status.WAIT_FOR_PRICE_CHECK
-        },{
-            
-        })
-        */
+        }, update);
     }
 
-    confirmPrice(id, confirm){
-
+    async agree(id, userSelectCase, user){
+        return this.$update(
+            {
+                _id: id,
+                status: this.status.WAIT_FOR_PRICE_CONFIRM,
+                'creator.id': user.id
+            },
+            {
+                $set: { status: this.status.WAIT_FOR_GATHERING, user_select_case: userSelectCase },
+                $push: {
+                    logs: { type: 'system:agree-price', time: this.$createTime(), user }
+                }
+            }
+        )
+    }
+    async disagree(id, user){
+        return this.$update(
+            {
+                _id: id,
+                status: this.status.WAIT_FOR_PRICE_CONFIRM,
+                'creator.id': user.id
+            },
+            {
+                $set: { status: this.status.WAIT_FOR_GIVE_PRICE },
+                $push: {
+                    logs: { type: 'system:disagree-price', time: this.$createTime(), user }
+                }
+            }
+        )
     }
 }

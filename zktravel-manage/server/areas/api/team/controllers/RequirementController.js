@@ -27,9 +27,6 @@ module.exports = class TeamReqController extends LController {
             }
         }
     }
-    $beforeAction(){
-        return super.$beforeAction();
-    }
     async [triggerInsert](name){
         const teamRequirement = new TeamRequirement();
         const requirement = teamRequirement.validRequirement(this.request.body);
@@ -49,9 +46,8 @@ module.exports = class TeamReqController extends LController {
     async draft(){
         await this[triggerInsert]('draft');
     }
-    async draftPublish(){
+    async draftPublish(id, requirement){
         const teamRequirement = new TeamRequirement();
-        const { id, requirement } = this.request.body;
 
         let result = false; 
         if(requirement){
@@ -68,9 +64,8 @@ module.exports = class TeamReqController extends LController {
         else this.renderJSON({ code:2, msg: 'can not publish this draft' });
     }
 
-    async update(){
+    async update(id, requirement){
         const teamRequirement = new TeamRequirement();
-        const { id, requirement } = this.request.body;
         const transRequirement = teamRequirement.validRequirement(requirement);
         if(!transRequirement){
             this.renderJSON({ code:1, msg: 'data check valid fail' });
@@ -106,12 +101,13 @@ module.exports = class TeamReqController extends LController {
         //todo 
     }
 
-    async dispatch(){
+    async dispatch(id, user, dead_line){
         //分配
-        const { id, user, dead_line } = this.request.body;
         const order = new Order();
 
-        const result = await order.dispatch(id, user, dead_line);
+        const { id: uid, name: uname, role, role_name } = this.userInfo;
+
+        const result = await order.dispatch(id, user, dead_line,  { id:uid, uname:uname, role, role_name });
 
         if(result) this.renderJSON({ code:0 });
         else this.renderJSON({ code:2, msg: 'can not dispatch this order' });
