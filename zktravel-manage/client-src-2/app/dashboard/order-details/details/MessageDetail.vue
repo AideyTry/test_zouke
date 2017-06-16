@@ -142,13 +142,15 @@
             }
         },
         computed:{
-
+            orderId(){
+                return this.$route.params.orderid;
+            }
         },
         methods:{
             loading(id){
                 let arr=[];
                 console.log("orderData=",this.orderData);
-                ajax.post("/api/team/order/detail",{id:id}).then(json=>{
+                ajax.post("/api/team/order/detail",{id:id},{lock:false}).then(json=>{
                     console.log("logs=",json.detail.logs);
                     this.logs=json.detail.logs;
                     console.log("this.logs=",this.logs);
@@ -205,8 +207,10 @@
                     })
                 }else {
                     this.msg='';
-                    this.list.unshift(this.newMsg);
-                    this.loading();
+                    ajax.post("/api/team/order/log",{id:this.orderId,message:this.newMsg},{lock:false}).then(json=>{
+                        console.log(json);
+                    })
+//                    this.loading();
                 }
 
 
