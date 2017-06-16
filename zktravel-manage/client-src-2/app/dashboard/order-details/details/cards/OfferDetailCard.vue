@@ -1,6 +1,5 @@
 <style lang="scss" scoped>
     .country{
-        height:400px;
         overflow-y: auto;
         .el-row{
           height: 40px;
@@ -11,7 +10,7 @@
     <div class="country">
         <el-row>
             <el-col :span="3">入住/离店：</el-col>
-            <el-col :span="9">{{order.check_in}} - {{order.check_out}} 4晚</el-col>
+            <el-col :span="9">{{order.check_in}} - {{order.check_out}} {{night}}晚</el-col>
             <el-col :span="12">指定的酒店：{{order.hotel.name}}</el-col>
         </el-row>
         <el-row>
@@ -28,8 +27,8 @@
             </el-col>
             <el-col :span="12">B评分：9.0</el-col>
         </el-row>
-        <template v-for="(v,k) in params.room">
-            <room  :v="v" :k="k"></room>
+        <template v-for="(v,k) in params.rooms">
+            <room   :v="v" :k="k"></room>
         </template>
     </div>
 </template>
@@ -81,6 +80,16 @@
                     this.params.hotel={name:val,custom:true}
                 }
                 this.hotelflag=false;
+            }
+        },
+        computed:{
+            night(){
+                return new Date(this.order.check_out).getDate()-new Date(this.order.check_in).getDate()
+            }
+        },
+        mounted(){
+            if(this.params.hotel){
+                this.hotel=this.params.hotel.name
             }
         }
     }

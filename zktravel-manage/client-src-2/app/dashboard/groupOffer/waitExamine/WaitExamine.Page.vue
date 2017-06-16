@@ -78,8 +78,7 @@
                         style="width: 100%">
                     <el-table-column
                             label="紧急度"
-                            v-if="true"
-                    >
+                            v-if="true">
                         <template scope="scope">
                             <el-tag v-if="scope.row._class=='danger'" color="#FF4949">8小时完成</el-tag>
                             <el-tag v-if="scope.row._class=='warming'" color="#F7BA2A">24小时完成</el-tag>
@@ -90,9 +89,12 @@
                     </el-table-column>
 
                     <el-table-column
-                            prop="orderId"
-                            label="订单号"
-                            width="180">
+                            label="订单号">
+                        <template scope="scope">
+                            <a @click="cellClick(scope.row.orderId)">
+                                {{scope.row.orderId}}
+                            </a>
+                        </template>
                     </el-table-column>
                     <el-table-column
 
@@ -100,15 +102,12 @@
                             label="用户名">
                     </el-table-column>
                     <el-table-column
-                            sortable
                             prop="priority"
-                            label="状态"
-                            width="180">
+                            label="状态">
                     </el-table-column>
                     <el-table-column
                             prop=""
-                            label="金额"
-                            width="180">
+                            label="金额">
                     </el-table-column>
                     <el-table-column
                             prop=""
@@ -117,8 +116,7 @@
                     <el-table-column
                             sortable
                             prop="startDate"
-                            label="完成时间"
-                            width="180">
+                            label="完成时间">
                     </el-table-column>
 
                 </el-table>
@@ -171,7 +169,7 @@
                     this.currentData=json.list;
                     this.currentData.forEach(v=>{
                         let hour=Math.floor((new Date(v.startDate)-new Date())/3600000);
-                        if(hour<=8){
+                        if(hour<=8&&0<hour){
                             v._class='danger'
                         }else if(8<hour&&hour<=24){
                             v._class='warming'
@@ -194,17 +192,13 @@
             changePage(page){
                 this.pager.pageNum=page;
                 this.loadTable();
+            },
+            cellClick(orderId){
+                this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'offer-node'}});
             }
         },
         mounted(){
             this.loadTable();
         }
-//        beforeRouteEnter (to, from, next) {
-//            if (!to.params.status) {
-//                next({name: 'dashboard-zkhotel', params: {status: 'valid'}});
-//            } else {
-//                next();
-//            }
-//        }
     }
 </script>
