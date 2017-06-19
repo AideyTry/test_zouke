@@ -154,11 +154,6 @@
                 currentData:null,
                 tableData:[],
                 status:null,
-//                statusmap:{
-//                    wp:3,
-//                    we:4,
-//                    wv:8
-//                },
                 isPrimary:'danger'
             }
         },
