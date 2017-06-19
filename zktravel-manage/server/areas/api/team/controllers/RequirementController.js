@@ -5,7 +5,7 @@ const Order = require('../@logic/Order');
 const triggerInsert = Symbol();
 
 // 团房需求
-module.exports = class TeamReqController extends LController {
+module.exports = class TeamReqController extends TeamController {
     $meta(){
         return {
             access: {
