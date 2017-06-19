@@ -156,7 +156,7 @@
                 statusmap:{
                     wp:3,
                     we:4,
-                    wv:5
+                    wv:8
                 },
                 isPrimary:'danger'
             }
