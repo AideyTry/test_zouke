@@ -43,7 +43,7 @@
                 </el-col>
             </el-row>
             <userchannel v-if="offlineRole.CHECK_PRICE&&userchannel" :userchannel="userchannel"> </userchannel>
-            <history :history="history"> </history>
+            <history :history="editableTabs"> </history>
         </div>
         <div class="offer-detail-booking" v-if="offlineRole.CONFIRM_PRICE&&orderstatus>4">
             <template v-for="(o,p) in editableTabs">
@@ -99,11 +99,11 @@
                     cancel:'',
                     explain:'',
                     type:'全款'
-                },
-                history:[]
+                }
             }
         },
         methods: {
+            /*/解析订单/*/
             loadorder(id){
                 let vm = this;
                 ajax.post('/api/team/order/detail', {
@@ -168,6 +168,7 @@
                 }
 
             },
+            /*添加方案*/
             addtab(){
                 this.tabnum = this.editableTabs.length + 1;
                 this.editableTabs.push({
@@ -183,6 +184,7 @@
                     }
                 })
             },
+            /*删除方案*/
             closetab(targetName){
                 let tabs = this.editableTabs;
                 let activeName = this.editableTabsValue;
