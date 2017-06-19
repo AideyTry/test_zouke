@@ -153,11 +153,12 @@
                 orderStates:[],
                 currentData:null,
                 tableData:[],
-                statusmap:{
-                    wp:3,
-                    we:4,
-                    wv:5
-                },
+                status:null,
+//                statusmap:{
+//                    wp:3,
+//                    we:4,
+//                    wv:8
+//                },
                 isPrimary:'danger'
             }
         },
@@ -167,12 +168,12 @@
         methods:{
             loadTable(){
                 ajax.post("/api/team/order/query",{
-                    status:this.statusmap[this.$route.params.offer],
+//                    status:this.statusmap[this.$route.params.offer],
+                    status:this.status,
                     page:this.pager.pageNum,
                     pageSize:this.pager.pageSize}).then(
                     data=>{
                         this.tableData=data.list;
-                        console.log(this.tableData);
                         this.tableData.forEach(
                             v=>{
                                 let hour=Math.floor((new Date(v.startDate)-new Date())/3600000);
@@ -192,10 +193,32 @@
                     }
                 )
             },
-
+            updateTab(){
+                if (this.$route.path == "/dashboard/wait-offer/wp") {
+                    this.status = 3;
+                } else if (this.$route.path == "/dashboard/wait-offer/we") {
+                    this.status = 4;
+                } else if (this.$route.path == "/dashboard/wait-offer/wv") {
+                    this.status =8;
+                }
+            },
             changeTab(tab){
                 this.$router.push({name:"dashboard-wait-offer",params:{offer:tab.name}});
-                this.loadTable();
+
+                switch(this.$route.path){
+                    case "/dashboard/wait-offer/wp":
+                        this.status = 3;
+                        this.loadTable();
+                        break;
+                    case "/dashboard/wait-offer/we":
+                        this.status = 4;
+                        this.loadTable();
+                        break;
+                    case "/dashboard/wait-offer/wv":
+                        this.status = 8;
+                        this.loadTable();
+                        break;
+                }
             },
             searchOrder(){
 
@@ -205,12 +228,24 @@
                 this.loadTable();
             },
             cellClick(orderId,status){
-                console.log(status);
-                this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'offer-node'}});
+                switch(status){
+                    case 8:this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'order-detail'}});
+                        break;
+                    default:this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'offer-node'}});
+                        break;
+                }
+
             }
         },
         mounted(){
             this.loadTable();
+        },
+        created(){
+            this.updateTab();
+        },
+        beforeUpdate(){
+            this.updateTab();
         }
+
     }
 </script>
