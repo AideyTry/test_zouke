@@ -107,7 +107,7 @@
 
                     >
                         <template scope="scope">
-                            <a @click="cellClick(scope.row.orderId)">
+                            <a @click="cellClick(scope.row.orderId,status)">
                                 {{scope.row.orderId}}
                             </a>
                         </template>
@@ -234,7 +234,9 @@ export default{
                         obj.newStatus="待发布";
                     }else if(obj.status===2){
                         obj.newStatus="待分配"
-                    }else if(obj.status===3||4){
+                    }else if(obj.status===3){
+                        obj.newStatus="报价中"
+                    }else if(obj.status===4){
                         obj.newStatus="报价中"
                     }else if(obj.status===5){
                         obj.newStatus="待报价确认"
@@ -342,8 +344,37 @@ export default{
                 }
             }
         },
-        cellClick(orderId){
-            this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'require-node'}});
+        cellClick(orderId,status){
+            if(status instanceof Array){
+                status=true;
+            }
+            switch(status){
+                case 1:
+                    this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'require-node'}});
+                    break;
+                case 2:
+                    this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'require-node'}});
+                    break;
+                case true:
+                    this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'offer-node'}});
+                    break;
+                case 5:
+                    this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'offer-node'}});
+                    break;
+                case 6:
+                    this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'in-out'}});
+                    break;
+                case 7:
+                    this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'order-detail'}});
+                    break;
+                case 8:
+                    this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'order-detail'}});
+                    break;
+                case 9:
+                    this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'order-detail'}});
+                    break;
+            }
+
         }
     },
     mounted(){
@@ -355,6 +386,9 @@ export default{
         }
     },
     created(){
+        this.updateTab();
+    },
+    beforeUpdate(){
         this.updateTab();
     }
 //    beforeRouteEnter (to, from, next) {

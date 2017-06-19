@@ -96,7 +96,7 @@
                     <el-table-column
                             label="订单号">
                         <template scope="scope">
-                            <a @click="cellClick(scope.row.orderId)">
+                            <a @click="cellClick(scope.row.orderId,status)">
                                 {{scope.row.orderId}}
                             </a>
                         </template>
@@ -172,6 +172,7 @@
                     pageSize:this.pager.pageSize}).then(
                     data=>{
                         this.tableData=data.list;
+                        console.log(this.tableData);
                         this.tableData.forEach(
                             v=>{
                                 let hour=Math.floor((new Date(v.startDate)-new Date())/3600000);
@@ -191,6 +192,7 @@
                     }
                 )
             },
+
             changeTab(tab){
                 this.$router.push({name:"dashboard-wait-offer",params:{offer:tab.name}});
                 this.loadTable();
@@ -202,7 +204,8 @@
                 this.pager.pageNum=page;
                 this.loadTable();
             },
-            cellClick(orderId){
+            cellClick(orderId,status){
+                console.log(status);
                 this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'offer-node'}});
             }
         },

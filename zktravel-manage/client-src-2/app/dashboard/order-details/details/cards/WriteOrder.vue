@@ -94,7 +94,13 @@
                                         </el-input>
                                     </el-col>
                                 </el-row>
+
                             </div>
+                            <!--采购渠道及房型start-->
+                            <div class="room">
+
+                            </div>
+                            <!--采购渠道及房型start-->
                         </el-tab-pane>
                     </template>
                 </el-tabs>
