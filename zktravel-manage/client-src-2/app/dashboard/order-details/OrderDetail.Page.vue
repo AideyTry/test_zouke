@@ -199,10 +199,6 @@
                 orderstatus: ['', '待发布', '待分配', '待报价', '报价待审核', '报价待确认', '待收款', '分房待确认', '待控房', '已控房']
             }
         },
-        computed:{
-            let vm;
-            return  vm=this;
-        },
         methods: {
             changetab(tab){
                 this.tab = tab.name;
