@@ -339,39 +339,7 @@
                                 message: '已保存为草稿，请到我的发布中查看',
                                 type: 'success'
                             });
-                            vm.params = {
-                                priority: 'A+',
-                                origin_from: '',
-                                user: null,
-                                number: 1,
-                                start_date: new Date().format('YYYY-MM-DD'),
-                                star: '不限',
-                                breakfast: true,
-                                currency: 'EUR',
-                                budget_min: null,
-                                budget_max: null,
-                                budget_mark: '',
-                                cancel_req: '',
-                                position_req: '',
-                                other_req: '',
-                                stay_details: [
-                                    {
-                                        check_in: new Date().format('YYYY-MM-DD'),
-                                        check_out: new Date().format('YYYY-MM-DD'),
-                                        city: {
-                                            name: null
-                                        },
-                                        hotel: {
-                                            name: null
-                                        },
-                                        rooms: [{
-                                            type: 'single',
-                                            number: 1,
-                                            mark: ''
-                                        }]
-                                    }
-                                ]
-                            }
+                            this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'require-node'}});
                         }
                     }
                 )
@@ -385,39 +353,7 @@
                                 message: '已成功发布，请到我的发布中查看',
                                 type: 'success'
                             });
-                            this.params = {
-                                priority: 'A+',
-                                origin_from: '',
-                                user: null,
-                                number: 1,
-                                start_date: new Date().format('YYYY-MM-DD'),
-                                star: '不限',
-                                breakfast: true,
-                                currency: 'EUR',
-                                budget_min: null,
-                                budget_max: null,
-                                budget_mark: '',
-                                cancel_req: '',
-                                position_req: '',
-                                other_req: '',
-                                stay_details: [
-                                    {
-                                        check_in: new Date().format('YYYY-MM-DD'),
-                                        check_out: new Date().format('YYYY-MM-DD'),
-                                        city: {
-                                            name: null
-                                        },
-                                        hotel: {
-                                            name: null
-                                        },
-                                        rooms: [{
-                                            type: 'single',
-                                            number: 1,
-                                            mark: ''
-                                        }]
-                                    }
-                                ]
-                            }
+                            this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'require-node'}});
                         }
                     }
                 )
