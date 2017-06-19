@@ -97,7 +97,7 @@
 
                 </el-tab-pane>
                 <el-tab-pane label="留言/操作" name="message-node">
-                    <messageDetail></messageDetail>
+                    <messageDetail v-if="orderdata&&activetabs=='message-node'" :orderData="orderdata"></messageDetail>
                 </el-tab-pane>
                 <div class="button-group">
                     <!--客服发布-->

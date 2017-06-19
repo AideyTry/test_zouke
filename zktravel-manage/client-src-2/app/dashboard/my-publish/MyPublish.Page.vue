@@ -107,7 +107,7 @@
 
                     >
                         <template scope="scope">
-                            <a @click="cellClick(scope.row.orderId)">
+                            <a @click="cellClick(scope.row.orderId,status)">
                                 {{scope.row.orderId}}
                             </a>
                         </template>
@@ -129,7 +129,7 @@
                     </el-table-column>
                     <el-table-column
                             v-if="isTrue"
-                            prop="status"
+                            prop="newStatus"
                             label="状态">
                     </el-table-column>
                     <el-table-column
@@ -197,7 +197,7 @@ export default{
                 ch:false,
                 ri:false
             },
-            status:1,
+            status:null,
             arr:[],
 
             pageNum:1,
@@ -227,30 +227,31 @@ export default{
                             newArr.push(this.arr[num]);
                         }
                     }
-
                     this.currentData=newArr;
                     this.total=this.arr.length;
                 for(let obj of this.currentData){
                     if(obj.status===1){
-                        obj.status="待发布";
+                        obj.newStatus="待发布";
                     }else if(obj.status===2){
-                        obj.status="待分配"
+                        obj.newStatus="待分配"
                     }else if(obj.status===3){
-                        obj.status="待分配"
+                        obj.newStatus="报价中"
                     }else if(obj.status===4){
-                        obj.status="待分配"
+                        obj.newStatus="报价中"
                     }else if(obj.status===5){
-                        obj.status="待分配"
+                        obj.newStatus="待报价确认"
                     }else if(obj.status===6){
-                        obj.status="待分配"
+                        obj.newStatus="待收款"
                     }else if(obj.status===7){
-                        obj.status="待分配"
+                        obj.newStatus="分房待确认"
                     }else if(obj.status===8){
-                        obj.status="待分配"
+                        obj.newStatus="待控房"
                     }else if(obj.status===9){
-                        obj.status="待分配"
+                        obj.newStatus="已控房"
                     }else if(obj.status===10){
-                        obj.status="待分配"
+                        obj.status="需要开票"
+                    }else if(obj.status===11){
+                        obj.newStatus="待分配"
                     }
                 }
             })
@@ -261,21 +262,21 @@ export default{
             }else if(this.$route.path=="/dashboard/my-publish/wait-distribution"){
                 this.status=2;
             }else if(this.$route.path=="/dashboard/my-publish/quote"){
-                this.status=3;
+                this.status=[3,4];
             }else if(this.$route.path=="/dashboard/my-publish/wait-confirmed"){
-                this.status=4;
-            }else if(this.$route.path=="/dashboard/my-publish/wait-gathering"){
                 this.status=5;
-            }else if(this.$route.path=="/dashboard/my-publish/house-wait-distribution"){
+            }else if(this.$route.path=="/dashboard/my-publish/wait-gathering"){
                 this.status=6;
-            }else if(this.$route.path=="/dashboard/my-publish/wait-control-house"){
+            }else if(this.$route.path=="/dashboard/my-publish/house-wait-distribution"){
                 this.status=7;
-            }else if(this.$route.path=="/dashboard/my-publish/control-house"){
+            }else if(this.$route.path=="/dashboard/my-publish/wait-control-house"){
                 this.status=8;
-            }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
+            }else if(this.$route.path=="/dashboard/my-publish/control-house"){
                 this.status=9;
-            }else if(this.$route.path=="/dashboard/my-publish/nonEffective-require"){
+            }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
                 this.status=10;
+            }else if(this.$route.path=="/dashboard/my-publish/nonEffective-require"){
+                this.status=11;
             }
         },
         changeTabEffective(tab){
@@ -287,25 +288,25 @@ export default{
                 this.status=2;
                 this.loadTable();
             }else if(this.$route.path=="/dashboard/my-publish/quote"){
-                this.status=3;
+                this.status=[3,4];
                 this.loadTable();
             }else if(this.$route.path=="/dashboard/my-publish/wait-confirmed"){
-                this.status=4;
-                this.loadTable();
-            }else if(this.$route.path=="/dashboard/my-publish/wait-gathering"){
                 this.status=5;
                 this.loadTable();
-            }else if(this.$route.path=="/dashboard/my-publish/house-wait-distribution"){
+            }else if(this.$route.path=="/dashboard/my-publish/wait-gathering"){
                 this.status=6;
                 this.loadTable();
-            }else if(this.$route.path=="/dashboard/my-publish/wait-control-house"){
+            }else if(this.$route.path=="/dashboard/my-publish/house-wait-distribution"){
                 this.status=7;
                 this.loadTable();
-            }else if(this.$route.path=="/dashboard/my-publish/control-house"){
+            }else if(this.$route.path=="/dashboard/my-publish/wait-control-house"){
                 this.status=8;
                 this.loadTable();
-            }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
+            }else if(this.$route.path=="/dashboard/my-publish/control-house"){
                 this.status=9;
+                this.loadTable();
+            }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
+                this.status=10;
                 this.loadTable();
             }
         },
@@ -343,8 +344,37 @@ export default{
                 }
             }
         },
-        cellClick(orderId){
-            this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'require-node'}});
+        cellClick(orderId,status){
+            if(status instanceof Array){
+                status=true;
+            }
+            switch(status){
+                case 1:
+                    this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'require-node'}});
+                    break;
+                case 2:
+                    this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'require-node'}});
+                    break;
+                case true:
+                    this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'offer-node'}});
+                    break;
+                case 5:
+                    this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'offer-node'}});
+                    break;
+                case 6:
+                    this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'in-out'}});
+                    break;
+                case 7:
+                    this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'order-detail'}});
+                    break;
+                case 8:
+                    this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'order-detail'}});
+                    break;
+                case 9:
+                    this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'order-detail'}});
+                    break;
+            }
+
         }
     },
     mounted(){
@@ -356,6 +386,9 @@ export default{
         }
     },
     created(){
+        this.updateTab();
+    },
+    beforeUpdate(){
         this.updateTab();
     }
 //    beforeRouteEnter (to, from, next) {

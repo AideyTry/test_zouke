@@ -96,7 +96,7 @@
                     <el-table-column
                             label="订单号">
                         <template scope="scope">
-                            <a @click="cellClick(scope.row.orderId)">
+                            <a @click="cellClick(scope.row.orderId,status)">
                                 {{scope.row.orderId}}
                             </a>
                         </template>
@@ -153,11 +153,7 @@
                 orderStates:[],
                 currentData:null,
                 tableData:[],
-                statusmap:{
-                    wp:3,
-                    we:4,
-                    wv:8
-                },
+                status:null,
                 isPrimary:'danger'
             }
         },
@@ -167,7 +163,8 @@
         methods:{
             loadTable(){
                 ajax.post("/api/team/order/query",{
-                    status:this.statusmap[this.$route.params.offer],
+//                    status:this.statusmap[this.$route.params.offer],
+                    status:this.status,
                     page:this.pager.pageNum,
                     pageSize:this.pager.pageSize}).then(
                     data=>{
@@ -191,9 +188,32 @@
                     }
                 )
             },
+            updateTab(){
+                if (this.$route.path == "/dashboard/wait-offer/wp") {
+                    this.status = 3;
+                } else if (this.$route.path == "/dashboard/wait-offer/we") {
+                    this.status = 4;
+                } else if (this.$route.path == "/dashboard/wait-offer/wv") {
+                    this.status =8;
+                }
+            },
             changeTab(tab){
                 this.$router.push({name:"dashboard-wait-offer",params:{offer:tab.name}});
-                this.loadTable();
+
+                switch(this.$route.path){
+                    case "/dashboard/wait-offer/wp":
+                        this.status = 3;
+                        this.loadTable();
+                        break;
+                    case "/dashboard/wait-offer/we":
+                        this.status = 4;
+                        this.loadTable();
+                        break;
+                    case "/dashboard/wait-offer/wv":
+                        this.status = 8;
+                        this.loadTable();
+                        break;
+                }
             },
             searchOrder(){
 
@@ -202,12 +222,25 @@
                 this.pager.pageNum=page;
                 this.loadTable();
             },
-            cellClick(orderId){
-                this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'offer-node'}});
+            cellClick(orderId,status){
+                switch(status){
+                    case 8:this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'order-detail'}});
+                        break;
+                    default:this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'offer-node'}});
+                        break;
+                }
+
             }
         },
         mounted(){
             this.loadTable();
+        },
+        created(){
+            this.updateTab();
+        },
+        beforeUpdate(){
+            this.updateTab();
         }
+
     }
 </script>
