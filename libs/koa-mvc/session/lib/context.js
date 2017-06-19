@@ -16,7 +16,7 @@ class ContextSession {
   constructor(ctx, opts) {
     this.ctx = ctx;
     this.opts = Object.assign({}, opts);
-    this.store = this.opts.store;
+    this.store = this.opts.ContextStore ? new this.opts.ContextStore(ctx) : this.opts.store;
   }
 
   /**
@@ -79,7 +79,7 @@ class ContextSession {
       return;
     }
 
-    const json = await this.store.get(externalKey);
+    const json = await this.store.get(externalKey, opts.maxAge, { rolling: opts.rolling });
     if (!this.valid(json)) {
       // create a new `externalKey`
       this.create();
@@ -177,7 +177,7 @@ class ContextSession {
 
   create(val, externalKey) {
     debug('create session with val: %j externalKey: %s', val, externalKey);
-    if (this.opts.store) this.externalKey = externalKey || uid.sync(24);
+    if (this.store) this.externalKey = externalKey || uid.sync(24);
     this.session = new Session(this.ctx, val);
   }
 
@@ -203,19 +203,21 @@ class ContextSession {
     }
 
     // force save session when `session._requireSave` set
+    let changed = true;
     if (!session._requireSave) {
       const json = session.toJSON();
       // do nothing if new and not populated
       if (!prevHash && !Object.keys(json).length) return;
-      // do nothing if not changed
-      if (prevHash === util.hash(json)) return;
+      changed = prevHash !== util.hash(json);
+      // do nothing if not changed and not in rolling mode
+      if (!this.opts.rolling && !changed) return;
     }
 
     if (typeof opts.beforeSave === 'function') {
       debug('before save');
       opts.beforeSave(ctx, session);
     }
-    await this.save();
+    await this.save(changed);
   }
 
   /**
@@ -238,7 +240,7 @@ class ContextSession {
    * @api private
    */
 
-  async save() {
+  async save(changed) {
     const opts = this.opts;
     const key = opts.key;
     const externalKey = this.externalKey;
@@ -258,7 +260,10 @@ class ContextSession {
     // save to external store
     if (externalKey) {
       debug('save %j to external key %s', json, externalKey);
-      await this.store.set(externalKey, json, maxAge);
+      await this.store.set(externalKey, json, maxAge, {
+        changed,
+        rolling: opts.rolling,
+      });
       this.ctx.cookies.set(key, externalKey, opts);
       return;
     }

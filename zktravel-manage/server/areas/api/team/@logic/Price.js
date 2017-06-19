@@ -63,6 +63,15 @@ module.exports = class Price extends BaseOrder {
     }
 
     async reject(id, user, reason){
+        const queryResult = await (await this.$getCollection()).findOne({
+            _id:id, status: this.status.WAIT_FOR_PRICE_CHECK
+        });
+        if(!queryResult) return false;
+
+        const { price, price_history=[] } = queryResult;
+        price.check_pass = false;
+        price.id = `${this.$createDate()}(${price_history.length})`;
+
         return await this.$update(
             {
                 _id:id,
@@ -71,11 +80,11 @@ module.exports = class Price extends BaseOrder {
             {
                 $set: { status: this.status.WAIT_FOR_GIVE_PRICE },
                 $push: {
-                    logs: { type: 'system:reject-price', time: this.$createTime(), user, reason}
+                    logs: { type: 'system:reject-price', time: this.$createTime(), user, reason},
+                    price_history: { $each:[price], $position:0 }
                 }
             }
-
-        )
+        );
     }
     async resolve(id, user, userPolicy, price){
         const nowTime = this.$createTime();
@@ -85,16 +94,20 @@ module.exports = class Price extends BaseOrder {
                 logs: { type: 'system:resolve-price', time: nowTime, user, change_price: !!price }
             }
         }
+        const queryResult = await (await this.$getCollection()).findOne({
+                 _id:id, status: this.status.WAIT_FOR_PRICE_CHECK });
+        if(!queryResult) return false;
+        const { price_history=[] } = queryResult
         if(price){
             price.last_update = nowTime;
-            update.$set.price = price;
+            update.$set.price = Object.assign({},price);
         }else{
-            const queryResult = await (await this.$getCollection()).findOne({
-                 _id:id, status: this.$status.WAIT_FOR_PRICE_CHECK });
-            if(!queryResult) return null;
             price = queryResult.price;
         }
-        update.$push.price_history = price;
+
+        price.check_pass = true;
+        price.id = `${this.$createDate()}(${price_history.length})`;
+        update.$push.price_history = { $each: [price], $position:0 };
 
         return await this.$update({
             _id: id,
@@ -107,10 +120,15 @@ module.exports = class Price extends BaseOrder {
             {
                 _id: id,
                 status: this.status.WAIT_FOR_PRICE_CONFIRM,
-                'creator.id': user.id
+                'creator.id': user.id,
+                'price_history.0': { $exists: true }
             },
             {
-                $set: { status: this.status.WAIT_FOR_GATHERING, user_select_case: userSelectCase },
+                $set: { 
+                    status: this.status.WAIT_FOR_GATHERING,
+                    user_select_case: userSelectCase,
+                    'price_history.0.confirm_pass': true
+                },
                 $push: {
                     logs: { type: 'system:agree-price', time: this.$createTime(), user }
                 }
@@ -122,10 +140,14 @@ module.exports = class Price extends BaseOrder {
             {
                 _id: id,
                 status: this.status.WAIT_FOR_PRICE_CONFIRM,
-                'creator.id': user.id
+                'creator.id': user.id,
+                'price_history.0': { $exists: true }
             },
             {
-                $set: { status: this.status.WAIT_FOR_GIVE_PRICE },
+                $set: { 
+                    status: this.status.WAIT_FOR_GIVE_PRICE,
+                    'price_history.0.confirm_pass': false
+                },
                 $push: {
                     logs: { type: 'system:disagree-price', time: this.$createTime(), user }
                 }
