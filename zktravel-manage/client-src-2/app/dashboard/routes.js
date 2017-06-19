@@ -12,7 +12,7 @@ import distributed from './distributed/routes';
 import orderDetail from './order-details/routers'
 export default [
     {
-        path: 'dashboard', component: DashBoardPage, name: 'dashboard',redirect: { name: 'dashboard-publish-require' },
+        path: 'dashboard', component: DashBoardPage, name: 'dashboard',redirect: { name: 'dashboard-my-home' },
         children:[
             ...HomeRoute,
             ...hotelMappingRoute,

@@ -8,6 +8,7 @@
         overflow: hidden;
         .min-left{
             min-width: 180px;
+            z-index: 99;
         }
         .header {
             height: 60px;
@@ -51,12 +52,6 @@
         }
     }
 
-</style>
-<style>
-    .el-pagination{
-        max-width: calc(100% - 180px) !important;
-        width: 100% !important;
-    }
 </style>
 <template>
     <div class="dashboard">
