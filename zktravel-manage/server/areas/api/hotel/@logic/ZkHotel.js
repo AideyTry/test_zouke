@@ -1,10 +1,8 @@
-const dbclient = requireRoot('db');
-const { zk_collection_name, sp_collection_name } = requireRoot('service/config');
+const dbclient = requireRoot('dbclient');
 
 module.exports = class ZkHotel {
     async detail(id){
-        const db = await dbclient.get();
-        const zkCollection = await db.collection(zk_collection_name);
+        const zkCollection = await dbclient.collections.get('zk_hotels');
 
         const detail = await zkCollection.findOne(
             {_id: id},
@@ -49,8 +47,7 @@ module.exports = class ZkHotel {
             ];
         }
 
-        const db = await dbclient.get();
-        const zkCollection = await db.collection(zk_collection_name);
+        const zkCollection = await dbclient.collections.get('sp_hotels');
         
         const count = requireCount ? (await zkCollection.find(findCondition).count()): -1;
 

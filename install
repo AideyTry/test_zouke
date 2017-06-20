@@ -63,6 +63,7 @@ link koa-mvc
 link des
 link compare
 link task-queue
+link mongodb-client
 
 npm rebuild node-sass
 npm rebuild opencc

@@ -1,6 +1,5 @@
 const MappingLevel = require('./MappingLevel');
-const dbclient = requireRoot('db');
-const { zk_collection_name, sp_collection_name } = require('../config');
+const dbclient = requireRoot('dbclient');
 const Pretreatment = require('./Pretreatment');
 
 let _zkCollection = null;
@@ -41,23 +40,18 @@ module.exports = {
         
         return result;
     },
-    async getDb(){
-        return await dbclient.get();
-    },
     async genZkId(){
-        return await (await dbclient.get()).genId(zk_collection_name);
+        return await dbclient.genId('zk_hotels');
     },
     async getZkHotelCollection(){
         if(!_zkCollection){
-            const db = await dbclient.get();
-            _zkCollection = await db.collection(zk_collection_name);
+            _zkCollection = await dbclient.collections.get('zk_hotels');
         }
         return _zkCollection;
     },
     async getSpHotelCollection(){
         if(!_spCollection){
-            const db = await dbclient.get();
-            _spCollection = await db.collection(sp_collection_name);
+            _spCollection = await dbclient.collections.get('sp_hotels');
         }
         return _spCollection;
     }

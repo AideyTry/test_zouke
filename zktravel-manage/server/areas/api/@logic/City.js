@@ -1,9 +1,8 @@
-const dbclient = requireRoot('db');
+const dbclient = requireRoot('dbclient');
 
 module.exports = class City{
     async query(keyword){
-        const db = await dbclient.get();
-        const collection = await db.collection('zk_zones');
+        const collection = await dbclient.collections.get('zk_zones');
         const reg = new RegExp(keyword, 'i');
         const list = await collection.find({
             type:'city', 

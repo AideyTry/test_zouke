@@ -1,9 +1,8 @@
-const dbclient = requireRoot('db');
+const dbclient = requireRoot('dbclient');
 
 module.exports = class WxUser {
     async query(page, pageSize, keyword){
-        const db = await dbclient.get();
-        const userCollection = await db.collection('wx_user');
+        const userCollection = await dbclient.collections.get('wx_user');
 
         const queryCondition = {};
         if(keyword){

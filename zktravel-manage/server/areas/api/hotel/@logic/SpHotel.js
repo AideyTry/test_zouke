@@ -1,6 +1,5 @@
-const dbclient = requireRoot('db');
+const dbclient = requireRoot('dbclient');
 const mongodb = require('mongodb');
-const { sp_collection_name } = requireRoot('service/config');
 
 module.exports = class SpHotel {
     async detail(id, type){
@@ -11,8 +10,7 @@ module.exports = class SpHotel {
             id,
             supplier: type
         }
-        const db = await dbclient.get();
-        const spCollection = await db.collection(sp_collection_name);
+        const spCollection = await dbclient.collections.get('sp_hotels');
 
         const detail = await spCollection.findOne(
             query,
