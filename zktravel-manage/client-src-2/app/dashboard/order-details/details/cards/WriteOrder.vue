@@ -65,42 +65,51 @@
                                         <span>{{dateRange(item.check_out,item.check_in)}}晚</span>
                                     </el-col>
                                 </el-row>
-                                <el-row type="flex">
-                                    <el-col :span="2"><strong>酒店<i class="red">*</i></strong></el-col>
-                                    <el-col :span="8">
-                                        <el-autocomplete
-                                                size="small"
-                                                v-model="hotel"
-                                                :fetch-suggestions="searchHotel"
-                                                placeholder="请输入关键字选择"
-                                                @select="selectHotel"
-                                        >
+                                <div v-for="(v,index) in suppliers">
+                                    <el-row type="flex">
+                                        <el-col :span="2"><strong>酒店<i class="red">*</i></strong></el-col>
+                                        <el-col :span="8">
+                                            <el-autocomplete
+                                                    size="small"
+                                                    v-model="hotel"
+                                                    :fetch-suggestions="searchHotel"
+                                                    placeholder="请输入关键字选择"
+                                                    @select="selectHotel"
+                                            >
 
-                                        </el-autocomplete>
-                                    </el-col>
-                                    <el-col :span="3">
-                                        <span>B评分:</span>
-                                        <span>{{}}</span>
-                                        <span class="delete" @click="clickDelete()">删除</span>
-                                    </el-col>
-                                </el-row>
-                                <el-row type="flex">
-                                    <el-col :span="2">
-                                        <strong>备注确认号:</strong>
-                                    </el-col>
-                                    <el-col :span="10">
-                                        <el-input v-model="input" placeholder="确认用户备注后，填写相应的编号，用';'隔开">
+                                            </el-autocomplete>
+                                        </el-col>
+                                        <el-col :span="3">
+                                            <span>B评分:</span>
+                                            <span>{{}}</span>
+                                        </el-col>
+                                        <el-col :span="2">
+                                            <el-button type="text" class="delete" @click="deleteHotel()">删除</el-button>
+                                        </el-col>
+                                        <el-col :span="2">
+                                            <el-button type="text" @click="addHotel()">添加酒店</el-button>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row type="flex">
+                                        <el-col :span="2">
+                                            <strong>备注确认号:</strong>
+                                        </el-col>
+                                        <el-col :span="10">
+                                            <el-input v-model="input" placeholder="确认用户备注后，填写相应的编号，用';'隔开">
 
-                                        </el-input>
-                                    </el-col>
-                                </el-row>
+                                            </el-input>
+                                        </el-col>
+                                    </el-row>
+                                    <!--添加供应商start-->
+                                    <el-row type="flex">
+                                        <el-col :span="20">
 
+                                            <AddSupplierCard :currentData="params"></AddSupplierCard>
+                                        </el-col>
+                                    </el-row>
+                                    <!--添加供应商end-->
+                                </div>
                             </div>
-                            <!--采购渠道及房型start-->
-                            <div class="room">
-
-                            </div>
-                            <!--采购渠道及房型start-->
                         </el-tab-pane>
                     </template>
                 </el-tabs>
@@ -111,6 +120,7 @@
 <script>
     import ajax from '@local/common/ajax';
     import debounce from 'lodash/debounce';
+    import AddSupplierCard from './AddSupplierCard'
     export default{
         props:['orderData'],
         data(){
@@ -120,8 +130,49 @@
                 orders:null,
                 hotel:'',
                 hotelFlag:false,
-                input:''
+                input:'',
+                suppliers:[
+                    {
+                        hotel:null
+                    }
+                    ],
+                params: {
+                    priority: 'A+',
+                    origin_from: '',
+                    user: null,
+                    number: 1,
+                    start_date: new Date().format('YYYY-MM-DD'),
+                    star: '不限',
+                    breakfast: true,
+                    currency: 'EUR',
+                    budget_min: null,
+                    budget_max: null,
+                    budget_mark: '',
+                    cancel_req: '',
+                    position_req: '',
+                    other_req: '',
+                    stay_details: [
+                        {
+                            check_in: new Date().format('YYYY-MM-DD'),
+                            check_out: new Date().format('YYYY-MM-DD'),
+                            city: {
+                                name: null
+                            },
+                            hotel: {
+                                name: null
+                            },
+                            rooms: [{
+                                type: 'Single',
+                                number: 1,
+                                mark: ''
+                            }]
+                        }
+                    ]
+                }
             }
+        },
+        components:{
+            AddSupplierCard:AddSupplierCard
         },
         computed:{
 
@@ -130,6 +181,7 @@
             loadOrder(id){
                 ajax.post("/api/team/order/detail",{id:id}).then(json=>{
                     console.log("json=",json);
+                    this.params=json.detail.requirement;
                     this.orders=json.detail.requirement.stay_details;
                     this.cityTabs=json.detail.requirement.stay_details[0].city.name;
                 })
@@ -166,8 +218,13 @@
             write(){
                 this.change=!this.change;
             },
-            clickDelete(){
-
+            addHotel(){
+                this.suppliers.push({hotel:null});
+            },
+            deleteHotel(){
+                if(this.suppliers.length>1){
+                    this.suppliers.pop();
+                }
             }
         },
         watch:{
