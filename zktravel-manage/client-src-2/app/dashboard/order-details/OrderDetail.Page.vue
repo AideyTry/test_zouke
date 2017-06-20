@@ -88,7 +88,7 @@
                     <orderDetail v-if="orderdata&&activetabs=='order-detail'" :orderData="orderdata"></orderDetail>
                 </el-tab-pane>
                 <el-tab-pane label="收入/支出" name="in-out">
-
+                    <income-detail v-if="orderdata&&activetabs=='in-out'"></income-detail>
                 </el-tab-pane>
                 <el-tab-pane label="开票记录" name="ticket-node">
 
@@ -157,6 +157,7 @@
     import offerDetail from './details/OfferDetail';
     import orderDetail from './details/orderDetail'
     import messageDetail from './details/MessageDetail';
+    import incomeDetail from './details/IncomeDetail';
     export default{
         components: {
             requiredetail: requireDetail,
@@ -166,7 +167,8 @@
             dialog3: dialog3,
             offerdetail: offerDetail,
             orderDetail: orderDetail,
-            messageDetail: messageDetail
+            messageDetail: messageDetail,
+            incomeDetail:incomeDetail
         },
         data(){
             return {
@@ -248,6 +250,7 @@
                 )
             },
             publishorder(){
+                let vm=this;
                 ajax.post('/api/team/requirement/draft-publish', {
                     id: this.$route.params.orderid,
                     requirement: this.orderdata.requirement
@@ -367,6 +370,7 @@
                 )
             },
             customRejectOffer(){
+                let vm=this;
                 ajax.post('/api/team/price/disagree', {
                     id: this.$route.params.orderid
                 }).then(

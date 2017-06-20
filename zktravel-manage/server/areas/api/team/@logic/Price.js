@@ -56,7 +56,7 @@ module.exports = class Price extends BaseOrder {
             { 
                 $set: { status: this.status.WAIT_FOR_PRICE_CHECK, price },
                 $push: { 
-                    logs: { type: 'system:commit-price', time: nowTime, user}
+                    logs: this.$createShiftUpdate({ type: 'system:commit-price', time: nowTime, user})
                 }
             }
         );
@@ -80,8 +80,8 @@ module.exports = class Price extends BaseOrder {
             {
                 $set: { status: this.status.WAIT_FOR_GIVE_PRICE },
                 $push: {
-                    logs: { type: 'system:reject-price', time: this.$createTime(), user, reason},
-                    price_history: { $each:[price], $position:0 }
+                    logs: this.$createShiftUpdate({ type: 'system:reject-price', time: this.$createTime(), user, reason}),
+                    price_history: this.$createShiftUpdate(price)
                 }
             }
         );
@@ -91,7 +91,7 @@ module.exports = class Price extends BaseOrder {
         const update = {
             $set: { user_policy: userPolicy, status: this.status.WAIT_FOR_PRICE_CONFIRM },
             $push: {
-                logs: { type: 'system:resolve-price', time: nowTime, user, change_price: !!price }
+                logs: this.$createShiftUpdate({ type: 'system:resolve-price', time: nowTime, user, change_price: !!price })
             }
         }
         const queryResult = await (await this.$getCollection()).findOne({
@@ -107,7 +107,7 @@ module.exports = class Price extends BaseOrder {
 
         price.check_pass = true;
         price.id = `${this.$createDate()}(${price_history.length})`;
-        update.$push.price_history = { $each: [price], $position:0 };
+        update.$push.price_history =  this.$createShiftUpdate(price);
 
         return await this.$update({
             _id: id,
@@ -130,7 +130,7 @@ module.exports = class Price extends BaseOrder {
                     'price_history.0.confirm_pass': true
                 },
                 $push: {
-                    logs: { type: 'system:agree-price', time: this.$createTime(), user }
+                    logs: this.$createShiftUpdate({ type: 'system:agree-price', time: this.$createTime(), user })
                 }
             }
         )
@@ -149,7 +149,7 @@ module.exports = class Price extends BaseOrder {
                     'price_history.0.confirm_pass': false
                 },
                 $push: {
-                    logs: { type: 'system:disagree-price', time: this.$createTime(), user }
+                    logs: this.$createShiftUpdate({ type: 'system:disagree-price', time: this.$createTime(), user })
                 }
             }
         )

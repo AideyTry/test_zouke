@@ -20,6 +20,18 @@ module.exports = function compare (example, data, { requirePrefix = '*', filter 
         }
     }
 
+    if(exampleType==='function'){
+        switch(example.name){
+            case 'trans':   //trans data
+                return example(data, { requirePrefix, filter, strict });
+            case 'noop':    //value type
+                break;
+            default:    //check
+                return example(data)?data:null;
+        }
+        return example(data, { requirePrefix, filter, strict })
+    }
+
     if(exampleType!==dataType) return null;
 
     if(['number', 'boolean', 'string', 'date', 'regexp', 'undefined', 'function'].includes(exampleType)) return data;

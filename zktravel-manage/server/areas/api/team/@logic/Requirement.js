@@ -118,7 +118,7 @@ module.exports = class TeamRequirement extends BaseOrder {
             update.$set.status = WAIT_FOR_GIVE_PRICE;
             delete _oldRequirement.last_update;
             const diff = jsondiffpatch.diff(_oldRequirement, requirement);
-            update.$push = { logs: { type: 'system:update-requirement', time: nowTime, diff, user } };
+            update.$push = { logs: this.$createShiftUpdate({ type: 'system:update-requirement', time: nowTime, diff, user }) };
         }
 
         requirement.last_update = nowTime;

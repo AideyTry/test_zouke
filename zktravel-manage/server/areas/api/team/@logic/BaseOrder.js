@@ -23,7 +23,7 @@ const WAIT_FOR_BOOKING = 8;         //待控房
 const ORDER_RESOLVE = 9;            //已控房
 
 
-module.exports = class BaseOfflineOrder{
+module.exports = class BaseOrder{
     get status(){
         return {
             WAIT_FOR_PUBLISH,
@@ -46,6 +46,12 @@ module.exports = class BaseOfflineOrder{
     }
     $createDate(format="YYMMDD"){
         return new Date().format(format);
+    }
+    $createShiftUpdate(data){
+        return {
+            $each:[data],
+            $position: 0
+        };
     }
     async $insert(order){
         const collection = await this.$getCollection();
