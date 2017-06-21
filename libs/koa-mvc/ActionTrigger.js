@@ -27,15 +27,16 @@ function findControllerByPath(p, decorator){
 }
 
 module.exports = class ActionTrigger{
-    constructor({ctx, route, router, decorator}){
+    constructor({ctx, route, router, decorator, view}){
         this._ctx = ctx;
         this._route = route;
         this._router = router;
+        this._view = view;
 
         this._decorator = decorator;
 
-        this._controllerName = route.controller;
-        this._actionName = route.action;
+        this._controllerName = route.controllerFileName;
+        this._actionName = route.actionMethodName;
     }
     build(){
         const RouteController = findControllerByPath(path.resolve(
@@ -46,7 +47,8 @@ module.exports = class ActionTrigger{
         this._controller = new RouteController({
             ctx: this._ctx,
             route: this._route,
-            router: this._router
+            router: this._router,
+            view: this._view
         });
     }
     async trigger(){

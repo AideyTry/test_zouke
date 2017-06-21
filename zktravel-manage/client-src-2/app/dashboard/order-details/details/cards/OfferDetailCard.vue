@@ -8,6 +8,7 @@
 </style>
 <template>
     <div class="country">
+        <el-form ref="ruleForm" :rules="rule" :model="params">
         <el-row>
             <el-col :span="3">入住/离店：</el-col>
             <el-col :span="9">{{order.check_in}} - {{order.check_out}} {{night}}晚</el-col>
@@ -16,6 +17,7 @@
         <el-row>
             <el-col :span="3"><div>酒店：</div></el-col>
             <el-col :span="9" style="padding-right: 10px">
+                <el-form-item prop="hotel">
                 <el-autocomplete
                         size="small"
                         class="inline-input"
@@ -24,12 +26,14 @@
                         placeholder="输入关键字选择"
                         @select="selecthotel"
                 ></el-autocomplete>
+                </el-form-item>
             </el-col>
             <el-col :span="12">B评分：9.0</el-col>
         </el-row>
         <template v-for="(v,k) in params.rooms">
             <room   :v="v" :k="k"></room>
         </template>
+        </el-form>
     </div>
 </template>
 <script>
@@ -44,7 +48,10 @@
         data(){
             return{
                 hotel:'',
-                hotelflag:false
+                hotelflag:false,
+                rule:{
+                    hotel:[{type:'object',required: true, message: '请输入关键字查找酒店', trigger: 'change'}]
+                }
             }
         },
         methods:{
@@ -78,6 +85,9 @@
             hotel(val){
                 if(!this.hotelflag){
                     this.params.hotel={name:val,custom:true}
+                }
+                if(!val){
+                    this.params.hotel=''
                 }
                 this.hotelflag=false;
             }

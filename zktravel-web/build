@@ -1,0 +1,47 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const childProcess=require('child_process');
+const emitName = process.argv[2];
+
+if(!require('../config').DEBUG){
+    const args = emitName?[emitName]:[];
+    childProcess.spawn('./build.prod',args,{stdio:'inherit'});
+}else{
+    console.log('\x1b[0;31m\ndev:node\n\x1b[0m')
+    const path = require('path');
+
+    const chokidar = require('chokidar');
+    const webpackCliPath = path.join(__dirname,'../node_modules/.bin/webpack');
+
+    function webpack(env){
+        const webpackCliArgv = env?['--env',env]:[];
+        return childProcess.spawn(webpackCliPath,webpackCliArgv,{stdio:'inherit'});
+    }
+
+    const src = path.resolve(__dirname, './client-src');
+
+    function watch(env, watchRule){
+        function r(){
+            if(r._c) r._c.kill();
+            r._c = webpack(env);
+        }
+        r();
+
+        chokidar
+            .watch(path.resolve(src, watchRule))
+            .on('add', r)
+            .on('unlink', r);
+    }
+
+    switch(emitName){
+        case 'web':
+            watch('style', './**/*.entry.scss');
+            watch('script', './**/*.entry.js');
+            break;
+        default:
+            console.error('\x1b[0;31mweb\n\x1b[0m')
+            break;
+    }
+}

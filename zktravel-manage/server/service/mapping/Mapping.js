@@ -40,7 +40,7 @@ module.exports = class Mapping {
                 orQueryCondition.push({ [`${Pretreatment.field}.${key}`]: hotel[Pretreatment.field][key] });
         }
 
-        const queryResults = (await (await getDb()).command({
+        const queryResults = (await collection.s.db.command({
             geoNear: collection.s.name,
             near: { type:'Point', coordinates: hotel.geo },
             spherical: true,

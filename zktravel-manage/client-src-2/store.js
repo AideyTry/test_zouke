@@ -20,7 +20,8 @@ const store = new Vuex.Store({
         selectRoom:0,
         /*待控放end*/
         /*用户权限管理*/
-        offlineRole:null
+        offlineRole:null,
+        validfrom:false
     },
     getters: {
         userInfo(state){
@@ -41,6 +42,9 @@ const store = new Vuex.Store({
         /*待控放end*/
         offlineRole(state){
             return state.offlineRole;
+        },
+        validfrom(state){
+            return state.validfrom;
         }
 
     },
@@ -54,6 +58,9 @@ const store = new Vuex.Store({
             state.publish.isTrue=isTrue;
         },
         /*我的发布end*/
+        valid(state,status){
+            state.validfrom=status;
+        }
         /*待控放start*/
         addCount(state){
             state.count=++state.count;

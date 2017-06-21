@@ -1,9 +1,8 @@
-const dbclient = requireRoot('db');
+const dbclient = requireRoot('dbclient');
 
 module.exports = class SystemUser{
     async list(role){
-        const db = await dbclient.get();
-        const collection = await db.collection('zkmanager_user');
+        const collection = await dbclient.collections.get('zkmanager_user');
         const list = await collection.find({ role }).toArray();
         return list.map(u=>({
                     id: u._id,

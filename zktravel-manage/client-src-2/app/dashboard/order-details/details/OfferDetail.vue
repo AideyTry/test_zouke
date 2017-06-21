@@ -43,7 +43,7 @@
                 </el-col>
             </el-row>
             <userchannel v-if="offlineRole.CHECK_PRICE&&userchannel" :userchannel="userchannel"> </userchannel>
-            <history :history="editableTabs"> </history>
+            <history :history="orderdata" @useHistory="useHistory" v-if="orderdata"> </history>
         </div>
         <div class="offer-detail-booking" v-if="offlineRole.CONFIRM_PRICE&&orderstatus>4">
             <template v-for="(o,p) in editableTabs">
@@ -99,7 +99,8 @@
                     cancel:'',
                     explain:'',
                     type:'全款'
-                }
+                },
+                history:''
             }
         },
         methods: {
@@ -204,6 +205,30 @@
                         }
                     }
                 });
+            },
+            /*应用历史*/
+            useHistory(history){
+                let vm=this;
+                vm.history=history;
+                if(history.disable_apply){
+                    vm.$notify({
+                        title: '应用历史失败',
+                        message: '需求已被修改，无法应用此历史报价',
+                        type: 'danger'
+                    });
+                }else {
+                    history.cases.forEach(
+                        (a,b)=>{
+                            vm.editableTabs[b].params=a.price;
+                            vm.editableTabs[b].provider=a.sp_policy;
+                        }
+                    )
+                    vm.$notify({
+                        title: '应用历史成功',
+                        message: '请修改部分信息后，重新提交',
+                        type: 'success'
+                    });
+                }
             }
         },
         computed: {

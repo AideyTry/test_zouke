@@ -15,7 +15,6 @@
         margin-bottom: 20px;
         border-radius: 5px;
         .computed{
-            padding-left: 30px;
             height: 40px;
             line-height: 40px;
         }
@@ -131,20 +130,20 @@
             </template>
         </el-table-column>
     </el-table>
-     <div>
+     <div style="padding-top: 20px">
          <el-row class="computed">
              <el-col :span="5"><strong>总价：</strong>{{cost}}</el-col>
              <el-col :span="5"><strong>Booking：</strong>{{bk}}</el-col>
              <el-col :span="12"><strong>为您节省：</strong>{{bk-cost}}</el-col>
          </el-row>
          <el-row class="computed">
-             <el-col :span="24"><strong>取消政策：</strong>{{tab.provider.cancel_policy}}</el-col>
+             <el-col :span="24"><strong>取消政策：</strong>{{tab.provider.cancel_policy||''}}</el-col>
          </el-row>
          <el-row class="computed">
-             <el-col :span="24"><strong>付款政策：</strong>{{tab.provider.payment_policy}}</el-col>
+             <el-col :span="24"><strong>付款政策：</strong>{{tab.provider.payment_policy||''}}</el-col>
          </el-row>
          <el-row class="computed">
-             <el-col :span="24"><strong>报价说明：</strong>{{tab.provider.remark}}</el-col>
+             <el-col :span="24"><strong>报价说明：</strong>{{tab.provider.remark||''}}</el-col>
          </el-row>
      </div>
 

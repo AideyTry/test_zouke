@@ -222,6 +222,7 @@ export default{
             let newArr=[];
             ajax.post('/api/team/my-publish/query',{status:this.status}).then(json=>{
                 this.arr=json.list;
+                console.log(json);
                     for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
                         if(this.arr[num]){
                             newArr.push(this.arr[num]);
@@ -373,6 +374,9 @@ export default{
                 case 9:
                     this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'order-detail'}});
                     break;
+                case 10:
+                    this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'ticket-node'}});
+                    break;    
             }
 
         }
