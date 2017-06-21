@@ -3,7 +3,7 @@ const BaseOrder = require('./BaseOrder');
 
 module.exports = class PayStream extends BaseOrder {
     //插入数据
-    async update(id,road,reMark,payTime){
+    async update(id,provider,extras,paytime){
         /**方法前面带$的说明是从父类继承来的**/
         return await this.$update(
             {
@@ -20,9 +20,9 @@ module.exports = class PayStream extends BaseOrder {
             { $push:
                 {
                     pay_stream:{
-                        road: road,
-                        remark: reMark,
-                        payTime: payTime
+                        provider: provider,
+                        extras: extras,
+                        pay_time: paytime
                     }
                 }
             }
