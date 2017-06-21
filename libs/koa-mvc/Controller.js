@@ -9,18 +9,20 @@ const pugCompileOptions = {
     doctype: 'html'
 }
 
+const viewKey = Symbol('#view');
+
 module.exports = class Controller {
 
     $beforeAction(){}
     $afterAction(){}
 
-    constructor({ctx, route, router}){
+    constructor({ctx, route, router, view}){
         Object.defineProperties(this, {
             ctx: { value: ctx },
             route: { value: route },
             router: { value: router }
         });
-        this.layout = '~layout';
+        this[viewKey] = view;
     }
     get request(){
         return this.ctx.request;
@@ -57,20 +59,11 @@ module.exports = class Controller {
         view = view || this.route.action;
 
         const viewPath = path.resolve(this.route.viewsRoot, `${controller}/${view}.pug`);
-        const content = pug.compileFile(viewPath, pugCompileOptions)({
-            model
-        });
 
-        if(this.layout){
-            const layoutPath = path.resolve(this.route.viewsRoot, `${this.layout}.pug`);
-            const body = pug.compileFile(layoutPath, pugCompileOptions)({
-                model,
-                content
-            });
-            this.ctx.body = body;
-        }else{
-            this.ctx.body = content;
-        }
+        this.ctx.body = pug.compileFile(viewPath, pugCompileOptions)({
+            model,
+            view: this[viewKey]
+        });
     }
     renderJSON(json = {}){
         this.ctx.body = json;
@@ -84,7 +77,7 @@ module.exports = class Controller {
         this.ctx.redirect(url);
     }
     async rewrite(params, area){
-        const route = new Route(params, area);
+        const route = (typeof params === 'string') ? this.router.match(params) : new Route(params, area);
         const actionTrigger = new ActionTrigger({
             ctx: this.ctx,
             route,

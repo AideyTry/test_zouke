@@ -1,4 +1,4 @@
-const dbclient = requireRoot('db')
+const dbclient = requireRoot('dbclient')
 
 /*
 1 -- 待发布
@@ -38,8 +38,7 @@ module.exports = class BaseOrder{
         }
     }
     async $getCollection(){
-        const db = await dbclient.get();
-        return await db.collection('offline_order');
+        return await dbclient.collections.get('offline_order');
     }
     $createTime(format="YYYY-MM-DD HH:mm:ss"){
         return new Date().format(format);

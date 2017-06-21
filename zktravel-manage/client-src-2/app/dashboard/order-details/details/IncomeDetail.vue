@@ -69,7 +69,7 @@
 
                 </el-col>
                 <el-col :span="4">
-                    <el-button type="info">生成收款码</el-button>
+                    <el-button type="info" @click="payment">生成收款码</el-button>
                 </el-col>
             </el-row>
         </div>
@@ -156,16 +156,24 @@
                 </el-table>
             </div>
         </div>
+        <paymentdialog :dialog="dialog" @closedialog="closedialog"> </paymentdialog>
     </div>
 </template>
 <script>
     import ajax  from '@local/common/ajax';
+    import payment from '../dialogs/PaymentDialog'
     export default{
+        components:{
+            paymentdialog:payment
+        },
         data(){
             return {
                 radio: '',
                 order:null,
-                payplan:null
+                payplan:null,
+                dialog:{
+                    show:false
+                }
             }
         },
         methods: {
@@ -175,6 +183,12 @@
                         this.order=data.detail;
                     }
                 )
+            },
+            payment(){
+                this.dialog.show=true;
+            },
+            closedialog(){
+                this.dialog.show=false;
             }
         },
         mouted(){

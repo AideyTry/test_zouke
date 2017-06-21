@@ -15,7 +15,6 @@
         margin-bottom: 20px;
         border-radius: 5px;
         .computed{
-            padding-left: 30px;
             height: 40px;
             line-height: 40px;
         }
@@ -131,7 +130,7 @@
             </template>
         </el-table-column>
     </el-table>
-     <div>
+     <div style="padding-top: 20px">
          <el-row class="computed">
              <el-col :span="5"><strong>总价：</strong>{{cost}}</el-col>
              <el-col :span="5"><strong>Booking：</strong>{{bk}}</el-col>

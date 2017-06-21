@@ -1,6 +1,6 @@
 <style lang="scss" scoped>
     .publish-require {
-        min-width: 800px;
+        min-width: 1000px;
         margin-bottom: 20px;
         .el-row {
             height: 56px;
@@ -24,8 +24,8 @@
             margin-top: 0;
         }
         .budget-area {
-            .el-input {
-                width: 6%;
+            .el-input{
+                width: 70%;
             }
         }
         .el-textarea {
@@ -41,13 +41,14 @@
 </style>
 <style lang="scss">
     .publish-require {
+        .el-form-item {
+            display: inline-block;
+        }
         .el-form-item__content {
             margin-left: 0 !important;
         }
     }
-
 </style>
-
 <template>
     <div class="publish-require" v-if="type==1">
         <el-form ref="ruleForm" :rules="rule" :model="params" label-width="80px">
@@ -88,7 +89,9 @@
                 </el-col>
                 <el-col :span="6">
                     <span>出发人数<i class="red">*</i></span>
-                    <el-input size="small" type="number" placeholder="请填写" v-model="params.number"></el-input>
+                    <el-form-item prop="number">
+                    <el-input size="small" type="number" placeholder="请填写人数" style="width: 100%" v-model="params.number"></el-input>
+                    </el-form-item>
                 </el-col>
                 <el-col :span="6">
                     <span>出行时间<i class="red">*</i></span>
@@ -144,12 +147,16 @@
                 <el-col :span="22">
                     <div>
                         <span>每间夜</span>
-                        <el-input size="small" type="number" v-model="params.budget_min" placeholder="最低"></el-input>
-                        <span>~</span>
-                        <el-input size="small" type="number" v-model="params.budget_max" placeholder="最高"></el-input>
-                        <span>€</span>
-                        <el-input style="width: 20%" v-model="params.budget_mark" size="small"
+                        <el-form-item prop="budget_min">
+                        <el-input size="small" type="number" v-model="params.budget_min" placeholder="最低"></el-input><span style="margin-left: 8px">~</span>
+                        </el-form-item>
+                        <el-form-item prop="budget_max">
+                        <el-input size="small" type="number" v-model="params.budget_max" placeholder="最高"></el-input><span>€</span>
+                        </el-form-item>
+                        <el-form-item prop="budget_mark">
+                        <el-input v-model="params.budget_mark" size="small"
                                   placeholder="备注"></el-input>
+                        </el-form-item>
                     </div>
                 </el-col>
             </el-row>
@@ -193,7 +200,7 @@
                 </el-col>
             </el-row>
             <template v-for="(v,k) of params.stay_details">
-                <date-card @cancelthis="cancelCard" @addroom="addroom" @deleteroom="deleteroom" :item="v"
+                <date-card :valid="valid" @cancelthis="cancelCard" v-if="v" @addroom="addroom" @deleteroom="deleteroom" :item="v"
                            :index="k"></date-card>
             </template>
             <el-row class="addcard">
@@ -228,9 +235,9 @@
                 user: null,
                 params: {
                     priority: 'A+',
-                    origin_from: '',
+                    origin_from: '超级行程单',
                     user: null,
-                    number: 1,
+                    number: '1',
                     start_date: new Date().format('YYYY-MM-DD'),
                     star: '不限',
                     breakfast: true,
@@ -245,22 +252,22 @@
                         {
                             check_in: new Date().format('YYYY-MM-DD'),
                             check_out: new Date().format('YYYY-MM-DD'),
-                            city: {
-                                name: null
-                            },
-                            hotel: {
-                                name: null
-                            },
+                            city: '',
+                            hotel: '',
                             rooms: [{
                                 type: 'Single',
-                                number: 1,
+                                number: '1',
                                 mark: ''
                             }]
                         }
                     ]
                 },
                 rule: {
-                    user:[{type:'object',required: true, message: '请输入活动名称', trigger: 'change'}]
+                    user:[{type:'object',required: true, message: '请输入关键字查找用户名', trigger: 'change'}],
+                    number:[{type:'string',required: true, message: '请输入出发人数', trigger: 'blur'}],
+                    budget_min:[{type:'string',required: true, message: '请输入数字', trigger: 'blur'}],
+                    budget_max:[{type:'string',required: true, message: '请输入数字', trigger: 'blur'}],
+                    budget_mark:[{type:'string',required: true, message: '请输入备注', trigger: 'blur'}]
                 },
                 pickerOptions: {
                     disabledDate(time) {
@@ -269,7 +276,8 @@
                 },
                 type: this.ordertype || 1,
                 order: this.orderid || null,
-                startdate: new Date()
+                startdate: new Date(),
+                valid:false
             }
         },
         computed: {},
@@ -286,7 +294,7 @@
                         hotel: '',
                         rooms: [{
                             type: 'Single',
-                            number: 1,
+                            number: '1',
                             mark: ''
                         }]
                     }
@@ -331,18 +339,26 @@
             },
             submitdraft(){
                 let vm = this;
-                ajax.post('/api/team/requirement/draft', this.params).then(
-                    data => {
-                        if (data.code == 0) {
-                            this.$notify({
-                                title: '保存成功',
-                                message: '已保存为草稿，请到我的发布中查看',
-                                type: 'success'
-                            });
-                            this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'require-node'}});
-                        }
+                vm.valid=true;
+                vm.$refs['ruleForm'].validate((valid) => {
+                    if (valid) {
+                        ajax.post('/api/team/requirement/draft', this.params).then(
+                            data => {
+                                if (data.code == 0) {
+                                    this.$notify({
+                                        title: '保存成功',
+                                        message: '已保存为草稿，请到我的发布中查看',
+                                        type: 'success'
+                                    });
+                                    this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'require-node'}});
+                                }
+                            }
+                        )
+                    } else {
+                        return false;
                     }
-                )
+                });
+
             },
             submitform(){
                 ajax.post('/api/team/requirement/publish', this.params).then(
@@ -361,7 +377,7 @@
             addroom(k){
                 this.params.stay_details[k].rooms.push({
                     type: 'single',
-                    number: 1,
+                    number: '1',
                     mark: ''
                 })
             },

@@ -13,7 +13,7 @@ function parseArgs(fn){
 
 function createArgs(str){
     if(str==undefined) return undefined;
-    const sand = { args:null };
+    const sand = { args:null, _:undefined };
     const context = vm.createContext(sand);
     const script = vm.createScript(`args=[${str}]`);
     script.runInContext(context);
