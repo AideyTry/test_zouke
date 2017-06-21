@@ -13,125 +13,80 @@
     }
 </style>
 <template>
-    <el-card class="box-card">
-        <el-row type="flex">
-            <el-col :span="1"></el-col>
-            <el-col :span="2">
-                <strong>采购渠道<i class="red">*</i></strong>
-            </el-col>
-            <el-col :span="3">
-                <el-select v-model="value1" filterable placeholder="请选择">
-                    <el-option
-                            v-for="item in channel"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-col>
-            <el-col :span="1"></el-col>
-            <el-col :span="2">
-                <strong>入住编号<i class="red">*</i></strong>
-            </el-col>
-            <el-col :span="13">
-                <el-input v-model="inputs.atNumber" type="text"></el-input>
-            </el-col>
-            <el-col :span="2"></el-col>
-            <el-col :span="1"><span  class="el-icon-circle-close iconSize"></span></el-col>
-        </el-row>
-        <el-row type="flex">
-            <el-col :span="1"></el-col>
-            <el-col :span="2">
-                <strong>选择房型<i class="red">*</i></strong>
-            </el-col>
-            <el-col :span="3">
-                <el-select v-model="value2" filterable placeholder="请选择">
-                    <el-option
-                            v-for="item in rooms"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-col>
-            <el-col :span="1"></el-col>
-            <el-col :span="2">
-                <el-button style="color:#99A9BF" size="mini">-</el-button>
-                <span>{{}}</span>
-                <el-button style="background-color:#fff;:#20A0FF" size="mini">+</el-button>
-            </el-col>
-            <el-col :span="13">
-                <el-input v-model="inputs.roomDescription" type="text"></el-input>
-            </el-col>
-        </el-row>
-        <el-row type="flex">
-            <el-col :span="1"></el-col>
-            <el-col :span="3">
-                <strong>入住人{{}}</strong>
-                <span>姓</span>
-            </el-col>
-            <el-col :span="5">
-                <el-input v-model="inputs.familyName" placeholder="填写英文或拼音"></el-input>
-            </el-col>
-            <el-col :span="1"></el-col>
-            <el-col :span="1">
-                <span>名</span>
-            </el-col>
-            <el-col :span="5">
-                <el-input v-model="inputs.name" placeholder="填写英文或拼音"></el-input>
-            </el-col>
-            <el-col :span="1"></el-col>
-            <el-col :span="1">
-                <span>性别</span>
-            </el-col>
-            <el-col :span="6">
-                <el-select v-model="value3" filterable placeholder="请选择">
-                    <el-option
-                            v-for="item in gender"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-col>
-        </el-row>
-        <el-row type="flex">
-            <el-col :span="1">
+    <div>
+        <div v-for="(v,index) in item" :key="v.status">
+            <el-button v-if="(isTrue_supplier==false)" type="text" @click="addSupplier(index)">添加供应商</el-button>
+            <el-card v-if="isTrue_supplier" class="box-card">
+                <el-row type="flex">
+                    <el-col :span="1"></el-col>
+                    <el-col :span="2">
+                        <strong>采购渠道<i class="red">*</i></strong>
+                    </el-col>
+                    <el-col :span="3">
+                        <el-select v-model="value1" filterable placeholder="请选择">
+                            <el-option
+                                    v-for="item in channel"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-col>
+                    <el-col :span="1"></el-col>
+                    <el-col :span="2">
+                        <strong>入住编号<i class="red">*</i></strong>
+                    </el-col>
+                    <el-col :span="13">
+                        <el-input v-model="inputs.atNumber" type="text"></el-input>
+                    </el-col>
+                    <el-col :span="2"></el-col>
+                    <el-col :span="1"><span  class="el-icon-circle-close iconSize" @click="colseCard()"></span></el-col>
+                </el-row>
+                <div v-for="(item,index) in v.rooms">
+                    <RoomsCard :item="item" :index="index"></RoomsCard>
+                </div>
+                <el-row type="flex">
+                    <el-col :span="1">
 
-            </el-col>
-            <el-col :span="3">
-                <el-button type="primary">+添加房型</el-button>
-            </el-col>
+                    </el-col>
+                    <el-col :span="3">
+                        <el-button type="primary" @click="addRooms(index)">+添加房型</el-button>
+                    </el-col>
+                </el-row>
+            </el-card>
+        </div>
+    </div>
 
-        </el-row>
-    </el-card>
 </template>
 <script>
+    import RoomsCard from './RoomsCard'
     export default{
-        props: ["currentData"],
+        props: ["currentData","item"],
         data(){
             return {
+                index:null,
+                isTrue_supplier:false,
                 channel: [{
-                    value: '选项1',
+                    value: 'GTA',
                     label: 'GTA'
                 }, {
-                    value: '选项2',
+                    value: 'miki',
                     label: 'miki'
                 }],
                 rooms: [{
-                    value: '选项1',
+                    value: 'Single',
                     label: 'Single'
                 }, {
-                    value: '选项2',
+                    value: 'Double',
                     label: 'Double'
                 }, {
-                    value: '选项3',
+                    value: 'Triple',
                     label: 'Triple'
                 }, {
-                    value: '选项4',
+                    value: 'Twins',
                     label: 'Twins'
                 }, {
-                    value: '选项5',
+                    value: 'Other',
                     label: 'Other'
                 }],
                 gender: [
@@ -156,10 +111,40 @@
                 }
             }
         },
-        computed: {},
-        methods: {},
+        components:{
+            RoomsCard:RoomsCard
+        },
+        computed: {
+            selectRoom(){
+                return this.$store.getters.selectRoom;
+            }
+        },
+        methods: {
+            colseCard(){
+                this.isTrue_supplier=!this.isTrue_supplier;
+            },
+            addSupplier(index){
+                this.index=index;
+                this.isTrue_supplier=!this.isTrue_supplier;
+            },
+            closeSupplier(){
+
+            },
+            addRooms(index){
+                this.item[index].rooms.push({
+                    type:'Single',
+                        number:1,
+                    roomDescription:'',
+                    peoples:[
+                        {
+                            name:'',
+                            familyName:''
+                        }
+                    ]
+                });
+            }
+        },
         mounted(){
-            console.log("current==", this.currentData);
         }
     }
 </script>

@@ -11,7 +11,6 @@
                 padding:10px 40px;
             }
         }
-
     }
     .orderContent{
         .city{
@@ -52,7 +51,7 @@
                         <h4>订单信息</h4>
                     </el-col>
                 </el-row>
-                <el-tabs v-model="cityTabs" type="border-card" :active-name="cityTabs">
+                <el-tabs v-model="cityTabs" type="border-card" :active-name="cityTabs" @tab-click="hotelTab">
                     <template v-for="(item,index) in orders">
                         <el-tab-pane :label="item.city.name" :name="item.city.name">
                             <div class="city">
@@ -65,7 +64,7 @@
                                         <span>{{dateRange(item.check_out,item.check_in)}}晚</span>
                                     </el-col>
                                 </el-row>
-                                <div v-for="(v,index) in suppliers">
+                                <div v-for="(v,index) in hotels" :key="v.suppliers">
                                     <el-row type="flex">
                                         <el-col :span="2"><strong>酒店<i class="red">*</i></strong></el-col>
                                         <el-col :span="8">
@@ -101,10 +100,10 @@
                                         </el-col>
                                     </el-row>
                                     <!--添加供应商start-->
-                                    <el-row type="flex">
+                                    <el-row type="flex" >
                                         <el-col :span="20">
-
-                                            <AddSupplierCard :currentData="params"></AddSupplierCard>
+                                            <!--<el-button v-if="(isTrue_supplier==false)" type="text" @click="addSupplier()">添加供应商</el-button>-->
+                                            <AddSupplierCard  :currentData="params" :item="v.suppliers"></AddSupplierCard>
                                         </el-col>
                                     </el-row>
                                     <!--添加供应商end-->
@@ -131,9 +130,29 @@
                 hotel:'',
                 hotelFlag:false,
                 input:'',
-                suppliers:[
+                hotels:[
                     {
-                        hotel:null
+                        suppliers:[
+                            {
+                                status:1,
+                                rooms:[
+                                    {
+                                        type:'Single',
+                                        number:1,
+                                        roomDescription:'',
+                                        peoples:[
+                                            {
+                                                name:'',
+                                                familyName:'',
+                                                gender:[
+
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
                     }
                     ],
                 params: {
@@ -164,7 +183,22 @@
                             rooms: [{
                                 type: 'Single',
                                 number: 1,
-                                mark: ''
+                                mark: '',
+                                peoples:[
+                                    {
+                                        name:'zs',
+                                        familyName:'w',
+                                        gender:[
+                                            {
+                                                male:"男"
+                                            },
+                                            {
+                                                female:"女"
+                                            }
+                                        ]
+
+                                    }
+                                ]
                             }]
                         }
                     ]
@@ -175,16 +209,21 @@
             AddSupplierCard:AddSupplierCard
         },
         computed:{
-
+            count(){
+                return this.$store.getters.count;
+            }
         },
         methods:{
             loadOrder(id){
                 ajax.post("/api/team/order/detail",{id:id}).then(json=>{
-                    console.log("json=",json);
+                    console.log("json=",json.detail.requirement);
                     this.params=json.detail.requirement;
                     this.orders=json.detail.requirement.stay_details;
                     this.cityTabs=json.detail.requirement.stay_details[0].city.name;
                 })
+            },
+            hotelTab(){
+
             },
             dateRange(a,b){
                 return new Date(a).getDate()-new Date(b).getDate();
@@ -219,13 +258,36 @@
                 this.change=!this.change;
             },
             addHotel(){
-                this.suppliers.push({hotel:null});
+
+                this.hotels.push({
+                    suppliers:[
+                    {
+                        status:this.count,
+                        rooms:[
+                            {
+                                type:'Single',
+                                number:1,
+                                roomDescription:'',
+                                peoples:[
+                                    {
+                                        name:'',
+                                        familyName:'',
+                                        gender:''
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]});
+                this.$commit("addCount");
             },
             deleteHotel(){
-                if(this.suppliers.length>1){
-                    this.suppliers.pop();
+                if(this.hotels.length>1){
+                    this.hotels.pop();
+                    this.$commit("deleteCount");
                 }
             }
+
         },
         watch:{
             hotel(val){
@@ -239,6 +301,5 @@
             this.dateRange();
             this.loadOrder(this.$route.params.orderid);
         }
-
     }
 </script>
