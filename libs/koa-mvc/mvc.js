@@ -1,6 +1,7 @@
 const Router = require('./Router');
 const ActionTrigger = require('./ActionTrigger');
 const NotFoundError = require('./NotFoundError');
+const BaseView = require('./View');
 
 const Decorator = require('./reflect/Decorator');
 const paramFrom = require('./decorators/paramFrom');
@@ -9,8 +10,9 @@ Decorator.register('query', paramFrom('query'));
 Decorator.register('post', paramFrom('post'));
 Decorator.register('params', params);
 
-module.exports = function(routerConfig, decorator){
-    
+module.exports = function(routerConfig, CustomView=BaseView, decorator){
+    const View = (CustomView.prototype instanceof BaseView) ? CustomView : BaseView;
+
     const router = new Router(routerConfig);
 
     return async (ctx, next) => {
@@ -22,7 +24,8 @@ module.exports = function(routerConfig, decorator){
         }
 
         const actionTrigger = new ActionTrigger({
-            ctx, route, router, decorator
+            ctx, route, router, decorator,
+            view: new View({ctx, route, router})
         });
         try{
             await actionTrigger.trigger();

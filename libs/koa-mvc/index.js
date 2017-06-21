@@ -8,6 +8,7 @@ module.exports = function({
     routerConfig,
     sessionConfig,
     bodyConfig,
+    View,
     decorator = true
 } = {}, app){
 
@@ -19,6 +20,6 @@ module.exports = function({
     return compose([
         session(sessionConfig, app),
         bodyParser(bodyConfig),
-        mvc(routerConfig, decorator)
+        mvc(routerConfig, View, decorator)
     ])
 }
