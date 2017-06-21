@@ -1,6 +1,7 @@
 const Controller = require('@local/koa-mvc/Controller');
 const DES = require('@local/des');
-const des = new DES('zouke7788');
+const { DES_PWD } = requireRoot('env');
+const des = new DES(DES_PWD);
 const codeKey = '/api/auth/code';
 const codeExpriesKey = '/api/auth/code-expries';
 

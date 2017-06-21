@@ -1,41 +1,43 @@
-const mongodb = require('mongodb');
-const connectConfig = require('./connectConfig');
+const client = require('@local/mongodb-client');
+const register = require('@local/mongodb-client/register');
+
+const { CONNECT } = require('../env');
 const collectionConfig = require('./collectionConfig');
 
-const cachedDB = new Map();
+register('connect', CONNECT);
+register('collection', collectionConfig);
 
-async function connectDB(config){
-    const db = await mongodb.MongoClient.connect(config.connect, { poolSize: 4 });
-    if(config.admin&&config.db){
-        return db.db(config.db);
-    }
+client.genId = async function(name){
+    const targetCollection = await client.collections.get(name);
+    const cfg_counters_collection = targetCollection.s.db.collection('cfg_counters');
 
-    return db;
+    const result = await cfg_counters_collection.findOneAndUpdate(
+        { _id: targetCollection.collectionName }, 
+        { $inc: { seq: 1 } },
+        { returnOriginal: false }
+    );
+    if(result.value) return result.value.seq;
+
+    await cfg_counters_collection.findOneAndUpdate(
+        { _id: targetCollection.collectionName },
+        { $setOnInsert: { seq: 60000 } },
+        { upsert: true }
+    );
+    return (await cfg_counters_collection.findOneAndUpdate(
+        { _id: targetCollection.collectionName }, 
+        { $inc: { seq: 1 } },
+        { returnOriginal: false }
+    )).value.seq;
 }
 
-async function getDB(name){
-    if(cachedDB.get(name)) return await cachedDB.get(name);
+module.exports = client;
 
-    const connectDBTask = connectDB(connectConfig[name]);
-    cachedDB.set(name, connectDBTask);
-
+process.on('SIGINT', async () => {
+    let dbError = 0;
     try{
-        const db = await connectDBTask;
-        cachedDB.set(name, db);
-        return db;
+        await client.close();
     }catch(e){
-        cachedDB.delete(name);
-        throw e;
+        dbError = 1;
     }
-}
-
-async function getCollection(name){
-    const { db, collection } = collectionConfig[name];
-    return (await getDB(db)).collection(collection);
-}
-
-exports.get = getDB;
-
-exports.collections = {
-    get: getCollection
-}
+    process.exit(dbError);
+});

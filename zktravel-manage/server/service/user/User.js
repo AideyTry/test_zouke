@@ -1,4 +1,4 @@
-const dbclient = requireRoot('db');
+const dbclient = requireRoot('dbclient');
 
 module.exports = class User {
     /*
@@ -47,8 +47,7 @@ module.exports = class User {
     }
 
     static async get(id){
-        const db = await dbclient.get();
-        const userCollection = await db.collection('zkmanager_user');
+        const userCollection = await dbclient.collections.get('zkmanager_user');
         const user = await userCollection.findOne({ _id:id });
         if(!user){
             return null;
