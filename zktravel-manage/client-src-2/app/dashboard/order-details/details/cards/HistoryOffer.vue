@@ -49,7 +49,7 @@
     export default{
         props:['history'],
         components:{
-            requirement:requirement
+            requirement:requirement,
         },
         data(){
             return{
