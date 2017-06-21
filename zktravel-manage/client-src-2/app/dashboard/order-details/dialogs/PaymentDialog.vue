@@ -49,21 +49,25 @@
                 <el-form>
                     <el-form-item label="时间">
                         <el-date-picker
-                                v-model="params.date"
+                                v-model="params.payTime"
                                 type="date"
                                 size="small"
-                                placeholder="选择日期"
-                                :picker-options="pickerOptions">
+                                placeholder="选择日期">
                         </el-date-picker>
                     </el-form-item>
                     <el-form-item label="渠道">
-                        <el-radio v-model="params.way" value="走客转账" label="走客转账"></el-radio>
-                        <el-radio v-model="params.way" value="AE-Link转账" label="AE-Link转账"></el-radio>
-                        <el-radio v-model="params.way" value="信用卡" label="信用卡"></el-radio>
+                        <el-radio v-model="params.road" value="走客转账" label="走客转账"></el-radio>
+                        <el-radio v-model="params.road" value="AE-Link转账" label="AE-Link转账"></el-radio>
+                        <el-radio v-model="params.road" value="信用卡" label="信用卡"></el-radio>
                     </el-form-item>
                     <el-form-item label="备注">
-                        <el-input type="textarea" v-model="params.mark"></el-input>
+                        <el-input type="textarea" v-model="params.reMark"></el-input>
                     </el-form-item>
+                    <div class="button-container">
+                        <el-button type="info" @click="submit">
+                            录入付款信息
+                        </el-button>
+                    </div>
                 </el-form>
             </div>
         </el-dialog>
@@ -96,7 +100,7 @@
             },
             submit(){
                 this.params.payTime=this.params.payTime.format('YYYY-MM-DD');
-                ajax.post('api/team/pay-stream/commit',this.params).then(
+                ajax.post('/api/team/pay-stream/commit',this.params).then(
                     data=>{
 
                     }
