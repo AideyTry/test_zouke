@@ -68,7 +68,8 @@ module.exports = class Price extends BaseOrder {
         });
         if(!queryResult) return false;
 
-        const { price, price_history=[] } = queryResult;
+        const { price, price_history=[], requirement } = queryResult;
+        price.requirement = requirement;
         price.check_pass = false;
         price.id = `${this.$createDate()}(${price_history.length})`;
 
@@ -97,7 +98,7 @@ module.exports = class Price extends BaseOrder {
         const queryResult = await (await this.$getCollection()).findOne({
                  _id:id, status: this.status.WAIT_FOR_PRICE_CHECK });
         if(!queryResult) return false;
-        const { price_history=[] } = queryResult
+        const { price_history=[], requirement } = queryResult
         if(price){
             price.last_update = nowTime;
             update.$set.price = Object.assign({},price);
@@ -105,6 +106,7 @@ module.exports = class Price extends BaseOrder {
             price = queryResult.price;
         }
 
+        price.requirement = requirement;
         price.check_pass = true;
         price.id = `${this.$createDate()}(${price_history.length})`;
         update.$push.price_history =  this.$createShiftUpdate(price);
