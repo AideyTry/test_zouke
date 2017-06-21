@@ -271,6 +271,7 @@
             submitoffer(){
                 let params = [];
                 let vm=this;
+                this.$commit('valid',true);
                 this.$refs.offerdetaildata.editableTabs.forEach(
                     (v, k) => {
                         params.push({

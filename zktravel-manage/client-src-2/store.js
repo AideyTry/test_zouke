@@ -17,7 +17,8 @@ const store = new Vuex.Store({
         /*我的发布end*/
 
         /*用户权限管理*/
-        offlineRole:null
+        offlineRole:null,
+        validfrom:false
     },
     getters: {
         userInfo(state){
@@ -30,6 +31,9 @@ const store = new Vuex.Store({
         /*我的发布end*/
         offlineRole(state){
             return state.offlineRole;
+        },
+        validfrom(state){
+            return state.validfrom;
         }
 
     },
@@ -41,8 +45,11 @@ const store = new Vuex.Store({
         /*我的发布start*/
         publish(state,isTrue){
             state.publish.isTrue=isTrue;
-        }
+        },
         /*我的发布end*/
+        valid(state,status){
+            state.validfrom=status;
+        }
     },
     actions: {
         logout({ commit }){

@@ -6,7 +6,7 @@
         border-radius: 7px;
         margin-bottom: 40px;
         .el-form-item{
-            margin-bottom: 0;
+            margin-bottom: 10px;
         }
         .el-input{
             width: 30%;
@@ -42,6 +42,20 @@
                     payment_policy:[{type:'string',required: true, message: '请填写付款政策', trigger: 'blur'}],
                     cancel_policy:[{type:'string',required: true, message: '请填写取消政策', trigger: 'blur'}],
                     remark:[{type:'string',required: true, message: '请填写备注', trigger: 'blur'}]
+                }
+            }
+        },
+        computed:{
+            validstatus(){
+                return this.$state.validfrom;
+            }
+        },
+        watch:{
+            validstatus(status){
+                if(status){
+                    this.$refs['provider'].validate();
+                }else {
+                    this.$commit('valid',false);
                 }
             }
         }
