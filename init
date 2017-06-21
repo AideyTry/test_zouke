@@ -11,6 +11,11 @@ if(fs.existsSync(projectConfigPath)){
     const defaultConfig = JSON.parse(fs.readFileSync(defaultConfigPath));
     const projectConfig = JSON.parse(fs.readFileSync(projectConfigPath));
 
+    if(projectConfig.CONNECT){
+        projectConfig.MONGO_CONNECT = projectConfig.CONNECT;
+        delete projectConfig.CONNECT; //rename old mongo connect key
+    }
+
     fs.writeFileSync(
         projectConfigPath,
         JSON.stringify(Object.assign(defaultConfig, projectConfig), null, 4)

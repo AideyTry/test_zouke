@@ -6,6 +6,7 @@ const cachedDB = new Map();
 
 async function connectDB(config){
     const db = await mongodb.MongoClient.connect(config.connect, { poolSize: 4 });
+    db.unref();
     if(config.admin&&config.db){
         return db.db(config.db);
     }

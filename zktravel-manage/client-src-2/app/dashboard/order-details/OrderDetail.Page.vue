@@ -91,10 +91,10 @@
                     <income-detail v-if="orderdata&&activetabs=='in-out'"></income-detail>
                 </el-tab-pane>
                 <el-tab-pane label="开票记录" name="ticket-node">
-
+                    <invoice-detail v-if="orderdata&&activetabs=='ticket-node'"></invoice-detail>
                 </el-tab-pane>
                 <el-tab-pane label="投诉记录" name="complain-node">
-
+                    <complain-node v-if="orderdata&&activetabs=='complain-node'"></complain-node>
                 </el-tab-pane>
                 <el-tab-pane label="留言/操作" name="message-node">
                     <messageDetail v-if="orderdata&&activetabs=='message-node'" :orderData="orderdata"></messageDetail>
@@ -134,6 +134,8 @@
                     <el-button type="danger" @click="customRejectOffer" size="small"
                                v-if="userole.CONFIRM_PRICE&&activetabs=='offer-node'&&orderdatastatus==5">重新报价
                     </el-button>
+                    <el-button type="primary" @click="showdialog(4)" size="small">填写发票
+                    </el-button>
                 </div>
                 <div class="dialog-group">
                     <dialog1 @closedialog="closedialog" :dialoggroup="dialoggroup" v-if="userole.DISPATCH"
@@ -141,6 +143,7 @@
                     <dialog2 @closedialog="closedialog" :dialoggroup="dialoggroup"></dialog2>
                     <dialog3 @closedialog="closedialog" :dialoggroup="dialoggroup"
                              v-if="userole.CONFIRM_PRICE&&activetabs=='offer-node'&&orderdatastatus==5"></dialog3>
+                    <dialog4 @closedialog="closedialog" :dialoggroup="dialoggroup" :pickerOptions="pickerOptions"></dialog4>
                 </div>
             </el-tabs>
         </div>
@@ -154,21 +157,27 @@
     import dialog1 from './dialogs/DistributeDialog';
     import dialog2 from './dialogs/RejectOfferDialog';
     import dialog3 from './dialogs/CustomerPassDialog';
+    import dialog4 from './dialogs/FillInvoice';
     import offerDetail from './details/OfferDetail';
-    import orderDetail from './details/orderDetail'
+    import orderDetail from './details/orderDetail';
     import messageDetail from './details/MessageDetail';
     import incomeDetail from './details/IncomeDetail';
-    export default{
+    import invoiceDetail from './details/InvoiceDetail';
+    import complainNode from './details/ComplainNode';
+    export default {
         components: {
             requiredetail: requireDetail,
             changerequire: changeRequire,
             dialog1: dialog1,
             dialog2: dialog2,
             dialog3: dialog3,
+            dialog4: dialog4,
             offerdetail: offerDetail,
             orderDetail: orderDetail,
             messageDetail: messageDetail,
-            incomeDetail:incomeDetail
+            incomeDetail: incomeDetail,
+            invoiceDetail: invoiceDetail,
+            complainNode: complainNode
         },
         data(){
             return {
@@ -194,6 +203,20 @@
                     },
                     {
                         show: false
+                    },
+                    {
+                        show: false,
+                        model: {
+                           myData:[],
+                           company:'',
+                           country:'',
+                           address:'',
+                           invoicetype:'',
+                           cash:'',
+                           money:'',
+                           date:new Date()
+                        },
+                        rule: null
                     }
                 ],
                 tab: null,
@@ -250,7 +273,7 @@
                 )
             },
             publishorder(){
-                let vm=this;
+                let vm = this;
                 ajax.post('/api/team/requirement/draft-publish', {
                     id: this.$route.params.orderid,
                     requirement: this.orderdata.requirement
@@ -371,12 +394,12 @@
                 )
             },
             customRejectOffer(){
-                let vm=this;
+                let vm = this;
                 ajax.post('/api/team/price/disagree', {
                     id: this.$route.params.orderid
                 }).then(
                     data => {
-                        if(data.code==0){
+                        if (data.code == 0) {
                             vm.$notify({
                                 title: '成功驳回报价',
                                 message: '成功驳回报价，等待重新报价',
@@ -394,6 +417,7 @@
             },
             userole(){
                 return this.$store.getters.offlineRole;
+
             },
             orderdatastatus(){
                 return this.orderdata ? this.orderdata.status : '0'

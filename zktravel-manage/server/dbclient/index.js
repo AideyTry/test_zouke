@@ -1,43 +1,29 @@
-const client = require('@local/mongodb-client');
-const register = require('@local/mongodb-client/register');
+const { DEBUG } = require('../env');
 
-const { CONNECT } = require('../env');
-const collectionConfig = require('./collectionConfig');
-
-register('connect', CONNECT);
-register('collection', collectionConfig);
-
-client.genId = async function(name){
-    const targetCollection = await client.collections.get(name);
-    const cfg_counters_collection = targetCollection.s.db.collection('cfg_counters');
-
-    const result = await cfg_counters_collection.findOneAndUpdate(
-        { _id: targetCollection.collectionName }, 
-        { $inc: { seq: 1 } },
-        { returnOriginal: false }
-    );
-    if(result.value) return result.value.seq;
-
-    await cfg_counters_collection.findOneAndUpdate(
-        { _id: targetCollection.collectionName },
-        { $setOnInsert: { seq: 60000 } },
-        { upsert: true }
-    );
-    return (await cfg_counters_collection.findOneAndUpdate(
-        { _id: targetCollection.collectionName }, 
-        { $inc: { seq: 1 } },
-        { returnOriginal: false }
-    )).value.seq;
-}
-
-module.exports = client;
-
-process.on('SIGINT', async () => {
-    let dbError = 0;
-    try{
-        await client.close();
-    }catch(e){
-        dbError = 1;
+module.exports = requireRoot('../../common/mongoClient/init')({
+    zk_hotels: {
+        db: 'zouke',
+        collection: 'zk_hotels_bk'
+    },
+    sp_hotels: {
+        db: 'zouke',
+        collection: 'all_hotels'
+    },
+    
+    zk_zones: {
+        db: 'zouke',
+        collection: 'zk_zones'
+    },
+    wx_user: {
+        db: 'zouke',
+        collection: 'wx_user'
+    },
+    zkmanager_user: {
+        db: 'zouke',
+        collection: 'zkmanager_user'
+    },
+    offline_order: {
+        db: 'zouke',
+        collection: 'offline_order'
     }
-    process.exit(dbError);
-});
+})
