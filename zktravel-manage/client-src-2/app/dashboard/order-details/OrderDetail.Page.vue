@@ -285,7 +285,7 @@
                         );
                         v.params.forEach(
                             (a, b) => {
-                                params[k].price.push({hotel: {name: 'sadsa'}, rooms: []})
+                                params[k].price.push({hotel:a.hotel, rooms: []})
                                 a.rooms.forEach(
                                     (l, d) => {
                                         params[k].price[b].rooms.push(l)
@@ -330,7 +330,7 @@
                         );
                         v.params.forEach(
                             (a, b) => {
-                                params[k].price.push({hotel: {name: 'sadsa'}, rooms: []})
+                                params[k].price.push({hotel: a.hotel, rooms: []})
                                 a.rooms.forEach(
                                     (l, d) => {
                                         params[k].price[b].rooms.push(l)

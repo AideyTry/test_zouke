@@ -55,6 +55,7 @@
                                 type: 'error'
                             });
                         }
+                        vm.dialoggroup[1].show=false;
                     }
                 )
             },

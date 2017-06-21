@@ -53,6 +53,14 @@
     }
 
 </style>
+<!--<style lang="scss">
+    .el-form-item {
+        display: inline-block;
+    }
+    .el-form-item__content {
+        margin-left: 0 !important;
+    }
+</style>-->
 <template>
     <div class="dashboard">
         <el-row class="header" type="flex">
