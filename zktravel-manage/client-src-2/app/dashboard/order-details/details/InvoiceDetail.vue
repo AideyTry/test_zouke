@@ -47,7 +47,7 @@
         <el-table-column label="操作">
 			<template scope="scope">
 		        <el-button
-		          size="small" type="primary" @click="download"
+		          size="small" type="primary"
 		          >导出invoice</el-button>
       		</template>
         </el-table-column>
