@@ -60,7 +60,7 @@ const store = new Vuex.Store({
         /*我的发布end*/
         valid(state,status){
             state.validfrom=status;
-        }
+        },
         /*待控放start*/
         addCount(state){
             state.count=++state.count;
