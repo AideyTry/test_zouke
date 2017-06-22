@@ -78,7 +78,7 @@
                 <div class="user-info">
                     <i class="el-icon-message"></i>
                     <span>用户名</span>
-                    <span>{{userInfo.name}}</span>
+                    <span v-if="userInfo">{{userInfo.name}}</span>
                     <span class="log-out" @pointerup.prevent="logout">退出</span>
                 </div>
             </el-col>

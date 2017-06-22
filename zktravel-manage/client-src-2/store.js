@@ -51,7 +51,9 @@ const store = new Vuex.Store({
     mutations: {
         initUserInfo(state, info){
             state.userInfo = info;
-            state.offlineRole =acessRole(info.p.offline_order);
+            if(info){
+                state.offlineRole =acessRole(info.p.offline_order);
+            }
         },
         /*我的发布start*/
         publish(state,isTrue){
