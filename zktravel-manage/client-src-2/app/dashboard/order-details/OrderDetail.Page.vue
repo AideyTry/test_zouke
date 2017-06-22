@@ -134,7 +134,8 @@
                     <el-button type="danger" @click="customRejectOffer" size="small"
                                v-if="userole.CONFIRM_PRICE&&activetabs=='offer-node'&&orderdatastatus==5">重新报价
                     </el-button>
-                    <el-button type="primary" @click="showdialog(4)" size="small">填写发票
+                    <el-button type="primary" @click="showdialog(4)" size="small"
+                               v-if="activetabs=='ticket-node'">填写发票
                     </el-button>
                 </div>
                 <div class="dialog-group">
@@ -293,7 +294,8 @@
             },
             submitoffer(){
                 let params = [];
-                let vm = this;
+                let vm=this;
+                this.$commit('valid',true);
                 this.$refs.offerdetaildata.editableTabs.forEach(
                     (v, k) => {
                         params.push({
