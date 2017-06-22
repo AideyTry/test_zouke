@@ -23,7 +23,7 @@
                         <strong>采购渠道<i class="red">*</i></strong>
                     </el-col>
                     <el-col :span="3">
-                        <el-select v-model="value1" filterable placeholder="请选择">
+                        <el-select v-model="v.supplier_name" filterable placeholder="请选择">
                             <el-option
                                     v-for="item in channel"
                                     :key="item.value"
@@ -37,7 +37,7 @@
                         <strong>入住编号<i class="red">*</i></strong>
                     </el-col>
                     <el-col :span="13">
-                        <el-input v-model="inputs.atNumber" type="text"></el-input>
+                        <el-input v-model="v.at_number" type="text"></el-input>
                     </el-col>
                     <el-col :span="2"></el-col>
                     <el-col :span="1"><span  class="el-icon-circle-close iconSize" @click="colseCard()"></span></el-col>
@@ -131,14 +131,15 @@
 
             },
             addRooms(index){
-                this.item[index].rooms.push({
+                this.item[index].rooms.push(                 {
                     type:'Single',
-                        number:1,
-                    roomDescription:'',
+                    number:1,
+                    room_description:'',
                     peoples:[
                         {
                             name:'',
-                            familyName:''
+                            family_name:'',
+                            gender:''
                         }
                     ]
                 });

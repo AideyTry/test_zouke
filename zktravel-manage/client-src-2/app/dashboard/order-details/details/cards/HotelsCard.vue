@@ -9,7 +9,7 @@
                     <el-col :span="8">
                         <el-autocomplete
                                 size="small"
-                                v-model="hotel"
+                                v-model="v.hotel.name"
                                 :fetch-suggestions="searchHotel"
                                 placeholder="请输入关键字选择"
                                 @select="selectHotel"
@@ -33,7 +33,7 @@
                         <strong>备注确认号:</strong>
                     </el-col>
                     <el-col :span="10">
-                        <el-input v-model="input" placeholder="确认用户备注后，填写相应的编号，用';'隔开">
+                        <el-input v-model="v.remark_confirm" placeholder="确认用户备注后，填写相应的编号，用';'隔开">
 
                         </el-input>
                     </el-col>
@@ -103,25 +103,33 @@
             /*search end*/
             addHotel(){
                 this.item.push({
+                    hotel:{
+                        name:''
+                    },
+                    remark_confirm:'',
                     suppliers:[
                         {
-                            status:this.count,
+                            supplier_name:'',
+                            at_number:'',
+                            room_type:'',
+                            status:1,
                             rooms:[
                                 {
                                     type:'Single',
                                     number:1,
-                                    roomDescription:'',
+                                    room_description:'',
                                     peoples:[
                                         {
-                                            name:'w',
-                                            familyName:'',
+                                            name:'',
+                                            family_name:'',
                                             gender:''
                                         }
                                     ]
                                 }
                             ]
                         }
-                    ]});
+                    ],
+                });
                 this.$commit("addCount");
             },
             deleteHotel(){
@@ -140,7 +148,6 @@
             }
         },
         created(){
-            console.log(this.items);
 //            if (this.items.hotel.name) {
 //                this.hotel = this.items.hotel.name;
 //            }
