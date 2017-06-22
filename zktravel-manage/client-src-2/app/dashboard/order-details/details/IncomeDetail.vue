@@ -47,14 +47,14 @@
                 <el-col :span="10">
                     <span>收款汇率<i></i></span>
                     <span>1€=</span>
-                    <el-input size="mini"></el-input>
+                    <el-input size="mini" type="number" v-model="params.reo"></el-input>
 <!--                    <span>¥</span>
                     <span>实时汇率：1€=4546¥</span>-->
                 </el-col>
                 <el-col :span="14">
                     <span>收款币种</span>
-                    <el-radio class="radio" v-model="radio" size="small" label="1">欧元</el-radio>
-                    <el-radio class="radio" v-model="radio" size="small" label="2">人民币</el-radio>
+                    <el-radio class="radio" v-model="params.currency" value="欧元" size="small" label="欧元">欧元</el-radio>
+                    <el-radio class="radio" v-model="params.currency" value="人民币" size="small" label="人民币">人民币</el-radio>
                 </el-col>
             </el-row>
             <el-row type="flex">
@@ -62,8 +62,8 @@
                     <span>
                         本次收款
                     </span>
-                    <el-input size="mini"></el-input>
-                    <span>€ =11¥</span>
+                    <el-input size="mini" type="number" v-model="params.money"></el-input>
+                    <span>€ ={{money}}¥</span>
                 </el-col>
                 <el-col>
 
@@ -103,9 +103,9 @@
             </el-row>
         </div>
         <div class="divline"></div>
-        <div class="plan card">
+        <div class="plan card" v-if="order">
             <div class="title">收款计划</div>
-            <el-row type="flex" class="computed" v-if="order">
+            <el-row type="flex" class="computed" v-if="order.user_policy">
                 <template v-for="(v,k) in order.user_policy.payment">
                     <el-col :span="6">
                         {{v.price}}({{v.dead_line}}前)
@@ -176,7 +176,12 @@
                 dialog:{
                     show:false
                 },
-                payflag:false
+                payflag:false,
+                params:{
+                    reo:0,
+                    currency:'欧元',
+                    money:0
+                }
             }
         },
         methods: {
@@ -189,6 +194,18 @@
             },
             payment(){
                 this.dialog.show=true;
+                ajax.post('/api/team/pay-stream/collection',this.params).then(
+                    data=>{
+                        if(data.code==0){
+                            vm.closedialog();
+                            this.$notify({
+                                title: '提交成功',
+                                message: '已提交付款信息',
+                                type: 'success'
+                            });
+                        }
+                    }
+                )
             },
             closedialog(){
                 this.dialog.show=false;
@@ -198,6 +215,11 @@
             },
             markpayment(){
                 this.$refs.dialogroup.dialog2.show=true;
+            }
+        },
+        computed:{
+            money(){
+                return this.params.reo*this.params.money;
             }
         },
         mounted(){
