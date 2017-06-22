@@ -253,7 +253,7 @@
                             check_in: new Date().format('YYYY-MM-DD'),
                             check_out: new Date().format('YYYY-MM-DD'),
                             city: '',
-                            hotel: '',
+                            hotel: {custom:true,name:''},
                             rooms: [{
                                 type: 'Single',
                                 number: '1',
@@ -291,7 +291,7 @@
                         check_in: new Date().format('YYYY-MM-DD'),
                         check_out: new Date().format('YYYY-MM-DD'),
                         city: '',
-                        hotel: '',
+                        hotel: {custom:true,name:''},
                         rooms: [{
                             type: 'Single',
                             number: '1',
@@ -376,7 +376,7 @@
             },
             addroom(k){
                 this.params.stay_details[k].rooms.push({
-                    type: 'single',
+                    type: 'Single',
                     number: '1',
                     mark: ''
                 })

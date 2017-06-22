@@ -10,6 +10,7 @@
 </style>
 <template>
     <div>
+        <div v-if="orderstatus<5&&offlineRole.CONFIRM_PRICE&&orderstatus>2">报价中，请耐心等待....</div>
         <div v-if="offlineRole.UPDATE_PRICE||offlineRole.CHECK_PRICE" class="offer-detail-container">
             <el-row style="height: 40px" type="flex">
                 <el-col :span="9">
@@ -32,7 +33,7 @@
                                 </el-tab-pane>
                             </template>
                         </el-tabs>
-                        <computed  :params="item.params" :index="index" :cost="item.cost"></computed>
+                        <computed  :params="item.params" :index="index" :order="item.order"></computed>
                         <provider :provider="item.provider" :index="index"></provider>
                     </div>
                 </el-tab-pane>
