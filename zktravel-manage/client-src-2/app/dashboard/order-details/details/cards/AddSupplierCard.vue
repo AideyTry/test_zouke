@@ -14,8 +14,8 @@
 </style>
 <template>
     <div>
-        <div v-for="(v,index) in item" :key="v.status">
-            <el-button v-if="(isTrue_supplier==false)" type="text" @click="addSupplier(index)">添加供应商</el-button>
+        <div>
+            <el-button v-if="(isTrue_supplier==false)" type="text" @click="addSupplier()">添加供应商</el-button>
             <el-card v-if="isTrue_supplier" class="box-card">
                 <el-row type="flex">
                     <el-col :span="1"></el-col>
@@ -23,7 +23,7 @@
                         <strong>采购渠道<i class="red">*</i></strong>
                     </el-col>
                     <el-col :span="3">
-                        <el-select v-model="v.supplier_name" filterable placeholder="请选择">
+                        <el-select v-model="item.supplier_name" filterable placeholder="请选择">
                             <el-option
                                     v-for="item in channel"
                                     :key="item.value"
@@ -37,12 +37,12 @@
                         <strong>入住编号<i class="red">*</i></strong>
                     </el-col>
                     <el-col :span="13">
-                        <el-input v-model="v.at_number" type="text"></el-input>
+                        <el-input v-model="item.at_number" type="text"></el-input>
                     </el-col>
                     <el-col :span="2"></el-col>
                     <el-col :span="1"><span  class="el-icon-circle-close iconSize" @click="colseCard()"></span></el-col>
                 </el-row>
-                <div v-for="(item,index) in v.rooms">
+                <div v-for="(item,index) in item.rooms">
                     <RoomsCard :item="item" :index="index"></RoomsCard>
                 </div>
                 <el-row type="flex">
@@ -50,7 +50,7 @@
 
                     </el-col>
                     <el-col :span="3">
-                        <el-button type="primary" @click="addRooms(index)">+添加房型</el-button>
+                        <el-button type="primary" @click="addRooms()">+添加房型</el-button>
                     </el-col>
                 </el-row>
             </el-card>
@@ -123,25 +123,25 @@
             colseCard(){
                 this.isTrue_supplier=!this.isTrue_supplier;
             },
-            addSupplier(index){
-                this.index=index;
+            addSupplier(){
+//                this.index=index;
                 this.isTrue_supplier=!this.isTrue_supplier;
             },
             closeSupplier(){
 
             },
-            addRooms(index){
-                this.item[index].rooms.push(                 {
+            addRooms(){
+                this.item.rooms.push(                 {
                     type:'Single',
                     number:1,
                     room_description:'',
-                    peoples:[
+                    peoples:
                         {
                             name:'',
                             family_name:'',
                             gender:''
                         }
-                    ]
+
                 });
             }
         },

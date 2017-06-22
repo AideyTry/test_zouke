@@ -101,7 +101,7 @@
                                     name:''
                                 },
                                 remark_confirm:'',
-                                suppliers:[
+                                suppliers:
                                     {
                                         supplier_name:'',
                                         at_number:'',
@@ -122,7 +122,6 @@
                                             }
                                         ]
                                     }
-                                ],
                             }
                         ]
                     },
@@ -135,7 +134,7 @@
                                     name:''
                                 },
                                 remark_confirm:'',
-                                suppliers:[
+                                suppliers:
                                     {
                                         supplier_name:'',
                                         at_number:'',
@@ -156,7 +155,6 @@
                                             }
                                         ]
                                     }
-                                ],
                             }
                         ]
                     },
@@ -169,7 +167,7 @@
                                     name:''
                                 },
                                 remark_confirm:'',
-                                suppliers:[
+                                suppliers:
                                     {
                                         supplier_name:'',
                                         at_number:'',
@@ -190,7 +188,6 @@
                                             }
                                         ]
                                     }
-                                ],
                             }
                         ]
                     },
@@ -203,7 +200,7 @@
                                     name:''
                                 },
                                 remark_confirm:'',
-                                suppliers:[
+                                suppliers:
                                     {
                                         supplier_name:'',
                                         at_number:'',
@@ -224,143 +221,6 @@
                                             }
                                         ]
                                     }
-                                ],
-                            }
-                        ]
-                    },
-                    {
-                        check_in:'',
-                        check_out:'',
-                        hotels:[
-                            {
-                                hotel:{
-                                    name:''
-                                },
-                                remark_confirm:'',
-                                suppliers:[
-                                    {
-                                        supplier_name:'',
-                                        at_number:'',
-                                        room_type:'',
-                                        status:1,
-                                        rooms:[
-                                            {
-                                                type:'Single',
-                                                number:1,
-                                                room_description:'',
-                                                peoples:[
-                                                    {
-                                                        name:'',
-                                                        family_name:'',
-                                                        gender:''
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ],
-                            }
-                        ]
-                    },
-                    {
-                        check_in:'',
-                        check_out:'',
-                        hotels:[
-                            {
-                                hotel:{
-                                    name:''
-                                },
-                                remark_confirm:'',
-                                suppliers:[
-                                    {
-                                        supplier_name:'',
-                                        at_number:'',
-                                        room_type:'',
-                                        status:1,
-                                        rooms:[
-                                            {
-                                                type:'Single',
-                                                number:1,
-                                                room_description:'',
-                                                peoples:[
-                                                    {
-                                                        name:'',
-                                                        family_name:'',
-                                                        gender:''
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ],
-                            }
-                        ]
-                    },
-                    {
-                        check_in:'',
-                        check_out:'',
-                        hotels:[
-                            {
-                                hotel:{
-                                    name:''
-                                },
-                                remark_confirm:'',
-                                suppliers:[
-                                    {
-                                        supplier_name:'',
-                                        at_number:'',
-                                        room_type:'',
-                                        status:1,
-                                        rooms:[
-                                            {
-                                                type:'Single',
-                                                number:1,
-                                                room_description:'',
-                                                peoples:[
-                                                    {
-                                                        name:'',
-                                                        family_name:'',
-                                                        gender:''
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ],
-                            }
-                        ]
-                    },
-                    {
-                        check_in:'',
-                        check_out:'',
-                        hotels:[
-                            {
-                                hotel:{
-                                    name:''
-                                },
-                                remark_confirm:'',
-                                suppliers:[
-                                    {
-                                        supplier_name:'',
-                                        at_number:'',
-                                        room_type:'',
-                                        status:1,
-                                        rooms:[
-                                            {
-                                                type:'Single',
-                                                number:1,
-                                                room_description:'',
-                                                peoples:[
-                                                    {
-                                                        name:'',
-                                                        family_name:'',
-                                                        gender:''
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ],
                             }
                         ]
                     }
