@@ -383,7 +383,7 @@
                         },
                         pay_policy:[
                             {
-                                need_pay:'',
+                                pay_date:'',
                                 number:null
                             }
                         ]
