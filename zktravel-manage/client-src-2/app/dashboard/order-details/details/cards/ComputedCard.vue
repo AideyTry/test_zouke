@@ -37,9 +37,9 @@
                     (a,b)=>{
                         a.rooms.forEach(
                             (v, k) => {
-                                _arr.cost+=v.price.cost*1;
-                                _arr.bk+=v.price.bk*1;
-                                _arr.quoted+=v.price.quoted*1
+                                _arr.cost+=v.price.cost?v.price.cost*1:0;
+                                _arr.bk+=v.price.bk?v.price.bk*1:0;
+                                _arr.quoted+=v.price.quoted?v.price.quoted*1:0
                             }
                         )
                     }
