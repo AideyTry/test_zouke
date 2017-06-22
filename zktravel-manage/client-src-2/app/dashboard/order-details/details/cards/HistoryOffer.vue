@@ -34,34 +34,35 @@
             <el-table-column
                     label="操作">
                 <template scope="scope">
-                    <a class="buttonA" @click="submitHistory(scope.row)">查看</a>
+                    <a class="buttonA" @click="showdialog(scope.row)">查看</a>
                 </template>
             </el-table-column>
         </el-table>
         <el-dialog title="历史订单"
                    :visible.sync="dialog.show" size="large">
-            <offer v-if="order" :tab="order"> </offer>
+            <history :data="data"></history>
         </el-dialog>
     </div>
 </template>
 <script>
-    import requirement from '../RequireDetail'
+    import history from '../../dialogs/HistoryOfferDialog';
     export default{
         props:['history'],
         components:{
-            requirement:requirement
+            history:history,
         },
         data(){
             return{
                 dialog:{
                     show:false
                 },
-                order:''
+                data:''
             }
         },
         methods:{
-            submitHistory(history){
-
+            showdialog(history){
+                this.data=history;
+                this.dialog.show=true;
             },
             closedialog(){
                 this.dialog.show=false;

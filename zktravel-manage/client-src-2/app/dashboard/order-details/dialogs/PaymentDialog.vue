@@ -102,6 +102,7 @@
             },
             opendialog(){
                 this.dialog2.show=true;
+                this.dialog.show=false;
             },
             submit(){
                 let vm=this;
