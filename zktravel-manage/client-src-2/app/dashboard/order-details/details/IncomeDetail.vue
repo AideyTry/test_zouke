@@ -68,8 +68,10 @@
                 <el-col>
 
                 </el-col>
-                <el-col :span="4">
-                    <el-button type="info" @click="payment">生成收款码</el-button>
+                <el-col :span="8">
+                    <el-button type="info" @click="payment" v-if="!payflag">收款</el-button>
+                    <el-button type="info" @click="markpayment" v-if="payflag">录入线下付款</el-button>
+                    <el-button type="danger" @click="cancelpayment" v-if="payflag">取消收款</el-button>
                 </el-col>
             </el-row>
         </div>
@@ -156,7 +158,7 @@
                 </el-table>
             </div>
         </div>
-        <paymentdialog :dialog="dialog" @closedialog="closedialog"> </paymentdialog>
+        <paymentdialog ref="dialogroup" :dialog="dialog" @closedialog="closedialog"> </paymentdialog>
     </div>
 </template>
 <script>
@@ -173,7 +175,8 @@
                 payplan:null,
                 dialog:{
                     show:false
-                }
+                },
+                payflag:false
             }
         },
         methods: {
@@ -189,6 +192,12 @@
             },
             closedialog(){
                 this.dialog.show=false;
+            },
+            cancelpayment(){
+
+            },
+            markpayment(){
+                this.$refs.dialogroup.dialog2.show=true;
             }
         },
         mouted(){
