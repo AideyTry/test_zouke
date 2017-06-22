@@ -73,6 +73,7 @@
             </div>
             <el-button type="success" @click="submitform" size="small">保存
             </el-button>
+            <PurchaseChannelsCard :purchase_channel="purchase_channel"></PurchaseChannelsCard>
         </div>
     </div>
 </template>
@@ -80,12 +81,14 @@
     import ajax from '@local/common/ajax';
     import debounce from 'lodash/debounce';
     import HotelsCard from './HotelsCard'
+    import PurchaseChannelsCard from './PurchaseChannelsCard'
     export default{
         props:['orderData'],
         data(){
             return {
                 change:false,
                 cityTabs:null,
+                order:{},
                 orders:null,
                 order_id:'',
                 country:[
@@ -94,7 +97,9 @@
                         check_out:'',
                         hotels:[
                             {
-                                hotel_name:'',
+                                hotel:{
+                                    name:''
+                                },
                                 remark_confirm:'',
                                 suppliers:[
                                     {
@@ -126,7 +131,9 @@
                         check_out:'',
                         hotels:[
                             {
-                                hotel_name:'',
+                                hotel:{
+                                    name:''
+                                },
                                 remark_confirm:'',
                                 suppliers:[
                                     {
@@ -158,7 +165,9 @@
                         check_out:'',
                         hotels:[
                             {
-                                hotel_name:'',
+                                hotel:{
+                                    name:''
+                                },
                                 remark_confirm:'',
                                 suppliers:[
                                     {
@@ -190,7 +199,9 @@
                         check_out:'',
                         hotels:[
                             {
-                                hotel_name:'',
+                                hotel:{
+                                    name:''
+                                },
                                 remark_confirm:'',
                                 suppliers:[
                                     {
@@ -222,7 +233,9 @@
                         check_out:'',
                         hotels:[
                             {
-                                hotel_name:'',
+                                hotel:{
+                                    name:''
+                                },
                                 remark_confirm:'',
                                 suppliers:[
                                     {
@@ -254,7 +267,9 @@
                         check_out:'',
                         hotels:[
                             {
-                                hotel_name:'',
+                                hotel:{
+                                    name:''
+                                },
                                 remark_confirm:'',
                                 suppliers:[
                                     {
@@ -286,7 +301,9 @@
                         check_out:'',
                         hotels:[
                             {
-                                hotel_name:'',
+                                hotel:{
+                                    name:''
+                                },
                                 remark_confirm:'',
                                 suppliers:[
                                     {
@@ -318,7 +335,9 @@
                         check_out:'',
                         hotels:[
                             {
-                                hotel_name:'',
+                                hotel:{
+                                    name:''
+                                },
                                 remark_confirm:'',
                                 suppliers:[
                                     {
@@ -346,7 +365,30 @@
                         ]
                     }
                 ],
-
+                purchase_channel:[
+                    {
+                        name:'',
+                        total_cost:'',
+                        cancel_policy:{
+                            cannot_cancel:'',
+                            cancel:[
+                                {
+                                    free_cancel_date:'',
+                                    pay_cancel:{
+                                        date:'',
+                                        number:null
+                                    }
+                                }
+                            ]
+                        },
+                        pay_policy:[
+                            {
+                                need_pay:'',
+                                number:null
+                            }
+                        ]
+                    }
+                ],
                 params: {
                     priority: 'A+',
                     origin_from: '',
@@ -398,7 +440,8 @@
             }
         },
         components:{
-            HotelsCard:HotelsCard
+            HotelsCard:HotelsCard,
+            PurchaseChannelsCard:PurchaseChannelsCard
         },
         computed:{
             count(){
@@ -416,6 +459,7 @@
                     }
 //                    this.orders.order_id=this.$route.params.orderid;
                     this.cityTabs=json.detail.requirement.stay_details[0].city.name;
+                    this.order.orders=this.orders;
                 })
             },
             hotelTab(){
@@ -431,7 +475,7 @@
             },
             submitform(){
 
-                ajax.post('/api/team/order-detail/save',{id:this.$route.params.orderid,order:this.orders}).then(
+                ajax.post('/api/team/order-detail/save',{id:this.$route.params.orderid,order:this.order}).then(
                     data => {
                         if (data.code == 0) {
                             this.$notify({

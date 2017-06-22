@@ -9,7 +9,7 @@
                     <el-col :span="8">
                         <el-autocomplete
                                 size="small"
-                                v-model="v.hotel_name"
+                                v-model="v.hotel.name"
                                 :fetch-suggestions="searchHotel"
                                 placeholder="请输入关键字选择"
                                 @select="selectHotel"
@@ -103,7 +103,9 @@
             /*search end*/
             addHotel(){
                 this.item.push({
-                    hotel_name:'',
+                    hotel:{
+                        name:''
+                    },
                     remark_confirm:'',
                     suppliers:[
                         {
