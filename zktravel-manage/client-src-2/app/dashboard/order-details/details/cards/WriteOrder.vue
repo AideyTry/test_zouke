@@ -410,10 +410,11 @@
                 ajax.post("/api/team/order/detail",{id:id}).then(json=>{
                     this.params=json.detail.requirement;
                     this.orders=json.detail.requirement.stay_details;
+//                    this.orders.orderid=1;
                     for(let key in this.orders){
                         this.orders[key].hotels=this.country[key].hotels;
                     }
-                    console.log("orders1=",this.orders);
+//                    this.orders.order_id=this.$route.params.orderid;
                     this.cityTabs=json.detail.requirement.stay_details[0].city.name;
                 })
             },
@@ -429,7 +430,8 @@
                 return new Date(a).getDate()-new Date(b).getDate();
             },
             submitform(){
-                ajax.post('/api/team/order-detail/save',{order:this.orders}).then(
+
+                ajax.post('/api/team/order-detail/save',{id:this.$route.params.orderid,order:this.orders}).then(
                     data => {
                         if (data.code == 0) {
                             this.$notify({
@@ -451,7 +453,6 @@
             this.loadOrder(this.$route.params.orderid);
         },
         updated(){
-            console.log("orders2",this.orders);
         }
     }
 </script>
