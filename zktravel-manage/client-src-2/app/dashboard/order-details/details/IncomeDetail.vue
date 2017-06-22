@@ -48,8 +48,8 @@
                     <span>收款汇率<i></i></span>
                     <span>1€=</span>
                     <el-input size="mini"></el-input>
-                    <span>¥</span>
-                    <span>实时汇率：1€=4546¥</span>
+<!--                    <span>¥</span>
+                    <span>实时汇率：1€=4546¥</span>-->
                 </el-col>
                 <el-col :span="14">
                     <span>收款币种</span>
@@ -68,8 +68,10 @@
                 <el-col>
 
                 </el-col>
-                <el-col :span="4">
-                    <el-button type="info" @click="payment">生成收款码</el-button>
+                <el-col :span="8">
+                    <el-button type="info" @click="payment" v-if="!payflag">收款</el-button>
+                    <el-button type="info" @click="markpayment" v-if="payflag">录入线下付款</el-button>
+                    <el-button type="danger" @click="cancelpayment" v-if="payflag">取消收款</el-button>
                 </el-col>
             </el-row>
         </div>
@@ -103,10 +105,10 @@
         <div class="divline"></div>
         <div class="plan card">
             <div class="title">收款计划</div>
-            <el-row type="flex" class="computed">
-                <template>
+            <el-row type="flex" class="computed" v-if="order">
+                <template v-for="(v,k) in order.user_policy.payment">
                     <el-col :span="6">
-                        101€
+                        {{v.price}}({{v.dead_line}}前)
                     </el-col>
                 </template>
             </el-row>
@@ -156,7 +158,7 @@
                 </el-table>
             </div>
         </div>
-        <paymentdialog :dialog="dialog" @closedialog="closedialog"> </paymentdialog>
+        <paymentdialog ref="dialogroup" :dialog="dialog" @closedialog="closedialog"> </paymentdialog>
     </div>
 </template>
 <script>
@@ -173,7 +175,8 @@
                 payplan:null,
                 dialog:{
                     show:false
-                }
+                },
+                payflag:false
             }
         },
         methods: {
@@ -189,9 +192,15 @@
             },
             closedialog(){
                 this.dialog.show=false;
+            },
+            cancelpayment(){
+
+            },
+            markpayment(){
+                this.$refs.dialogroup.dialog2.show=true;
             }
         },
-        mouted(){
+        mounted(){
             this.loadorder();
         }
     }

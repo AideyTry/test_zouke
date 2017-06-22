@@ -31,7 +31,7 @@
             <el-col :span="12">B评分：9.0</el-col>
         </el-row>
         <template v-for="(v,k) in params.rooms">
-            <room   :v="v" :k="k"></room>
+            <room   :v="v" :k="k" :room="order.rooms[k]"></room>
         </template>
         </el-form>
     </div>
