@@ -367,7 +367,7 @@
                 ],
                 purchase_channel:[
                     {
-                        name:'',
+                        supplier_name:'',
                         total_cost:'',
                         cancel_policy:{
                             cannot_cancel:'',
@@ -460,6 +460,7 @@
 //                    this.orders.order_id=this.$route.params.orderid;
                     this.cityTabs=json.detail.requirement.stay_details[0].city.name;
                     this.order.orders=this.orders;
+                    this.order.suppliers=this.purchase_channel;
                 })
             },
             hotelTab(){
@@ -475,7 +476,7 @@
             },
             submitform(){
 
-                ajax.post('/api/team/order-detail/save',{id:this.$route.params.orderid,order:this.order}).then(
+                ajax.post('/api/team/order-detail/save',{id:this.$route.params.orderid,order_obj:this.order}).then(
                     data => {
                         if (data.code == 0) {
                             this.$notify({
