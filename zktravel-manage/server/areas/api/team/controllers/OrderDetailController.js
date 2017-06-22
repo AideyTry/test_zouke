@@ -13,20 +13,20 @@ module.exports = class OrderDetailController extends TeamController {
         }
     }
     //保存订单信息
-    async save(id,order){
+    async save(id,order_obj){
         const orderDetail = new OrderDetail();
         //拿到当前用户信息，更新表的时候做id校验
         let user = this.$getUser();
         /***
          * 进行业务逻辑之前，要根据业务需求来判断是否需要进行数据校验,不通过直接驳回请求。
          ****/
-        order = orderDetail.validOrder(order);
+        order_obj = orderDetail.validOrder(order_obj);
         //表单信息校验失败
-        if(!order){
+        if(!order_obj){
             return this.renderJSON({ code:1, msg: 'data check valid fail' });
         }
 
-        const result = await orderDetail.update(user,id,order);
+        const result = await orderDetail.update(user,id,order_obj);
         //数据库操作失败
         if(!result){
            return this.renderJSON({ code:2, msg:'can not save order detail' });
