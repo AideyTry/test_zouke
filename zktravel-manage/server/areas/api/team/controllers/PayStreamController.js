@@ -39,7 +39,7 @@ module.exports = class MyPayStreamController extends TeamController {
         const result = await payStream.collection(id,user,reo,currency,money);
         //数据库操作失败
         if(!result){
-            return this.renderJSON({ code:2, msg:'can not commit pay stream' });
+            return this.renderJSON({ code:2, msg:'can not collection pay stream' });
         }
         //数据库操作成功
         this.renderJSON({code:0});
