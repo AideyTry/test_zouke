@@ -27,9 +27,6 @@ app.use(async (ctx, next)=>{
 });
 app.use(koaMvc({
     routerConfig: {
-        areas: [
-            'n'
-        ]
     },
     sessionConfig: {
         key: SESS_KEY,

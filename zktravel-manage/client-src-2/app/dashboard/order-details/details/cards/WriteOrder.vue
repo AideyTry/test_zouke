@@ -64,52 +64,10 @@
                                         <span>{{dateRange(item.check_out,item.check_in)}}晚</span>
                                     </el-col>
                                 </el-row>
-                                <div v-for="(v,index) in hotels" :key="v.suppliers">
-                                    <el-row type="flex">
-                                        <el-col :span="2"><strong>酒店<i class="red">*</i></strong></el-col>
-                                        <el-col :span="8">
-                                            <el-autocomplete
-                                                    size="small"
-                                                    v-model="hotel"
-                                                    :fetch-suggestions="searchHotel"
-                                                    placeholder="请输入关键字选择"
-                                                    @select="selectHotel"
-                                            >
-
-                                            </el-autocomplete>
-                                        </el-col>
-                                        <el-col :span="3">
-                                            <span>B评分:</span>
-                                            <span>{{}}</span>
-                                        </el-col>
-                                        <el-col :span="2">
-                                            <el-button type="text" class="delete" @click="deleteHotel()">删除</el-button>
-                                        </el-col>
-                                        <el-col :span="2">
-                                            <el-button type="text" @click="addHotel()">添加酒店</el-button>
-                                        </el-col>
-                                    </el-row>
-                                    <el-row type="flex">
-                                        <el-col :span="2">
-                                            <strong>备注确认号:</strong>
-                                        </el-col>
-                                        <el-col :span="10">
-                                            <el-input v-model="input" placeholder="确认用户备注后，填写相应的编号，用';'隔开">
-
-                                            </el-input>
-                                        </el-col>
-                                    </el-row>
-                                    <!--添加供应商start-->
-                                    <el-row type="flex" >
-                                        <el-col :span="20">
-                                            <!--<el-button v-if="(isTrue_supplier==false)" type="text" @click="addSupplier()">添加供应商</el-button>-->
-                                            <AddSupplierCard  :currentData="params" :item="v.suppliers"></AddSupplierCard>
-                                        </el-col>
-                                    </el-row>
-                                    <!--添加供应商end-->
-                                </div>
+                                <HotelsCard :item="item.hotels" :items="item" :index="index" :params="params" :orders="orders"></HotelsCard>
                             </div>
                         </el-tab-pane>
+
                     </template>
                 </el-tabs>
             </div>
@@ -119,7 +77,7 @@
 <script>
     import ajax from '@local/common/ajax';
     import debounce from 'lodash/debounce';
-    import AddSupplierCard from './AddSupplierCard'
+    import HotelsCard from './HotelsCard'
     export default{
         props:['orderData'],
         data(){
@@ -127,34 +85,160 @@
                 change:false,
                 cityTabs:null,
                 orders:null,
-                hotel:'',
-                hotelFlag:false,
-                input:'',
-                hotels:[
+                country:[
                     {
-                        suppliers:[
+                        hotels:[
                             {
-                                status:1,
-                                rooms:[
+                                suppliers:[
                                     {
-                                        type:'Single',
-                                        number:1,
-                                        roomDescription:'',
-                                        peoples:[
+                                        status:1,
+                                        rooms:[
                                             {
-                                                name:'',
-                                                familyName:'',
-                                                gender:[
-
+                                                type:'Single',
+                                                number:1,
+                                                roomDescription:'',
+                                                peoples:[
+                                                    {
+                                                        name:'',
+                                                        familyName:'',
+                                                        gender:''
+                                                    }
                                                 ]
                                             }
                                         ]
                                     }
-                                ]
+                                ],
                             }
-                        ],
+                        ]
+                    },
+                    {
+                        hotels:[
+                            {
+                                suppliers:[
+                                    {
+                                        status:1,
+                                        rooms:[
+                                            {
+                                                type:'Single',
+                                                number:1,
+                                                roomDescription:'',
+                                                peoples:[
+                                                    {
+                                                        name:'',
+                                                        familyName:'',
+                                                        gender:''
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                            }
+                        ]
+                    },
+                    {
+                        hotels:[
+                            {
+                                suppliers:[
+                                    {
+                                        status:1,
+                                        rooms:[
+                                            {
+                                                type:'Single',
+                                                number:1,
+                                                roomDescription:'',
+                                                peoples:[
+                                                    {
+                                                        name:'',
+                                                        familyName:'',
+                                                        gender:''
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                            }
+                        ]
+                    },
+                    {
+                        hotels:[
+                            {
+                                suppliers:[
+                                    {
+                                        status:1,
+                                        rooms:[
+                                            {
+                                                type:'Single',
+                                                number:1,
+                                                roomDescription:'',
+                                                peoples:[
+                                                    {
+                                                        name:'',
+                                                        familyName:'',
+                                                        gender:''
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                            }
+                        ]
+                    },
+                    {
+                        hotels:[
+                            {
+                                suppliers:[
+                                    {
+                                        status:1,
+                                        rooms:[
+                                            {
+                                                type:'Single',
+                                                number:1,
+                                                roomDescription:'',
+                                                peoples:[
+                                                    {
+                                                        name:'',
+                                                        familyName:'',
+                                                        gender:''
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                            }
+                        ]
+                    },
+                    {
+                        hotels:[
+                            {
+                                suppliers:[
+                                    {
+                                        status:1,
+                                        rooms:[
+                                            {
+                                                type:'Single',
+                                                number:1,
+                                                roomDescription:'',
+                                                peoples:[
+                                                    {
+                                                        name:'',
+                                                        familyName:'',
+                                                        gender:''
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                            }
+                        ]
                     }
-                    ],
+
+                ],
+
                 params: {
                     priority: 'A+',
                     origin_from: '',
@@ -206,7 +290,7 @@
             }
         },
         components:{
-            AddSupplierCard:AddSupplierCard
+            HotelsCard:HotelsCard
         },
         computed:{
             count(){
@@ -216,89 +300,31 @@
         methods:{
             loadOrder(id){
                 ajax.post("/api/team/order/detail",{id:id}).then(json=>{
-                    console.log("json=",json.detail.requirement);
                     this.params=json.detail.requirement;
                     this.orders=json.detail.requirement.stay_details;
+                    for(let key in this.orders){
+                        this.orders[key].hotels=this.country[key].hotels;
+                    }
                     this.cityTabs=json.detail.requirement.stay_details[0].city.name;
                 })
             },
             hotelTab(){
 
             },
-            dateRange(a,b){
-                return new Date(a).getDate()-new Date(b).getDate();
-            },
-            /*search start*/
-            searchHotel:debounce(function (queryString, cb) {
-                if (queryString) {
-                    ajax.postSilence('/api/hotel/zk-hotel/search', {
-                        keyword: queryString.trim()
-                    }).then(
-                        data => {
-                            let arr = []
-                            if(data.list){
-                                data.list.forEach(
-                                    (v, k) => {
-                                        arr.push({value: v.name, item: v})
-                                    }
-                                )
-                                cb(arr)
-                            }
-
-                        }
-                    )
-                }
-            }, 1000),
-            selectHotel(item){
 
 
-            },
-            /*search end*/
             write(){
                 this.change=!this.change;
             },
-            addHotel(){
-
-                this.hotels.push({
-                    suppliers:[
-                    {
-                        status:this.count,
-                        rooms:[
-                            {
-                                type:'Single',
-                                number:1,
-                                roomDescription:'',
-                                peoples:[
-                                    {
-                                        name:'',
-                                        familyName:'',
-                                        gender:''
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]});
-                this.$commit("addCount");
-            },
-            deleteHotel(){
-                if(this.hotels.length>1){
-                    this.hotels.pop();
-                    this.$commit("deleteCount");
-                }
+            dateRange(a,b){
+                return new Date(a).getDate()-new Date(b).getDate();
             }
 
         },
-        watch:{
-            hotel(val){
-                if(!this.hotelFlag){
-//                    this.params.hotel={name:val,custom:true}
-                }
-                this.hotelFlag=false;
-            }
-        },
+
         mounted(){
             this.dateRange();
+
             this.loadOrder(this.$route.params.orderid);
         }
     }
