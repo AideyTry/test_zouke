@@ -115,7 +115,7 @@ function patchPriceDiff(old_stay_details, stay_details, price){
             const np = { hotel: p.hotel, rooms: [] };
             for(room of rooms){
                 if(room===null){
-                    np.rooms.push({});
+                    np.rooms.push({price:{ cost:0, bk:0, quoted:0 }});
                     continue;
                 }
                 np.rooms.push(p.rooms[room.from]);
@@ -210,6 +210,7 @@ module.exports = class TeamRequirement extends BaseOrder {
         if(status !== WAIT_FOR_PUBLISH && status !== WAIT_FOR_DISPATCH){
             update.$set.status = WAIT_FOR_GIVE_PRICE;
             delete _oldRequirement.last_update;
+            delete requirement.last_update;
             const diff = jsondiffpatch.diff(_oldRequirement, requirement);
             update.$push = { logs: this.$createShiftUpdate({ type: 'system:update-requirement', time: nowTime, diff, user }) };
 
