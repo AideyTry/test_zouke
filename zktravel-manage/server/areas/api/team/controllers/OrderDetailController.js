@@ -2,18 +2,18 @@ const TeamController = require('../TeamController');
 const OrderDetail = require('../@logic/OrderDetail');
 
 module.exports = class OrderDetailController extends TeamController {
-    //约定订单状态
+    //约定许可证
     $meta(){
         return {
             access: {
                 'save': {
-                    'offline_order': this.P.OFFLINE_ORDER.WAIT_FOR_BOOKING
+                    'offline_order': this.P.OFFLINE_ORDER.UPDATE_ORDER
                 }
             }
         }
     }
     //保存订单信息
-    async save(id,order){
+    async save(order){
         const orderDetail = new OrderDetail();
         //拿到当前用户信息，更新表的时候做id校验
         let user = this.$getUser();
@@ -26,11 +26,11 @@ module.exports = class OrderDetailController extends TeamController {
             return this.renderJSON({ code:1, msg: 'data check valid fail' });
         }
 
-        // const result = await orderDetail.update(id,user,order);
+        const result = await orderDetail.update(user,order);
         //数据库操作失败
-        //if(!result){
-          //  return this.renderJSON({ code:2, msg:'can not save order detail' });
-        //}
+        if(!result){
+           return this.renderJSON({ code:2, msg:'can not save order detail' });
+        }
         //数据库操作成功
         this.renderJSON({code:0});
     }
