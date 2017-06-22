@@ -15,9 +15,13 @@ const store = new Vuex.Store({
             isTrue:true
         },
         /*我的发布end*/
-
+        /*待控放start*/
+        count:2,
+        selectRoom:0,
+        /*待控放end*/
         /*用户权限管理*/
-        offlineRole:null
+        offlineRole:null,
+        validfrom:false
     },
     getters: {
         userInfo(state){
@@ -28,8 +32,19 @@ const store = new Vuex.Store({
             return state.publish;
         },
         /*我的发布end*/
+        /*待控放start*/
+        count(state){
+          return state.count;
+        },
+        selectRoom(state){
+            return state.selectRoom;
+        },
+        /*待控放end*/
         offlineRole(state){
             return state.offlineRole;
+        },
+        validfrom(state){
+            return state.validfrom;
         }
 
     },
@@ -41,8 +56,22 @@ const store = new Vuex.Store({
         /*我的发布start*/
         publish(state,isTrue){
             state.publish.isTrue=isTrue;
-        }
+        },
         /*我的发布end*/
+        valid(state,status){
+            state.validfrom=status;
+        },
+        /*待控放start*/
+        addCount(state){
+            state.count=++state.count;
+        },
+        deleteCount(state){
+            state.count=--state.count;
+        },
+        selectRoom(state){
+            state.selectRoom=++selectRoom;
+        }
+        /*待控放end*/
     },
     actions: {
         logout({ commit }){

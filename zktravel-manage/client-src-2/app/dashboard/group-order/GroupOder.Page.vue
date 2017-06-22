@@ -136,7 +136,7 @@
                 activeName:'effective',
                 pager:{
                     status:1,
-                    pageNum:1,
+                    pageNum:0,
                     pageSize:15,
                     total:0,
                     keyword:'',
@@ -148,8 +148,8 @@
                 ],
                 currentData:[],
                 statusMap:{
-                    effective:1,
-                    nonEffective:2
+                    effective:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16],
+                    nonEffective:99
                 }
             }
         },

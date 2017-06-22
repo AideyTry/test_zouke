@@ -3,14 +3,16 @@ const Rule = require('./Rule');
 const Route = require('./Route');
 const p = require('path');
 
+const rulesKey = Symbol('#rules');
+const areasKey = Symbol('#areas');
+const getMatchedResultKey = Symbol('#getMatchedResultKey');
+
 module.exports = class Router{
-    //_rules
-    //_areas
     get rules(){
-        return this._rules;
+        return this[rulesKey];
     }
     get areas(){
-        return this._areas;
+        return this[areasKey];
     }
     constructor({ 
         rules = [],
@@ -19,14 +21,14 @@ module.exports = class Router{
         if(rules.length===0){
             rules.push('{{controller:home}}/{{action:index}}')
         }
-        this._areas = areas;
-        this._rules = [];
+        this[areasKey] = areas;
+        this[rulesKey] = [];
         for(let rule of rules){
-            this._rules.push(new Rule(rule));
+            this[rulesKey].push(new Rule(rule));
         }
     }
 
-    _getMatchedResult(path){
+    [getMatchedResultKey](path){
         for(let rule of this.rules){
             const result = rule.match(path);
             if(result) return result;
@@ -35,7 +37,7 @@ module.exports = class Router{
     }
 
     match(path){
-        path = p.relative('/', path);
+        if(path.startsWith('/')) path = path.substr(1);
         let area = '';
         let areaPath = '';
         for(let areaName of this.areas){
@@ -46,16 +48,16 @@ module.exports = class Router{
         }
 
         if(area){
-            const params = this._getMatchedResult(areaPath);
+            const params = this[getMatchedResultKey](areaPath);
             if(params) return new Route(params, area);
         }
 
-        const params = this._getMatchedResult(path);
+        const params = this[getMatchedResultKey](path);
         if(params) return new Route(params);
 
         return null;
     }
     resolve(params, area){
-        return p.resolve('/' + area, this.rules[0].resolve(params));
+        return p.join('/'+area, this.rules[0].resolve(params));
     }
 }
