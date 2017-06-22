@@ -71,6 +71,8 @@
                     </template>
                 </el-tabs>
             </div>
+            <el-button type="success" @click="submitform" size="small">保存
+            </el-button>
         </div>
     </div>
 </template>
@@ -85,22 +87,30 @@
                 change:false,
                 cityTabs:null,
                 orders:null,
+                order_id:'',
                 country:[
                     {
+                        check_in:'',
+                        check_out:'',
                         hotels:[
                             {
+                                hotel_name:'',
+                                remark_confirm:'',
                                 suppliers:[
                                     {
+                                        supplier_name:'',
+                                        at_number:'',
+                                        room_type:'',
                                         status:1,
                                         rooms:[
                                             {
                                                 type:'Single',
                                                 number:1,
-                                                roomDescription:'',
+                                                room_description:'',
                                                 peoples:[
                                                     {
                                                         name:'',
-                                                        familyName:'',
+                                                        family_name:'',
                                                         gender:''
                                                     }
                                                 ]
@@ -112,20 +122,27 @@
                         ]
                     },
                     {
+                        check_in:'',
+                        check_out:'',
                         hotels:[
                             {
+                                hotel_name:'',
+                                remark_confirm:'',
                                 suppliers:[
                                     {
+                                        supplier_name:'',
+                                        at_number:'',
+                                        room_type:'',
                                         status:1,
                                         rooms:[
                                             {
                                                 type:'Single',
                                                 number:1,
-                                                roomDescription:'',
+                                                room_description:'',
                                                 peoples:[
                                                     {
                                                         name:'',
-                                                        familyName:'',
+                                                        family_name:'',
                                                         gender:''
                                                     }
                                                 ]
@@ -137,20 +154,27 @@
                         ]
                     },
                     {
+                        check_in:'',
+                        check_out:'',
                         hotels:[
                             {
+                                hotel_name:'',
+                                remark_confirm:'',
                                 suppliers:[
                                     {
+                                        supplier_name:'',
+                                        at_number:'',
+                                        room_type:'',
                                         status:1,
                                         rooms:[
                                             {
                                                 type:'Single',
                                                 number:1,
-                                                roomDescription:'',
+                                                room_description:'',
                                                 peoples:[
                                                     {
                                                         name:'',
-                                                        familyName:'',
+                                                        family_name:'',
                                                         gender:''
                                                     }
                                                 ]
@@ -162,20 +186,27 @@
                         ]
                     },
                     {
+                        check_in:'',
+                        check_out:'',
                         hotels:[
                             {
+                                hotel_name:'',
+                                remark_confirm:'',
                                 suppliers:[
                                     {
+                                        supplier_name:'',
+                                        at_number:'',
+                                        room_type:'',
                                         status:1,
                                         rooms:[
                                             {
                                                 type:'Single',
                                                 number:1,
-                                                roomDescription:'',
+                                                room_description:'',
                                                 peoples:[
                                                     {
                                                         name:'',
-                                                        familyName:'',
+                                                        family_name:'',
                                                         gender:''
                                                     }
                                                 ]
@@ -187,20 +218,27 @@
                         ]
                     },
                     {
+                        check_in:'',
+                        check_out:'',
                         hotels:[
                             {
+                                hotel_name:'',
+                                remark_confirm:'',
                                 suppliers:[
                                     {
+                                        supplier_name:'',
+                                        at_number:'',
+                                        room_type:'',
                                         status:1,
                                         rooms:[
                                             {
                                                 type:'Single',
                                                 number:1,
-                                                roomDescription:'',
+                                                room_description:'',
                                                 peoples:[
                                                     {
                                                         name:'',
-                                                        familyName:'',
+                                                        family_name:'',
                                                         gender:''
                                                     }
                                                 ]
@@ -212,20 +250,91 @@
                         ]
                     },
                     {
+                        check_in:'',
+                        check_out:'',
                         hotels:[
                             {
+                                hotel_name:'',
+                                remark_confirm:'',
                                 suppliers:[
                                     {
+                                        supplier_name:'',
+                                        at_number:'',
+                                        room_type:'',
                                         status:1,
                                         rooms:[
                                             {
                                                 type:'Single',
                                                 number:1,
-                                                roomDescription:'',
+                                                room_description:'',
                                                 peoples:[
                                                     {
                                                         name:'',
-                                                        familyName:'',
+                                                        family_name:'',
+                                                        gender:''
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                            }
+                        ]
+                    },
+                    {
+                        check_in:'',
+                        check_out:'',
+                        hotels:[
+                            {
+                                hotel_name:'',
+                                remark_confirm:'',
+                                suppliers:[
+                                    {
+                                        supplier_name:'',
+                                        at_number:'',
+                                        room_type:'',
+                                        status:1,
+                                        rooms:[
+                                            {
+                                                type:'Single',
+                                                number:1,
+                                                room_description:'',
+                                                peoples:[
+                                                    {
+                                                        name:'',
+                                                        family_name:'',
+                                                        gender:''
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                            }
+                        ]
+                    },
+                    {
+                        check_in:'',
+                        check_out:'',
+                        hotels:[
+                            {
+                                hotel_name:'',
+                                remark_confirm:'',
+                                suppliers:[
+                                    {
+                                        supplier_name:'',
+                                        at_number:'',
+                                        room_type:'',
+                                        status:1,
+                                        rooms:[
+                                            {
+                                                type:'Single',
+                                                number:1,
+                                                room_description:'',
+                                                peoples:[
+                                                    {
+                                                        name:'',
+                                                        family_name:'',
                                                         gender:''
                                                     }
                                                 ]
@@ -236,7 +345,6 @@
                             }
                         ]
                     }
-
                 ],
 
                 params: {
@@ -305,6 +413,7 @@
                     for(let key in this.orders){
                         this.orders[key].hotels=this.country[key].hotels;
                     }
+                    console.log("orders1=",this.orders);
                     this.cityTabs=json.detail.requirement.stay_details[0].city.name;
                 })
             },
@@ -318,6 +427,20 @@
             },
             dateRange(a,b){
                 return new Date(a).getDate()-new Date(b).getDate();
+            },
+            submitform(){
+                ajax.post('/api/team/order-detail/save',{order:this.orders}).then(
+                    data => {
+                        if (data.code == 0) {
+                            this.$notify({
+                                title: '发布成功',
+                                message: '已成功发布，请到我的发布中查看',
+                                type: 'success'
+                            });
+//                            this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'require-node'}});
+                        }
+                    }
+                )
             }
 
         },
@@ -326,6 +449,9 @@
             this.dateRange();
 
             this.loadOrder(this.$route.params.orderid);
+        },
+        updated(){
+            console.log("orders2",this.orders);
         }
     }
 </script>
