@@ -33,7 +33,7 @@
                                 </el-tab-pane>
                             </template>
                         </el-tabs>
-                        <computed  :params="item.params" :index="index" :cost="item.cost"></computed>
+                        <computed  :params="item.params" :index="index" :order="item.order"></computed>
                         <provider :provider="item.provider" :index="index"></provider>
                     </div>
                 </el-tab-pane>

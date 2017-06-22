@@ -376,7 +376,7 @@
             },
             addroom(k){
                 this.params.stay_details[k].rooms.push({
-                    type: 'single',
+                    type: 'Single',
                     number: '1',
                     mark: ''
                 })

@@ -48,8 +48,8 @@
                     <span>收款汇率<i></i></span>
                     <span>1€=</span>
                     <el-input size="mini"></el-input>
-                    <span>¥</span>
-                    <span>实时汇率：1€=4546¥</span>
+<!--                    <span>¥</span>
+                    <span>实时汇率：1€=4546¥</span>-->
                 </el-col>
                 <el-col :span="14">
                     <span>收款币种</span>
@@ -105,10 +105,10 @@
         <div class="divline"></div>
         <div class="plan card">
             <div class="title">收款计划</div>
-            <el-row type="flex" class="computed">
-                <template>
+            <el-row type="flex" class="computed" v-if="order">
+                <template v-for="(v,k) in order.user_policy.payment">
                     <el-col :span="6">
-                        101€
+                        {{v.price}}({{v.dead_line}}前)
                     </el-col>
                 </template>
             </el-row>
@@ -200,7 +200,7 @@
                 this.$refs.dialogroup.dialog2.show=true;
             }
         },
-        mouted(){
+        mounted(){
             this.loadorder();
         }
     }

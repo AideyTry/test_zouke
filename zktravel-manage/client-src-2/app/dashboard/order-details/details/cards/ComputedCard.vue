@@ -24,7 +24,7 @@
 </template>
 <script>
     export default{
-        props:['params','cost','index'],
+        props:['params','order','index'],
         data(){
             return{
                 myparams:this.params
@@ -32,14 +32,15 @@
         },
         computed:{
             mycost(){
+                let vm=this;
                 let _arr={cost: 0, bk: 0, quoted: 0};
                 this.params.forEach(
                     (a,b)=>{
                         a.rooms.forEach(
                             (v, k) => {
-                                _arr.cost+=v.price.cost?v.price.cost*1:0;
-                                _arr.bk+=v.price.bk?v.price.bk*1:0;
-                                _arr.quoted+=v.price.quoted?v.price.quoted*1:0
+                                _arr.cost+=v.price.cost?v.price.cost*vm.order[b].rooms[k].number:0;
+                                _arr.bk+=v.price.bk?v.price.bk*vm.order[b].rooms[k].number:0;
+                                _arr.quoted+=v.price.quoted?v.price.quoted*vm.order[b].rooms[k].number:0
                             }
                         )
                     }
