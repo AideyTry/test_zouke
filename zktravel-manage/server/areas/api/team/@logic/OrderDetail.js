@@ -6,13 +6,15 @@ const orderRule = {
         {
             "*hotels":[
                 {
-                    "*name":"酒店名",
                     "*hotel":{
-                        "*supplier":{
-                            "*supplier_name":"供应商名字",
-                            "*at_number":"入住编号",
-                            "*room_type":"房型"
-                        }
+                        "*name":"酒店名"
+                    },
+                    "*suppliers":{
+                        "*supplier_name":"供应商名字",
+                        "*at_number":"入住编号",
+                        "*rooms":[{
+                            "*type":"房型"
+                        }]
                     }
                 },
                 {min:1}
@@ -24,8 +26,11 @@ const orderRule = {
         {
             "*supplier_name":"渠道名",
             "*total_cost":"总成本价",
-            "*cancle_policy":"取消政策",
-            "*pay_policy":"付款政策"
+            "*cancel_policy":null,
+            "*pay_policy":[{
+                "pay_date":"需要支付",
+                "number":"数字"
+            }]
         },
         {min:1}
     ]
@@ -43,25 +48,27 @@ module.exports = class OrderDetail extends BaseOrder {
         return await this.$update(
             {
                 _id: id,
-                // "booking_user.id":user.id,
+                "booking_user.id":user.id,
                 /**订单状态校验：in/nin **/
-                //  status:{ $nin:[
-                //     this.status.WAIT_FOR_PUBLISH,
-                //     this.status.WAIT_FOR_DISPATCH,
-                //     this.status.WAIT_FOR_GIVE_PRICE,
-                //     this.status.WAIT_FOR_PRICE_CHECK,
-                //     this.status.WAIT_FOR_PRICE_CONFIRM,
-                //     this.status.WAIT_FOR_GATHERING,
-                //     this.status.WAIT_FOR_ROOM_PERSON,
-                //     this.status.ORDER_RESOLVE
-                // ]}
+                 status:{ $nin:[
+                    this.status.WAIT_FOR_PUBLISH,
+                    this.status.WAIT_FOR_DISPATCH,
+                    this.status.WAIT_FOR_GIVE_PRICE,
+                    this.status.WAIT_FOR_PRICE_CHECK,
+                    this.status.WAIT_FOR_PRICE_CONFIRM,
+                    this.status.WAIT_FOR_GATHERING,
+                    this.status.WAIT_FOR_ROOM_PERSON,
+                    this.status.ORDER_RESOLVE
+                ]}
             },
             {
                 //插入数据
-                $push: {
+                $set:{
                     order_detail:{
                         orders: order_obj,
-                    },
+                    }
+                },
+                $push: {
                     //日志记录
                     logs: this.$createShiftUpdate({ type: 'user:save_order', time: this.$createTime(), user })
                 }
