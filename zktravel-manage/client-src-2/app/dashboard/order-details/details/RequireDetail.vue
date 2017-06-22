@@ -74,10 +74,10 @@
         <el-row style="height: 40px" type="flex">
             <el-col :span="9">
                 <h4>需求详情</h4>
-                <el-tag key="优先级A+" type="gray">优先级A+</el-tag>
-                <el-tag key="GTA" type="gray">GTA导游</el-tag>
+                <el-tag key="优先级A+" type="gray">{{orderdata.requirement.priority}}</el-tag>
+                <el-tag key="GTA" type="gray">{{orderdata.requirement.origin_from}}</el-tag>
             </el-col>
-            <el-col :span="12" class="creator-info">
+            <el-col :span="12" class="creator-info" v-if="orderdata.creator">
                 <span>创建:</span>
                 <span>{{orderdata.creator.name}}</span>
                 <span>发布时间:</span>
