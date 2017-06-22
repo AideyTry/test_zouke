@@ -43,7 +43,7 @@
                     <span>名</span>
                 </el-col>
                 <el-col :span="5">
-                    <el-input v-model="v.familyName" placeholder="填写英文或拼音"></el-input>
+                    <el-input v-model="v.family_name" placeholder="填写英文或拼音"></el-input>
                 </el-col>
                 <el-col :span="1"></el-col>
                 <el-col :span="1">
@@ -207,17 +207,10 @@
                switch(this.selectNewRoom){
                    case "Single":
 //                       this.item.number=1;
-                       this.item.peoples.push({
+                   this.item.peoples.push({
                            name:'',
-                           familyName:'',
-                           gender:[
-                               {
-                                   male:"男"
-                               },
-                               {
-                                   female:"女"
-                               }
-                           ]
+                           family_name:'',
+                           gender:''
                        });
                        break;
                    case "Double":
@@ -225,18 +218,12 @@
                        this.item.peoples.push(
                            {
                                name:'',
-                               familyName:'',
-                               gender:[
-                                   {
-                                       male:"男"
-                                   },
-                                   {
-                                       female:"女"
-                                   }
-                               ]
+                               family_name:'',
+                               gender:''
                            },{
                                name:'',
-                               familyName:''
+                               family_name:'',
+                               gender:''
                            }
 
                        );
@@ -246,13 +233,16 @@
                        this.item.peoples.push(
                            {
                                name:'',
-                               familyName:''
+                               family_name:'',
+                               gender:''
                            },{
                                name:'',
-                               familyName:''
+                               family_name:'',
+                               gender:''
                            },{
                                name:'',
-                               familyName:''
+                               family_name:'',
+                               gender:''
                            }
 
                        );
@@ -262,11 +252,12 @@
                        this.item.peoples.push(
                            {
                                name:'',
-                               familyName:''
-
+                               family_name:'',
+                               gender:''
                            },{
                                name:'',
-                               familyName:''
+                               family_name:'',
+                               gender:''
                            }
 
                        );
@@ -276,15 +267,8 @@
                        this.item.peoples.push(
                            {
                                name:'',
-                               familyName:'',
-                               gender:[
-                                   {
-                                       male:"男"
-                                   },
-                                   {
-                                       female:"女"
-                                   }
-                               ]
+                               family_name:'',
+                               gender:''
                            }
 
                        );
