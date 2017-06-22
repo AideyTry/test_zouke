@@ -28,8 +28,8 @@ const orderRule = {
             "*total_cost":"总成本价",
             "*cancel_policy":null,
             "*pay_policy":[{
-                "pay_date":"需要支付",
-                "number":"数字"
+                "*pay_date":"需要支付",
+                "*number":"数字"
             }]
         },
         {min:1}
@@ -50,16 +50,16 @@ module.exports = class OrderDetail extends BaseOrder {
                 _id: id,
                 "booking_user.id":user.id,
                 /**订单状态校验：in/nin **/
-                 status:{ $nin:[
-                    this.status.WAIT_FOR_PUBLISH,
-                    this.status.WAIT_FOR_DISPATCH,
-                    this.status.WAIT_FOR_GIVE_PRICE,
-                    this.status.WAIT_FOR_PRICE_CHECK,
-                    this.status.WAIT_FOR_PRICE_CONFIRM,
-                    this.status.WAIT_FOR_GATHERING,
-                    this.status.WAIT_FOR_ROOM_PERSON,
-                    this.status.ORDER_RESOLVE
-                ]}
+                //  status:{ $nin:[
+                //     this.status.WAIT_FOR_PUBLISH,
+                //     this.status.WAIT_FOR_DISPATCH,
+                //     this.status.WAIT_FOR_GIVE_PRICE,
+                //     this.status.WAIT_FOR_PRICE_CHECK,
+                //     this.status.WAIT_FOR_PRICE_CONFIRM,
+                //     this.status.WAIT_FOR_GATHERING,
+                //     this.status.WAIT_FOR_ROOM_PERSON,
+                //     this.status.ORDER_RESOLVE
+                // ]}
             },
             {
                 //插入数据
