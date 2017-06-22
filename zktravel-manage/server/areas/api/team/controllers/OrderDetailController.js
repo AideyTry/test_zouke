@@ -13,7 +13,7 @@ module.exports = class OrderDetailController extends TeamController {
         }
     }
     //保存订单信息
-    async save(order){
+    async save(id,order){
         const orderDetail = new OrderDetail();
         //拿到当前用户信息，更新表的时候做id校验
         let user = this.$getUser();
@@ -26,7 +26,7 @@ module.exports = class OrderDetailController extends TeamController {
             return this.renderJSON({ code:1, msg: 'data check valid fail' });
         }
 
-        const result = await orderDetail.update(user,order);
+        const result = await orderDetail.update(user,id,order);
         //数据库操作失败
         if(!result){
            return this.renderJSON({ code:2, msg:'can not save order detail' });

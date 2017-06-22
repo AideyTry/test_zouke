@@ -47,23 +47,23 @@ module.exports = class OrderDetail extends BaseOrder {
     }
 
     //数据入库
-    async update(user,order){
+    async update(user,id,order){
         /**方法前面带$的说明是从父类继承来的**/
         return await this.$update(
             {
-                _id: order.id,
-                "booking_user.id":user.id,
+                _id: id,
+                // "booking_user.id":user.id,
                 /**订单状态校验：in/nin **/
-                 status:{ $nin:[
-                    this.status.WAIT_FOR_PUBLISH,
-                    this.status.WAIT_FOR_DISPATCH,
-                    this.status.WAIT_FOR_GIVE_PRICE,
-                    this.status.WAIT_FOR_PRICE_CHECK,
-                    this.status.WAIT_FOR_PRICE_CONFIRM,
-                    this.status.WAIT_FOR_GATHERING,
-                    this.status.WAIT_FOR_ROOM_PERSON,
-                    this.status.ORDER_RESOLVE
-                ]}
+                //  status:{ $nin:[
+                //     this.status.WAIT_FOR_PUBLISH,
+                //     this.status.WAIT_FOR_DISPATCH,
+                //     this.status.WAIT_FOR_GIVE_PRICE,
+                //     this.status.WAIT_FOR_PRICE_CHECK,
+                //     this.status.WAIT_FOR_PRICE_CONFIRM,
+                //     this.status.WAIT_FOR_GATHERING,
+                //     this.status.WAIT_FOR_ROOM_PERSON,
+                //     this.status.ORDER_RESOLVE
+                // ]}
             },
             {
                 //插入数据
