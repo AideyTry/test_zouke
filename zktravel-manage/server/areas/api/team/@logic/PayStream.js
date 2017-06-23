@@ -70,7 +70,10 @@ module.exports = class PayStream extends BaseOrder {
                 "creator.id":user.id,
                 /**订单状态校验：in/nin **/
                 status:{ $in:[
-                    this.status.WAIT_FOR_GATHERING
+                    this.status.WAIT_FOR_GATHERING,
+                    this.status.WAIT_FOR_ROOM_PERSON,
+                    this.status.WAIT_FOR_BOOKING,
+                    this.status.ORDER_RESOLVE
                 ]}
             },
             {
