@@ -71,7 +71,7 @@
                     <span>€ ={{money}}¥</span>
                 </el-col>
 
-                <el-col :span="14" class="button-group">
+                <el-col :span="14" class="button-group" v-if="this.userole.GATHERING">
                     <el-button type="info" @click="payment" v-if="!payflag">收款</el-button>
                     <el-button type="info" @click="markpayment" v-if="payflag">录入线下付款</el-button>
                     <el-button type="danger" @click="cancelpayment" v-if="payflag">取消收款</el-button>
@@ -106,9 +106,7 @@
                 </el-table>
             </div>
             <el-row type="flex" class="computed">
-                <el-col>
-                </el-col>
-                <el-col :span="9">
+                <el-col style="text-align: right">
                     <span>还需收款 ：xx €</span>
                     <span>收款总额 ：xx €</span>
                     <span>xx ¥</span>
@@ -130,7 +128,7 @@
         <div class="divline"></div>
         <div class="card">
             <div class="title">退款流水
-                <el-button type="danger" style="float: right" @click="refundorder">
+                <el-button type="danger" style="float: right" @click="refundorder" v-if="this.userole.GATHERING">
                     退款
                 </el-button>
             </div>
@@ -150,9 +148,7 @@
                 </el-table>
             </div>
             <el-row type="flex" class="computed">
-                <el-col>
-                </el-col>
-                <el-col :span="9">
+                <el-col style="text-align: right">
                     <span>退款总额 ：€</span>
                     <span>¥</span>
                 </el-col>
@@ -161,7 +157,7 @@
         <div class="divline"></div>
         <div class="card">
             <div class="title">供应商成本流水
-                <el-button type="info" style="float: right" @click="changecost">
+                <el-button type="info" style="float: right" @click="changecost" v-if="this.userole.GATHERING">
                     修改成本
                 </el-button>
             </div>
@@ -281,6 +277,13 @@
         computed: {
             money(){
                 return this.params.reo * this.params.money;
+            },
+            userole(){
+                return this.$store.getters.offlineRole;
+
+            },
+            orderdatastatus(){
+                return this.orderdata ? this.orderdata.status : '0'
             }
         },
         mounted(){
