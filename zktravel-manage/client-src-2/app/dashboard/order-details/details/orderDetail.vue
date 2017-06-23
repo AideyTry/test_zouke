@@ -110,13 +110,14 @@
             </el-card>
         </div>
         <WriteOrder :orderData="orderData"></WriteOrder>
-
+        <RoomingList></RoomingList>
     </div>
 
 </template>
 <script>
     import ajax from '@local/common/ajax';
     import WriteOrder from './cards/WriteOrder'
+    import RoomingList from './cards/RoomingList'
     export default{
         props:["orderData"],
         data(){
@@ -125,7 +126,8 @@
             }
         },
         components:{
-            WriteOrder:WriteOrder
+            WriteOrder:WriteOrder,
+            RoomingList:RoomingList
         },
         computed:{
             orderId(){
