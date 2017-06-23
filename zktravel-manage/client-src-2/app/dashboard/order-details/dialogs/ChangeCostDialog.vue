@@ -14,7 +14,7 @@
                 </el-input>
             </el-form-item>
             <el-form-item label="填写金额" type="number">
-                <el-input v-model="params.cost" placeholder="请填写金额">
+                <el-input type="number" v-model="params.cost" placeholder="请填写金额">
 
                 </el-input>
             </el-form-item>
