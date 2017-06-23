@@ -71,13 +71,13 @@
                                 <span>{{room.type}}</span>
                             </el-col>
                             <el-col :span="6">
-                                <!--<template v-for="item,index" in room.peoples>-->
-                                    <!--<el-row type="flex">-->
-                                        <!--<strong>入住人:</strong>-->
-                                        <!--<span>{{item.name}}</span>-->
-                                        <!--<span>{{item.familyName}}</span>-->
-                                    <!--</el-row>-->
-                                <!--</template>-->
+                                <template v-for="(item,index) in room.peoples">
+                                    <el-row type="flex">
+                                        <strong>入住人:</strong>
+                                        <span>{{item.name}}</span>
+                                        <span>{{item.family_name}}</span>
+                                    </el-row>
+                                </template>
                             </el-col>
                         </el-row>
                     </template>
