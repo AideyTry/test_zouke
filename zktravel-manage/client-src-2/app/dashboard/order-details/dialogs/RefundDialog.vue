@@ -65,6 +65,7 @@
         },
         methods:{
             submit(){
+                this.params.refund_time=new Date(this.params.refund_time).format('YYYY-MM-DD');
                 ajax.post('/api/team/refund-stream/refund',{id:this.$route.params.orderid,refund_obj:this.params}).then(
                     data=>{
                         if(data.code==0){
@@ -73,6 +74,7 @@
                                 message: '已提交退款信息',
                                 type: 'success'
                             });
+                            this.dialog.show=false;
                             this.$emit('loadorder');
                         }
                     }

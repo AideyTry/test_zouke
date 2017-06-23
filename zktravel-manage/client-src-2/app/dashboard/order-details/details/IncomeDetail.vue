@@ -4,6 +4,7 @@
             height: 40px;
             font-size: 18px;
             font-weight: 600;
+            line-height: 40px;
         }
         .install {
             .label {
@@ -84,16 +85,21 @@
                 <el-table border :data="order.pay_stream" v-if="order">
                     <el-table-column label="时间" prop="paytime">
                     </el-table-column>
-                    <el-table-column label="操作人">
+                    <el-table-column label="操作人" prop="user.name">
                     </el-table-column>
                     <el-table-column label="渠道" prop="provider">
                     </el-table-column>
                     <el-table-column label="收款金额" prop="collection_info.money">
+                        <template scope="scope">
+                            <span>
+                                {{scope.row.collection_info.money?scope.row.collection_info.money:0}}{{scope.row.collection_info.currency}}
+                            </span>
+                        </template>
                     </el-table-column>
                     <el-table-column label="收款金额">
                         <template scope="scope">
                             <span>
-                                {{scope.row.collection_info.money?scope.row.collection_info.money/scope.row.collection_info.reo:0}}
+                                {{scope.row.collection_info.money?scope.row.collection_info.money*scope.row.collection_info.reo:0}}人民币
                             </span>
                         </template>
                     </el-table-column>
@@ -130,12 +136,12 @@
             </div>
 
             <div>
-                <el-table border :data="order.refund_stream">
+                <el-table border :data="order.refund_stream" v-if="order">
                     <el-table-column label="时间" prop="refund_time">
                     </el-table-column>
                     <el-table-column label="原因" prop="reason">
                     </el-table-column>
-                    <el-table-column label="操作人">
+                    <el-table-column label="操作人" prop="user.name">
                     </el-table-column>
                     <el-table-column label="渠道" prop="path">
                     </el-table-column>
@@ -147,8 +153,7 @@
                 <el-col>
                 </el-col>
                 <el-col :span="9">
-                    <span>还需收款 ：€</span>
-                    <span>收款总额 ：€</span>
+                    <span>退款总额 ：€</span>
                     <span>¥</span>
                 </el-col>
             </el-row>
@@ -161,14 +166,14 @@
                 </el-button>
             </div>
             <div>
-                <el-table border>
-                    <el-table-column label="时间">
+                <el-table border :data="order.provider_stream" v-if="order">
+                    <el-table-column label="时间" prop="provider_obj.time">
                     </el-table-column>
-                    <el-table-column label="原因">
+                    <el-table-column label="原因" prop="provider_obj.reason">
                     </el-table-column>
-                    <el-table-column label="操作人">
+                    <el-table-column label="操作人" prop="provider_obj.user.name">
                     </el-table-column>
-                    <el-table-column label="金额">
+                    <el-table-column label="金额" prop="provider_obj.cost">
                     </el-table-column>
                 </el-table>
             </div>
