@@ -26,7 +26,7 @@ module.exports = class PayStream extends BaseOrder {
         if(!orderDoc) return false;
 
         //解构赋值拿到collection_info、status字段
-        const { collection_info, status:preStatus } = orderDoc;
+        const { collection_info, status:preStatus,allot_list } = orderDoc;
 
         //构造pay_stream对象
         const pay_stream= {

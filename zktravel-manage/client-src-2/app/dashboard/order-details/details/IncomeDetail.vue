@@ -27,9 +27,12 @@
             height: 40px;
             line-height: 40px;
         }
-        .divline{
+        .divline {
             border-bottom: 1px dashed #ccc;
             margin: 0 20px;
+        }
+        .button-group {
+            text-align: right;
         }
     }
 </style>
@@ -47,14 +50,15 @@
                 <el-col :span="10">
                     <span>收款汇率<i></i></span>
                     <span>1€=</span>
-                    <el-input size="mini"></el-input>
-<!--                    <span>¥</span>
-                    <span>实时汇率：1€=4546¥</span>-->
+                    <el-input size="mini" type="number" v-model="params.reo"></el-input>
+                    <!--                    <span>¥</span>
+                                        <span>实时汇率：1€=4546¥</span>-->
                 </el-col>
                 <el-col :span="14">
                     <span>收款币种</span>
-                    <el-radio class="radio" v-model="radio" size="small" label="1">欧元</el-radio>
-                    <el-radio class="radio" v-model="radio" size="small" label="2">人民币</el-radio>
+                    <el-radio class="radio" v-model="params.currency" value="欧元" size="small" label="欧元">欧元</el-radio>
+                    <el-radio class="radio" v-model="params.currency" value="人民币" size="small" label="人民币">人民币
+                    </el-radio>
                 </el-col>
             </el-row>
             <el-row type="flex">
@@ -62,13 +66,11 @@
                     <span>
                         本次收款
                     </span>
-                    <el-input size="mini"></el-input>
-                    <span>€ =11¥</span>
+                    <el-input size="mini" type="number" v-model="params.money"></el-input>
+                    <span>€ ={{money}}¥</span>
                 </el-col>
-                <el-col>
 
-                </el-col>
-                <el-col :span="8">
+                <el-col :span="14" class="button-group">
                     <el-button type="info" @click="payment" v-if="!payflag">收款</el-button>
                     <el-button type="info" @click="markpayment" v-if="payflag">录入线下付款</el-button>
                     <el-button type="danger" @click="cancelpayment" v-if="payflag">取消收款</el-button>
@@ -96,16 +98,17 @@
                 <el-col>
                 </el-col>
                 <el-col :span="9">
-                    <span>还需收款 ：90€</span>
-                    <span>收款总额 ：70€</span>
-                    <span>999¥</span>
+                    <span>还需收款 ：xx €</span>
+                    <span>收款总额 ：xx €</span>
+                    <span>xx ¥</span>
                 </el-col>
             </el-row>
         </div>
         <div class="divline"></div>
-        <div class="plan card">
-            <div class="title">收款计划</div>
-            <el-row type="flex" class="computed" v-if="order">
+        <div class="plan card" v-if="order">
+            <div class="title">收款计划
+            </div>
+            <el-row type="flex" class="computed" v-if="order.user_policy">
                 <template v-for="(v,k) in order.user_policy.payment">
                     <el-col :span="6">
                         {{v.price}}({{v.dead_line}}前)
@@ -115,7 +118,12 @@
         </div>
         <div class="divline"></div>
         <div class="card">
-            <div class="title">退款流水</div>
+            <div class="title">退款流水
+                <el-button type="danger" style="float: right" @click="">
+                    退款
+                </el-button>
+            </div>
+
             <div>
                 <el-table border>
                     <el-table-column label="时间">
@@ -144,7 +152,11 @@
         </div>
         <div class="divline"></div>
         <div class="card">
-            <div class="title">供应商成本流水</div>
+            <div class="title">供应商成本流水
+                <el-button type="info" style="float: right">
+                    修改成本
+                </el-button>
+            </div>
             <div>
                 <el-table border>
                     <el-table-column label="时间">
@@ -158,46 +170,91 @@
                 </el-table>
             </div>
         </div>
-        <paymentdialog ref="dialogroup" :dialog="dialog" @closedialog="closedialog"> </paymentdialog>
+        <paymentdialog ref="dialogroup" :dialog="dialog" @closedialog="closedialog"></paymentdialog>
+
     </div>
 </template>
 <script>
     import ajax  from '@local/common/ajax';
     import payment from '../dialogs/PaymentDialog'
     export default{
-        components:{
-            paymentdialog:payment
+        components: {
+            paymentdialog: payment
         },
         data(){
             return {
                 radio: '',
-                order:null,
-                payplan:null,
-                dialog:{
-                    show:false
+                order: null,
+                payplan: null,
+                dialog: {
+                    show: false
                 },
-                payflag:false
+                defunddialog: {
+                    show: false
+                },
+                payflag: false,
+                params: {
+                    reo: 0,
+                    currency: '欧元',
+                    money: 0,
+                    id: ''
+                }
             }
         },
         methods: {
             loadorder(){
-                ajax.post('/api/team/order/detail',{id:this.$route.params.orderid}).then(
-                    data=>{
-                        this.order=data.detail;
+                ajax.post('/api/team/order/detail', {id: this.$route.params.orderid}).then(
+                    data => {
+                        this.order = data.detail;
+                        if (data.detail.collection_info) {
+                            this.params = data.detail.collection_info;
+                            this.payflag = true;
+                        } else {
+                            this.params = {reo: 0, currency: '欧元', money: 0, id: ''}
+                            this.payflag = false;
+                        }
                     }
                 )
             },
             payment(){
-                this.dialog.show=true;
+                this.params.id = this.$route.params.orderid;
+                ajax.post('/api/team/pay-stream/collection', this.params).then(
+                    data => {
+                        if (data.code == 0) {
+                            this.dialog.show = true;
+                            this.$notify({
+                                title: '提交成功',
+                                message: '已提交付款信息',
+                                type: 'success'
+                            });
+                        }
+                    }
+                )
             },
             closedialog(){
-                this.dialog.show=false;
+                this.dialog.show = false;
             },
             cancelpayment(){
-
+                ajax.post('/api/team/pay-stream/cancel', {id: this.$route.params.orderid}).then(
+                    data => {
+                        if (data.code == 0) {
+                            this.$notify({
+                                title: '取消成功',
+                                message: '请重新输入收款信息',
+                                type: 'success'
+                            });
+                            this.loadorder();
+                        }
+                    }
+                )
             },
             markpayment(){
-                this.$refs.dialogroup.dialog2.show=true;
+                this.$refs.dialogroup.dialog2.show = true;
+            }
+        },
+        computed: {
+            money(){
+                return this.params.reo * this.params.money;
             }
         },
         mounted(){
