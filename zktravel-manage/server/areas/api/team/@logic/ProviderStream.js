@@ -3,24 +3,21 @@ const compare = require('@local/compare');
 
 const objRule = {
     "*reason":"退款原因",
-    "*refund_time":"退款时间",
-    "*is_cancel":true,
-    "*path":"渠道",
-    "*currency":"币种",
-    "*money":"金额"
+    "*cost":"成本"
 };
 
-module.exports = class RefundStream extends BaseOrder {
+module.exports = class ProviderStream extends BaseOrder {
 
-    //退款对象校验
-    validRefundObj(refund_obj){
-        return compare(objRule, refund_obj);
+    //供应商对象校验
+    validProviderObj(provider_obj){
+        return compare(objRule, provider_obj);
     }
 
     //退款
-    async refund(id,user,refund_obj){
+    async edit(id,user,provider_obj){
 
-        refund_obj["user"] = user;
+        provider_obj["time"] = this.$createTime();
+        provider_obj["user"] = user;
 
         /**方法前面带$的说明是从父类继承来的**/
         return await this.$update(
@@ -37,8 +34,8 @@ module.exports = class RefundStream extends BaseOrder {
             },
             {
                 $push:{
-                    refund_stream:refund_obj,
-                    logs: this.$createShiftUpdate({ type: 'user:refund_stream', time: this.$createTime(), user })
+                    provider_stream:{provider_obj},
+                    logs: this.$createShiftUpdate({ type: 'user:provider_stream', time: this.$createTime(), user })
                 }
             }
         )
