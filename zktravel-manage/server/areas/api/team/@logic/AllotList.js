@@ -22,7 +22,8 @@ module.exports = class AllotList extends BaseOrder {
                 $set:{
                     allot_list:{
                         content: content,
-                    }
+                    },
+                    status:this.status.WAIT_FOR_BOOKING
                 },
                 $push: {
                     //日志记录

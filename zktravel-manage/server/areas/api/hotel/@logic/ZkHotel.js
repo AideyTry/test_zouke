@@ -47,7 +47,7 @@ module.exports = class ZkHotel {
             ];
         }
 
-        const zkCollection = await dbclient.collections.get('sp_hotels');
+        const zkCollection = await dbclient.collections.get('zk_hotels');
         
         const count = requireCount ? (await zkCollection.find(findCondition).count()): -1;
 
