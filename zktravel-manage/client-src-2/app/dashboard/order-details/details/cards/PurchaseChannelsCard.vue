@@ -76,13 +76,14 @@
                                 </el-col>
                                 €
                             </el-row>
-                            <el-row type="flex">
-                                <el-col :span="9"></el-col>
-                                <el-col :span="10">
-                                    <el-button type="primary" @click="addCancelPolicy(index)">+取消政策</el-button>
-                                </el-col>
-                            </el-row>
+
                         </template>
+                        <el-row type="flex">
+                            <el-col :span="9"></el-col>
+                            <el-col :span="10">
+                                <el-button type="primary" @click="addCancelPolicy(item.cancel_policy.cancel.pay_cancel)">+取消政策</el-button>
+                            </el-col>
+                        </el-row>
                     </template>
 
                     <template v-for="(v,index) in item.pay_policy">
@@ -143,18 +144,12 @@
             loadSupplier(){
                     this.supplier=this.newSupplier;
             },
-            addCancelPolicy(index){
-                this.purchase_channel[index].cancel_policy.push({
-                    cancel_name:'',
-                    cancel:
-                        {
-                            free_cancel_date:'',
-                                pay_cancel:{
-                            date:'',
-                                number:null
-                        }
-                    }
-                });
+            addCancelPolicy(v){
+                console.log("v=",v);
+                v.push({
+                    date:'',
+                    number:null
+                })
             },
             addPayPolicy(index){
                 this.purchase_channel[index].pay_policy.push(

@@ -50,7 +50,7 @@
 
                     </el-col>
                     <el-col :span="3">
-                        <el-button type="primary" @click="addRooms()">+添加房型</el-button>
+                        <el-button type="primary" @click="addRooms(item.rooms)">+添加房型</el-button>
                     </el-col>
                 </el-row>
             </el-card>
@@ -130,8 +130,8 @@
             closeSupplier(){
 
             },
-            addRooms(){
-                this.item.rooms.push(                 {
+            addRooms(rooms){
+                rooms.push(                 {
                     type:'Single',
                     number:1,
                     room_description:'',

@@ -109,8 +109,7 @@
                 </div>
             </el-card>
         </div>
-        <!--<WriteOrder v-if="offlineRole.UPDATE_ORDER&&orderStatus==8" :orderData="orderData"></WriteOrder>-->
-        <WriteOrder :orderData="orderData"></WriteOrder>
+        <WriteOrder v-if="offlineRole.UPDATE_ORDER&&orderStatus==8" :orderData="orderData"></WriteOrder>
         <RoomingList v-if="offlineRole.UPDATE_ROOM_PERSON&&orderStatus==7"></RoomingList>
     </div>
 
