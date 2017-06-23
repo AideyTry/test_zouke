@@ -266,8 +266,9 @@
         },
         methods: {
             loadData(){
+                let vm=this;
                 ajax.post("/api/hotel/zk-hotel/detail", {
-                    id: this.ids
+                    id: vm.ids
                 }).then(json => {
                     this.detailData.name = json.detail.name;
                     this.detailData.name_en = json.detail.name_en;
