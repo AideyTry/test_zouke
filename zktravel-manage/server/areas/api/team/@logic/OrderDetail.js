@@ -50,23 +50,19 @@ module.exports = class OrderDetail extends BaseOrder {
                 _id: id,
                 "booking_user.id":user.id,
                 /**订单状态校验：in/nin **/
-                //  status:{ $nin:[
-                //     this.status.WAIT_FOR_PUBLISH,
-                //     this.status.WAIT_FOR_DISPATCH,
-                //     this.status.WAIT_FOR_GIVE_PRICE,
-                //     this.status.WAIT_FOR_PRICE_CHECK,
-                //     this.status.WAIT_FOR_PRICE_CONFIRM,
-                //     this.status.WAIT_FOR_GATHERING,
-                //     this.status.WAIT_FOR_ROOM_PERSON,
-                //     this.status.ORDER_RESOLVE
-                // ]}
+                 status:{ $in:[
+                     this.ststus.WAIT_FOR_GATHERING,
+                    this.status.WAIT_FOR_ROOM_PERSON,
+                    this.status.WAIT_FOR_BOOKING
+                ]}
             },
             {
                 //插入数据
                 $set:{
                     order_detail:{
                         orders: order_obj,
-                    }
+                    },
+                    status:this.status.ORDER_RESOLVE
                 },
                 $push: {
                     //日志记录
