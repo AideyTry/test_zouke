@@ -48,7 +48,7 @@ module.exports = class MyPayStreamController extends TeamController {
         this.renderJSON({code:0});
     };
 
-    //录入收款信息
+    //录入收款信息(生成流水)
     async collection(id,reo,currency,money){
         const payStream = new PayStream();
         //拿到当前用户信息，更新表的时候做id校验
@@ -64,4 +64,5 @@ module.exports = class MyPayStreamController extends TeamController {
         //数据库操作成功
         this.renderJSON({code:0});
     }
+
 };
