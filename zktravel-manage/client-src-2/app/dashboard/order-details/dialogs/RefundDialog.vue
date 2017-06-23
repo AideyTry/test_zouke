@@ -65,7 +65,7 @@
         },
         methods:{
             submit(){
-                ajax.post('/api/team/refund-stream/refund',{id:this.$route.params.orderid,obj:this.params}).then(
+                ajax.post('/api/team/refund-stream/refund',{id:this.$route.params.orderid,refund_obj:this.params}).then(
                     data=>{
                         if(data.code==0){
                             this.$notify({

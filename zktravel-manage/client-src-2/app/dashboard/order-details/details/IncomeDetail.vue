@@ -81,16 +81,21 @@
         <div class="stream card">
             <div class="title">收款流水</div>
             <div>
-                <el-table border>
-                    <el-table-column label="时间">
+                <el-table border :data="order.pay_stream" v-if="order">
+                    <el-table-column label="时间" prop="paytime">
                     </el-table-column>
                     <el-table-column label="操作人">
                     </el-table-column>
-                    <el-table-column label="渠道">
+                    <el-table-column label="渠道" prop="provider">
+                    </el-table-column>
+                    <el-table-column label="收款金额" prop="collection_info.money">
                     </el-table-column>
                     <el-table-column label="收款金额">
-                    </el-table-column>
-                    <el-table-column label="收款金额">
+                        <template scope="scope">
+                            <span>
+                                {{scope.row.collection_info.money?scope.row.collection_info.money/scope.row.collection_info.reo:0}}
+                            </span>
+                        </template>
                     </el-table-column>
                 </el-table>
             </div>
@@ -125,18 +130,16 @@
             </div>
 
             <div>
-                <el-table border>
-                    <el-table-column label="时间">
+                <el-table border :data="order.refund_stream">
+                    <el-table-column label="时间" prop="refund_time">
                     </el-table-column>
-                    <el-table-column label="原因">
+                    <el-table-column label="原因" prop="reason">
                     </el-table-column>
                     <el-table-column label="操作人">
                     </el-table-column>
-                    <el-table-column label="渠道">
+                    <el-table-column label="渠道" prop="path">
                     </el-table-column>
-                    <el-table-column label="退款金额">
-                    </el-table-column>
-                    <el-table-column label="退款金额">
+                    <el-table-column label="退款金额" prop="money">
                     </el-table-column>
                 </el-table>
             </div>
@@ -144,16 +147,16 @@
                 <el-col>
                 </el-col>
                 <el-col :span="9">
-                    <span>还需收款 ：90€</span>
-                    <span>收款总额 ：70€</span>
-                    <span>999¥</span>
+                    <span>还需收款 ：€</span>
+                    <span>收款总额 ：€</span>
+                    <span>¥</span>
                 </el-col>
             </el-row>
         </div>
         <div class="divline"></div>
         <div class="card">
             <div class="title">供应商成本流水
-                <el-button type="info" style="float: right">
+                <el-button type="info" style="float: right" @click="changecost">
                     修改成本
                 </el-button>
             </div>
@@ -172,16 +175,19 @@
         </div>
         <paymentdialog @loadorder="loadorder" ref="dialogroup" :dialog="dialog" @closedialog="closedialog"></paymentdialog>
         <refunddialog @loadorder="loadorder" ref="refund" :dialog="refunddialog" @closedialog="closedialog"></refunddialog>
+        <changecost @loadorder="loadorder" ref="changecost" :dialog="changedialog" @closedialog="closedialog"></changecost>
     </div>
 </template>
 <script>
     import ajax  from '@local/common/ajax';
     import payment from '../dialogs/PaymentDialog'
     import refund from '../dialogs/RefundDialog'
+    import changecost from '../dialogs/ChangeCostDialog'
     export default{
         components: {
             paymentdialog: payment,
-            refunddialog:refund
+            refunddialog:refund,
+            changecost:changecost
         },
         data(){
             return {
@@ -202,6 +208,9 @@
                     id: ''
                 },
                 refunddialog:{
+                    show:false
+                },
+                changedialog:{
                     show:false
                 }
             }
@@ -259,6 +268,9 @@
             },
             refundorder(){
                 this.refunddialog.show=true;
+            },
+            changecost(){
+                this.changedialog.show=true;
             }
         },
         computed: {
