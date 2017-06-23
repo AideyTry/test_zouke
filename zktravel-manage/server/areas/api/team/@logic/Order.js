@@ -21,7 +21,7 @@ module.exports = class Order extends BaseOrder {
         const list = await cursor.toArray();
 
         return { 
-            count, 
+            count,
             list: list.map(item=>{
                 return {
                     orderId: item._id,
@@ -33,6 +33,46 @@ module.exports = class Order extends BaseOrder {
                 };
             })
         };
+    }
+
+    //查找当前用户所有需要开发票的订单
+    async queryNeedVoucher(uid, page=0, pageSize=10){
+        const collection = await this.$getCollection();
+
+        //查询条件
+        const query = {
+            'creator.id': uid,
+            'voucher_detail': { $ne: null }
+        }
+
+        //符合条件的订单总条数
+        const count = await collection.find(query).count();
+
+        const cursor = collection.find(query, {
+            'requirement.user.name': 1,
+            'requirement.priority': 1,
+            'requirement.start_date': 1,
+            'status': 1,
+            'create_time': 1
+        }).skip(page*pageSize).limit(pageSize);
+
+        //在数据量比较小的情况下直接转数组，否则应该是遍历push
+        const list = await cursor.toArray();
+
+        return {
+            count,
+            list: list.map(item=>{
+                return {
+                    orderId: item._id,
+                    userName: item.requirement.user.name,
+                    priority: item.requirement.priority,
+                    startDate: item.requirement.start_date,
+                    status: item.status,
+                    publishTime: item.create_time
+                };
+            })
+        }
+
     }
     async detail(id){
         const collection = await this.$getCollection();
