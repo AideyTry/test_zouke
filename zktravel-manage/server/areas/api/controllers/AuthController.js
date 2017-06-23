@@ -1,5 +1,4 @@
 const SController = requireRoot('common/SController');
-const qrcode = require('qrcode');
 const { DEBUG, PORT, DES_PWD } = requireRoot('env');
 const loginUrl = `http://${DEBUG?'wx.test.zouke.com':'w.zouke.com'}/zksystem/auth/qr-login?port=${PORT}&path=trigger%2Fauth%2Flogin`;
 
@@ -11,7 +10,7 @@ const des = new DES(DES_PWD);
 const User = requireRoot('service/user/User');
 
 module.exports = class AuthController extends SController{
-    async qrCode(){
+    qrCode(){
         if(this.session.uid){
             //已有uid
             return this.throw(404);
@@ -25,21 +24,7 @@ module.exports = class AuthController extends SController{
         
         console.log('========== qr-url', url);
 
-        return new Promise((r,j)=>{
-            qrcode.toString(
-                url,
-                {
-                    type: 'svg'
-                },
-                (err, string)=>{
-                    if(err) j(err);
-                    else{
-                        this.renderSVG(string);
-                        r();
-                    }
-                }
-            );
-        });
+        return this.renderQR(url);
     }
     // uid | code/codeExpries 互斥
     async isLogin(){
