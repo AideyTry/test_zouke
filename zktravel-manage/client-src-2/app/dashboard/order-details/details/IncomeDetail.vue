@@ -119,7 +119,7 @@
         <div class="divline"></div>
         <div class="card">
             <div class="title">退款流水
-                <el-button type="danger" style="float: right" @click="">
+                <el-button type="danger" style="float: right" @click="refundorder">
                     退款
                 </el-button>
             </div>
@@ -170,16 +170,18 @@
                 </el-table>
             </div>
         </div>
-        <paymentdialog ref="dialogroup" :dialog="dialog" @closedialog="closedialog"></paymentdialog>
-
+        <paymentdialog @loadorder="loadorder" ref="dialogroup" :dialog="dialog" @closedialog="closedialog"></paymentdialog>
+        <refunddialog @loadorder="loadorder" ref="refund" :dialog="refunddialog" @closedialog="closedialog"></refunddialog>
     </div>
 </template>
 <script>
     import ajax  from '@local/common/ajax';
     import payment from '../dialogs/PaymentDialog'
+    import refund from '../dialogs/RefundDialog'
     export default{
         components: {
-            paymentdialog: payment
+            paymentdialog: payment,
+            refunddialog:refund
         },
         data(){
             return {
@@ -198,6 +200,9 @@
                     currency: '欧元',
                     money: 0,
                     id: ''
+                },
+                refunddialog:{
+                    show:false
                 }
             }
         },
@@ -227,6 +232,7 @@
                                 message: '已提交付款信息',
                                 type: 'success'
                             });
+                            this.loadorder();
                         }
                     }
                 )
@@ -250,6 +256,9 @@
             },
             markpayment(){
                 this.$refs.dialogroup.dialog2.show = true;
+            },
+            refundorder(){
+                this.refunddialog.show=true;
             }
         },
         computed: {
