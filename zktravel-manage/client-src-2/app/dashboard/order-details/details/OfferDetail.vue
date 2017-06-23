@@ -10,7 +10,7 @@
 </style>
 <template>
     <div>
-        <div  class="offer-detail-container">
+        <div v-if="offlineRole.UPDATE_PRICE||offlineRole.CHECK_PRICE" class="offer-detail-container">
             <el-row style="height: 40px" type="flex">
                 <el-col :span="9">
                     <h4>报价详情</h4>
