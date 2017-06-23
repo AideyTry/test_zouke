@@ -88,7 +88,7 @@
                     <orderDetail v-if="orderdata&&activetabs=='order-detail'" :orderData="orderdata"></orderDetail>
                 </el-tab-pane>
                 <el-tab-pane label="收入/支出" name="in-out">
-                    <income-detail v-if="orderdata&&activetabs=='in-out'"></income-detail>
+                    <income-detail v-if="orderdata&&activetabs=='in-out'&&orderdatastatus>5"></income-detail>
                 </el-tab-pane>
                 <el-tab-pane label="开票记录" name="ticket-node">
                     <invoice-detail v-if="orderdata&&activetabs=='ticket-node'"></invoice-detail>

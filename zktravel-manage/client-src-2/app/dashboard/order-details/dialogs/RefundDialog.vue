@@ -37,7 +37,7 @@
                 <el-radio v-model="params.currency" label="人民币">人民币</el-radio>
             </el-form-item>
             <el-form-item label="退款金额">
-                <el-input placeholder="请填写退款金额" v-model="params.money"></el-input>
+                <el-input type="number" placeholder="请填写退款金额" v-model="params.money"></el-input>
             </el-form-item>
         </el-form>
         <div class="button-container">
