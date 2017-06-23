@@ -20,13 +20,13 @@ module.exports = class PayStream extends BaseOrder {
                 this.status.WAIT_FOR_PRICE_CHECK,
                 this.status.WAIT_FOR_PRICE_CONFIRM,
             ]}
-        }, { collection_info:1, status:1 });
+        }, { collection_info:1, status:1, allot_list:1 });
 
         //不存在
         if(!orderDoc) return false;
 
         //解构赋值拿到collection_info、status字段
-        const { collection_info, status:preStatus,allot_list } = orderDoc;
+        const { collection_info, status:preStatus, allot_list } = orderDoc;
 
         //构造pay_stream对象
         const pay_stream= {

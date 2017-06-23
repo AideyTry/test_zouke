@@ -23,7 +23,7 @@ module.exports = class AllotList extends BaseOrder {
             },
             $push: {
                 //日志记录
-                logs: this.$createShiftUpdate({ type: 'system:allot_list', time: this.$createTime(), user })
+                logs: this.$createShiftUpdate({ type: 'system:allot-list', time: this.$createTime(), user })
             }
         };
 
