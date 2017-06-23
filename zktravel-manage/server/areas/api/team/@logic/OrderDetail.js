@@ -51,7 +51,7 @@ module.exports = class OrderDetail extends BaseOrder {
                 "booking_user.id":user.id,
                 /**订单状态校验：in/nin **/
                  status:{ $in:[
-                     this.ststus.WAIT_FOR_GATHERING,
+                    this.status.WAIT_FOR_GATHERING,
                     this.status.WAIT_FOR_ROOM_PERSON,
                     this.status.WAIT_FOR_BOOKING
                 ]}
