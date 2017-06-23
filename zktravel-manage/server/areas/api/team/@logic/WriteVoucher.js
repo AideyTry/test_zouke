@@ -19,6 +19,9 @@ module.exports = class WriteVoucher extends BaseOrder {
 
     //数据入库
     async commit(id,user,voucher_obj){
+
+        voucher_obj["user"]=user;
+
         /**方法前面带$的说明是从父类继承来的**/
         return await this.$update(
             {
