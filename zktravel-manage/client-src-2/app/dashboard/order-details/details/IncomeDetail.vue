@@ -149,7 +149,7 @@
             </div>
             <el-row type="flex" class="computed">
                 <el-col style="text-align: right">
-                    <span>退款总额 ：€</span>
+                    <span>退款总额 ：{{refundmoney}}€</span>
                     <span>¥</span>
                 </el-col>
             </el-row>
@@ -288,14 +288,14 @@
             leftmoney(){
                 let pay=0;
                 let income=0;
-                if(this.order){
+                if(this.order&& this.order.user_policy){
                     this.order.user_policy.payment.forEach(
                         (v,k)=>{
                             pay+=v.price*1;
                         }
                     )
                 }
-                if(this.order){
+                if(this.order&& this.order.pay_stream){
                     this.order.pay_stream.forEach(
                         (v,k)=>{
                             income+=v.collection_info.money*1;
@@ -306,7 +306,7 @@
             },
             income(){
                 let income=0;
-                if(this.order){
+                if(this.order&&this.order.pay_stream){
                     this.order.pay_stream.forEach(
                         (v,k)=>{
                             income+=v.collection_info.money*1;
@@ -314,6 +314,17 @@
                     )
                 }
                 return income;
+            },
+            refundmoney(){
+                let money=0;
+                if(this.order&&this.order.refund_stream){
+                    this.order.refund_stream.forEach(
+                        (v,k)=>{
+                            money+=v.money*1
+                        }
+                    )
+                }
+                return money;
             }
         },
         mounted(){
