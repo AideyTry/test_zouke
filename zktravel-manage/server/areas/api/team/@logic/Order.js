@@ -43,7 +43,7 @@ module.exports = class Order extends BaseOrder {
         const query = {
             'creator.id': uid,
             'voucher_detail': { $ne: null }
-        }
+        };
 
         //符合条件的订单总条数
         const count = await collection.find(query).count();
