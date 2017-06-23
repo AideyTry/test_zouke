@@ -3,17 +3,6 @@ const WriteVoucher = require('../@logic/WriteVoucher');
 
 module.exports = class WriteVoucherController extends TeamController {
 
-    //约定许可证
-    $meta(){
-        return {
-            access: {
-                'commit': {
-                    'offline_order': this.P.OFFLINE_ORDER.GATHERING
-                }
-            }
-        }
-    }
-
     //填写发票
     async commit(id,voucher_obj){
         const writeVoucher = new WriteVoucher();
