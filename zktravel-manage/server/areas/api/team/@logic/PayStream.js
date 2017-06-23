@@ -33,7 +33,8 @@ module.exports = class PayStream extends BaseOrder {
             "collection_info":collection_info,
             "provider":provider,
             "extras":extras,
-            "paytime":paytime
+            "paytime":paytime,
+            "user":user
         };
 
         /**方法前面带$的说明是从父类继承来的**/
