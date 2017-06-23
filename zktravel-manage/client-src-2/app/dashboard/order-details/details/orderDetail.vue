@@ -109,8 +109,8 @@
                 </div>
             </el-card>
         </div>
-        <WriteOrder :orderData="orderData"></WriteOrder>
-        <RoomingList></RoomingList>
+        <WriteOrder v-if="offlineRole.UPDATE_ORDER&&orderStatus==8" :orderData="orderData"></WriteOrder>
+        <RoomingList v-if="offlineRole.UPDATE_ROOM_PERSON&&orderStatus==7"></RoomingList>
     </div>
 
 </template>
@@ -122,7 +122,7 @@
         props:["orderData"],
         data(){
             return {
-
+                orderdata:null
             }
         },
         components:{
@@ -132,9 +132,25 @@
         computed:{
             orderId(){
                 return this.$route.params.orderid;
+            },
+            offlineRole(){
+                return this.$store.getters.offlineRole;
+            },
+            orderStatus(){
+                if(this.orderdata){
+                    return this.orderdata.status;
+                }else {
+                    return 0
+                }
+
             }
         },
         methods:{
+            loadOrder(id){
+                ajax.post("/api/team/order/detail",{id:id}, {lock: false}).then(json=>{
+                    this.orderdata = json.detail;
+                })
+            },
             dateRange(a,b){
                 return new Date(a).getDate()-new Date(b).getDate();
             },
@@ -142,6 +158,7 @@
         },
         mounted(){
             this.dateRange();
+            this.loadOrder(this.$route.params.orderid);
         }
     }
 </script>

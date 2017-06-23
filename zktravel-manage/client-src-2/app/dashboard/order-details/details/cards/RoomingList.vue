@@ -15,13 +15,13 @@
 </style>
 <template>
     <div>
-        <template class="rooming">
+        <div class="rooming">
             <el-row type="flex">
                 <el-col :span="24" class="orderMsg">
                     <h4>暂无订单信息</h4>
                 </el-col>
             </el-row>
-        </template>
+        </div>
         <el-row type="flex">
             <el-col :span="2">
                 <h4>分房名单</h4>
