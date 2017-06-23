@@ -23,7 +23,7 @@
                         <strong>采购渠道<i class="red">*</i></strong>
                     </el-col>
                     <el-col :span="3">
-                        <el-select v-model="item.supplier_name" filterable placeholder="请选择">
+                        <el-select v-model="item.supplier_name" filterable placeholder="请选择" @change="supplierChange">
                             <el-option
                                     v-for="item in channel"
                                     :key="item.value"
@@ -143,6 +143,9 @@
                         }
 
                 });
+            },
+            supplierChange(value){
+                this.$commit("supplier",value);
             }
         },
         mounted(){

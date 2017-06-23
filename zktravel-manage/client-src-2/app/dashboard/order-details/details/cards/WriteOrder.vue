@@ -227,11 +227,12 @@
                 ],
                 purchase_channel:[
                     {
-                        supplier_name:'',
+                        supplier_name:'GTA',
                         total_cost:'',
-                        cancel_policy:{
-                            cannot_cancel:'',
-                            cancel:[
+                        cancel_policy:[{
+//                            cannot_cancel:'',
+                            cancel_name:'',
+                            cancel:
                                 {
                                     free_cancel_date:'',
                                     pay_cancel:{
@@ -239,8 +240,31 @@
                                         number:null
                                     }
                                 }
-                            ]
-                        },
+
+                        }],
+                        pay_policy:[
+                            {
+                                pay_date:'',
+                                number:null
+                            }
+                        ]
+                    },
+                    {
+                        supplier_name:'miki',
+                        total_cost:'',
+                        cancel_policy:[{
+//                            cannot_cancel:'',
+                            cancel_name:'',
+                            cancel:
+                                {
+                                    free_cancel_date:'',
+                                    pay_cancel:{
+                                        date:'',
+                                        number:null
+                                    }
+                                }
+
+                        }],
                         pay_policy:[
                             {
                                 pay_date:'',
@@ -248,6 +272,28 @@
                             }
                         ]
                     }
+//                    {
+//                        supplier_name:'miki',
+//                        total_cost:'',
+//                        cancel_policy:{
+//                            cannot_cancel:'',
+//                            cancel:[
+//                                {
+//                                    free_cancel_date:'',
+//                                    pay_cancel:{
+//                                        date:'',
+//                                        number:null
+//                                    }
+//                                }
+//                            ]
+//                        },
+//                        pay_policy:[
+//                            {
+//                                pay_date:'',
+//                                number:null
+//                            }
+//                        ]
+//                    }
                 ],
                 params: {
                     priority: 'A+',
@@ -306,6 +352,9 @@
         computed:{
             count(){
                 return this.$store.getters.count;
+            },
+            newSupplier(){
+                return this.$store.getters.supplier;
             }
         },
         methods:{
@@ -340,7 +389,7 @@
                     data => {
                         if (data.code == 0) {
                             this.$notify({
-                                title: '发布成功',
+                                title: '保存成功',
                                 message: '已成功发布，请到我的发布中查看',
                                 type: 'success'
                             });
@@ -356,8 +405,14 @@
             this.dateRange();
 
             this.loadOrder(this.$route.params.orderid);
+
+            console.log(this.purchase_channel);
+
         },
-        updated(){
+        beforeUpdate(){
+//            this.loadSupplier();
+            console.log(this.purchase_channel);
+            console.log(this.newSupplier);
         }
     }
 </script>
