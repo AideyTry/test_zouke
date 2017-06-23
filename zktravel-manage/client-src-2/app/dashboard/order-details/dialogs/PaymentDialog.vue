@@ -117,6 +117,7 @@
                                 message: '已提交付款信息',
                                 type: 'success'
                             });
+                            this.$emit('loadorder');
                         }
                     }
                 )
