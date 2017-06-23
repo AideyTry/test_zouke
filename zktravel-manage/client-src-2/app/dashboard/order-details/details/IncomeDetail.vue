@@ -119,7 +119,7 @@
         <div class="divline"></div>
         <div class="card">
             <div class="title">退款流水
-                <el-button type="danger" style="float: right">
+                <el-button type="danger" style="float: right" @click="">
                     退款
                 </el-button>
             </div>
@@ -153,7 +153,7 @@
         <div class="divline"></div>
         <div class="card">
             <div class="title">供应商成本流水
-                <el-button type="danger" style="float: right">
+                <el-button type="info" style="float: right">
                     修改成本
                 </el-button>
             </div>

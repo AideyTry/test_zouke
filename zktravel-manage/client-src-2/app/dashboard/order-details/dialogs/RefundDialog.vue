@@ -2,7 +2,7 @@
 
 </style>
 <template>
-    <el-dialog title="收款码"
+    <el-dialog title="填写退款信息"
                :visible.sync="dialog.show"
                size="tiny">
 
@@ -10,6 +10,11 @@
 </template>
 <script>
     export default{
+        props:['dialog'],
+        data(){
+            return{
 
+            }
+        }
     }
 </script>
