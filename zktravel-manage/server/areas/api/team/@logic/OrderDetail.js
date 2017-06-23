@@ -28,8 +28,8 @@ const orderRule = {
             "*total_cost":"总成本价",
             "*cancel_policy":null,
             "*pay_policy":[{
-                "pay_date":"需要支付",
-                "number":"数字"
+                "*pay_date":"需要支付",
+                "*number":"数字"
             }]
         },
         {min:1}

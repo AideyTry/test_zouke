@@ -75,7 +75,7 @@ function patchPriceDiff(old_stay_details, stay_details, price){
             }
         )
         if(sameDetailIndex===-1){
-            diff.push(null);
+            diff.push({from:null, length:detail.rooms.length});
             continue;
         }
 
@@ -106,19 +106,23 @@ function patchPriceDiff(old_stay_details, stay_details, price){
         };
 
         for(const diffDetail of diff){
-            if(diffDetail === null){
-                nc.price.push({ hotel:{}, rooms: []});
+            if(diffDetail.from === null){
+                const empty = { hotel:{}, rooms: [] };
+                for(let i=0; i<diffDetail.length; ++i){
+                    empty.rooms.push({price:{ 'cost': 0, 'bk': 0, 'quoted': 0  }});
+                }
+                nc.price.push(empty);
                 continue;
             }
             const { from, rooms } = diffDetail;
-            const p = c.price[from];
+            const p = c.price[from]||{};
             const np = { hotel: p.hotel, rooms: [] };
             for(room of rooms){
                 if(room===null){
-                    np.rooms.push({price:{ cost:0, bk:0, quoted:0 }});
+                    np.rooms.push({price:{ 'cost': 0, 'bk': 0, 'quoted': 0  }});
                     continue;
                 }
-                np.rooms.push(p.rooms[room.from]);
+                np.rooms.push(p.rooms[room.from]||{price:{ 'cost': 0, 'bk': 0, 'quoted': 0 }});
             }
             nc.price.push(np);
         }
