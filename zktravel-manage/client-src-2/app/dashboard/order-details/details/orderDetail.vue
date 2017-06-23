@@ -27,7 +27,8 @@
 <template>
     <div>
         <WriteOrder v-if="offlineRole.UPDATE_ORDER&&orderStatus==8" :orderData="orderData"></WriteOrder>
-        <RoomingList v-if="offlineRole.UPDATE_ROOM_PERSON&&orderStatus>6"></RoomingList>
+        <RoomingList v-if="orderStatus==6"></RoomingList>
+        <RoomingList v-if="orderStatus==7"></RoomingList>
         <ControlHouse></ControlHouse>
     </div>
 
