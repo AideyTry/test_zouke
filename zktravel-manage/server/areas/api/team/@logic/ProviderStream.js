@@ -10,7 +10,7 @@ module.exports = class ProviderStream extends BaseOrder {
 
     //供应商对象校验
     validProviderObj(provider_obj){
-        return compare(objRule, provider_obj);
+        return compare(objRule, provider_obj,{strict:true});
     }
 
     //退款
