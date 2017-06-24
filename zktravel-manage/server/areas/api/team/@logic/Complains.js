@@ -14,14 +14,12 @@ module.exports = class Complains extends BaseOrder {
             },
             {
                 //插入数据
-                $set:{
-                    Complain_content:{
+                $push: {
+                    complain_content:{
                         "content":content,
                         "date":this.$createTime()
 
                     },
-                },
-                $push: {
                     //日志记录
                     logs: this.$createShiftUpdate({ type: 'user:complain_content', time: this.$createTime(), user })
                 }
