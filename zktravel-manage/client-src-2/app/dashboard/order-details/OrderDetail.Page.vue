@@ -138,10 +138,9 @@
                                v-if="activetabs=='ticket-node'">填写发票
                     </el-button>
                     <!--待控房订房员订单start-->
-                    <el-button type="success" @click="showdialog(8)" size="small"
-                               v-if="userole.UPDATE_PRICE&&activetabs=='offer-node'&&orderdatastatus==8" >保存
-
-                    </el-button>
+                    <!--<el-button type="success" @click="saveOrder" size="small"-->
+                               <!--v-if="userole.UPDATE_ORDER&&orderdatastatus==8" >保存-->
+                    <!--</el-button>-->
                     <!--待控房订房员订单start-->
                 </div>
                 <div class="dialog-group">
@@ -416,7 +415,12 @@
                         }
                     }
                 )
+            },
+            /*保存订单start*/
+            saveOrder(){
+                console.log(111);
             }
+            /*保存订单end*/
         },
         computed: {
             orderid(){

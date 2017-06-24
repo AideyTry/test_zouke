@@ -50,6 +50,13 @@
                     <el-col :span="4">
                         <h4>订单信息</h4>
                     </el-col>
+                    <el-col :span="18">
+
+                    </el-col>
+                    <el-col :span="2">
+                        <el-button type="success" @click="submitform" size="small">保存
+                        </el-button>
+                    </el-col>
                 </el-row>
                 <el-tabs v-model="cityTabs" type="border-card" :active-name="cityTabs" @tab-click="hotelTab">
                     <template v-for="(item,index) in orders">
@@ -71,8 +78,7 @@
                     </template>
                 </el-tabs>
             </div>
-            <el-button type="success" @click="submitform" size="small">保存
-            </el-button>
+
             <PurchaseChannelsCard :purchase_channel="purchase_channel"></PurchaseChannelsCard>
         </div>
     </div>

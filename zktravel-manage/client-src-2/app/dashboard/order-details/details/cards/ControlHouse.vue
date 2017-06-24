@@ -89,9 +89,35 @@
             <el-row type="flex" slot="header" class="clearfix">
                 <h4>用户条款</h4>
             </el-row>
-            <div class="">
-
-            </div>
+            <el-card class="">
+                <el-row type="flex">
+                    <el-col :span="5">
+                        <strong>订单金额</strong>
+                        <span>{{cost}}</span>
+                        €
+                    </el-col>
+                </el-row>
+                <el-row type="flex">
+                    <el-col :span="10">
+                        <el-row type="flex">
+                            <strong>取消政策</strong>
+                            <span>{{}}</span>
+                            <span>前可免费取消</span>
+                        </el-row>
+                    </el-col>
+                    <el-col :span="2"></el-col>
+                    <el-col :span="2"><strong>付款政策</strong></el-col>
+                    <el-col :span="8">
+                        <el-row type="flex">
+                            <span>分期付款</span>
+                        </el-row>
+                        <el-row type="flex">
+                            <span>{{}}</span>
+                            <span>需支付</span>
+                        </el-row>
+                    </el-col>
+                </el-row>
+            </el-card>
         </el-card>
     </div>
 </template>
@@ -100,7 +126,8 @@
     export default{
         data(){
             return {
-                orderData:null
+                orderData:null,
+
             }
         },
         computed:{
@@ -116,12 +143,28 @@
             },
             newOrderData(){
                 return this.orderData.order_detail.orders;
+            },
+            cost(){
+                let arr= this.orderData.price.cases||[];
+                let num=0;
+                let cost=0;
+                arr.forEach(
+                    (v,k)=>{
+                        v.price[k].rooms.forEach(
+                            (a,b)=>{
+                                cost+=a.price.cost;
+                            }
+                        )
+                    }
+                )
+                return cost;
             }
         },
         methods:{
             loadOrder(id){
                 ajax.post("/api/team/order/detail",{id:id}, {lock: false}).then(json=>{
                     this.orderData = json.detail;
+                    console.log(this.orderData);
                 })
             },
             dateRange(a,b){
