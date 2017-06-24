@@ -2,12 +2,12 @@ const BaseOrder = require('./BaseOrder');
 const compare = require('@local/compare');
 
 const voucherRule = {
-    "*company":"公司名",
-    "*country":"国家名",
-    "*address":"地址",
-    "*voucher_type":"发票类型",
-    "*currency":"币种",
-    "*money":"金额"
+    // "*company":"公司名",
+    // "*country":"国家名",
+    // "*address":"地址",
+    // "*voucher_type":"发票类型",
+    // "*currency":"币种",
+    // "*money":"金额"
 };
 
 module.exports = class WriteVoucher extends BaseOrder {
