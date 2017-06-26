@@ -5,7 +5,7 @@ module.exports = class ComplainsController extends TeamController {
 
     //填写发票
     async commit(id,content){
-        if(!content){
+        if(!content || content.trim() === ''){
             return this.renderJSON({ code:1, msg: 'data check valid fail' });
         }
         const complains = new Complains();
