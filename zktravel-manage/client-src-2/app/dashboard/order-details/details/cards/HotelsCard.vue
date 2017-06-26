@@ -102,12 +102,13 @@
             },
             /*search end*/
             addHotel(){
+                console.log("add",this.item);
                 this.item.push({
                     hotel:{
                         name:''
                     },
                     remark_confirm:'',
-                    suppliers:[
+                    suppliers:
                         {
                             supplier_name:'',
                             at_number:'',
@@ -128,7 +129,6 @@
                                 }
                             ]
                         }
-                    ],
                 });
                 this.$commit("addCount");
             },

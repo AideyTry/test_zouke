@@ -60,7 +60,7 @@
                 </el-row>
                 <el-tabs v-model="cityTabs" type="border-card" :active-name="cityTabs" @tab-click="hotelTab">
                     <template v-for="(item,index) in orders">
-                        <el-tab-pane :label="item.city.name" :name="item.city.name">
+                        <el-tab-pane :label="item.city.name" :name="item.city.name+index">
                             <div class="city">
                                 <el-row type="flex">
                                     <el-col :span="2">
@@ -229,8 +229,42 @@
                                     }
                             }
                         ]
+                    },
+                    {
+                        check_in:'',
+                        check_out:'',
+                        hotels:[
+                            {
+                                hotel:{
+                                    name:''
+                                },
+                                remark_confirm:'',
+                                suppliers:
+                                    {
+                                        supplier_name:'',
+                                        at_number:'',
+                                        room_type:'',
+                                        status:1,
+                                        rooms:[
+                                            {
+                                                type:'Single',
+                                                number:1,
+                                                room_description:'',
+                                                peoples:[
+                                                    {
+                                                        name:'',
+                                                        family_name:'',
+                                                        gender:''
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                            }
+                        ]
                     }
-                ],
+                ]
+                ,
                 purchase_channel:[
                     {
                         supplier_name:'GTA',
@@ -359,22 +393,38 @@
             },
             newSupplier(){
                 return this.$store.getters.supplier;
+            },
+            arr(){
+                this.orders=this.orderData.requirement.stay_details;
+                let newObj=this.country[0];
+                let arr=[];
+                for(let i=0;i<this.orders.length;i++){
+                    arr.push(newObj);
+                }
+                return arr;
             }
         },
         methods:{
             loadOrder(id){
-                ajax.post("/api/team/order/detail",{id:id}).then(json=>{
-                    this.params=json.detail.requirement;
-                    this.orders=json.detail.requirement.stay_details;
-//                    this.orders.orderid=1;
+//                ajax.post("/api/team/order/detail",{id:id}).then(json=>{
+//                    this.params=json.detail.requirement;
+                    this.orders=this.orderData.requirement.stay_details;
+//                    console.log("orders=",this.orders);
+//                    let newObj=this.country[0];
+//                    let arr=[];
+//                    for(let i=0;i<this.orders.length;i++){
+//                        arr.push(newObj);
+//                    }
+//                    console.log("arr=",arr);
+////                    this.orders.orderid=1;
                     for(let key in this.orders){
                         this.orders[key].hotels=this.country[key].hotels;
                     }
 //                    this.orders.order_id=this.$route.params.orderid;
-                    this.cityTabs=json.detail.requirement.stay_details[0].city.name;
+                    this.cityTabs=this.orders[0].city.name+'0';
                     this.order.orders=this.orders;
                     this.order.suppliers=this.purchase_channel;
-                })
+//                })
             },
             hotelTab(){
 
@@ -407,16 +457,11 @@
 
         mounted(){
             this.dateRange();
+            this.loadOrder();
 
-            this.loadOrder(this.$route.params.orderid);
-
-            console.log(this.purchase_channel);
-
-        },
-        beforeUpdate(){
-//            this.loadSupplier();
-            console.log(this.purchase_channel);
-            console.log(this.newSupplier);
         }
+//        beforeUpdate(){
+//
+//        }
     }
 </script>

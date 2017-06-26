@@ -130,16 +130,19 @@
 
             },
             addRooms(){
+                console.log("rooms=",this.item.rooms);
                 this.item.rooms.push(                 {
                     type:'Single',
                     number:1,
                     room_description:'',
-                    peoples:
+                    peoples:[
                         {
                             name:'',
                             family_name:'',
                             gender:''
                         }
+                    ]
+
 
                 });
             },
