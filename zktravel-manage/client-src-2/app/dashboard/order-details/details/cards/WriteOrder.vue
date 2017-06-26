@@ -50,10 +50,17 @@
                     <el-col :span="4">
                         <h4>订单信息</h4>
                     </el-col>
+                    <el-col :span="18">
+
+                    </el-col>
+                    <el-col :span="2">
+                        <el-button type="success" @click="submitform" size="small">保存
+                        </el-button>
+                    </el-col>
                 </el-row>
                 <el-tabs v-model="cityTabs" type="border-card" :active-name="cityTabs" @tab-click="hotelTab">
                     <template v-for="(item,index) in orders">
-                        <el-tab-pane :label="item.city.name" :name="item.city.name">
+                        <el-tab-pane :label="item.city.name" :name="item.city.name+index">
                             <div class="city">
                                 <el-row type="flex">
                                     <el-col :span="2">
@@ -71,8 +78,7 @@
                     </template>
                 </el-tabs>
             </div>
-            <el-button type="success" @click="submitform" size="small">保存
-            </el-button>
+
             <PurchaseChannelsCard :purchase_channel="purchase_channel"></PurchaseChannelsCard>
         </div>
     </div>
@@ -101,7 +107,7 @@
                                     name:''
                                 },
                                 remark_confirm:'',
-                                suppliers:[
+                                suppliers:
                                     {
                                         supplier_name:'',
                                         at_number:'',
@@ -122,7 +128,6 @@
                                             }
                                         ]
                                     }
-                                ],
                             }
                         ]
                     },
@@ -135,7 +140,7 @@
                                     name:''
                                 },
                                 remark_confirm:'',
-                                suppliers:[
+                                suppliers:
                                     {
                                         supplier_name:'',
                                         at_number:'',
@@ -156,7 +161,6 @@
                                             }
                                         ]
                                     }
-                                ],
                             }
                         ]
                     },
@@ -169,7 +173,7 @@
                                     name:''
                                 },
                                 remark_confirm:'',
-                                suppliers:[
+                                suppliers:
                                     {
                                         supplier_name:'',
                                         at_number:'',
@@ -190,7 +194,6 @@
                                             }
                                         ]
                                     }
-                                ],
                             }
                         ]
                     },
@@ -203,7 +206,7 @@
                                     name:''
                                 },
                                 remark_confirm:'',
-                                suppliers:[
+                                suppliers:
                                     {
                                         supplier_name:'',
                                         at_number:'',
@@ -224,7 +227,6 @@
                                             }
                                         ]
                                     }
-                                ],
                             }
                         ]
                     },
@@ -237,7 +239,7 @@
                                     name:''
                                 },
                                 remark_confirm:'',
-                                suppliers:[
+                                suppliers:
                                     {
                                         supplier_name:'',
                                         at_number:'',
@@ -258,128 +260,26 @@
                                             }
                                         ]
                                     }
-                                ],
-                            }
-                        ]
-                    },
-                    {
-                        check_in:'',
-                        check_out:'',
-                        hotels:[
-                            {
-                                hotel:{
-                                    name:''
-                                },
-                                remark_confirm:'',
-                                suppliers:[
-                                    {
-                                        supplier_name:'',
-                                        at_number:'',
-                                        room_type:'',
-                                        status:1,
-                                        rooms:[
-                                            {
-                                                type:'Single',
-                                                number:1,
-                                                room_description:'',
-                                                peoples:[
-                                                    {
-                                                        name:'',
-                                                        family_name:'',
-                                                        gender:''
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ],
-                            }
-                        ]
-                    },
-                    {
-                        check_in:'',
-                        check_out:'',
-                        hotels:[
-                            {
-                                hotel:{
-                                    name:''
-                                },
-                                remark_confirm:'',
-                                suppliers:[
-                                    {
-                                        supplier_name:'',
-                                        at_number:'',
-                                        room_type:'',
-                                        status:1,
-                                        rooms:[
-                                            {
-                                                type:'Single',
-                                                number:1,
-                                                room_description:'',
-                                                peoples:[
-                                                    {
-                                                        name:'',
-                                                        family_name:'',
-                                                        gender:''
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ],
-                            }
-                        ]
-                    },
-                    {
-                        check_in:'',
-                        check_out:'',
-                        hotels:[
-                            {
-                                hotel:{
-                                    name:''
-                                },
-                                remark_confirm:'',
-                                suppliers:[
-                                    {
-                                        supplier_name:'',
-                                        at_number:'',
-                                        room_type:'',
-                                        status:1,
-                                        rooms:[
-                                            {
-                                                type:'Single',
-                                                number:1,
-                                                room_description:'',
-                                                peoples:[
-                                                    {
-                                                        name:'',
-                                                        family_name:'',
-                                                        gender:''
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ],
                             }
                         ]
                     }
-                ],
+                ]
+                ,
                 purchase_channel:[
                     {
-                        supplier_name:'',
+                        supplier_name:'GTA',
                         total_cost:'',
                         cancel_policy:{
-                            cannot_cancel:'',
-                            cancel:[
+                            cancel_name:'',
+                            cancel:
                                 {
                                     free_cancel_date:'',
-                                    pay_cancel:{
+                                    pay_cancel:[{
                                         date:'',
                                         number:null
-                                    }
+                                    }]
                                 }
-                            ]
+
                         },
                         pay_policy:[
                             {
@@ -387,7 +287,51 @@
                                 number:null
                             }
                         ]
-                    }
+                    },
+                    {
+                        supplier_name:'miki',
+                        total_cost:'',
+                        cancel_policy:{
+                            cancel_name:'',
+                            cancel:
+                                {
+                                    free_cancel_date:'',
+                                    pay_cancel:[{
+                                        date:'',
+                                        number:null
+                                    }]
+                                }
+
+                        },
+                        pay_policy:[
+                            {
+                                pay_date:'',
+                                number:null
+                            }
+                        ]
+                    },
+//                    {
+//                        supplier_name:'miki',
+//                        total_cost:'',
+//                        cancel_policy:{
+//                            cannot_cancel:'',
+//                            cancel:[
+//                                {
+//                                    free_cancel_date:'',
+//                                    pay_cancel:{
+//                                        date:'',
+//                                        number:null
+//                                    }
+//                                }
+//                            ]
+//                        },
+//                        pay_policy:[
+//                            {
+//                                pay_date:'',
+//                                number:null
+//                            }
+//                        ]
+//                    }
                 ],
                 params: {
                     priority: 'A+',
@@ -446,22 +390,41 @@
         computed:{
             count(){
                 return this.$store.getters.count;
+            },
+            newSupplier(){
+                return this.$store.getters.supplier;
+            },
+            arr(){
+                this.orders=this.orderData.requirement.stay_details;
+                let newObj=this.country[0];
+                let arr=[];
+                for(let i=0;i<this.orders.length;i++){
+                    arr.push(newObj);
+                }
+                return arr;
             }
         },
         methods:{
             loadOrder(id){
-                ajax.post("/api/team/order/detail",{id:id}).then(json=>{
-                    this.params=json.detail.requirement;
-                    this.orders=json.detail.requirement.stay_details;
-//                    this.orders.orderid=1;
+//                ajax.post("/api/team/order/detail",{id:id}).then(json=>{
+//                    this.params=json.detail.requirement;
+                    this.orders=this.orderData.requirement.stay_details;
+//                    console.log("orders=",this.orders);
+//                    let newObj=this.country[0];
+//                    let arr=[];
+//                    for(let i=0;i<this.orders.length;i++){
+//                        arr.push(newObj);
+//                    }
+//                    console.log("arr=",arr);
+////                    this.orders.orderid=1;
                     for(let key in this.orders){
                         this.orders[key].hotels=this.country[key].hotels;
                     }
 //                    this.orders.order_id=this.$route.params.orderid;
-                    this.cityTabs=json.detail.requirement.stay_details[0].city.name;
+                    this.cityTabs=this.orders[0].city.name+'0';
                     this.order.orders=this.orders;
                     this.order.suppliers=this.purchase_channel;
-                })
+//                })
             },
             hotelTab(){
 
@@ -480,7 +443,7 @@
                     data => {
                         if (data.code == 0) {
                             this.$notify({
-                                title: '发布成功',
+                                title: '保存成功',
                                 message: '已成功发布，请到我的发布中查看',
                                 type: 'success'
                             });
@@ -494,10 +457,11 @@
 
         mounted(){
             this.dateRange();
+            this.loadOrder();
 
-            this.loadOrder(this.$route.params.orderid);
-        },
-        updated(){
         }
+//        beforeUpdate(){
+//
+//        }
     }
 </script>

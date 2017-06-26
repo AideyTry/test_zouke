@@ -18,6 +18,7 @@ const store = new Vuex.Store({
         /*待控放start*/
         count:2,
         selectRoom:0,
+        supplier:'',
         /*待控放end*/
         /*用户权限管理*/
         offlineRole:null,
@@ -38,6 +39,9 @@ const store = new Vuex.Store({
         },
         selectRoom(state){
             return state.selectRoom;
+        },
+        supplier(state){
+            return state.supplier;
         },
         /*待控放end*/
         offlineRole(state){
@@ -72,6 +76,9 @@ const store = new Vuex.Store({
         },
         selectRoom(state){
             state.selectRoom=++selectRoom;
+        },
+        supplier(state,supplier_name){
+            state.supplier=supplier_name;
         }
         /*待控放end*/
     },

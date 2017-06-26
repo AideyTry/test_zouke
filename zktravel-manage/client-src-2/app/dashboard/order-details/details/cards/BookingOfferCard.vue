@@ -204,6 +204,9 @@
                 )
                 return cost;
             }
+        },
+        mounted(){
+            console.log(this.tab);
         }
     }
 </script>
