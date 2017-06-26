@@ -6,8 +6,6 @@ module.exports = class AllotList extends BaseOrder {
     async allot_list(id,user,content){
 
         const collection = await this.$getCollection();
-
-
         //看该订单是否已付款
         const notHavePaystream = !!(await collection.findOne({
             '_id': id,

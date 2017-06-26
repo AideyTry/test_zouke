@@ -19,9 +19,7 @@ module.exports = class RefundStream extends BaseOrder {
 
     //退款
     async refund(id,user,refund_obj){
-
         refund_obj["user"] = user;
-
         /**方法前面带$的说明是从父类继承来的**/
         return await this.$update(
             {

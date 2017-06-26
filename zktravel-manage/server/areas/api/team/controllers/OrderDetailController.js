@@ -25,7 +25,6 @@ module.exports = class OrderDetailController extends TeamController {
         if(!order_obj){
             return this.renderJSON({ code:1, msg: 'data check valid fail' });
         }
-
         const result = await orderDetail.update(user,id,order_obj);
         //数据库操作失败
         if(!result){
