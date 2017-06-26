@@ -29,7 +29,7 @@
         </el-row>
         <el-row type="flex">
             <!--<el-form-item>-->
-                <el-input type="textarea" v-model="content"></el-input>
+                <el-input type="textarea" v-model="content" :disabled="isTrue"></el-input>
             <!--</el-form-item>-->
         </el-row>
         <el-button type="info" @click="submitform" size="small">保存
@@ -39,12 +39,22 @@
 <script>
     import ajax from '@local/common/ajax';
     export default{
+        props:["orderData"],
         data(){
             return {
-                    content:''
+                    content:'',
+                    newContent:'',
+                    isTrue:false
             }
         },
         methods:{
+            loadform(){
+                if(this.orderData.allot_list){
+                    this.newContent=this.orderData.allot_list.content;
+                    this.content=this.newContent;
+                    console.log("分房",this.content);
+                }
+                    },
             submitform(){
                 if(this.content.length===0){
                     this.$message({
@@ -57,16 +67,19 @@
                             if (data.code == 0) {
                                 this.$notify({
                                     title: '保存成功',
-                                    message: '已保存成功',
+                                    message: '已保存成功,请到订房员处查看',
                                     type: 'success'
                                 });
 //                            this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'require-node'}});
                             }
                         }
                     )
-                    this.content='';
+                    this.isTrue=true;
                 }
             }
+        },
+        mounted(){
+            this.loadform();
         }
     }
 </script>

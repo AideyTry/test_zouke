@@ -29,6 +29,7 @@
         <WriteOrder v-if="offlineRole.UPDATE_ORDER&&orderStatus==8" :orderData="orderData"></WriteOrder>
         <RoomingList v-if="orderStatus==6"></RoomingList>
         <RoomingList v-if="orderStatus==7"></RoomingList>
+        <RoomingList v-if="!offlineRole.UPDATE_ORDER&&orderStatus==8" :orderData="orderData"></RoomingList>
         <ControlHouse></ControlHouse>
     </div>
 
@@ -58,8 +59,8 @@
                 return this.$store.getters.offlineRole;
             },
             orderStatus(){
-                if(this.orderdata){
-                    return this.orderdata.status;
+                if(this.orderData){
+                    return this.orderData.status;
                 }else {
                     return 0
                 }
@@ -80,6 +81,8 @@
         mounted(){
             this.dateRange();
             this.loadOrder(this.$route.params.orderid);
+            console.log("待控放=",this.orderData);
+            console.log(this.orderStatus);
         }
     }
 </script>

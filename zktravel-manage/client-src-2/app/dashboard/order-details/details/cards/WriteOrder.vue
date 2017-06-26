@@ -81,6 +81,18 @@
 
             <PurchaseChannelsCard :purchase_channel="purchase_channel"></PurchaseChannelsCard>
         </div>
+        <el-row type="flex">
+            <h4>分房名单</h4>
+        </el-row>
+        <el-row type="flex">
+            <el-input
+                    type="textarea"
+                    :rows="5"
+                    v-model="orderData.allot_list.content"
+                    :disabled="true">
+
+            </el-input>
+        </el-row>
     </div>
 </template>
 <script>
@@ -444,7 +456,7 @@
                         if (data.code == 0) {
                             this.$notify({
                                 title: '保存成功',
-                                message: '已成功发布，请到我的发布中查看',
+                                message: '已成功发布，请到已控房中查看',
                                 type: 'success'
                             });
 //                            this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'require-node'}});
@@ -458,6 +470,7 @@
         mounted(){
             this.dateRange();
             this.loadOrder();
+            console.log("orderData=",this.orderData);
 
         }
 //        beforeUpdate(){
