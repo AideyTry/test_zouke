@@ -5,6 +5,9 @@ module.exports = class ComplainsController extends TeamController {
 
     //填写发票
     async commit(id,content){
+        if(content === null || content === ''){
+            return this.renderJSON({ code:1, msg: 'data check valid fail' });
+        }
         const complains = new Complains();
         //拿到当前用户信息，更新表的时候做id校验
         let user = this.$getUser();
