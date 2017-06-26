@@ -24,7 +24,6 @@ const orderRule = {
     ],
     "*suppliers":[
         {
-            "*supplier_name":"渠道名",
             "*total_cost":"总成本价",
             "*cancel_policy":null,
             "*pay_policy":[{
