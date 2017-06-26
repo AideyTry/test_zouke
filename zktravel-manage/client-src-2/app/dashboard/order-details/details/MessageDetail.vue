@@ -202,7 +202,7 @@
                     }
                     this.currentList=Object.assign({},arr);
                     this.total=this.list.length;
-                });
+                })
             },
             btn(){
                 this.newMsg=this.msg;
@@ -230,18 +230,13 @@
                     }
                 }
                 this.currentList=arr;
-
             }
-
         },
-
         mounted(){
             this.loading(this.$route.params.orderid);
         },
         updated(){
 
         }
-
-
     }
 </script>
