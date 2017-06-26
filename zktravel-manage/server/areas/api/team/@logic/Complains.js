@@ -17,7 +17,8 @@ module.exports = class Complains extends BaseOrder {
                 $push: {
                     complain_content:{
                         "content":content,
-                        "date":this.$createTime()
+                        "date":this.$createTime(),
+                        "user":user
 
                     },
                     //日志记录
