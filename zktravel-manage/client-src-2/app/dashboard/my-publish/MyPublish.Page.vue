@@ -141,12 +141,16 @@
                             label="订单金额">
                     </el-table-column>
                     <el-table-column
+                            v-if="publishTimes"
                             sortable
                             prop="publishTime"
                             label="发布日期">
                     </el-table-column>
                 </el-table>
             </el-col>
+        </el-row>
+        <el-row type="flex">
+            <h1></h1>
         </el-row>
         <el-row type="flex">
             <el-col :span="14"></el-col>
@@ -170,6 +174,7 @@ export default{
         return{
             selectState:0,
             isTrue:true,
+            publishTimes:true,
             value1:"",
             value2:"",
             goOff:[
@@ -231,24 +236,34 @@ export default{
                     this.total=this.arr.length;
                 for(let obj of this.currentData){
                     if(obj.status===1){
+                        this.publishTimes=false;
                         obj.newStatus="待发布";
                     }else if(obj.status===2){
+                        this.publishTimes=true;
                         obj.newStatus="待分配"
                     }else if(obj.status===3){
+                        this.publishTimes=true;
                         obj.newStatus="报价中"
                     }else if(obj.status===4){
+                        this.publishTimes=true;
                         obj.newStatus="报价中"
                     }else if(obj.status===5){
+                        this.publishTimes=true;
                         obj.newStatus="待报价确认"
                     }else if(obj.status===6){
+                        this.publishTimes=true;
                         obj.newStatus="待收款"
                     }else if(obj.status===7){
+                        this.publishTimes=true;
                         obj.newStatus="分房待确认"
                     }else if(obj.status===8){
+                        this.publishTimes=true;
                         obj.newStatus="待控房"
                     }else if(obj.status===9){
+                        this.publishTimes=true;
                         obj.newStatus="已控房"
                     }else if(obj.status===10){
+                        this.publishTimes=true;
                         obj.status="需要开票"
                     }else if(obj.status===11){
                         obj.newStatus="待分配"

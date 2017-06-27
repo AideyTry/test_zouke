@@ -27,10 +27,9 @@
 <template>
     <div>
         <WriteOrder v-if="offlineRole.UPDATE_ORDER&&orderStatus==8" :orderData="orderData"></WriteOrder>
-        <RoomingList v-if="orderStatus==6"></RoomingList>
-        <RoomingList v-if="orderStatus==7"></RoomingList>
+        <RoomingList v-if="orderStatus==6||orderStatus==7" :orderData="orderData"></RoomingList>
         <RoomingList v-if="!offlineRole.UPDATE_ORDER&&orderStatus==8" :orderData="orderData"></RoomingList>
-        <ControlHouse></ControlHouse>
+        <ControlHouse :orderData="orderData" v-if="orderStatus>8"></ControlHouse>
     </div>
 
 </template>
@@ -81,8 +80,6 @@
         mounted(){
             this.dateRange();
             this.loadOrder(this.$route.params.orderid);
-            console.log("待控放=",this.orderData);
-            console.log(this.orderStatus);
         }
     }
 </script>

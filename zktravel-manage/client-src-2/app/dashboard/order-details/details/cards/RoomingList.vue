@@ -49,12 +49,11 @@
         },
         methods:{
             loadform(){
-                if(this.orderData.allot_list){
+                if(!!this.orderData.allot_list){
                     this.newContent=this.orderData.allot_list.content;
                     this.content=this.newContent;
-                    console.log("分房",this.content);
                 }
-                    },
+            },
             submitform(){
                 if(this.content.length===0){
                     this.$message({

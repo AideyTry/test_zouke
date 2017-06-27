@@ -279,29 +279,7 @@
                 ,
                 purchase_channel:[
                     {
-                        supplier_name:'GTA',
-                        total_cost:'',
-                        cancel_policy:{
-                            cancel_name:'',
-                            cancel:
-                                {
-                                    free_cancel_date:'',
-                                    pay_cancel:[{
-                                        date:'',
-                                        number:null
-                                    }]
-                                }
-
-                        },
-                        pay_policy:[
-                            {
-                                pay_date:'',
-                                number:null
-                            }
-                        ]
-                    },
-                    {
-                        supplier_name:'miki',
+                        supplier_name:'',
                         total_cost:'',
                         cancel_policy:{
                             cancel_name:'',
@@ -326,16 +304,16 @@
 //                        supplier_name:'miki',
 //                        total_cost:'',
 //                        cancel_policy:{
-//                            cannot_cancel:'',
-//                            cancel:[
+//                            cancel_name:'',
+//                            cancel:
 //                                {
 //                                    free_cancel_date:'',
-//                                    pay_cancel:{
+//                                    pay_cancel:[{
 //                                        date:'',
 //                                        number:null
-//                                    }
+//                                    }]
 //                                }
-//                            ]
+//
 //                        },
 //                        pay_policy:[
 //                            {
@@ -470,7 +448,6 @@
         mounted(){
             this.dateRange();
             this.loadOrder();
-            console.log("orderData=",this.orderData);
 
         }
 //        beforeUpdate(){
