@@ -142,7 +142,68 @@
         },
         methods:{
             loadSupplier(){
-                    this.supplier=this.newSupplier;
+                this.supplier=this.newSupplier;
+                switch(this.supplier){
+                    case '':
+                        this.supplier=null;
+                        break;
+                    case 'GTA':
+                        if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name==''){
+                            this.purchase_channel[0].supplier_name=this.supplier;
+                        }else if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='miki'){
+                            this.purchase_channel.push({
+                                supplier_name:'GTA',
+                                total_cost:'',
+                                cancel_policy:{
+                                    cancel_name:'',
+                                    cancel:
+                                        {
+                                            free_cancel_date:'',
+                                            pay_cancel:[{
+                                                date:'',
+                                                number:null
+                                            }]
+                                        }
+
+                                },
+                                pay_policy:[
+                                    {
+                                        pay_date:'',
+                                        number:null
+                                    }
+                                ]
+                            })
+                        }
+                        break;
+                    case 'miki':
+                        if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name==''){
+                            this.purchase_channel[0].supplier_name=this.supplier;
+                        }else if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='GTA'){
+                            this.purchase_channel.push({
+                                supplier_name:'miki',
+                                total_cost:'',
+                                cancel_policy:{
+                                    cancel_name:'',
+                                    cancel:
+                                        {
+                                            free_cancel_date:'',
+                                            pay_cancel:[{
+                                                date:'',
+                                                number:null
+                                            }]
+                                        }
+
+                                },
+                                pay_policy:[
+                                    {
+                                        pay_date:'',
+                                        number:null
+                                    }
+                                ]
+                            })
+                        }
+                        break;
+                }
             },
             addCancelPolicy(v){
                 console.log("v=",v);
@@ -162,12 +223,16 @@
 
             }
         },
+        watch:{
+            newSupplier(){
+                this.loadSupplier();
+            }
+        },
         mounted(){
             this.loadSupplier();
 //            this.loadSupplier();
-        },
-        beforeUpdate(){
-            this.loadSupplier();
+            console.log("supplier=",this.supplier);
+            console.log("渠道=",this.purchase_channel);
         }
     }
 </script>

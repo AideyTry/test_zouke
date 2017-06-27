@@ -27,9 +27,9 @@
 <template>
     <div>
         <WriteOrder v-if="offlineRole.UPDATE_ORDER&&orderStatus==8" :orderData="orderData"></WriteOrder>
-        <RoomingList v-if="orderStatus==6"></RoomingList>
-        <RoomingList v-if="orderStatus==7"></RoomingList>
-        <ControlHouse></ControlHouse>
+        <RoomingList v-if="orderStatus==6||orderStatus==7" :orderData="orderData"></RoomingList>
+        <RoomingList v-if="!offlineRole.UPDATE_ORDER&&orderStatus==8" :orderData="orderData"></RoomingList>
+        <ControlHouse :orderData="orderData" v-if="orderStatus>8"></ControlHouse>
     </div>
 
 </template>
@@ -58,8 +58,8 @@
                 return this.$store.getters.offlineRole;
             },
             orderStatus(){
-                if(this.orderdata){
-                    return this.orderdata.status;
+                if(this.orderData){
+                    return this.orderData.status;
                 }else {
                     return 0
                 }
