@@ -20,9 +20,7 @@ module.exports = class Complains extends BaseOrder {
                         "date":this.$createTime(),
                         "user":user
 
-                    },
-                    //日志记录
-                    logs: this.$createShiftUpdate({ type: 'user:complain_content', time: this.$createTime(), user })
+                    }
                 }
             }
         )
