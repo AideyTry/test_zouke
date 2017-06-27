@@ -5,11 +5,9 @@ const $$userInfo = Symbol('userInfo');
 const $$checkPermission = Symbol('checkPermission');
 
 module.exports = class LoginController extends SController {
-    //获得当前用户信息
     get userInfo(){
         return this[$$userInfo];
     }
-    //获得当前用户权限信息
     get P(){
         return this.userInfo.PERMISSION;
     }
@@ -26,7 +24,6 @@ module.exports = class LoginController extends SController {
         return true;
     }
 
-    //controller前校验
     async $beforeAction(){
         const result = await super.$beforeAction();
         if(result===false) return false;

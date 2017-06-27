@@ -145,7 +145,7 @@
                             sortable
                             prop="publishTime"
                             label="发布日期">
-                    </el-table-column>
+                    </el-table-column> 
                 </el-table>
             </el-col>
         </el-row>
@@ -271,6 +271,45 @@ export default{
                 }
             })
         },
+        voucherLoadding(){
+            let newArr=[];
+            ajax.post('/api/team/order/query-need-voucher',{page:0,pageSize:10}).then(json=>{
+                console.log(json);
+                this.arr=json.list;
+                    for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
+                        if(this.arr[num]){
+                            newArr.push(this.arr[num]);
+                        }
+                    }
+                    this.currentData=newArr;
+                    this.total=this.arr.length;
+                for(let obj of this.currentData){
+                    if(obj.status===1){
+                        obj.newStatus="待发布";
+                    }else if(obj.status===2){
+                        obj.newStatus="待分配"
+                    }else if(obj.status===3){
+                        obj.newStatus="报价中"
+                    }else if(obj.status===4){
+                        obj.newStatus="报价中"
+                    }else if(obj.status===5){
+                        obj.newStatus="待报价确认"
+                    }else if(obj.status===6){
+                        obj.newStatus="待收款"
+                    }else if(obj.status===7){
+                        obj.newStatus="分房待确认"
+                    }else if(obj.status===8){
+                        obj.newStatus="待控房"
+                    }else if(obj.status===9){
+                        obj.newStatus="已控房"
+                    }else if(obj.status===10){
+                        obj.status="需要开票"
+                    }else if(obj.status===11){
+                        obj.newStatus="待分配"
+                    }
+                }
+            })
+        },
         updateTab(){
             if(this.$route.path=="/dashboard/my-publish/wait-publish"){
                 this.status=1;
@@ -322,7 +361,7 @@ export default{
                 this.loadTable();
             }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
                 this.status=10;
-                this.loadTable();
+                this.voucherLoadding();
             }
         },
         changeTabNoneffective(tab){
@@ -397,6 +436,7 @@ export default{
     },
     mounted(){
         this.loadTable();
+        this.voucherLoadding();
         if(this.publish.isTrue){
             this.value2=this.sorts[0].value;
         }else{

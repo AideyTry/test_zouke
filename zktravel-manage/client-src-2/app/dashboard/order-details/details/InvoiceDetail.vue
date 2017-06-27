@@ -17,7 +17,7 @@
             border
             style="width: 100%">
         <el-table-column
-         		prop="invoicetype"
+         		prop="voucher_type"
                 label="发票类型">
         </el-table-column>
         <el-table-column
@@ -37,7 +37,7 @@
                 label="开票金额">
         </el-table-column>
         <el-table-column
-        		prop="caozuoren"
+        		prop="user.id"
                 label="操作人">
         </el-table-column>
         <el-table-column
@@ -47,7 +47,7 @@
         <el-table-column label="操作">
 			<template scope="scope">
 		        <el-button
-		          size="small" type="primary"
+		          size="small" type="primary"     
 		          >导出invoice</el-button>
       		</template>
         </el-table-column>
@@ -57,17 +57,23 @@
 </template>
 
 <script>
+import ajax  from '@local/common/ajax';
 	export default{
 		data(){
-				return {
-					myData:[
-				{invoicetype:'国内增值税',company:'上海走客科技',country:'中国',address:'牡丹路60号812室',money:'11122',caozuoren:'bbb',date:'2017-01-11'},
-				{invoicetype:'国内增值税',company:'上海走客科技',country:'中国',address:'牡丹路60号812室',money:'11122',caozuoren:'bbb',date:'2017-01-11'},
-				{invoicetype:'国内增值税',company:'上海走客科技',country:'中国',address:'牡丹路60号812室',money:'11122',caozuoren:'bbb',date:'2017-01-11'},
-				{invoicetype:'国内增值税',company:'上海走客科技',country:'中国',address:'牡丹路60号812室',money:'11122',caozuoren:'bbb',date:'2017-01-11'},
-				{invoicetype:'国内增值税',company:'上海走客科技',country:'中国',address:'牡丹路60号812室',money:'11122',caozuoren:'bbb',date:'2017-01-11'}
-			]	
-		}
-	}
+		      return {
+			     myData:[]
+		  }
+	},
+    methods:{
+        load(){
+            ajax.post('/api/team/order/detail',{id:this.$route.params.orderid}).then(data=>{
+                let arr = data.detail.voucher_detail;
+                 this.myData.push(arr);
+            })
+        }
+    },
+    created(){
+        this.load();
+    }
 }
 </script>

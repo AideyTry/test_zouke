@@ -81,8 +81,7 @@
         <el-row type="flex">
             <el-col :span="24">
                 <div v-for="item of currentList" :key="item" class="msgList">
-                    <span class="avatar">{{item.newType}}</span>
-                    <span>{{item.time}}</span>
+                    <span>{{item.date}}</span>
                     <span>{{item.user.name}}</span>
                     <span>{{item.content}}</span>
                     <el-row type="flex">
@@ -96,7 +95,6 @@
                        :page-size="pageSize">
 
         </el-pagination>
-
 </div>        
 </template>
 
@@ -113,9 +111,8 @@
                 total:null,
                 pageNum:1,
                 pageSize:10,
-                logs:{
-                    type:'',
-                    time:'',
+                complain_content:{
+                    content:'',
                     user:{
                         id:'',
                         name:'',
@@ -147,49 +144,18 @@
                 let arr=[];
 //                console.log("orderData=",this.orderData);
                 ajax.post("/api/team/order/detail",{id:id},{lock:false}).then(json=>{
+                    console.log(json);
 //                    console.log("logs=",json.detail.logs);
-                    this.logs=json.detail.logs;
-                   console.log("this.logs=",this.logs);
+                    this.complain_content=json.detail.complain_content;
+//                    console.log("this.logs=",this.logs);
                     this.pageNum=1;
-                    this.list=this.logs;
+                    this.list=this.complain_content;
                     this.list.reverse();
 //                    console.log("this.list=",this.list);
                     for(let v of this.list){
                         if(typeof(v.user)=='undefined'||!v.user){
                             v.user='';
                         }
-                     console.log(v.user);
-                        switch(v.type.split(":")[0]){
-                            case "system":
-                                v.newType=this.types.system;
-                                break;
-                            case "user":
-                                v.newType=this.types.user;
-                        }
-                        switch(v.type.split(":")[1]){
-                            case "dispatch-requirement":
-                                v.content=this.content.dispatchRequirement;
-                                break;
-                            case "update-requirement":
-                                v.content=this.content.updateRequirement;
-                                break;
-                            case "commit-price":
-                                v.content=this.content.commitPrice;
-                                break;
-                            case "reject-price":
-                                v.content=this.content.rejectPrice;
-                                break;
-                            case "resolve-price":
-                                v.content=this.content.resolvePrice;
-                                break;
-                            case "agree-price":
-                                v.content=this.content.agreePrice;
-                                break;
-                            case "message":
-                                v.content=v.message;
-                                break;
-                        }
-
                     }
                     for(let num=(this.pageNum-1)*this.pageSize;num<this.pageNum*this.pageSize;num++){
                         if(this.list[num]){
@@ -198,7 +164,7 @@
                     }
                     this.currentList=Object.assign({},arr);
                     this.total=this.list.length;
-                });
+                })
             },
             btn(){
                 this.newMsg=this.msg;
@@ -209,13 +175,10 @@
                     })
                 }else {
                     this.msg='';
-                    ajax.post("/api/team/order/log",{id:this.orderId,message:this.newMsg},{lock:false}).then(json=>{
+                    ajax.post("/api/team/complaints/commit",{id:this.orderId,content:this.newMsg},{lock:false}).then(json=>{
                         this.loading(this.orderId);
                     })
-//                    this.loading();
                 }
-
-
             },
             changePage(page){
                 let arr=[];
@@ -226,18 +189,13 @@
                     }
                 }
                 this.currentList=arr;
-
             }
-
         },
-
         mounted(){
             this.loading(this.$route.params.orderid);
         },
         updated(){
 
         }
-
-
     }
 </script>

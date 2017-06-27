@@ -7,7 +7,6 @@ module.exports = class PayStream extends BaseOrder {
 
         //得到collection对象
         const collection = await this.$getCollection();
-
         //根据条件查找orderDoc
         const orderDoc = await collection.findOne({
                 _id: id,

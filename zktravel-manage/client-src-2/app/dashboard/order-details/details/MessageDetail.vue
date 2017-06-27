@@ -156,7 +156,6 @@
 //                    console.log("this.logs=",this.logs);
                     this.pageNum=1;
                     this.list=this.logs;
-                    this.list.reverse();
 //                    console.log("this.list=",this.list);
                     for(let v of this.list){
                         if(typeof(v.user)=='undefined'||!v.user){
@@ -202,7 +201,7 @@
                     }
                     this.currentList=Object.assign({},arr);
                     this.total=this.list.length;
-                });
+                })
             },
             btn(){
                 this.newMsg=this.msg;
@@ -230,18 +229,13 @@
                     }
                 }
                 this.currentList=arr;
-
             }
-
         },
-
         mounted(){
             this.loading(this.$route.params.orderid);
         },
         updated(){
 
         }
-
-
     }
 </script>
