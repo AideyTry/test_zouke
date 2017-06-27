@@ -46,7 +46,7 @@ module.exports = class TeamReqController extends TeamController {
         }
     }
     async publish(){
-        await this[triggerInsert]('publish');
+        await this[triggerInsert]('publish',true);
     }
     async draft(){
         await this[triggerInsert]('draft',false);
