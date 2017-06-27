@@ -141,7 +141,7 @@
                 </el-input>
             </el-card>
         </div>
-        <RoomReservationCard v-if="orderStatus!=8&&choose==false"></RoomReservationCard>
+        <RoomReservationCard v-if="orderStatus!=8&&choose==false" :orderDatas="orderData"></RoomReservationCard>
     </div>
 </template>
 <script>
