@@ -28,22 +28,20 @@ module.exports = class TeamReqController extends TeamController {
         }
     }
     async [triggerInsert](name, needCheck){
-
+        
         const teamRequirement = new TeamRequirement();
-        if(!needCheck){
-            const id = await teamRequirement[name](this.request.body, this.$getUser());
-            this.renderJSON({ code: 0, orderId: id });
-        }else{
+        
+        if(needCheck){
             const requirement = teamRequirement.validRequirement(this.request.body);
 
             if(!requirement){
                 this.renderJSON({code:1, msg: 'data check valid fail'});
                 return;
             }
-
-            const id = await teamRequirement[name](requirement, this.$getUser());
-            this.renderJSON({ code: 0, orderId: id });
         }
+
+        const id = await teamRequirement[name](requirement, this.$getUser());
+        this.renderJSON({ code: 0, orderId: id }); 
     }
     async publish(){
         await this[triggerInsert]('publish',true);
