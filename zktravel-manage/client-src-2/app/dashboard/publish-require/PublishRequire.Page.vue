@@ -398,6 +398,11 @@
                                 type: 'success'
                             });
                             this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'require-node'}});
+                        }else if(data.code==1){
+                            this.$notify.error({
+                                title: '无法发布',
+                                message: '请将必填项填写完整~！'
+                            });
                         }
                     }
                 )
