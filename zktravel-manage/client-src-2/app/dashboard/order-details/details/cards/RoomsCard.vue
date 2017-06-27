@@ -1,8 +1,12 @@
 <style lang="scss" scoped>
-
+    .rooms{
+        .red{
+            color:#f00;
+        }
+    }
 </style>
 <template>
-    <div>
+    <div class="rooms">
         <el-row type="flex">
             <el-col :span="1"></el-col>
             <el-col :span="2">

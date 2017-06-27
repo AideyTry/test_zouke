@@ -1,8 +1,12 @@
 <style lang="scss" scoped>
-
+    .hotels{
+        .red{
+            color:#f00;
+        }
+    }
 </style>
 <template>
-    <div>
+    <div class="hotels">
         <el-form v-for="(v,index) in item" :key="v.suppliers" :model="myItem">
                 <el-row type="flex">
                     <el-col :span="2"><strong>酒店<i class="red">*</i></strong></el-col>
@@ -19,7 +23,7 @@
                     </el-col>
                     <el-col :span="3">
                         <span>B评分:</span>
-                        <span>{{}}</span>
+                        <span></span>
                     </el-col>
                     <el-col :span="2">
                         <el-button type="text" class="delete" @click="deleteHotel()">删除</el-button>

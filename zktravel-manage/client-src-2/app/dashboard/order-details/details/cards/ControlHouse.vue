@@ -148,11 +148,12 @@
     import ajax from '@local/common/ajax';
     import RoomReservationCard from './RoomReservationCard.vue'
     export default{
+        props:["orderData"],
         data(){
             return {
-                orderData:null,
+//                orderData:this.orederData,
                 change:false,
-                choose:true
+                choose:false
             }
         },
         components:{
@@ -207,7 +208,7 @@
         },
         mounted(){
             this.dateRange();
-            this.loadOrder(this.$route.params.orderid);
+//            this.loadOrder(this.$route.params.orderid);
         }
     }
 </script>

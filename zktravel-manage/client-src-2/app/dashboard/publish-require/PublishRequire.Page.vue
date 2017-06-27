@@ -210,7 +210,10 @@
             </el-row>
             <el-row v-if="!orderdata">
                 <el-col :span="2">
-                    <el-button type="success" @click="submitform">发布</el-button>
+                    <!--<el-button type="success" @click="submitform">发布</el-button>-->
+                    <!--修改后start-->
+                    <el-button type="success" @click="isTrue=true">发布</el-button>
+                    <!--修改后end-->
                 </el-col>
                 <el-col :span="1"></el-col>
                 <el-col :span="2">
@@ -219,6 +222,14 @@
                 <el-col :span="19"></el-col>
             </el-row>
         </el-form>
+        <!--发布二次确认弹出框start-->
+        <el-dialog title="确定发布？" :visible.sync="isTrue" size="tiny">
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="isTrue = false">取 消</el-button>
+                <el-button type="primary" @click="submitform">确 定</el-button>
+            </div>
+        </el-dialog>
+        <!--发布二次确认弹出框end-->
     </div>
 </template>
 <script>
@@ -277,7 +288,10 @@
                 type: this.ordertype || 1,
                 order: this.orderid || null,
                 startdate: new Date(),
-                valid:false
+                valid:false,
+                /*发布二次确认弹出框start*/
+                isTrue:false,
+                /*发布二次确认弹出框end*/
             }
         },
         computed: {},
@@ -338,27 +352,41 @@
 
             },
             submitdraft(){
-                let vm = this;
-                vm.valid=true;
-                vm.$refs['ruleForm'].validate((valid) => {
-                    if (valid) {
-                        ajax.post('/api/team/requirement/draft', this.params).then(
-                            data => {
-                                if (data.code == 0) {
-                                    this.$notify({
-                                        title: '保存成功',
-                                        message: '已保存为草稿，请到我的发布中查看',
-                                        type: 'success'
-                                    });
-                                    this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'require-node'}});
-                                }
-                            }
-                        )
-                    } else {
-                        return false;
-                    }
-                });
+//                let vm = this;
+//                vm.valid=true;
+//                vm.$refs['ruleForm'].validate((valid) => {
+//                    if (valid) {
+//                        ajax.post('/api/team/requirement/draft', this.params).then(
+//                            data => {
+//                                if (data.code == 0) {
+//                                    this.$notify({
+//                                        title: '保存成功',
+//                                        message: '已保存为草稿，请到我的发布中查看',
+//                                        type: 'success'
+//                                    });
+//                                    this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'require-node'}});
+//                                }
+//                            }
+//                        )
+//                    } else {
+//                        return false;
+//                    }
+//                });
 
+                /*无前端校验的存为草稿start*/
+                ajax.post('/api/team/requirement/draft', this.params).then(
+                    data => {
+                        if (data.code == 0) {
+                            this.$notify({
+                                title: '保存成功',
+                                message: '已保存为草稿，请到我的发布中查看',
+                                type: 'success'
+                            });
+                            this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'require-node'}});
+                        }
+                    }
+                )
+                /*无前端校验的存为草稿end*/
             },
             submitform(){
                 ajax.post('/api/team/requirement/publish', this.params).then(

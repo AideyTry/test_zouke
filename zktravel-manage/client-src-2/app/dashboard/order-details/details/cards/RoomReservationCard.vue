@@ -84,6 +84,9 @@
             </template>
         </el-card>
         <el-card class="suppliers">
+            <div slot="header" class="clearfix">
+                <h4>供应商条款:</h4>
+            </div>
 
         </el-card>
     </div>
@@ -107,7 +110,7 @@
             loadOrder(id){
                 ajax.post("/api/team/order/detail",{id:id}, {lock: false}).then(json=>{
                     this.orderData = json.detail.order_detail.orders;
-//                    this.orders=this.orderData.orders;
+                    this.orders=this.orderData.orders;
                     this.cityTabs=this.orderData.orders[0].city.name+'0';
                     console.log("orderdata=",this.orderData);
                 })

@@ -156,7 +156,6 @@
 //                    console.log("this.logs=",this.logs);
                     this.pageNum=1;
                     this.list=this.logs;
-                    this.list.reverse();
 //                    console.log("this.list=",this.list);
                     for(let v of this.list){
                         if(typeof(v.user)=='undefined'||!v.user){

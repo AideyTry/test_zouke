@@ -81,6 +81,18 @@
 
             <PurchaseChannelsCard :purchase_channel="purchase_channel"></PurchaseChannelsCard>
         </div>
+        <el-row type="flex">
+            <h4>分房名单</h4>
+        </el-row>
+        <el-row type="flex">
+            <el-input
+                    type="textarea"
+                    :rows="5"
+                    v-model="orderData.allot_list.content"
+                    :disabled="true">
+
+            </el-input>
+        </el-row>
     </div>
 </template>
 <script>
@@ -267,29 +279,7 @@
                 ,
                 purchase_channel:[
                     {
-                        supplier_name:'GTA',
-                        total_cost:'',
-                        cancel_policy:{
-                            cancel_name:'',
-                            cancel:
-                                {
-                                    free_cancel_date:'',
-                                    pay_cancel:[{
-                                        date:'',
-                                        number:null
-                                    }]
-                                }
-
-                        },
-                        pay_policy:[
-                            {
-                                pay_date:'',
-                                number:null
-                            }
-                        ]
-                    },
-                    {
-                        supplier_name:'miki',
+                        supplier_name:'',
                         total_cost:'',
                         cancel_policy:{
                             cancel_name:'',
@@ -314,16 +304,16 @@
 //                        supplier_name:'miki',
 //                        total_cost:'',
 //                        cancel_policy:{
-//                            cannot_cancel:'',
-//                            cancel:[
+//                            cancel_name:'',
+//                            cancel:
 //                                {
 //                                    free_cancel_date:'',
-//                                    pay_cancel:{
+//                                    pay_cancel:[{
 //                                        date:'',
 //                                        number:null
-//                                    }
+//                                    }]
 //                                }
-//                            ]
+//
 //                        },
 //                        pay_policy:[
 //                            {
@@ -444,7 +434,7 @@
                         if (data.code == 0) {
                             this.$notify({
                                 title: '保存成功',
-                                message: '已成功发布，请到我的发布中查看',
+                                message: '已成功发布，请到已控房中查看',
                                 type: 'success'
                             });
 //                            this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'require-node'}});

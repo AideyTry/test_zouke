@@ -47,7 +47,7 @@ module.exports = class MyOfflineOrderController extends TeamController {
     async resolve(id, price, userPolicy){
         const s_price = new Price();
         userPolicy = s_price.validUserPolicy(userPolicy);
-        if(!userPolicy) this.renderJSON({ code:1, msg: 'data check valid fail' });
+        if(!userPolicy) return this.renderJSON({ code:1, msg: 'data check valid fail' });
         if(price){
             price = s_price.validPrice(price);
             if(!price) return this.renderJSON({ code:1, msg: 'data check valid fail' });
