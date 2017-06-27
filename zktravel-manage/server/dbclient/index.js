@@ -3,11 +3,11 @@ const { DEBUG } = require('../env');
 module.exports = requireRoot('../../common/mongoClient/init')({
     zk_hotels: {
         db: 'zouke',
-        collection: 'zk_hotels_bk'
+        collection: 'zk_hotels'
     },
     sp_hotels: {
         db: 'zouke',
-        collection: 'all_hotels'
+        collection: 'sp_hotels'
     },
     
     zk_zones: {
