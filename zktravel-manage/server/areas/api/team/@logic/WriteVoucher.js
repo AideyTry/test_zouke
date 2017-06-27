@@ -30,11 +30,8 @@ module.exports = class WriteVoucher extends BaseOrder {
                 "creator.id":user.id
             },
             {
-                //插入数据
-                $set:{
-                    voucher_detail:voucher_obj,
-                },
                 $push: {
+                    voucher_details:voucher_obj,
                     //日志记录
                     logs: this.$createShiftUpdate({ type: 'user:write_voucher', time: this.$createTime(), user })
                 }
