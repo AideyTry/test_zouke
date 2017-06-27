@@ -2,6 +2,9 @@
     .orderId{
         padding:10px 0;
     }
+    .suppliers{
+
+    }
 </style>
 <template>
     <div>
@@ -88,6 +91,14 @@
                 <h4>供应商条款:</h4>
             </div>
 
+            <el-tabs v-model="supplierTabs" type="card" @tab-click="supplierTab">
+                <template v-for="(item,index) in orderData.suppliers">
+                    <el-tab-pane :label="item.supplier_name" :name="item.supplier_name+index">
+
+                    </el-tab-pane>
+                </template>
+            </el-tabs>
+
         </el-card>
     </div>
 </template>
@@ -98,6 +109,7 @@
             return {
                 orderData:null,
                 cityTabs:null,
+                supplierTabs:null,
                 orders:[]
             }
         },
@@ -112,6 +124,7 @@
                     this.orderData = json.detail.order_detail.orders;
                     this.orders=this.orderData.orders;
                     this.cityTabs=this.orderData.orders[0].city.name+'0';
+                    this.supplierTabs=this.orderData.suppliers[0].supplier_name+"0";
                     console.log("orderdata=",this.orderData);
                 })
             },
@@ -119,6 +132,9 @@
                 return new Date(a).getDate()-new Date(b).getDate();
             },
             changeTab(){
+
+            },
+            supplierTab(){
 
             }
         },
