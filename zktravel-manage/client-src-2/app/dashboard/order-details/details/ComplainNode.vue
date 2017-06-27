@@ -119,18 +119,6 @@
                         role:'',
                         roleName:''
                     }
-                },
-                types:{
-                    system:'系',
-                    user:'头'
-                },
-                content:{
-                    dispatchRequirement:"发布需求",
-                    updateRequirement:"修改需求",
-                    commitPrice:"提交报价",
-                    rejectPrice:"未通过报价",
-                    resolvePrice:"通过报价",
-                    agreePrice:"同意报价"
                 }
             }
         },
@@ -177,6 +165,7 @@
                     this.msg='';
                     ajax.post("/api/team/complaints/commit",{id:this.orderId,content:this.newMsg},{lock:false}).then(json=>{
                         this.loading(this.orderId);
+                        console.log(json);
                     })
                 }
             },

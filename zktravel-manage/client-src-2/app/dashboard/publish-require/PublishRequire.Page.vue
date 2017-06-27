@@ -238,7 +238,7 @@
                     origin_from: '超级行程单',
                     user: null,
                     number: '1',
-                    start_date: new Date().format('YYYY-MM-DD'),
+                    start_date: new Date().format('YYYY.MM.DD'),
                     star: '不限',
                     breakfast: true,
                     currency: 'EUR',
@@ -250,12 +250,12 @@
                     other_req: '',
                     stay_details: [
                         {
-                            check_in: new Date().format('YYYY-MM-DD'),
-                            check_out: new Date().format('YYYY-MM-DD'),
+                            check_in: new Date().format('YYYY.MM.DD'),
+                            check_out: new Date().format('YYYY.MM.DD'),
                             city: '',
                             hotel: {custom:true,name:''},
                             rooms: [{
-                                type: 'Single',
+                                type: 'Double',
                                 number: '1',
                                 mark: ''
                             }]
@@ -288,8 +288,8 @@
             addCard(){
                 this.params.stay_details.push(
                     {
-                        check_in: new Date().format('YYYY-MM-DD'),
-                        check_out: new Date().format('YYYY-MM-DD'),
+                        check_in: new Date().format('YYYY.MM.DD'),
+                        check_out: new Date().format('YYYY.MM.DD'),
                         city: '',
                         hotel: {custom:true,name:''},
                         rooms: [{
@@ -397,7 +397,7 @@
         },
         watch: {
             startdate(val){
-                this.params.start_date = val.format('YYYY-MM-DD');
+                this.params.start_date = val.format('YYYY.MM.DD');
             }
         }
     }
