@@ -1,6 +1,7 @@
 const MappingLevel = require('./MappingLevel');
 const dbclient = requireRoot('dbclient');
 const Pretreatment = require('./Pretreatment');
+const intersection = require('lodash/intersection');
 
 let _zkCollection = null;
 let _spCollection = null;
@@ -23,7 +24,7 @@ module.exports = {
         if( h1_field.address&&(h1_field.address===h2_field.address)){
             result |= MappingLevel.ADDRESS;
         }
-        if( hotel1.city_id&&(hotel1.city_id===hotel2.city_id)){
+        if( hotel1.city_ids&&intersection(hotel1.city_ids, hotel2.city_ids).length>0){
             result |= MappingLevel.CITY;
         }
         if( h1_field.url_web&&(h1_field.url_web===h2_field.url_web)){

@@ -21,9 +21,9 @@ const L2_TA = PHONE | ADDRESS | GPS500;
 const L3_N = NAME | GPS500;
 const L3_T = PHONE | GPS500;
 const L3_A = ADDRESS | GPS500;
-const L4_NC = NAME | CITY;
+const L3_NC = NAME | CITY;
+const L3_AC = ADDRESS | CITY;
 const L4_TC = PHONE | CITY;
-const L4_AC = ADDRESS | CITY;
 const L4_WC = WEBURL | CITY;
 const L4_N = NAME | GPS1000;
 const L4_T = PHONE | GPS1000;
@@ -43,9 +43,9 @@ const keyLevelMap = {
     [L3_N]: 'L3-n',
     [L3_T]: 'L3-t',
     [L3_A]: 'L3-a',
-    [L4_NC]: 'L4-nc',
+    [L3_NC]: 'L3-nc',
+    [L3_AC]: 'L3-ac',
     [L4_TC]: 'L4-tc',
-    [L4_AC]: 'L4-ac',
     [L4_WC]: 'L4-wc',
     [L4_N]: 'L4-n',
     [L4_T]: 'L4-t',
@@ -58,7 +58,7 @@ const maskKeys = [
     L1_N, L1_T, L1_A, 
     L1_NA, L2_NT, L2_TA, 
     L3_N, L3_T, L3_A, 
-    L4_NC, L4_TC, L4_AC, L4_WC, L4_N, L4_T, L4_A, L4_W 
+    L3_NC, L3_AC, L4_TC, L4_WC, L4_N, L4_T, L4_A, L4_W 
 ];
 
 module.exports = {

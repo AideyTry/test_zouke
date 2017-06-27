@@ -56,12 +56,12 @@ module.exports = class Mapping {
             }
         })).results.map(r=>({ dis:r.dis, hotel:r.obj }));
 
-        if(hotel.city_id){
+        if(hotel.city_ids&&hotel.city_ids.length>0){
             const cityResults = await collection.find({
                 $and: [
                     {
                         country_id: hotel.country_id,
-                        city_id: hotel.city_id,
+                        city_ids: {$in: hotel.city_ids},
                         _id: { $nin: queryResults.map(r=>r.hotel._id) },
                         $or: orQueryCondition
                     },
@@ -121,7 +121,7 @@ module.exports = class Mapping {
         // 用新插入的酒店反查sp酒店库去重
         const remapResult = await this.$searchSimilarHotel(zkHotel, spCollection, {
             _id: { $ne: spHotel._id },
-            'map_state':{ $ne: null },
+            'map_state.timestamp':{ $ne: null },
             'map_state.invalid': null,
             'map_state.strict': null,
             'map_state.offline':null
@@ -144,27 +144,55 @@ module.exports = class Mapping {
         }
     }
 
-    async query(sp, level){
+    async queryAlone(sp, page=0, pageSize=20){
+        const spCollection = await getSpHotelCollection();
+
+        const spAloneList = await spCollection.find({
+                'supplier': sp,
+                'map_state.invalid': { $ne: true },
+                'map_state.alone': true
+            },{ id:1, name:1, name_en:1, address:1, phone:1, url_web:1, map_state:1, gps: 1 })
+            .skip(page*pageSize)
+            .limit(pageSize)
+            .toArray();
+        
+        return spAloneList.map(sp=>{
+            const map_state = sp.map_state;
+            return {
+                sign: map_state.timestamp,
+                sp: sp.supplier,
+                spId: sp.id,
+                spName: sp.name,
+                spNameEn: sp.name_en,
+                spAddress: sp.address,
+                spPhone: sp.phone,
+                spWeb: sp.url_web,
+                spGPS: sp.gps,
+            };
+        });
+    }
+
+    async query(sp, level, page=0, pageSize=20){
         const spCollection = await getSpHotelCollection();
         const zkCollection = await getZkHotelCollection();
         const spQuery = {
             'supplier': sp,
-            'map_state.invalid': {$ne:true}
+            'map_state.invalid': {$ne:true},
+            'map_state.fuzzy._exists': true  // fuzzy exists
         };
-        if(level==='alone'){
-            spQuery['map_state.alone'] = true;
-        }else{
-            spQuery['map_state.fuzzy'] = { $ne:null };
-            if(level){ 
-                spQuery['map_state.fuzzy_level'] = level;
-            }
+ 
+        if(level){ 
+            spQuery['map_state.fuzzy_level'] = level;
         }
+    
         const spFuzzyList = await spCollection.find(spQuery,
-            { id:1, name:1, name_en:1, address:1, phone:1, url_web:1, map_state:1, gps: 1 }).toArray();
+            { id:1, name:1, name_en:1, address:1, phone:1, url_web:1, map_state:1, gps: 1 })
+            .skip(page*pageSize).limit(pageSize).toArray();
 
         const zkIds = new Set();
 
         for(let {map_state:{fuzzy}} of spFuzzyList.filter(sp=>!!sp.map_state.fuzzy)){
+            delete fuzzy._exists;
             const keys = Object.keys(fuzzy);
             for(let id of keys){
                 if(!level){
@@ -192,20 +220,6 @@ module.exports = class Mapping {
         
         for(let sp of spFuzzyList){
             const map_state = sp.map_state;
-            if(map_state.alone){
-                result.push({
-                    sign: map_state.timestamp,
-                    sp: sp.supplier,
-                    spId: sp.id,
-                    spName: sp.name,
-                    spNameEn: sp.name_en,
-                    spAddress: sp.address,
-                    spPhone: sp.phone,
-                    spWeb: sp.url_web,
-                    spGPS: sp.gps,
-                })
-                continue;
-            }
 
             for(let zkId of Object.keys(map_state.fuzzy)){
                 const zk = zkHotelMap[zkId];
