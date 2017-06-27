@@ -15,7 +15,7 @@ module.exports = class Order extends BaseOrder {
             'requirement.priority': 1,
             'requirement.start_date': 1,
             'status': 1,
-            'create_time': 1
+            'publish_time': 1
         }).skip(page*pageSize).limit(pageSize);
 
         const list = await cursor.toArray();
@@ -29,7 +29,7 @@ module.exports = class Order extends BaseOrder {
                     priority: item.requirement.priority,
                     startDate: item.requirement.start_date,
                     status: item.status,
-                    publishTime: item.create_time
+                    publishTime: item.publish_time
                 };
             })
         };
