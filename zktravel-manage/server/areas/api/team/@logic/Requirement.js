@@ -13,7 +13,7 @@ const validReqDataRule = {
     },
     '*number': 3,
     '*start_date': '2017-07-07',
-    '*star': 'star',
+    '*star': ['yixing', { min:1 }],
     '*breakfast': true,
     '*currency': 'EUR',
     '*budget_min': 200,
@@ -26,7 +26,7 @@ const validReqDataRule = {
         {
             '*check_in': '2017-07-08',
             '*check_out': '2017-07-09',
-            '*city': { '*code':123, '*name':'name' },
+            '*city': { '*id':123, '*name':'name' },
             'hotel': { '*name': '' },
             '*rooms': [
                 { '*type': 'type', '*number': 1, 'mark': 'mark' },
