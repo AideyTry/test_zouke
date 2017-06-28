@@ -28,11 +28,12 @@ module.exports = class TeamReqController extends TeamController {
         }
     }
     async [triggerInsert](name, needCheck){
-        
+
         const teamRequirement = new TeamRequirement();
+        let requirement = this.request.body;
         
         if(needCheck){
-            const requirement = teamRequirement.validRequirement(this.request.body);
+            requirement = teamRequirement.validRequirement(this.request.body);
 
             if(!requirement){
                 this.renderJSON({code:1, msg: 'data check valid fail'});
