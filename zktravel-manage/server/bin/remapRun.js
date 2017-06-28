@@ -35,6 +35,7 @@ async function remap(from, sp, bk_id, sp_id, zkHotels, spHotels){
                 }
             } 
         });
+        
 
         return 4;
     }
@@ -72,7 +73,6 @@ module.exports = async function run(from){
     const spHotels = await dbclient.collections.get('sp_hotels');
 
     const zk_ht_map = await dbclient.collections.get(`zk_ht_map_${from}`);
-
     const vtStat = { 'sp not found': 0, 'zk not found': 0, 'already map': 0, 'remap': 0};
     const dlStat = Object.assign({}, vtStat);
 

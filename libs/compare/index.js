@@ -7,7 +7,7 @@ function getValueType(value){
 
 function isEmptyValue(value){
     if(value===undefined&&value===null) return true;
-    if(isNaN(value)) return true;
+    if(value!==value/*NaN*/) return true;
     if(value.trim&&value.trim()==='') return true;
 
     return false;
