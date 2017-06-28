@@ -42,7 +42,8 @@ module.exports = {
         return result;
     },
     async genZkId(){
-        return await dbclient.genId('zk_hotels');
+        const id = await dbclient.genId('zk_hotels');
+        return parseInt(`1${id.toString()}`, 10);
     },
     async getZkHotelCollection(){
         if(!_zkCollection){

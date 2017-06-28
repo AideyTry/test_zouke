@@ -1,3 +1,5 @@
+//创建索引
+
 require('../requireRoot');
 require('@local/common/core/w/prototype');
 const dbclient = requireRoot('dbclient');

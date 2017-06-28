@@ -25,5 +25,10 @@ module.exports = requireRoot('../../common/mongoClient/init')({
     offline_order: {
         db: 'zouke',
         collection: 'offline_order'
+    },
+
+    zk_ht_map: {
+        db: 'zouke',
+        collection: 'zk_ht_map'
     }
 })
