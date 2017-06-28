@@ -105,12 +105,11 @@
                 </el-col>
             </el-row>
             <el-row type="flex">
-                <el-col :span="2">
-                    <div>酒店星级<i class="red">*</i></div>
+                <el-col :span="3">
+                    <div>酒店星级（默认全选）<i class="red">*</i></div>
                 </el-col>
-                <el-col :span="22">
+                <el-col :span="21">
                     <el-checkbox-group v-model="params.star">
-                        <el-checkbox-button name="不限" label="不限"></el-checkbox-button>
                         <el-checkbox-button name="一星" label="一星"></el-checkbox-button>
                         <el-checkbox-button name="二星" label="二星"></el-checkbox-button>
                         <el-checkbox-button name="三星" label="三星"></el-checkbox-button>
@@ -250,7 +249,7 @@
                     user: null,
                     number: '1',
                     start_date: new Date().format('YYYY-MM-DD'),
-                    star: ['不限'],
+                    star: ['一星','二星','三星','四星','五星'],
                     breakfast: true,
                     currency: 'EUR',
                     budget_min: null,
