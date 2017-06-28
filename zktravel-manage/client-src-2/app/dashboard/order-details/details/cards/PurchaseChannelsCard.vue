@@ -289,6 +289,14 @@
                             }
                         }
                     }
+//                    for(hotels in this.order.orders){
+//                        for(suppliers in this.order.orders[hotels]){
+//                            for(let index of this.order.orders[hotels][suppliers]){
+//                                console.log("supplier_name===",this.order.orders[hotels][suppliers][index].supplier_name);
+//                                arr.push(this.order.orders[hotels][suppliers][index].supplier_name)
+//                            }
+//                        }
+//                    }
                     console.log("arr=",arr);
                     for(let i=0;i<arr.length;i++){
                         if(arr[i]=='GTA'){
