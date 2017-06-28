@@ -25,7 +25,7 @@ module.exports = class Order extends BaseOrder {
             list: list.map(item=>{
                 return {
                     orderId: item._id,
-                    userName: item.requirement.user.name,
+                    userName: item.requirement.user&&item.requirement.user.name,
                     priority: item.requirement.priority,
                     startDate: item.requirement.start_date,
                     status: item.status,
