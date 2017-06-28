@@ -307,7 +307,7 @@
                         city: '',
                         hotel: {custom:true,name:''},
                         rooms: [{
-                            type: 'Single',
+                            type: 'Double',
                             number: '1',
                             mark: ''
                         }]
@@ -404,7 +404,7 @@
             },
             addroom(k){
                 this.params.stay_details[k].rooms.push({
-                    type: 'Single',
+                    type: 'Double',
                     number: '1',
                     mark: ''
                 })

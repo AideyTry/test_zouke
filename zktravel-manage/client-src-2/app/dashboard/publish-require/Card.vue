@@ -68,7 +68,7 @@
                                 type="date"
                                 size="small"
                                 placeholder="选择日期"
-                                format = "yyyy:MM:dd"
+                                format = "yyyy-MM-dd"
                                 :picker-options="pickerOptions">
                         </el-date-picker>
                         -
@@ -77,7 +77,7 @@
                                 type="date"
                                 size="small"
                                 placeholder="选择日期"
-                                format = "yyyy:MM:dd"
+                                format = "yyyy-MM-dd"
                                 :picker-options="pickerOptions">
                         </el-date-picker>
                         <span style="margin-right: 20px">{{daterange}} 晚</span>
@@ -242,10 +242,10 @@
         },
         watch: {
             startdate(val){
-                this.myitem.check_in = val.format('YYYY.MM.DD');
+                this.myitem.check_in = val.format('YYYY-MM-DD');
             },
             enddate(val){
-                this.myitem.check_out = val.format('YYYY.MM.DD');
+                this.myitem.check_out = val.format('YYYY-MM-DD');
             },
             hotel(val){
                 if (!this.hotelflag) {
