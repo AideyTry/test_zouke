@@ -13,7 +13,7 @@ const validReqDataRule = {
     },
     '*number': 3,
     '*start_date': '2017-07-07',
-    '*star': 'star',
+    '*star': [{ min:1 }],
     '*breakfast': true,
     '*currency': 'EUR',
     '*budget_min': 200,

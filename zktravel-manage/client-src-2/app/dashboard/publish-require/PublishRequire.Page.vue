@@ -109,14 +109,14 @@
                     <div>酒店星级<i class="red">*</i></div>
                 </el-col>
                 <el-col :span="22">
-                    <el-radio-group v-model="params.star">
-                        <el-radio-button name="不限" label="不限"></el-radio-button>
-                        <el-radio-button name="一星" label="一星"></el-radio-button>
-                        <el-radio-button name="二星" label="二星"></el-radio-button>
-                        <el-radio-button name="三星" label="三星"></el-radio-button>
-                        <el-radio-button name="四星" label="四星"></el-radio-button>
-                        <el-radio-button name="五星" label="五星"></el-radio-button>
-                    </el-radio-group>
+                    <el-checkbox-group v-model="params.star">
+                        <el-checkbox-button name="不限" label="不限"></el-checkbox-button>
+                        <el-checkbox-button name="一星" label="一星"></el-checkbox-button>
+                        <el-checkbox-button name="二星" label="二星"></el-checkbox-button>
+                        <el-checkbox-button name="三星" label="三星"></el-checkbox-button>
+                        <el-checkbox-button name="四星" label="四星"></el-checkbox-button>
+                        <el-checkbox-button name="五星" label="五星"></el-checkbox-button>
+                    </el-checkbox-group>
                 </el-col>
             </el-row>
             <el-row type="flex">
@@ -250,7 +250,7 @@
                     user: null,
                     number: '1',
                     start_date: new Date().format('YYYY-MM-DD'),
-                    star: '不限',
+                    star: ['不限'],
                     breakfast: true,
                     currency: 'EUR',
                     budget_min: null,
@@ -266,7 +266,7 @@
                             city: '',
                             hotel: {custom:true,name:''},
                             rooms: [{
-                                type: 'Single',
+                                type: 'Double',
                                 number: '1',
                                 mark: ''
                             }]
