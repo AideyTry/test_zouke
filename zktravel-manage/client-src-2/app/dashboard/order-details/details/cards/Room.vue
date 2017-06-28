@@ -9,6 +9,9 @@
         background: #E5E9F2;
         border-radius: 6px;
     }
+    .red{
+            color:red;
+        }
     .el-row{
         height: 40px;
     }
@@ -31,15 +34,15 @@
         </el-row>
         <el-row>
             <el-col class="cost">
-                <span>成本：</span>
+                <span>成本<i class="red">*</i>：</span>
                 <el-input v-model="v.price.cost" type="number"  size="mini">
                 </el-input>
                 €
-                <span>bk价：</span>
+                <span>bk价<i class="red">*</i>：</span>
                 <el-input v-model="v.price.bk" type="number"  size="mini">
                 </el-input>
                 €
-                <span>报价：</span>
+                <span>报价<i class="red">*</i>：</span>
                 <el-input v-model="v.price.quoted" type="number"  size="mini"></el-input>
                 €
             </el-col>

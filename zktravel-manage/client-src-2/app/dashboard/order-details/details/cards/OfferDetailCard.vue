@@ -4,6 +4,9 @@
         .el-row{
           height: 40px;
         }
+        .red{
+            color:red;
+        }
     }
 </style>
 <template>
@@ -15,7 +18,7 @@
             <el-col :span="12">指定的酒店：{{order.hotel.name}}</el-col>
         </el-row>
         <el-row>
-            <el-col :span="3"><div>酒店：</div></el-col>
+            <el-col :span="3"><div>酒店<i class="red">*</i>：</div></el-col>
             <el-col :span="9" style="padding-right: 10px">
                 <el-form-item prop="hotel">
                 <el-autocomplete

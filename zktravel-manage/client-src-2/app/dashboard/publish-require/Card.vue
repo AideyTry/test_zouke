@@ -237,7 +237,7 @@
         },
         computed: {
             daterange(){
-                return this.enddate.getDate() - this.startdate.getDate();
+                return Math.round(Math.abs((new Date(Date.parse(this.enddate)).getTime() - new Date(Date.parse(this.startdate)).getTime()))/(1000*60*60*24)); 
             }
         },
         watch: {

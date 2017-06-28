@@ -40,8 +40,8 @@
                 rule:{
                     booking_channel:[{type:'string',required: true, message: '请填写采购渠道', trigger: 'blur'}],
                     payment_policy:[{type:'string',required: true, message: '请填写付款政策', trigger: 'blur'}],
-                    cancel_policy:[{type:'string',required: true, message: '请填写取消政策', trigger: 'blur'}],
-                    remark:[{type:'string',required: true, message: '请填写备注', trigger: 'blur'}]
+                    cancel_policy:[{type:'string',required: true, message: '请填写取消政策', trigger: 'blur'}]
+                
                 }
             }
         },

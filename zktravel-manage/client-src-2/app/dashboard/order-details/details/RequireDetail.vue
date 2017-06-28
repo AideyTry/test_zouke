@@ -175,12 +175,12 @@
         },
         methods:{
             daterange(a,b){    
-                var range = Math.round(Math.abs((new Date(Date.parse(a.replace(/-/g,"/"))).getTime() - new Date(Date.parse(b.replace(/-/g,"/"))).getTime()))/(1000*60*60*24)); 
-                return range;  
+                /*var range = Math.round(Math.abs((new Date(Date.parse(a.replace(/-/g,"/"))).getTime() - new Date(Date.parse(b.replace(/-/g,"/"))).getTime()))/(1000*60*60*24)); 
+                return range;*/  
             }
         },
         created(){
-
+            
         }
 
     }
