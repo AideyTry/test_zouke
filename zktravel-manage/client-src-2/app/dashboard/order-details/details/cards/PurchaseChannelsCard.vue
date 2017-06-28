@@ -285,6 +285,7 @@
                         for(let hotels of orders.hotels){
                             for(let supplier of hotels.suppliers){
                                 console.log("supplier_name===",supplier.supplier_name);
+                                console.log("打印次数：");
                                 arr.push(supplier.supplier_name)
                             }
                         }
