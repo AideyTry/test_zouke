@@ -13,7 +13,7 @@ const validReqDataRule = {
     },
     '*number': 3,
     '*start_date': '2017-07-07',
-    '*star': 'star',
+    '*star': ['星级', { min:1 }],
     '*breakfast': true,
     '*currency': 'EUR',
     '*budget_min': 200,
@@ -26,7 +26,7 @@ const validReqDataRule = {
         {
             '*check_in': '2017-07-08',
             '*check_out': '2017-07-09',
-            '*city': { '*code':123, '*name':'name' },
+            '*city': { '*id':123, '*name':'name' },
             'hotel': { '*name': '' },
             '*rooms': [
                 { '*type': 'type', '*number': 1, 'mark': 'mark' },
@@ -135,27 +135,32 @@ function patchPriceDiff(old_stay_details, stay_details, price){
 
 
 module.exports = class TeamRequirement extends BaseOrder {
-    async $insert(requirement, status, creator){
+    async $insert(requirement, status, creator, publish_time){
         requirement.last_update = this.$createTime();
 
-        return await super.$insert({
+        const doc = {
             creator,
             status,
-            requirement,
-        });
+            requirement
+        };
+
+        if(publish_time) doc.publish_time = publish_time;
+
+        return await super.$insert(doc);
     }
     validRequirement(data){
         return compare( validReqDataRule, data );
     }
     async publish(data, creator){
-        return await this.$insert(data, this.status.WAIT_FOR_DISPATCH, creator);
+        return await this.$insert(data, this.status.WAIT_FOR_DISPATCH, creator, this.$createTime());
     }
     async draft(data, creator){
         return await this.$insert(data, this.status.WAIT_FOR_PUBLISH, creator);
     }
     async draftPublish(id, requirement){
         const set = {
-            status: this.status.WAIT_FOR_DISPATCH
+            status: this.status.WAIT_FOR_DISPATCH,
+            publish_time: this.$createTime()
         }
         if(requirement){
             requirement.last_update = this.$createTime();

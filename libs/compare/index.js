@@ -5,12 +5,21 @@ function getValueType(value){
     return typeof value;
 }
 
+function isEmptyValue(value){
+    if(value===undefined&&value===null) return true;
+    if(isNaN(value)) return true;
+    if(value.trim&&value.trim()==='') return true;
 
-module.exports = function compare (example, data, { requirePrefix = '*', filter = false, strict = false } = {}){
+    return false;
+}
+
+module.exports = function compare (example, data, options = {}){
+    const { requirePrefix = '*', filter = false, strict = false } = options;
+
     const exampleType = getValueType(example);
     const dataType = getValueType(data);
 
-    //字符串与数字与转
+    //字符串与数字互转
     if(!strict){
         if(exampleType==='string'&&dataType==='number') return String(data);
         if(exampleType==='number'&&dataType==='string'){
@@ -23,13 +32,12 @@ module.exports = function compare (example, data, { requirePrefix = '*', filter 
     if(exampleType==='function'){
         switch(example.name){
             case 'trans':   //trans data
-                return example(data, { requirePrefix, filter, strict });
+                return example(data, options);
             case 'noop':    //value type
                 break;
             default:    //check
                 return example(data)?data:null;
         }
-        return example(data, { requirePrefix, filter, strict })
     }
 
     if(exampleType!==dataType) return null;
@@ -44,7 +52,7 @@ module.exports = function compare (example, data, { requirePrefix = '*', filter 
 
         if(!exampleData) return data;
         for(let d of data){
-            const result = compare( exampleData, d, { requirePrefix, filter, strict } );
+            const result = compare( exampleData, d, options );
             if(result===null) return null;
             l.push(result);
         }
@@ -66,14 +74,14 @@ module.exports = function compare (example, data, { requirePrefix = '*', filter 
         const dataValue = data[field];
         delete data[field];
 
-        if(isRequire && dataValue==null) return null;
+        if(isRequire &&  isEmptyValue(dataValue)) return null;
         if(dataValue==undefined) continue;
         if(exampleValue==null) {
             d[field] = dataValue;
             continue;
         }
 
-        const r = compare(exampleValue, dataValue, { requirePrefix, filter, strict });
+        const r = compare(exampleValue, dataValue, options);
         if(r===null) return null;
         d[field] = r;
     }

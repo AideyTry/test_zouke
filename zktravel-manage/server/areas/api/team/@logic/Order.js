@@ -5,6 +5,8 @@ module.exports = class Order extends BaseOrder {
         const collection = await this.$getCollection();
 
         const findQuery = Array.isArray(status)?{ status: {$in:status} }:{ status };
+        
+
         if(creatorId) findQuery['creator.id']=creatorId;
         if(bookingId) findQuery['booking_user.id']=bookingId;
 
@@ -15,7 +17,7 @@ module.exports = class Order extends BaseOrder {
             'requirement.priority': 1,
             'requirement.start_date': 1,
             'status': 1,
-            'create_time': 1
+            'publish_time': 1
         }).skip(page*pageSize).limit(pageSize);
 
         const list = await cursor.toArray();
@@ -25,11 +27,11 @@ module.exports = class Order extends BaseOrder {
             list: list.map(item=>{
                 return {
                     orderId: item._id,
-                    userName: item.requirement.user.name,
+                    userName: item.requirement.user&&item.requirement.user.name,
                     priority: item.requirement.priority,
                     startDate: item.requirement.start_date,
                     status: item.status,
-                    publishTime: item.create_time
+                    publishTime: item.publish_time
                 };
             })
         };
