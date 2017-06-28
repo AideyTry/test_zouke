@@ -9,13 +9,13 @@ const orderRule = {
                     "*hotel":{
                         "*name":"酒店名"
                     },
-                    "*suppliers":{
-                        "*supplier_name":"供应商名字",
-                        "*at_number":"入住编号",
-                        "*rooms":[{
-                            "*type":"房型"
+                    "*suppliers":[{
+                        "*supplier_name": "供应商名字",
+                        "*at_number": "入住编号",
+                        "*rooms": [{
+                            "*type": "房型"
                         }]
-                    }
+                    }]
                 },
                 {min:1}
             ]
