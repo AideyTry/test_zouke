@@ -7,69 +7,52 @@
 </style>
 <template>
     <div class="rooms">
-        <el-row type="flex">
-            <el-col :span="1"></el-col>
-            <el-col :span="2">
-                <strong>选择房型<i class="red">*</i></strong>
-            </el-col>
-            <el-col :span="3">
-                <el-select v-model="item.type" filterable placeholder="请选择" @change="selectChange">
-                    <el-option
-                            v-for="item in rooms"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-col>
-            <el-col :span="1"></el-col>
-            <el-col :span="2">
-                <el-button style="color:#99A9BF" size="mini" @click="subtract">-</el-button>
-                <span>{{item.number}}</span>
-                <el-button style="background-color:#fff;:#20A0FF" size="mini" @click="add">+</el-button>
-            </el-col>
-            <el-col :span="13">
-                <el-input v-model="item.roomDescription" type="text"></el-input>
-            </el-col>
-        </el-row>
-        <template v-for="(v,index) in item.peoples">
+        <div v-for="(item,indexOf) in items.rooms">
             <el-row type="flex">
                 <el-col :span="1"></el-col>
+                <el-col :span="2">
+                    <strong>选择房型<i class="red">*</i></strong>
+                </el-col>
                 <el-col :span="3">
-                    <strong>入住人{{index+1}}</strong>
-                    <span>姓</span>
-                </el-col>
-                <el-col :span="5">
-                    <el-input v-model="v.name" placeholder="填写英文或拼音"></el-input>
-                </el-col>
-                <el-col :span="1"></el-col>
-                <el-col :span="1">
-                    <span>名</span>
-                </el-col>
-                <el-col :span="5">
-                    <el-input v-model="v.family_name" placeholder="填写英文或拼音"></el-input>
-                </el-col>
-                <el-col :span="1"></el-col>
-                <el-col :span="1">
-                    <span>性别</span>
-                </el-col>
-                <el-col :span="6">
-                    <el-select v-model="v.gender" filterable placeholder="请选择" @change="selectGender">
+                    <el-select v-model="item.type" filterable placeholder="请选择" @change="selectChange($event,item)">
                         <el-option
-                                v-for="item in gender"
+                                v-for="item in rooms"
                                 :key="item.value"
                                 :label="item.label"
                                 :value="item.value">
                         </el-option>
                     </el-select>
                 </el-col>
+                <el-col :span="1"></el-col>
+                <el-col :span="2">
+                    <el-button style="color:#99A9BF" size="mini" @click="roomSubtract(item,indexOf)">-</el-button>
+                    <span>{{item.number}}</span>
+                    <el-button style="background-color:#fff;:#20A0FF" size="mini" @click="roomAdd(item,indexOf)">+</el-button>
+                </el-col>
+                <el-col :span="13">
+                    <el-input v-model="item.roomDescription" type="text"></el-input>
+                </el-col>
             </el-row>
-        </template>
+            <PeoplesCard :peoples="item.peoples" :add="add" :subtract="subtract" :num="indexOf" :room="item"></PeoplesCard>
+            <el-row type="flex">
+                <el-col :span="1">
+                </el-col>
+                <el-col :span="3">
+                    <el-button type="primary" @click="addRooms(indexOf)">+添加房型</el-button>
+                </el-col>
+                <el-col :span="1"></el-col>
+                <el-col :span="3">
+                    <el-button type="primary" @click="deleteRooms(indexOf)">+删除房型</el-button>
+                </el-col>
+            </el-row>
+        </div>
+
     </div>
 </template>
 <script>
+    import PeoplesCard from './PeoplesCard'
     export default{
-        props:["item","index"],
+        props:["items"],
         data(){
             return {
                 rooms: [{
@@ -88,19 +71,17 @@
                     value: 'Other',
                     label: 'Other'
                 }],
-                gender: [
-                    {
-                        value: 'male',
-                        label: '男'
-                    }, {
-                        value: 'female',
-                        label: '女'
-                    }
-                ],
                 value2: '',
                 value3: '',
-                selectNewRoom:'Single'
+                newIndex:1,
+//                selectNewRoom:'Single',
+                add:null,
+                subtract:null
+
             }
+        },
+        components:{
+            PeoplesCard:PeoplesCard
         },
         computed:{
             selectRoom(){
@@ -108,37 +89,52 @@
             }
         },
         methods:{
-            selectChange(value){
-                this.selectNewRoom=value;
-                switch(value){
-                    case "Single":
-                        this.item.number=1;
-                        this.item.peoples=[];
-                        this.item.peoples.push({
-                        name:'',
-                        familyName:'',
-                        gender:''
-                        });
-                        break;
-                    case "Double":
-                        this.item.number=1;
-                        this.item.peoples=[];
-                        this.item.peoples.push(
+            addRooms(index){
+                this.items.rooms.push({
+                    type:'Single',
+                    number:1,
+                    room_description:'',
+                    peoples:[
                         {
                             name:'',
-                            familyName:'',
-                            gender:""
-                        },{
+                            family_name:'',
+                            gender:''
+                        }
+                    ]
+
+
+                });
+            },
+            deleteRooms(index){
+                this.items.rooms.splice(index,1);
+            },
+            selectChange(value,item){
+                item.type=value;
+                item.number=1;
+                let number=item.peoples.length;
+                switch(item.type){
+                    case "Single":
+                        item.peoples.splice(0,number,{
                             name:'',
                             familyName:'',
                             gender:''
-                        }
+                        });
+                        break;
+                    case "Double":
+                        item.peoples.splice(0,number,
+                            {
+                                name:'',
+                                familyName:'',
+                                gender:""
+                            },{
+                                name:'',
+                                familyName:'',
+                                gender:''
+                            }
                         );
                         break;
                     case "Triple":
-                        this.item.number=1;
-                        this.item.peoples=[];
-                        this.item.peoples.push(
+                        item.peoples.splice(0,number,
                             {
                                 name:'',
                                 familyName:'',
@@ -155,9 +151,7 @@
                         );
                         break;
                     case "Twins":
-                        this.item.number=1;
-                        this.item.peoples=[];
-                        this.item.peoples.push(
+                        item.peoples.splice(0,number,
                             {
                                 name:'',
                                 familyName:'',
@@ -170,9 +164,7 @@
                         );
                         break;
                     case "Other":
-                        this.item.number=1;
-                        this.item.peoples=[];
-                        this.item.peoples.push(
+                        item.peoples.splice(0,number,
                             {
                                 name:'',
                                 familyName:'',
@@ -181,106 +173,97 @@
                         );
                         break;
                 }
-            },
-            subtract(){
 
-                if(this.item.number>1){
-                    this.item.number--;
-                    switch(this.selectNewRoom){
+            },
+            roomAdd(room,index){
+                room.number++;
+                switch(room.type){
+                    case "Single":
+                        room.peoples.push({
+                            name:'',
+                            family_name:'',
+                            gender:''
+                        });
+                        break;
+                    case "Double":
+                        room.peoples.push(
+                            {
+                                name:'',
+                                family_name:'',
+                                gender:''
+                            },{
+                                name:'',
+                                family_name:'',
+                                gender:''
+                            }
+
+                        );
+                        break;
+                    case "Triple":
+                        room.peoples.push(
+                            {
+                                name:'',
+                                family_name:'',
+                                gender:''
+                            },{
+                                name:'',
+                                family_name:'',
+                                gender:''
+                            },{
+                                name:'',
+                                family_name:'',
+                                gender:''
+                            }
+
+                        );
+                        break;
+                    case "Twins":
+                        room.peoples.push(
+                            {
+                                name:'',
+                                family_name:'',
+                                gender:''
+                            },{
+                                name:'',
+                                family_name:'',
+                                gender:''
+                            }
+
+                        );
+                        break;
+                    case "Other":
+                        room.peoples.push(
+                            {
+                                name:'',
+                                family_name:'',
+                                gender:''
+                            }
+
+                        );
+                        break;
+                }
+            },
+            roomSubtract(room,index){
+                if(room.number>1){
+                   room.number--;
+                    switch(room.type){
                         case "Single":
-                            this.item.peoples.pop()
+                            room.peoples.splice(room.peoples.length-(room.number*1),1)
                             break;
                         case "Double":
-                            this.item.peoples.splice(this.item.peoples.length-(this.item.number*2),2)
+                            room.peoples.splice(room.peoples.length-(room.number*2),2)
                             break;
                         case "Triple":
-                            this.item.peoples.splice(this.item.peoples.length-(this.item.number*3),3)
+                            room.peoples.splice(room.peoples.length-(room.number*3),3)
                             break;
                         case "Twins":
-                            this.item.peoples.splice(this.item.peoples.length-(this.item.number*2),2)
+                            room.peoples.splice(room.peoples.length-(room.number*2),2)
                             break;
                         case "Other":
-                            this.item.peoples.pop()
+                            room.peoples.splice(room.peoples.length-(room.number*1),1)
                             break;
                     }
                 }
-
-            },
-            add(){
-               this.item.number++;
-               switch(this.selectNewRoom){
-                   case "Single":
-//                       this.item.number=1;
-                   this.item.peoples.push({
-                           name:'',
-                           family_name:'',
-                           gender:''
-                       });
-                       break;
-                   case "Double":
-//                       this.item.number=1;
-                       this.item.peoples.push(
-                           {
-                               name:'',
-                               family_name:'',
-                               gender:''
-                           },{
-                               name:'',
-                               family_name:'',
-                               gender:''
-                           }
-
-                       );
-                       break;
-                   case "Triple":
-//                       this.item.number=1;
-                       this.item.peoples.push(
-                           {
-                               name:'',
-                               family_name:'',
-                               gender:''
-                           },{
-                               name:'',
-                               family_name:'',
-                               gender:''
-                           },{
-                               name:'',
-                               family_name:'',
-                               gender:''
-                           }
-
-                       );
-                       break;
-                   case "Twins":
-//                       this.item.number=1;
-                       this.item.peoples.push(
-                           {
-                               name:'',
-                               family_name:'',
-                               gender:''
-                           },{
-                               name:'',
-                               family_name:'',
-                               gender:''
-                           }
-
-                       );
-                       break;
-                   case "Other":
-//                       this.item.number=1;
-                       this.item.peoples.push(
-                           {
-                               name:'',
-                               family_name:'',
-                               gender:''
-                           }
-
-                       );
-                       break;
-               }
-            },
-            selectGender(value){
-
             }
 
         }

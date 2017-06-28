@@ -2,6 +2,9 @@
     .orderId{
         padding:10px 0;
     }
+    .suppliers{
+
+    }
 </style>
 <template>
     <div>
@@ -87,6 +90,43 @@
             <div slot="header" class="clearfix">
                 <h4>供应商条款:</h4>
             </div>
+            <template>
+                <el-tabs v-model="supplierTabs" type="card" :active-name="supplierTabs" @tab-click="supplierTab">
+                    <template v-for="(item,index) in suppliers">
+                        <el-tab-pane :label="item.supplier_name" :name="item.supplier_name+index">
+                            <el-row type="flex">
+                                <el-col :span="2"><strong>总成本价:</strong></el-col>
+                                <el-col>
+                                    <span>{{item.total_cost}}</span>
+                                    €
+                                </el-col>
+                            </el-row>
+                            <el-row type="flex">
+                                <el-col :span="2"><strong>取消政策:</strong></el-col>
+                                <el-col :span="8">
+                                    <span>{{item.cancel_policy.cancel.free_cancel_date}}</span>
+                                    <span>前可免费取消</span>
+                                </el-col>
+                                <el-col :span="2"></el-col>
+                                <el-col :span="2"><strong>付款政策:</strong></el-col>
+                                <el-col :span="8">
+                                    <template v-for="(v,index) in item.pay_policy">
+                                        <el-row type="flex">
+                                            <el-col>
+                                                <span>{{v.pay_date}}</span>
+                                                <span>前续支付</span>
+                                                <span>{{v.number}}</span>
+                                                €
+                                            </el-col>
+                                        </el-row>
+                                    </template>
+                                </el-col>
+                            </el-row>
+                        </el-tab-pane>
+                    </template>
+                </el-tabs>
+            </template>
+
 
         </el-card>
     </div>
@@ -94,11 +134,14 @@
 <script>
     import ajax from '@local/common/ajax';
     export default{
+        props:["orderDatas"],
         data(){
             return {
                 orderData:null,
                 cityTabs:null,
-                orders:[]
+                supplierTabs:null,
+                orders:[],
+                suppliers:[]
             }
         },
         computed:{
@@ -111,7 +154,9 @@
                 ajax.post("/api/team/order/detail",{id:id}, {lock: false}).then(json=>{
                     this.orderData = json.detail.order_detail.orders;
                     this.orders=this.orderData.orders;
+                    this.suppliers=this.orderData.suppliers;
                     this.cityTabs=this.orderData.orders[0].city.name+'0';
+                    this.supplierTabs=this.orderData.suppliers[0].supplier_name+"0";
                     console.log("orderdata=",this.orderData);
                 })
             },
@@ -120,11 +165,15 @@
             },
             changeTab(){
 
+            },
+            supplierTab(){
+
             }
         },
         mounted(){
             this.dateRange();
             this.loadOrder(this.$route.params.orderid);
+            console.log("orderDatas",this.orderDatas);
         }
     }
 </script>

@@ -26,7 +26,7 @@
                         <span></span>
                     </el-col>
                     <el-col :span="2">
-                        <el-button type="text" class="delete" @click="deleteHotel()">删除</el-button>
+                        <el-button type="text" class="delete" @click="deleteHotel(index)">删除</el-button>
                     </el-col>
                     <el-col :span="2">
                         <el-button type="text" @click="addHotel()">添加酒店</el-button>
@@ -106,39 +106,39 @@
             },
             /*search end*/
             addHotel(){
-                console.log("add",this.item);
+
                 this.item.push({
                     hotel:{
                         name:''
                     },
                     remark_confirm:'',
                     suppliers:
-                        {
-                            supplier_name:'',
-                            at_number:'',
-                            room_type:'',
-                            status:1,
-                            rooms:[
-                                {
-                                    type:'Single',
-                                    number:1,
-                                    room_description:'',
-                                    peoples:[
-                                        {
-                                            name:'',
-                                            family_name:'',
-                                            gender:''
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
+                        [
+                            {
+                                supplier_name:'',
+                                at_number:'',
+                                rooms:[
+                                    {
+                                        type:'Single',
+                                        number:1,
+                                        room_description:'',
+                                        peoples:[
+                                            {
+                                                name:'',
+                                                family_name:'',
+                                                gender:''
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
                 });
                 this.$commit("addCount");
             },
-            deleteHotel(){
+            deleteHotel(index){
                 if(this.item.length>1){
-                    this.item.pop();
+                    this.item.splice(index,1);
                     this.$commit("deleteCount");
                 }
             }

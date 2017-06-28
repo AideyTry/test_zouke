@@ -123,7 +123,7 @@
 </template>
 <script>
     export default{
-        props:["purchase_channel"],
+        props:["order","purchase_channel"],
         data(){
           return {
               supplier:'',
@@ -148,9 +148,33 @@
                         this.supplier=null;
                         break;
                     case 'GTA':
-                        if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name==''){
-                            this.purchase_channel[0].supplier_name=this.supplier;
-                        }else if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='miki'){
+//                        if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name==''){
+//                            this.purchase_channel[0].supplier_name=this.supplier;
+//                        }else if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='miki'){
+//                            this.purchase_channel.push({
+//                                supplier_name:'GTA',
+//                                total_cost:'',
+//                                cancel_policy:{
+//                                    cancel_name:'',
+//                                    cancel:
+//                                        {
+//                                            free_cancel_date:'',
+//                                            pay_cancel:[{
+//                                                date:'',
+//                                                number:null
+//                                            }]
+//                                        }
+//
+//                                },
+//                                pay_policy:[
+//                                    {
+//                                        pay_date:'',
+//                                        number:null
+//                                    }
+//                                ]
+//                            })
+//                        }
+                        if(this.purchase_channel.length==0||this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='miki'){
                             this.purchase_channel.push({
                                 supplier_name:'GTA',
                                 total_cost:'',
@@ -172,13 +196,37 @@
                                         number:null
                                     }
                                 ]
-                            })
+                            });
                         }
                         break;
                     case 'miki':
-                        if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name==''){
-                            this.purchase_channel[0].supplier_name=this.supplier;
-                        }else if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='GTA'){
+//                        if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name==''){
+//                            this.purchase_channel[0].supplier_name=this.supplier;
+//                        }else if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='GTA'){
+//                            this.purchase_channel.push({
+//                                supplier_name:'miki',
+//                                total_cost:'',
+//                                cancel_policy:{
+//                                    cancel_name:'',
+//                                    cancel:
+//                                        {
+//                                            free_cancel_date:'',
+//                                            pay_cancel:[{
+//                                                date:'',
+//                                                number:null
+//                                            }]
+//                                        }
+//
+//                                },
+//                                pay_policy:[
+//                                    {
+//                                        pay_date:'',
+//                                        number:null
+//                                    }
+//                                ]
+//                            })
+//                        }
+                        if(this.purchase_channel.length==0||this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='GTA'){
                             this.purchase_channel.push({
                                 supplier_name:'miki',
                                 total_cost:'',
@@ -200,7 +248,7 @@
                                         number:null
                                     }
                                 ]
-                            })
+                            });
                         }
                         break;
                 }
@@ -226,6 +274,56 @@
         watch:{
             newSupplier(){
                 this.loadSupplier();
+            },
+            order:{
+                handler:function(val,old){
+                    console.log("order=",this.order)
+                    let arr=[];
+                    let count_GTA=0;
+                    let count_miki=0;
+                    for(let orders of this.order.orders){
+                        for(let hotels of orders.hotels){
+                            for(let supplier of hotels.suppliers){
+                                console.log("supplier_name===",supplier.supplier_name);
+                                arr.push(supplier.supplier_name)
+                            }
+                        }
+                    }
+                    console.log("arr=",arr);
+                    for(let i=0;i<arr.length;i++){
+                        if(arr[i]=='GTA'){
+                            count_GTA++;
+                        }
+                        if(arr[i]=='miki'){
+                            count_miki++;
+                        }
+                    }
+                    console.log("GTA=",count_GTA);
+                    console.log("miki=",count_miki);
+                    if(count_GTA==0){
+                        if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='GTA'){
+                            this.purchase_channel.splice(0,1);
+                        }
+                        if(this.purchase_channel.length==2&&this.purchase_channel[0].supplier_name=='GTA'){
+                            this.purchase_channel.splice(0,1);
+                        }
+                        if(this.purchase_channel.length==2&&this.purchase_channel[1].supplier_name=='GTA'){
+                            this.purchase_channel.splice(1,1);
+                        }
+                    }
+                    if(count_miki==0){
+                        if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='miki'){
+                            this.purchase_channel.splice(0,1);
+                        }
+                        if(this.purchase_channel.length==2&&this.purchase_channel[0].supplier_name=='miki'){
+                            this.purchase_channel.splice(0,1);
+                        }
+                        if(this.purchase_channel.length==2&&this.purchase_channel[1].supplier_name=='miki'){
+                            this.purchase_channel.splice(1,1);
+                        }
+                    }
+                },
+                deep:true
             }
         },
         mounted(){
@@ -233,6 +331,7 @@
 //            this.loadSupplier();
             console.log("supplier=",this.supplier);
             console.log("渠道=",this.purchase_channel);
+            console.log("orders===",this.order);
         }
     }
 </script>

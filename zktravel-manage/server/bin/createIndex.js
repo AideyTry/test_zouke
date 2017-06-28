@@ -34,7 +34,7 @@ async function run(){
         genIndex('map_pretreatment_field.url_web'),
         genIndex('map_pretreatment_field.address')
     ]);
-
+    
     await zkHotels.createIndexes([
         genIndex('status'),
         genIndex('mode'),
@@ -50,6 +50,7 @@ async function run(){
         genIndex('map_pretreatment_field.url_web'),
         genIndex('map_pretreatment_field.address')
     ])
+    
 }
 
 /*
