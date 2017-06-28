@@ -2,15 +2,14 @@ const BaseOrder = require('./BaseOrder');
 const compare = require('@local/compare');
 const jsondiffpatch = require('jsondiffpatch');
 
-
 const validReqDataRule = {
     '*priority': 'priority_level',
     '*origin_from':'from',
     '*user': {
-        '*id': 1,
-        '*name': 'name',
-        '*avatar': 'img_url'
-    },
+         '*id': 1,
+         '*name': 'name',
+         '*avatar': 'img_url'
+     },
     '*number': 3,
     '*start_date': '2017-07-07',
     '*star': ['星级', { min:1 }],

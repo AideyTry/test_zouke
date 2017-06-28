@@ -12,25 +12,8 @@ module.exports = class SpHotel {
         }
         const spCollection = await dbclient.collections.get('sp_hotels');
 
-        const detail = await spCollection.findOne(
-            query,
-            { fields: {
-                name: 1,
-                name_en: 1,
-                category_name: 1,
-                address: 1,
-                city_name: 1,
-                city_name_en: 1,
-                country_name: 1,
-                country_name_en: 1,
-                phone: 1,
-                email: 1,
-                url_web: 1,
-                photos: 1,
-                description: 1,
-                booking_info: 1
-            } }
-        );
+        const detail = await spCollection.findOne(query);
+        
         if(detail) delete detail._id;
         return detail;
     }
