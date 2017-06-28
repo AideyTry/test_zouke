@@ -36,7 +36,7 @@ module.exports = class MapState {
         return Object.assign(createBaseMapState(), { alone: true });
     }
     static createStrict(zkId, map_key){
-        return Object.assign(createBaseMapState(), { strict: zkId, map_key});
+        return Object.assign(createBaseMapState(), { strict: zkId, map_key, from: 'automap'});
     }
     static createFuzzy(fuzzy, map_state = {}){
         if(map_state.fuzzy){

@@ -9,7 +9,6 @@ function genIndex(field, type=1){
 }
 
 async function run(){
-    return;
     const zkHotels = await dbclient.collections.get('zk_hotels');
     const spHotels = await dbclient.collections.get('sp_hotels');
 
@@ -53,6 +52,8 @@ async function run(){
     ])
 }
 
+/*
 run().then(()=>{
     process.exit();
 });
+*/

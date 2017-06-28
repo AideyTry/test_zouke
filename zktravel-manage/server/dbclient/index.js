@@ -27,8 +27,14 @@ module.exports = requireRoot('../../common/mongoClient/init')({
         collection: 'offline_order'
     },
 
-    zk_ht_map: {
+    // old map数据
+    zk_ht_map_old: {
         db: 'zouke',
         collection: 'zk_ht_map'
+    },
+    // gps map数据
+    zk_ht_map_gps: {
+        db: 'zouke200',
+        collection: 'sp_hotels_gps_map_result'
     }
 })
