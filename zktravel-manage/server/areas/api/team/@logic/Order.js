@@ -5,6 +5,8 @@ module.exports = class Order extends BaseOrder {
         const collection = await this.$getCollection();
 
         const findQuery = Array.isArray(status)?{ status: {$in:status} }:{ status };
+        
+
         if(creatorId) findQuery['creator.id']=creatorId;
         if(bookingId) findQuery['booking_user.id']=bookingId;
 

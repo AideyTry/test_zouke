@@ -23,16 +23,6 @@ module.exports = class ZkResolver {
             "alias":{ $each:alias }
         };
 
-        // 旧mapping特殊处理
-        if(spHotel.sp_id){
-            if(spHotel.sp_id.dl_id){
-                addToSet['sp_id.dl_id'] = { $each: spHotel.sp_id.dl_id };
-            }
-            if(spHotel.sp_id.mk_id){
-                addToSet['sp_id.mk_id'] = { $each: spHotel.sp_id.mk_id };
-            }
-        }
-
         await zkCollection.updateOne({ _id: zkId }, {
             $addToSet: addToSet
         });
