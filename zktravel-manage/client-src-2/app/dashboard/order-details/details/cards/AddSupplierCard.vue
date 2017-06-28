@@ -15,15 +15,14 @@
 <template>
     <div>
         <div>
-            <el-button v-if="(isTrue_supplier==false)" type="text" @click="addSupplier()">添加供应商</el-button>
-            <el-card v-if="isTrue_supplier" class="box-card">
+            <el-card v-for="(v,index) in item" :key="v" class="box-card">
                 <el-row type="flex">
                     <el-col :span="1"></el-col>
                     <el-col :span="2">
                         <strong>采购渠道<i class="red">*</i></strong>
                     </el-col>
                     <el-col :span="3">
-                        <el-select v-model="item.supplier_name" filterable placeholder="请选择" @change="supplierChange">
+                        <el-select v-model="v.supplier_name" placeholder="请选择" @change="supplierChange">
                             <el-option
                                     v-for="item in channel"
                                     :key="item.value"
@@ -37,22 +36,16 @@
                         <strong>入住编号<i class="red">*</i></strong>
                     </el-col>
                     <el-col :span="13">
-                        <el-input v-model="item.at_number" type="text"></el-input>
+                        <el-input v-model="v.at_number" type="text"></el-input>
                     </el-col>
                     <el-col :span="2"></el-col>
-                    <el-col :span="1"><span  class="el-icon-circle-close iconSize" @click="colseCard()"></span></el-col>
+                    <el-col :span="1"><span  class="el-icon-circle-close iconSize" @click="closeSupplier(index)"></span></el-col>
                 </el-row>
-                <div v-for="(item,index) in item.rooms">
-                    <RoomsCard :item="item" :index="index"></RoomsCard>
-                </div>
-                <el-row type="flex">
-                    <el-col :span="1">
-                    </el-col>
-                    <el-col :span="3">
-                        <el-button type="primary" @click="addRooms()">+添加房型</el-button>
-                    </el-col>
-                </el-row>
+                <!--<div v-for="(item,index) in v.rooms">-->
+                    <RoomsCard :items="v" :index="index"></RoomsCard>
+                <!--</div>-->
             </el-card>
+            <el-button type="text" @click="addSupplier()">添加供应商</el-button>
         </div>
     </div>
 
@@ -119,35 +112,35 @@
             }
         },
         methods: {
-            colseCard(){
-                this.isTrue_supplier=!this.isTrue_supplier;
-            },
             addSupplier(){
-//                this.index=index;
-                this.isTrue_supplier=!this.isTrue_supplier;
-            },
-            closeSupplier(){
-
-            },
-            addRooms(){
-                console.log("rooms=",this.item.rooms);
-                this.item.rooms.push(                 {
-                    type:'Single',
-                    number:1,
-                    room_description:'',
-                    peoples:[
+                this.item.push({
+                    supplier_name:'',
+                    at_number:'',
+                    rooms:[
                         {
-                            name:'',
-                            family_name:'',
-                            gender:''
+                            type:'Single',
+                            number:1,
+                            room_description:'',
+                            peoples:[
+                                {
+                                    name:'',
+                                    family_name:'',
+                                    gender:''
+                                }
+                            ]
                         }
                     ]
-
-
                 });
+                console.log("供应商+=",this.item);
+            },
+            closeSupplier(index){
+                this.item.splice(index,1);
+                console.log("供应商-=",this.item);
             },
             supplierChange(value){
+                console.log("value=",value);
                 this.$commit("supplier",value);
+
             }
         },
         mounted(){

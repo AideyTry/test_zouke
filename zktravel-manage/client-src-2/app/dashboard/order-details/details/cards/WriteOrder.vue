@@ -79,7 +79,7 @@
                 </el-tabs>
             </div>
 
-            <PurchaseChannelsCard :purchase_channel="purchase_channel"></PurchaseChannelsCard>
+            <PurchaseChannelsCard :purchase_channel="purchase_channel" :order="order"></PurchaseChannelsCard>
         </div>
         <el-row type="flex">
             <h4>分房名单</h4>
@@ -119,12 +119,10 @@
                                     name:''
                                 },
                                 remark_confirm:'',
-                                suppliers:
+                                suppliers:[
                                     {
                                         supplier_name:'',
                                         at_number:'',
-                                        room_type:'',
-                                        status:1,
                                         rooms:[
                                             {
                                                 type:'Single',
@@ -140,6 +138,7 @@
                                             }
                                         ]
                                     }
+                                ]
                             }
                         ]
                     },
@@ -152,12 +151,10 @@
                                     name:''
                                 },
                                 remark_confirm:'',
-                                suppliers:
+                                suppliers:[
                                     {
                                         supplier_name:'',
                                         at_number:'',
-                                        room_type:'',
-                                        status:1,
                                         rooms:[
                                             {
                                                 type:'Single',
@@ -173,6 +170,7 @@
                                             }
                                         ]
                                     }
+                                ]
                             }
                         ]
                     },
@@ -185,12 +183,10 @@
                                     name:''
                                 },
                                 remark_confirm:'',
-                                suppliers:
+                                suppliers:[
                                     {
                                         supplier_name:'',
                                         at_number:'',
-                                        room_type:'',
-                                        status:1,
                                         rooms:[
                                             {
                                                 type:'Single',
@@ -206,6 +202,7 @@
                                             }
                                         ]
                                     }
+                                ]
                             }
                         ]
                     },
@@ -218,12 +215,10 @@
                                     name:''
                                 },
                                 remark_confirm:'',
-                                suppliers:
+                                suppliers:[
                                     {
                                         supplier_name:'',
                                         at_number:'',
-                                        room_type:'',
-                                        status:1,
                                         rooms:[
                                             {
                                                 type:'Single',
@@ -239,6 +234,7 @@
                                             }
                                         ]
                                     }
+                                ]
                             }
                         ]
                     },
@@ -251,12 +247,10 @@
                                     name:''
                                 },
                                 remark_confirm:'',
-                                suppliers:
+                                suppliers:[
                                     {
                                         supplier_name:'',
                                         at_number:'',
-                                        room_type:'',
-                                        status:1,
                                         rooms:[
                                             {
                                                 type:'Single',
@@ -272,34 +266,48 @@
                                             }
                                         ]
                                     }
+                                ]
                             }
                         ]
                     }
+//                    {
+//                        check_in:'',
+//                        check_out:'',
+//                        hotels:[
+//                            {
+//                                hotel:{
+//                                    name:''
+//                                },
+//                                remark_confirm:'',
+//                                suppliers:[
+//                                    {
+//                                        supplier_name:'',
+//                                        at_number:'',
+//                                        room_type:'',
+//                                        status:1,
+//                                        rooms:[
+//                                            {
+//                                                type:'Single',
+//                                                number:1,
+//                                                room_description:'',
+//                                                peoples:[
+//                                                    {
+//                                                        name:'',
+//                                                        family_name:'',
+//                                                        gender:''
+//                                                    }
+//                                                ]
+//                                            }
+//                                        ]
+//                                    }
+//                                ]
+//                            }
+//                        ]
+//                    }
                 ]
                 ,
                 purchase_channel:[
-                    {
-                        supplier_name:'',
-                        total_cost:'',
-                        cancel_policy:{
-                            cancel_name:'',
-                            cancel:
-                                {
-                                    free_cancel_date:'',
-                                    pay_cancel:[{
-                                        date:'',
-                                        number:null
-                                    }]
-                                }
 
-                        },
-                        pay_policy:[
-                            {
-                                pay_date:'',
-                                number:null
-                            }
-                        ]
-                    },
 //                    {
 //                        supplier_name:'miki',
 //                        total_cost:'',
@@ -434,10 +442,15 @@
                         if (data.code == 0) {
                             this.$notify({
                                 title: '保存成功',
-                                message: '已成功发布，请到已控房中查看',
+                                message: '已保存成功，请到已控房中查看',
                                 type: 'success'
                             });
 //                            this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'require-node'}});
+                        }else if(data.code==1){
+                            this.$notify.error({
+                                title: '无法保存',
+                                message: '请将必填项填写完整~！'
+                            });
                         }
                     }
                 )
