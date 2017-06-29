@@ -6,11 +6,23 @@ function getValueType(value){
 }
 
 function isEmptyValue(value){
-    if(value===undefined&&value===null) return true;
+    if(value===undefined||value===null) return true;
     if(value!==value/*NaN*/) return true;
     if(value.trim&&value.trim()==='') return true;
 
     return false;
+}
+
+let lastError = { error:0, field:'' };
+
+function clearError(){
+    lastError = { error:0, field:'' };
+}
+function setError(error, field){
+    lastError = { error, field };
+}
+function appendField(fix){
+    lastError.field = lastError.field ? `${fix}.${lastError.field}`: fix;
 }
 
 module.exports = function compare (example, data, options = {}){
@@ -24,43 +36,68 @@ module.exports = function compare (example, data, options = {}){
         if(exampleType==='string'&&dataType==='number') return String(data);
         if(exampleType==='number'&&dataType==='string'){
             const transResult = Number(data);
-            if(isNaN(transResult)) return null;
+            if(isNaN(transResult)){
+                setError(2, '');
+                return null;
+            }
             else return transResult;
         }
     }
 
-    if(exampleType==='function'){
+    if(exampleType==='function'&&example.length!==0/* fn value type */){
+        let result;
         switch(example.name){
             case 'trans':   //trans data
-                return example(data, options);
-            case 'noop':    //value type
-                break;
+                result = example(data, options);
+                if(result===null){
+                    setError(4, '');
+                }
+                return result;
             default:    //check
-                return example(data)?data:null;
+                result = example(data)?data:null;
+                if(result) return data;
+                else{
+                    setError(4, '');
+                    return null;
+                }
         }
     }
 
-    if(exampleType!==dataType) return null;
+    if(exampleType!==dataType){
+        setError(2, '');
+        return null
+    }
 
     if(['number', 'boolean', 'string', 'date', 'regexp', 'undefined', 'function'].includes(exampleType)) return data;
 
     if(exampleType==='array'){
         const l = [];
-        const [ exampleData, options = {} ] = example;
-        if(options.min&&data.length<options.min) return null;
-        if(options.max&&data.length>options.max) return null;
+        const [ exampleData, arrayOptions = {} ] = example;
+        if(
+            (arrayOptions.min && data.length<arrayOptions.min)||
+            (arrayOptions.max && data.length>arrayOptions.max)
+        ){
+            setError(3, '');
+            return null;
+        }
 
         if(!exampleData) return data;
-        for(let d of data){
-            const result = compare( exampleData, d, options );
-            if(result===null) return null;
+        for(let i=0; i<data.length; ++i){
+            const result = compare( exampleData, data[i], options );
+            if(result===null){
+                appendField(i);
+                return null;
+            }
             l.push(result);
         }
 
         return l;
     }
 
-    if(data===null) return null;
+    if(data===null){
+        setError(5, '');
+        return null;
+    }
 
     data = Object.assign({}, data);
 
@@ -74,7 +111,10 @@ module.exports = function compare (example, data, options = {}){
         const dataValue = data[field];
         delete data[field];
 
-        if(isRequire &&  isEmptyValue(dataValue)) return null;
+        if(isRequire &&  isEmptyValue(dataValue)){
+            setError(1, field);
+            return null;
+        }
         if(dataValue==undefined) continue;
         if(exampleValue==null) {
             d[field] = dataValue;
@@ -82,10 +122,28 @@ module.exports = function compare (example, data, options = {}){
         }
 
         const r = compare(exampleValue, dataValue, options);
-        if(r===null) return null;
+        if(r===null){
+            appendField(field);
+            return null;
+        }
         d[field] = r;
     }
 
     if(!filter) Object.assign(d, data);
     return d;
+};
+
+
+/*
+ * error:
+ *  0: ok
+ *  1: require
+ *  2: type error
+ *  3: array range
+ *  4: function valid error
+ *  5: data null
+ */
+
+module.exports.getLastError = function(){
+    return lastError;
 }
