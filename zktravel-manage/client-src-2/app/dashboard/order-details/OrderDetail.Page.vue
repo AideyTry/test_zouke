@@ -261,7 +261,9 @@
             },
             updatedraft(){
                 let vm = this;
-                ajax.post('/api/team/requirement/update', {
+                ajax.post(`/api/team/requirement/${
+                    this.orderdata.status===1?'draft-update':'update'
+                }`, {
                     id: vm.$route.params.orderid,
                     requirement: vm.orderdata.requirement
                 }).then(

@@ -97,9 +97,11 @@ module.exports = class TeamReqController extends TeamController {
         }
     }
 
+    //订单处于未发布状态
     async draftUpdate(id, requirement){
         await this[update](id, requirement, new TeamRequirement(), true);
     }
+    //订单处于已发布状态
     async update(id, requirement){
         const teamRequirement = new TeamRequirement();
         const transRequirement = teamRequirement.validRequirement(requirement);
