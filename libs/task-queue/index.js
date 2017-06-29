@@ -38,6 +38,7 @@ module.exports = class TaskQueue {
     }
     static async run(iterator, fn, length = 4){
          const taskQueue = new TaskQueue(length);
+         if(Array.isArray(iterator)) iterator = TaskQueue.createIterator(iterator);
          while(await iterator.hasNext()){
              if(!taskQueue.isFree()){
                  await taskQueue.race();
@@ -45,5 +46,16 @@ module.exports = class TaskQueue {
              taskQueue.push(fn(await iterator.next()))
          }
          await taskQueue.all();
+    }
+    static createIterator(arr){
+        let current = 0;
+        return {
+            hasNext(){
+                return arr.length>current;
+            },
+            next(){
+                return arr[current++];
+            }
+        }
     }
 }
