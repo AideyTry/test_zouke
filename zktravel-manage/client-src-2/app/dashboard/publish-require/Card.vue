@@ -68,6 +68,7 @@
                                 type="date"
                                 size="small"
                                 placeholder="选择日期"
+                                format = "yyyy-MM-dd"
                                 :picker-options="pickerOptions">
                         </el-date-picker>
                         -
@@ -76,6 +77,7 @@
                                 type="date"
                                 size="small"
                                 placeholder="选择日期"
+                                format = "yyyy-MM-dd"
                                 :picker-options="pickerOptions">
                         </el-date-picker>
                         <span style="margin-right: 20px">{{daterange}} 晚</span>
@@ -235,7 +237,7 @@
         },
         computed: {
             daterange(){
-                return this.enddate.getDate() - this.startdate.getDate();
+                return Math.round(Math.abs((new Date(Date.parse(this.enddate)).getTime() - new Date(Date.parse(this.startdate)).getTime()))/(1000*60*60*24)); 
             }
         },
         watch: {

@@ -135,7 +135,7 @@
                     <el-row style="width: 100%;height: 40px;">
                         <el-col :span="12">
                             <div class="title">入住/离店时间：</div>
-                            <div>{{v.check_in}}-{{v.check_out}}</div>
+                            <div>{{v.check_out}}-{{v.check_in}}</div>
                             <div>{{daterange(v.check_in,v.check_out)}}晚</div>
                         </el-col>
                         <el-col :span="4"><span class="title">城市：</span>{{v.city.name}}</el-col>
@@ -174,12 +174,13 @@
             }
         },
         methods:{
-            daterange(a,b){
-                return new Date(a).getDate()-new Date(b).getDate();
+            daterange(a,b){    
+                /*var range = Math.round(Math.abs((new Date(Date.parse(a.replace(/-/g,"/"))).getTime() - new Date(Date.parse(b.replace(/-/g,"/"))).getTime()))/(1000*60*60*24)); 
+                return range;*/  
             }
         },
         created(){
-
+            
         }
 
     }

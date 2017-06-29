@@ -225,7 +225,7 @@
         <el-dialog title="确定发布？" :visible.sync="isTrue" size="tiny">
             <div slot="footer" class="dialog-footer">
                 <el-button @click="isTrue = false">取 消</el-button>
-                <el-button type="primary" @click="submitform">确 定</el-button>
+                <el-button type="primary" @click="submitform()">确 定</el-button>
             </div>
         </el-dialog>
         <!--发布二次确认弹出框end-->
@@ -289,7 +289,7 @@
                 startdate: new Date(),
                 valid:false,
                 /*发布二次确认弹出框start*/
-                isTrue:false,
+                isTrue:false
                 /*发布二次确认弹出框end*/
             }
         },
@@ -306,7 +306,7 @@
                         city: '',
                         hotel: {custom:true,name:''},
                         rooms: [{
-                            type: 'Single',
+                            type: 'Double',
                             number: '1',
                             mark: ''
                         }]
@@ -408,7 +408,7 @@
             },
             addroom(k){
                 this.params.stay_details[k].rooms.push({
-                    type: 'Single',
+                    type: 'Double',
                     number: '1',
                     mark: ''
                 })

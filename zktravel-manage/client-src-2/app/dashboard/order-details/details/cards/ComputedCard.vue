@@ -18,7 +18,7 @@
             <span>报价合计：{{mycost.quoted}}</span>
         </el-col>
         <el-col :span="6">
-            <span>节省：{{mycost.cost-mycost.quoted}}</span>
+            <span>节省：{{mycost.bk-mycost.quoted}}</span>
         </el-col>
     </el-row>
 </template>

@@ -15,6 +15,8 @@ async function refresh(){
 module.exports = class HotelController extends Controller{
     async refresh(){
         this.renderJSON({code: 0});
+        /*
         refresh();
+        */
     }
 }

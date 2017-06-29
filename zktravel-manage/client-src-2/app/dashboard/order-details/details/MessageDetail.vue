@@ -192,7 +192,6 @@
                                 v.content=v.message;
                                 break;
                         }
-
                     }
                     for(let num=(this.pageNum-1)*this.pageSize;num<this.pageNum*this.pageSize;num++){
                         if(this.list[num]){
@@ -217,8 +216,6 @@
                     })
 //                    this.loading();
                 }
-
-
             },
             changePage(page){
                 let arr=[];
@@ -236,6 +233,6 @@
         },
         updated(){
 
-        }
+        }    
     }
 </script>
