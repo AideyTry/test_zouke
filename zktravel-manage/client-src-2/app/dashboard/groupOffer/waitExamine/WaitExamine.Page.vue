@@ -32,21 +32,28 @@
             width:100%;
             height:20px;
         }
-        .warning{
-            color: #fff;
-            background: #F7BA2A;
-        }
-        .danger{
-            color: #fff;
-            background: #FF4949;
-        }
-        .primary{
-            color: #fff;
-            background: #1D8CE0;
-        }
-        .overdead{
-            color: #fff;
-            background: #324057;
+        .row-bg{
+            padding:15px 0;
+            background-color: #fff;
+            width:70%;
+            margin-top: 20px;
+            a{  
+                padding:10px 40px;
+                width:45px;
+                display: inline-block;
+            }
+            .eight{
+                background-color: #FF6666;
+            }
+            .twelve{
+                background-color: #FF9900;
+            }
+            .twenty-four{
+                background-color: #FFFF00;
+            }
+            .time-out{
+                background-color: #9900cc;
+            }
         }
     }
 
@@ -80,11 +87,10 @@
                             label="紧急度"
                             v-if="true">
                         <template scope="scope">
-                            <el-tag v-if="scope.row._class=='danger'" color="#FF4949">8小时完成</el-tag>
-                            <el-tag v-if="scope.row._class=='warming'" color="#F7BA2A">24小时完成</el-tag>
-                            <el-tag v-if="scope.row._class=='primary'" color="#1D8CE0">48小时完成</el-tag>
-                            <el-tag v-if="scope.row._class=='success'" type="success">48小时以上</el-tag>
-                            <el-tag v-if="scope.row._class=='overdead'" color="#324057">已超时</el-tag>
+                            <el-tag style="width:100%;height:35px;" v-if="scope.row._class=='eight'" color="#FF6666"></el-tag>
+                            <el-tag style="width:100%;height:35px;" v-if="scope.row._class=='twelve'" color="#FF9900"></el-tag>
+                            <el-tag style="width:100%;height:35px;" v-if="scope.row._class=='twenty-four'" color="#FFFF00"></el-tag>
+                            <el-tag style="width:100%;height:35px;" v-if="scope.row._class=='time-out'" color="#9900cc"></el-tag>
                         </template>
                     </el-table-column>
 
@@ -97,20 +103,19 @@
                         </template>
                     </el-table-column>
                     <el-table-column
-
                             prop="userName"
                             label="用户名">
                     </el-table-column>
                     <el-table-column
                             prop="priority"
+                            label="优先级">
+                    </el-table-column>
+                    <el-table-column
+                            prop="status"
                             label="状态">
                     </el-table-column>
                     <el-table-column
-                            prop=""
-                            label="金额">
-                    </el-table-column>
-                    <el-table-column
-                            prop=""
+                            prop="creator.name"
                             label="创建人">
                     </el-table-column>
                     <el-table-column
@@ -120,11 +125,27 @@
                     </el-table-column>
 
                 </el-table>
-
-                <el-row type="flex">
-                    <el-col :span="1"></el-col>
-                    <el-col :span="15">
-                    </el-col>
+                
+                <el-row 
+                    type="flex"
+                    class="row-bg"
+                    justify="space-between"
+                    align="center">
+                        <el-col :span="4">
+                            报价紧急度
+                        </el-col>
+                        <el-col :span="4">
+                            <a class="eight"></a>8小时完成
+                        </el-col>
+                        <el-col :span="4">
+                            <a class="twelve"></a>12小时完成
+                        </el-col>
+                        <el-col :span="4">
+                            <a class="twenty-four"></a>24小时完成
+                        </el-col>
+                        <el-col :span="4">
+                            <a class="time-out"></a>已超时
+                        </el-col>
                 </el-row>
                 <el-pagination
                         layout="total, prev, pager, next, jumper"
@@ -166,19 +187,39 @@
         methods:{
             loadTable(){
                 ajax.post("/api/team/order/query",{status:this.pager.status,page:this.pager.pageNum,pageSize:this.pager.pageSize}).then(json=>{
+                    console.log(json);
                     this.currentData=json.list;
+                    for(let obj of this.currentData){
+                    if(obj.status===1){
+                        obj.status="待发布";
+                    }else if(obj.status===2){
+                        obj.status="待分配"
+                    }else if(obj.status===3){
+                        obj.status="待报价"
+                    }else if(obj.status===4){
+                        obj.status="待报价"
+                    }else if(obj.status===5){
+                        obj.status="待报价确认"
+                    }else if(obj.status===6){
+                        obj.status="待收款"
+                    }else if(obj.status===7){
+                        obj.status="分房待确认"
+                    }else if(obj.status===8){
+                        obj.status="待控房"
+                    }else if(obj.status===9){
+                        obj.status="已控房"
+                    }
+                }
                     this.currentData.forEach(v=>{
                         let hour=Math.floor((new Date(v.startDate)-new Date())/3600000);
                         if(hour<=8&&0<hour){
-                            v._class='danger'
+                            v._class='eight'
                         }else if(8<hour&&hour<=24){
-                            v._class='warming'
+                            v._class='twelve'
                         }else if(24<hour&&hour<=48){
-                            v._class='primary'
+                            v._class='twenty-four'
                         }else if(hour<0){
-                            v._class='overdead'
-                        }else {
-                            v._class='success'
+                            v._class='time-out'
                         }
                     });
                 })

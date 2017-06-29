@@ -121,6 +121,7 @@
                     id: id
                 }, {lock: false}).then(
                     data => {
+                        console.log(data);
                         vm.orderdata = data.detail;
                         if(data.detail.price){
                             vm.editableTabs=[];
