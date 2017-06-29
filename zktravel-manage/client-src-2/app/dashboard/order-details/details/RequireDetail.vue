@@ -100,7 +100,7 @@
                     <div><span class="title">出行时间：</span>{{orderdata.requirement.start_date}}</div>
                 </el-col>
                 <el-col :span="4">
-                    <div><span class="title">酒店星级：</span>{{orderdata.requirement.star}}</div>
+                    <div><span class="title">酒店星级：</span>{{orderdata.requirement.star&&orderdata.requirement.star.join('、')}}</div>
                 </el-col>
             </el-row>
             <el-row class="text-line" type="flex">
@@ -133,18 +133,18 @@
             <template v-for="v in orderdata.requirement.stay_details">
                 <div class="card">
                     <el-row style="width: 100%;height: 40px;">
-                        <el-col :span="12">
+                        <el-col :span="10">
                             <div class="title">入住/离店时间：</div>
                             <div>{{v.check_in}}-{{v.check_out}}</div>
                             <div>{{daterange(v.check_in,v.check_out)}}晚</div>
                         </el-col>
-                        <el-col :span="4"><span class="title">城市：</span>{{v.city.name}}</el-col>
+                        <el-col :span="6"><span class="title">城市：</span>{{v.city.name}}</el-col>
                         <el-col :span="8"><span class="title">指定的酒店：</span>{{v.hotel.name}}</el-col>
                     </el-row>
                     <template v-for="(k,w) in v.rooms">
                         <el-row class="room">
                             <el-col :span="24">
-                                <span class="title">房型：{{w+1}}</span>
+                                <span class="title">房型{{w+1}}：</span>
                                 <span>{{k.type}}X{{k.number}}</span>
                                 <span class="title">备注：</span>
                                 <span>{{k.mark}}</span>
