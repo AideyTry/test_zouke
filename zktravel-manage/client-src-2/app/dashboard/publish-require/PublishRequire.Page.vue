@@ -53,8 +53,8 @@
     <div class="publish-require" v-if="type==1">
         <el-form ref="ruleForm" :rules="rule" :model="params" label-width="80px">
             <el-row type="flex">
-                <el-col :span="6">
-                    <el-select size="small" v-model="params.priority" placeholder="选择优先级">
+                <el-col :span="5">
+                    <el-select style="width:120px" size="small" v-model="params.priority" placeholder="选择优先级">
                         <el-option value="A+" label="优先级A+"></el-option>
                         <el-option value="A" label="优先级A"></el-option>
                         <el-option value="B" label="优先级B"></el-option>
@@ -73,24 +73,29 @@
                         <el-option value="定制" label="定制"></el-option>
                     </el-select>
                 </el-col>
-                <el-col :span="6" style="min-width: 228px">
+                <el-col :span="5" style="min-width: 228px">
                     <span>用户名<i class="red">*</i></span>
                     <el-form-item prop="user">
-                        <el-autocomplete
-                                size="small"
-                                class="inline-input"
-                                v-model="user"
-                                :fetch-suggestions="searchuser"
-                                placeholder="输入关键字选择"
-                                @select="selectuser"
-                        ></el-autocomplete>
+                        <el-select
+                            style="width:160px;"
+                            filterable
+                            remote
+                            placeholder="输入关键字选择"
+                            :remote-method="searchuser"
+                            v-model="params.user"
+                            :loading="ufetch"
+                        >
+                            <el-option v-for="user of users" :key="user.id" :label="user.name" :value="user">
+
+                            </el-option>
+                        </el-select>
                     </el-form-item>
 
                 </el-col>
-                <el-col :span="6">
+                <el-col :span="4">
                     <span>出发人数<i class="red">*</i></span>
                     <el-form-item prop="number">
-                    <el-input size="small" type="number" placeholder="请填写人数" style="width: 100%" v-model="params.number"></el-input>
+                        <el-input size="small" type="number" style="width:80px;" placeholder="请填写人数" v-model="params.number"></el-input>
                     </el-form-item>
                 </el-col>
                 <el-col :span="6">
@@ -242,7 +247,8 @@
         },
         data(){
             return {
-                user: null,
+                users:[],
+                ufetch:false,
                 params: {
                     priority: 'A+',
                     origin_from: '超级行程单',
@@ -318,38 +324,29 @@
                 console.info(k);
             },
             cancelCard(k){
-                if (this.params.stay_details.length < 2) {
+                if (this.params.stay_details.length === 1) {
                     return
                 }
-                this.params.stay_details.splice(k);
+                this.params.stay_details.splice(k, 1);
 
             },
-            searchuser: debounce(function (queryString, cb) {
-                if (queryString) {
-                    ajax.postSilence('/api/user/query', {
+            searchuser: debounce(function (queryString) {
+                if (queryString.trim()) {
+                    this.ufetch=true;
+                    ajax.postSilence('/api/user/search', {
                         keyword: queryString.trim()
-                    }).then(
-                        data => {
-                            let arr = []
-                            data.list.forEach(
-                                (v, k) => {
-                                    arr.push({value: v.nick_name, item: v})
-                                }
-                            )
-                            cb(arr)
-                        }
-                    )
+                    }).then(data => {
+                        this.ufetch=false;
+                        this.users = data.list.map(item=>{
+                            const sameItem = this.users.find(u=>u.id===item.id);
+                            return sameItem?sameItem:item;
+                        });
+                    }).catch(e=>{
+                        this.ufetch=false;
+                        throw(e);
+                    })
                 }
-            }, 1000),
-            selectuser(item){
-                let arr = {
-                    id: item.item._id,
-                    name: item.item.nick_name || item.item.name,
-                    avatar: item.item.head_image
-                }
-                this.params.user = arr;
-
-            },
+            }, 500),
             submitdraft(){
 //                let vm = this;
 //                vm.valid=true;
@@ -423,7 +420,7 @@
         created(){
             if (this.orderdata) {
                 this.params = this.orderdata.requirement;
-                this.user = this.orderdata.requirement.user.name;
+                this.users.push(this.orderdata.requirement.user);
             }
 
         },

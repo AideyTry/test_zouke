@@ -9,7 +9,7 @@ module.exports = class UserController extends LController {
     }
     async search(keyword){
         const user = new User();
-        const { list } = await User.query(0, 10, keyword);
+        const { list } = await user.query(0, 10, keyword);
 
         return this.renderJSON({ code:0, list: list.map(c=>({
             id: c._id,

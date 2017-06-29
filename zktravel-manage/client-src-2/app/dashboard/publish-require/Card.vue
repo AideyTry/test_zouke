@@ -83,15 +83,18 @@
                         <span style="margin-right: 20px">{{daterange}} 晚</span>
                         <span>城市 <i class="red">*</i></span>
                         <el-form-item prop="city">
-                            <el-autocomplete
-                                    size="small"
-                                    class="inline-input"
-                                    v-model="city"
-                                    :fetch-suggestions="searchcity"
-                                    placeholder="输入关键字选择"
-                                    @select="selectcity">
+                            <el-select
+                                filterable
+                                remote
+                                placeholder="输入关键字选择"
+                                :remote-method="searchcity"
+                                v-model="item.city"
+                                :loading="cfetch"
+                            >
+                                <el-option v-for="city of cities" :key="city.id" :label="city.name" :value="city">
 
-                            </el-autocomplete>
+                                </el-option>
+                            </el-select>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -100,14 +103,20 @@
                         <div>指定的酒店<i class="red"></i></div>
                     </el-col>
                     <el-col :span="20">
-                        <el-autocomplete
-                                size="small"
-                                class="inline-input"
-                                v-model="hotel"
-                                :fetch-suggestions="searchhotel"
+                        <el-select
+                                filterable
+                                remote
+                                allow-create
                                 placeholder="输入关键字选择"
-                                @select="selecthotel"
-                        ></el-autocomplete>
+                                :remote-method="searchhotel"
+                                v-model="item.hotel"
+                                :loading="hfetch"
+                                @change="selectHotel"
+                            >
+                            <el-option v-for="hotel of hotels" :key="hotel.id" :label="hotel.name" :value="hotel">
+
+                            </el-option>
+                        </el-select>
                     </el-col>
                 </el-row>
                 <template v-for="(v,k) of myitem.rooms">
@@ -126,7 +135,7 @@
                                 </el-select>
                                 x
                                 <el-form-item prop="number">
-                                    <el-input v-model="v.number" type="number" style="width: 50%" size="small">
+                                    <el-input v-model="v.number" type="number" style="width: 80px" size="small">
                                     </el-input>
                                 </el-form-item>
                                 <el-form-item prop="mark" label="备注">
@@ -158,8 +167,10 @@
         props: ['item', 'index', 'valid'],
         data(){
             return {
-                city: null,
-                hotel: null,
+                cities:[],
+                cfetch:false,
+                hotels:[],
+                hfetch:false,
                 pickerOptions: {
                     disabledDate(time) {
                         return time.getTime() < Date.now() - 8.64e7;
@@ -188,56 +199,51 @@
             deleteroom: function (index) {
                 this.$emit('deleteroom', this.index);
             },
-            searchcity: debounce(function (queryString, cb) {
-                if (queryString) {
+            searchcity: debounce(function (queryString) {
+                if (queryString.trim()) {
+                    this.cfetch=true;
                     ajax.postSilence('/api/city/search', {
                         keyword: queryString.trim()
-                    }).then(
-                        data => {
-                            let arr = []
-                            data.list.forEach(
-                                (v, k) => {
-                                    arr.push({value: v.name, item: v})
-                                }
-                            )
-                            cb(arr)
-                        }
-                    )
+                    }).then(data => {
+                        this.cfetch=false;
+                        this.cities = data.list.map(item=>{
+                            const sameItem = this.cities.find(u=>u.id===item.id);
+                            return sameItem?sameItem:item;
+                        })
+                    }).catch(e=>{
+                        this.cfetch=false;
+                        throw(e);
+                    })
                 }
-            }, 1000),
-            selectcity: function (item) {
-                let arr = item.item;
-                this.myitem.city = arr;
-            },
+            }, 500),
             searchhotel: debounce(function (queryString, cb) {
-                if (queryString) {
+                if (queryString.trim()) {
+                    this.hfetch=true;
                     ajax.postSilence('/api/hotel/zk-hotel/search', {
                         keyword: queryString.trim()
-                    }).then(
-                        data => {
-                            let arr = []
-                            if (data.list) {
-                                data.list.forEach(
-                                    (v, k) => {
-                                        arr.push({value: v.name, item: v})
-                                    }
-                                )
-                                cb(arr)
-                            }
-
-                        }
-                    )
+                    }).then(data => {
+                        this.hfetch=false;
+                        this.hotels = data.list.map(item=>{
+                            const sameItem = this.hotels.find(u=>u.id===item.id);
+                            return sameItem?sameItem:item;
+                        })
+                    }).catch(e=>{
+                        this.hfetch=false;
+                        throw e;
+                    })
                 }
-            }, 1000),
-            selecthotel: function (item) {
-                let arr = item.item;
-                this.hotelflag = true;
-                this.myitem.hotel = arr;
+            }, 500),
+            selectHotel(h){
+                if(typeof h === 'string'){
+                    const item = { name:h, custom:true };
+                    this.hotels.splice(0,1,item);
+                    this.item.hotel = item;
+                }
             }
         },
         computed: {
             daterange(){
-                return Math.round(Math.abs((new Date(Date.parse(this.enddate)).getTime() - new Date(Date.parse(this.startdate)).getTime()))/(1000*60*60*24)); 
+                return new Date(this.startdate).daySpan(new Date(this.enddate));
             }
         },
         watch: {
@@ -262,14 +268,6 @@
                         }
                     )
                 }
-            }
-        },
-        created(){
-            if (this.item.city.name) {
-                this.city = this.item.city.name;
-            }
-            if (this.item.hotel.name) {
-                this.hotel = this.item.hotel.name;
             }
         }
     }
