@@ -133,10 +133,12 @@
                             label="状态">
                     </el-table-column>
                     <el-table-column
+                            v-if="quoter"
                             prop=""
                             label="报价员">
                     </el-table-column>
                     <el-table-column
+                            v-if="orderAmount"
                             prop=""
                             label="订单金额">
                     </el-table-column>
@@ -174,6 +176,8 @@ export default{
         return{
             selectState:0,
             isTrue:true,
+            quoter:true,
+            orderAmount:true,
             publishTimes:true,
             value1:"",
             value2:"",
@@ -236,33 +240,53 @@ export default{
                     this.total=this.arr.length;
                 for(let obj of this.currentData){
                     if(obj.status===1){
+                        this.quoter=false;
+                        this.orderAmount=false;
                         this.publishTimes=false;
                         obj.newStatus="待发布";
                     }else if(obj.status===2){
+                        this.quoter=false;
+                        this.orderAmount=false;
                         this.publishTimes=true;
                         obj.newStatus="待分配"
                     }else if(obj.status===3){
+                        this.quoter=true;
+                        this.orderAmount=true;
                         this.publishTimes=true;
                         obj.newStatus="报价中"
                     }else if(obj.status===4){
+                        this.quoter=true;
+                        this.orderAmount=true;
                         this.publishTimes=true;
                         obj.newStatus="报价中"
                     }else if(obj.status===5){
+                        this.quoter=true;
+                        this.orderAmount=true;
                         this.publishTimes=true;
                         obj.newStatus="待报价确认"
                     }else if(obj.status===6){
+                        this.quoter=true;
+                        this.orderAmount=true;
                         this.publishTimes=true;
                         obj.newStatus="待收款"
                     }else if(obj.status===7){
+                        this.quoter=true;
+                        this.orderAmount=true;
                         this.publishTimes=true;
                         obj.newStatus="分房待确认"
                     }else if(obj.status===8){
+                        this.quoter=true;
+                        this.orderAmount=true;
                         this.publishTimes=true;
                         obj.newStatus="待控房"
                     }else if(obj.status===9){
+                        this.quoter=true;
+                        this.orderAmount=true;
                         this.publishTimes=true;
                         obj.newStatus="已控房"
                     }else if(obj.status===10){
+                        this.quoter=true;
+                        this.orderAmount=true;
                         this.publishTimes=true;
                         obj.status="需要开票"
                     }else if(obj.status===11){

@@ -27,6 +27,9 @@
         margin-top: 10px;
         text-align: center;
     }
+    .red{
+        color:#f00;
+    }
 </style>
 <template>
     <div>
@@ -53,17 +56,22 @@
             <div class="dialogcontent">
                 <el-form>
                     <el-form-item label="时间">
+                        <i class="red">*</i>
                         <el-date-picker
                                 v-model="params.paytime"
                                 type="date"
-                                size="small"
+                                size="large"
                                 placeholder="选择日期">
                         </el-date-picker>
                     </el-form-item>
+
                     <el-form-item label="渠道">
-                        <el-radio v-model="params.provider" value="走客转账" label="走客转账"></el-radio>
-                        <el-radio v-model="params.provider" value="AE-Link转账" label="AE-Link转账"></el-radio>
-                        <el-radio v-model="params.provider" value="信用卡" label="信用卡"></el-radio>
+                        <i class="red">*</i>
+                        <el-radio v-model="params.provider" value="银行转账-走客" label="银行转账-走客"></el-radio>
+                        <el-radio v-model="params.provider" value="支付宝转账-走客" label="支付宝转账-走客"></el-radio>
+                        <el-radio v-model="params.provider" value="微信转账-走客" label="微信转账-走客"></el-radio>
+                        <el-radio v-model="params.provider" value="银行转账-AE-Link" label="银行转账-AE-Link"></el-radio>
+                        <el-radio v-model="params.provider" value="刷信用卡" label="刷信用卡"></el-radio>
                     </el-form-item>
                     <el-form-item label="备注">
                         <el-input type="textarea" v-model="params.extras"></el-input>
