@@ -72,7 +72,7 @@ module.exports = class TeamReqController extends TeamController {
     async [update](id, requirement, teamRequirement, wait_for_publish){
         const result = await teamRequirement.update(
             id,
-            transRequirement,
+            requirement,
             this.$getUser(),
             this.userInfo.checkPermission(
                 'offline_order', 
@@ -110,7 +110,7 @@ module.exports = class TeamReqController extends TeamController {
             return;
         }
 
-        await this[update](id, requirement, teamRequirement, false);
+        await this[update](id, transRequirement, teamRequirement, false);
     }
 
     async dispatch(id, user, dead_line){
