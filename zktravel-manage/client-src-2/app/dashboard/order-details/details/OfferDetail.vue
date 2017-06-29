@@ -33,6 +33,11 @@
                             </template>
                         </el-tabs>
                         <computed  :params="item.params" :index="index" :order="item.order"></computed>
+                        <el-row>
+                             <el-col>
+                                 <h4>供应商政策</h4>
+                             </el-col>
+                        </el-row>
                         <provider :provider="item.provider" :index="index"></provider>
                     </div>
                 </el-tab-pane>
@@ -43,6 +48,11 @@
                 </el-col>
             </el-row>
             <userchannel v-if="offlineRole.CHECK_PRICE&&userchannel" :userchannel="userchannel"> </userchannel>
+            <el-row style="height: 40px" type="flex">
+                <el-col :span="9">
+                    <h4>历史报价</h4>
+                </el-col>
+            </el-row>
             <history :history="orderdata" @useHistory="useHistory" v-if="orderdata"> </history>
         </div>
         <div class="offer-detail-booking" v-if="offlineRole.CONFIRM_PRICE&&orderstatus>4">

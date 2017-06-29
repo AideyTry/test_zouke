@@ -285,10 +285,19 @@
                         for(let hotels of orders.hotels){
                             for(let supplier of hotels.suppliers){
                                 console.log("supplier_name===",supplier.supplier_name);
+                                console.log("打印次数：");
                                 arr.push(supplier.supplier_name)
                             }
                         }
                     }
+//                    for(hotels in this.order.orders){
+//                        for(suppliers in this.order.orders[hotels]){
+//                            for(let index of this.order.orders[hotels][suppliers]){
+//                                console.log("supplier_name===",this.order.orders[hotels][suppliers][index].supplier_name);
+//                                arr.push(this.order.orders[hotels][suppliers][index].supplier_name)
+//                            }
+//                        }
+//                    }
                     console.log("arr=",arr);
                     for(let i=0;i<arr.length;i++){
                         if(arr[i]=='GTA'){

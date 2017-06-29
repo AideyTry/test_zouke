@@ -274,8 +274,8 @@ export default{
         voucherLoadding(){
             let newArr=[];
             ajax.post('/api/team/order/query-need-voucher',{page:0,pageSize:10}).then(json=>{
-                console.log(json);
                 this.arr=json.list;
+                console.log(this.arr);
                     for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
                         if(this.arr[num]){
                             newArr.push(this.arr[num]);
