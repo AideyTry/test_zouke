@@ -55,7 +55,7 @@ module.exports = class ActionTrigger{
         if(!this._controller) this.build();
 
         const controller = this._controller;
-        if(controller[this._actionName]){
+        if(Reflect.getPrototypeOf(controller).hasOwnProperty(this._actionName)){
             const meta = Metadata.getMetadata(controller.constructor, this._actionName);
             let result = await controller.$beforeAction();
 
