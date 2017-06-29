@@ -33,9 +33,6 @@
             .title {
                 min-width: 95px;
             }
-            .el-row {
-                height: 50px;
-            }
             .el-input {
                 width: 20%;
             }
@@ -244,6 +241,20 @@
         computed: {
             daterange(){
                 return new Date(this.startdate).daySpan(new Date(this.enddate));
+            }
+        },
+        created(){
+            if(this.item.city){
+                this.cities.push(this.item.city);
+            }
+            if(this.item.hotel){
+                this.hotels.push(this.item.hotel);
+            }
+            if(this.item.check_in){
+                this.startdate = new Date(this.item.check_in);
+            }
+            if(this.item.check_out){
+                this.enddate = new Date(this.item.check_out);
             }
         },
         watch: {

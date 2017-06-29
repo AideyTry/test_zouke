@@ -420,7 +420,12 @@
         created(){
             if (this.orderdata) {
                 this.params = this.orderdata.requirement;
-                this.users.push(this.orderdata.requirement.user);
+                if(this.orderdata.requirement.user){
+                    this.users.push(this.orderdata.requirement.user);
+                }
+                if(this.params.start_date){
+                    this.startdate = new Date(this.params.start_date);
+                }
             }
 
         },
