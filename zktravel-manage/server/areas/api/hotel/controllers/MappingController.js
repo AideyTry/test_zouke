@@ -6,8 +6,8 @@ module.exports = class MappingController extends LController {
     async query(sp, level){
         const mapping = new Mapping();
         const list = level==='alone' ? 
-            (await mapping.queryAlone(sp, 0, 800)):
-            (await mapping.query(sp, level, 0, 800));
+            (await mapping.queryAlone(sp, 0, 200)):
+            (await mapping.query(sp, level, 0, 200));
         this.renderJSON({code:0, list});
     }
     async map(spId, zkId, sp){
