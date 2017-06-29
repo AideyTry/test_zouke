@@ -114,7 +114,8 @@
                     <div>酒店星级（默认全选）<i class="red">*</i></div>
                 </el-col>
                 <el-col :span="21">
-                    <el-checkbox-group v-model="params.star">
+                    <el-checkbox-group v-model="params.star" @change="starchange">
+                        <el-checkbox-button name="不限" label="不限"></el-checkbox-button>
                         <el-checkbox-button name="一星" label="一星"></el-checkbox-button>
                         <el-checkbox-button name="二星" label="二星"></el-checkbox-button>
                         <el-checkbox-button name="三星" label="三星"></el-checkbox-button>
@@ -255,7 +256,7 @@
                     user: null,
                     number: '1',
                     start_date: new Date().format('YYYY-MM-DD'),
-                    star: ['一星','二星','三星','四星','五星'],
+                    star: ['不限'],
                     breakfast: true,
                     currency: 'EUR',
                     budget_min: null,
@@ -301,8 +302,9 @@
         },
         computed: {},
         methods: {
-            searchorder(){
-
+            starchange(stars){
+                if((stars[stars.length-1]==='不限')||stars.length===0) stars.splice(0, stars.length, '不限');
+                else stars.remove('不限');
             },
             addCard(){
                 this.params.stay_details.push(
