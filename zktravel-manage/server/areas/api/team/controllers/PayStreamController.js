@@ -22,6 +22,9 @@ module.exports = class MyPayStreamController extends TeamController {
         /***
          * 进行业务逻辑之前，要根据业务需求来判断是否需要进行数据校验,不通过直接驳回请求。
          ****/
+        if(!provider || !paytime){
+            return this.renderJSON({ code:1, msg: 'data check valid fail' });
+        }
         const result = await payStream.commit(id,user,provider,extras,paytime);
         //数据库操作失败
         if(!result){

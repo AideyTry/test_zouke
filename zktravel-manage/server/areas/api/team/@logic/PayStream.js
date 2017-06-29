@@ -1,4 +1,5 @@
 const BaseOrder = require('./BaseOrder');
+const compare = require('@local/compare');
 
 module.exports = class PayStream extends BaseOrder {
 
