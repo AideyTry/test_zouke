@@ -1,4 +1,4 @@
-//将bb跑的匹配数据写入map信息
+//将匹配数据写入map信息
 
 require('../requireRoot');
 require('@local/common/core/w/prototype');
@@ -21,10 +21,10 @@ async function remap(from, sp, bk_id, sp_id, zkHotels, spHotels){
             return 3;
         }
 
-        console.log(`map`);
+        console.log(`map -> ${sp}|${sp_id}`);
         const { _id: zk_id } = zkHotel;
 
-        await zkHotels.updateOne({'_id': zk_id}, { $addToSet: { [`sp_id.${sp}_id`]: sp_id } });
+        await zkHotels.updateOne({'_id': zk_id}, { $addToSet: { [`sp_id.${sp}_id`]: sp_id }, $set: { _map: true } });
         await spHotels.updateOne({'_id': spHotel._id }, { 
             $set: {
                 map_state: {
@@ -42,11 +42,12 @@ async function remap(from, sp, bk_id, sp_id, zkHotels, spHotels){
 
     if(map_state.from===from){
         // already map
-        console.log('map');
+        console.log(`map -> ${sp}|${sp_id}`);
         return 4;
     }
 
     // already map from other channel
+    console.log(`already map -> ${sp}|${sp_id}`)
     return 2;
 }
 

@@ -24,12 +24,14 @@ module.exports = class ZkResolver {
         };
 
         await zkCollection.updateOne({ _id: zkId }, {
-            $addToSet: addToSet
+            $addToSet: addToSet,
+            $set: { _map: true }
         });
     }
     async insert(hotel, spId){
         const id = await genZkId();
         hotel._id = id;
+        hotel._map = true;
         if(!hotel.sp_id){
             hotel.sp_id = {
                 [this.mapField]: [spId]
