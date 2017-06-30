@@ -2,20 +2,32 @@
     .offer-detail-container {
         width: 100%;
     }
-
     .offer-container {
         height: 100%;
     }
-
+    .finish-time{
+        width:170px;
+        height:30px;
+        background-color: red;
+        border:1px solid red;
+        border-radius: 15px;
+        color:#fff;
+        line-height: 30px;
+        text-align: center;
+    }
 </style>
 <template>
     <div>
         <div v-if="offlineRole.UPDATE_PRICE||offlineRole.CHECK_PRICE" class="offer-detail-container">
             <el-row style="height: 40px" type="flex">
-                <el-col :span="9">
+                <el-col :span="2">
                     <h4>报价详情</h4>
                 </el-col>
-                <el-col :span="12" class="creator-info">
+                <el-col :span="19" class="creator-info">
+                    <div v-show="this.status>2" class="finish-time">{{booking_dead_line}} 前完成</div>
+                </el-col>
+                <el-col :span="3">
+                    <div v-show="this.status>2">报价：{{booking_user}}</div>
                 </el-col>
             </el-row>
             <el-tabs v-model="editableTabsValue" active-name="方案1" type="card" editable closable @edit="handleTabsEdit">
@@ -28,11 +40,11 @@
                         <el-tabs v-model="countryTabs" type="border-card" :active-name="countryTabs">
                             <template v-for="(v,k) in item.order">
                                 <el-tab-pane :label="v.city.name" :name="v.city.name+k">
-                                    <city  :i="index" :k="k" :order="v" :params="editableTabs[index].params[k]"></city>
+                                    <city :i="index" :k="k" :order="v" :params="editableTabs[index].params[k]" :cash="cash"></city>
                                 </el-tab-pane>
                             </template>
                         </el-tabs>
-                        <computed  :params="item.params" :index="index" :order="item.order"></computed>
+                        <computed  :params="item.params" :index="index" :order="item.order" :cash="cash"></computed>
                         <el-row>
                              <el-col>
                                  <h4>供应商政策</h4>
@@ -53,7 +65,7 @@
                     <h4>历史报价</h4>
                 </el-col>
             </el-row>
-            <history :history="orderdata" @useHistory="useHistory" v-if="orderdata"> </history>
+            <history :history="orderdata" @useHistory="useHistory" v-if="orderdata"></history>
         </div>
         <div class="offer-detail-booking" v-if="offlineRole.CONFIRM_PRICE&&orderstatus>4">
             <template v-for="(o,p) in editableTabs">
@@ -88,6 +100,10 @@
         },
         data(){
             return {
+                cash:'',
+                status:""-0,
+                booking_dead_line:'',
+                booking_user:'',
                 tabnum: 1,
                 editableTabsValue: null,
                 editableTabs: [{
@@ -121,7 +137,18 @@
                     id: id
                 }, {lock: false}).then(
                     data => {
-                        console.log(data);
+                        console.log(data.detail.requirement.currency);
+                        this.booking_dead_line=new Date(data.detail.booking_dead_line).format('YYYY.MM.DD HH:MM');
+                        this.status = data.detail.status;
+                        this.currency = data.detail.requirement.currency;
+                        if(this.currency=='GBP'){
+                            this.cash="￡";
+                        }else if(this.currency=="EUR"){
+                            this.cash="€";
+                        }
+                        if(this.status-0>2){
+                             this.booking_user = data.detail.booking_user.name;
+                        }
                         vm.orderdata = data.detail;
                         if(data.detail.price){
                             vm.editableTabs=[];

@@ -340,6 +340,12 @@
                                 type: 'success'
                             });
                             vm.getorder(vm.$route.params.orderid);
+                        }else{
+                            this.$notify({
+                                title: '不可提交',
+                                message: '必填项信息缺失',
+                                type: 'warning'
+                            });
                         }
                     }
                 )

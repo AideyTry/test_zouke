@@ -9,22 +9,22 @@
 <template>
     <el-row class="computed">
         <el-col :span="6">
-            <span>成本合计：{{mycost.cost}}</span>
+            <span>成本合计：{{mycost.cost}} {{cash}}</span>
         </el-col>
         <el-col :span="6">
-            <span>bk合计：{{mycost.bk}}</span>
+            <span>bk合计：{{mycost.bk}} {{cash}}</span>
         </el-col>
         <el-col :span="6">
-            <span>报价合计：{{mycost.quoted}}</span>
+            <span>报价合计：{{mycost.quoted}} {{cash}}</span>
         </el-col>
         <el-col :span="6">
-            <span>节省：{{mycost.bk-mycost.quoted}}</span>
+            <span>节省：{{mycost.bk-mycost.quoted}} {{cash}}</span>
         </el-col>
     </el-row>
 </template>
 <script>
     export default{
-        props:['params','order','index'],
+        props:['params','order','index','cash'],
         data(){
             return{
                 myparams:this.params
