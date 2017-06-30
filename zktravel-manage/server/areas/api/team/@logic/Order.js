@@ -69,13 +69,12 @@ module.exports = class Order extends BaseOrder {
             list: list.map(item=>{
 
                 //返回离店日期
-                let outDate = item.requirement.stay_details.map(i=>{
+                let outDate = item.order_detail.orders.map(i=>{
                     return i.check_out;
                 }).reduce(function (a,b) {
                     return a>b?a:b;
                 },0);
 
-                console.log(outDate);
                 return {
                     orderId: item._id,
                     userName: item.requirement.user.name,

@@ -399,9 +399,9 @@
                             vm.getorder(vm.$route.params.orderid);
                         } else {
                             vm.$notify({
-                                title: '连接失败',
-                                message: data.msg,
-                                type: 'error'
+                                title: '审核失败',
+                                message: '必填项信息缺失',
+                                type: 'warning'
                             });
                         }
                     }
