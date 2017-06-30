@@ -162,12 +162,12 @@
         },
         computed:{
             tabledata(){
-                let arr= this.tab.order||[];
+                let arr= this.tab.order||[]; //循环每个酒店住宿时间段
                 let num=0;
                     arr.forEach(
                     (v,k)=>{
-                        v.num=new Date(v.check_out).getDate()-new Date(v.check_in).getDate();
-                        v.params=this.tab.params[k];
+                        v.num=new Date(v.check_out).getDate()-new Date(v.check_in).getDate(); //循环每个酒店所在的天数
+                        v.params=this.tab.params[k];   //下标
                     }
                 )
                 return arr;

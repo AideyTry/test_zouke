@@ -13,7 +13,7 @@
     <div class="country">
         <el-form ref="ruleForm" :rules="rule" :model="params">
         <el-row>
-            <el-col :span="3">入住/离店：</el-col>
+            <el-col :span="3">入住/离店 {{night}}</el-col>
             <el-col :span="9">{{order.check_in}} - {{order.check_out}} {{night}}晚</el-col>
             <el-col :span="12">指定的酒店：{{order.hotel.name}}</el-col>
         </el-row>
@@ -82,6 +82,9 @@
                 let arr = item.item;
                 this.hotelflag=true;
                 this.params.hotel = arr;
+            },
+            send(){
+                this.$emit('child-info',this.night)
             }
         },
         watch:{
@@ -104,6 +107,7 @@
             if(this.params.hotel){
                 this.hotel=this.params.hotel.name
             }
+            this.send();
         }
     }
 </script>
