@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import ajax from '@local/common/ajax';
+import acessRole from './utils/assignRole';
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
@@ -9,72 +10,77 @@ const store = new Vuex.Store({
     /// #endif
     state:{
         userInfo: null,
-
-        /*SAI酒店库数据start*/
-        list:[],
-        total:10,
-        pages:{
-            page:1,
-            pageSIze:10
+        /*我的发布start*/
+        publish:{
+            isTrue:true
         },
-        counts: {
-                saiisTrue:{
-                    pisTrue:false,
-                    ofisTrue:false,
-                    onisTrue:false
-                },
-                isTrue:{
-                    eisTrue:false,
-                    aisTrue:false,
-                },
-                flag:{
-                    flag:false,  //记录状态进行跳转页面使用
-                    page:1
-                }
-        }
-        /*SAI酒店库数据end*/
+        /*我的发布end*/
+        /*待控放start*/
+        count:2,
+        selectRoom:0,
+        supplier:'',
+        /*待控放end*/
+        /*用户权限管理*/
+        offlineRole:null,
+        validfrom:false
     },
     getters: {
         userInfo(state){
             return state.userInfo;
         },
-        /*SAI酒店库start*/
-        counts(state){
-            return state.counts;
+        /*我的发布start*/
+        publish(state){
+            return state.publish;
         },
-        list(state){
-            return state.list;
+        /*我的发布end*/
+        /*待控放start*/
+        count(state){
+          return state.count;
         },
-        total(state){
-            return state.total;
+        selectRoom(state){
+            return state.selectRoom;
+        },
+        supplier(state){
+            return state.supplier;
+        },
+        /*待控放end*/
+        offlineRole(state){
+            return state.offlineRole;
+        },
+        validfrom(state){
+            return state.validfrom;
         }
-        /*SAI酒店库end*/
+
     },
     mutations: {
         initUserInfo(state, info){
             state.userInfo = info;
+            if(info){
+                state.offlineRole =acessRole(info.p.offline_order);
+            }
         },
-        /*SAI酒店库start*/
-        penddingList(state,list){
-            // console.log(total);
-            state.list=list;
+        /*我的发布start*/
+        publish(state,isTrue){
+            state.publish.isTrue=isTrue;
         },
-        penddingOpreat(state,object){
-            state.counts.saiisTrue.pisTrue=object.pisTrue;
-            state.counts.saiisTrue.onisTrue=object.onisTrue;
-            state.counts.saiisTrue.ofisTrue=object.ofisTrue;
+        /*我的发布end*/
+        valid(state,status){
+            state.validfrom=status;
         },
-        count(state,count){
-            state.total=count;
+        /*待控放start*/
+        addCount(state){
+            state.count=++state.count;
         },
-        pages(state,object){
-            state.counts.flag.page=object.page;
-            state.counts.flag.flag=object.flag;
-            // console.log("p=",state.counts.flag.page);
-            // console.log("f=",state.counts.flag.flag);
+        deleteCount(state){
+            state.count=--state.count;
         },
-
-        /*SAI酒店库end*/
+        selectRoom(state){
+            state.selectRoom=++selectRoom;
+        },
+        supplier(state,supplier_name){
+            state.supplier=supplier_name;
+        }
+        /*待控放end*/
     },
     actions: {
         logout({ commit }){
@@ -82,19 +88,40 @@ const store = new Vuex.Store({
                 commit('initUserInfo', null);
             })
         },
-        /*SAI酒店库start*/
-        penddings(context){
-            // let page=context.state.pages.page;
-            let page=context.state.counts.flag.page-1;
-
-            let pageSize=context.state.pages.pageSize;
-            return ajax.post('/api/zk-hotel/query',{page:page,pageSize:pageSize}).then(json=>{
-                // console.log(json.count)
-                context.commit('penddingList',json.list);
-                context.commit('count',json.count);
-            })
-        }   
-        /*SAI酒店库end*/
+        /*待控房start*/
+        updateOrders({commit},orders){
+                    let arr=[];
+                    let count_GTA=0;
+                    let count_miki=0;
+                    let str='';
+                    orders.forEach(function(order){
+                        order.hotels.forEach(function(hotels){
+                            hotels.suppliers.forEach(function(supplier,index){
+                                arr.push(supplier.supplier_name);
+                            })
+                        })
+                    });
+                    for(let i=0;i<arr.length;i++){
+                        if(arr[i]=='GTA'){
+                            count_GTA++;
+                        }
+                        if(arr[i]=='miki'){
+                            count_miki++;
+                        }
+                    }
+                    if(count_GTA==0&&count_miki==0){
+                        commit('supplier',str)
+                    }
+                    if(count_GTA!=0&&count_miki==0){
+                        str="GTA";
+                        commit('supplier',str)
+                    }
+                    if(count_GTA==0&&count_miki!=0){
+                        str="miki";
+                        commit('supplier',str)
+                    }
+        }
+        /*待控房end*/
     }
 });
 

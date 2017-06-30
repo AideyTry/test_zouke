@@ -7,7 +7,9 @@ const SessionStore = require('./SessionStore');
 module.exports = function({
     routerConfig,
     sessionConfig,
-    bodyConfig
+    bodyConfig,
+    View,
+    decorator = true
 } = {}, app){
 
     if(sessionConfig&&sessionConfig.dir){
@@ -18,6 +20,6 @@ module.exports = function({
     return compose([
         session(sessionConfig, app),
         bodyParser(bodyConfig),
-        mvc(routerConfig)
+        mvc(routerConfig, View, decorator)
     ])
 }

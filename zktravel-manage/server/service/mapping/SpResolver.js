@@ -21,7 +21,7 @@ module.exports = class SpResolver {
     }
     async resolveHotel(_id, map_state){
         await this.updateHotel(_id, {
-            $set: { map_state, mode: 'R' }
+            $set: { map_state }
         });
     }
 }

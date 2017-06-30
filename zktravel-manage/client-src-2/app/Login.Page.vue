@@ -24,6 +24,7 @@
         .login
             img(":src"='qrCode' @load="checkLoginPoll")
             .refresh(v-if="invalid" @pointerup.prevent="refreshQRCode") 刷新二维码
+            .no-user(v-if="noUser") 无该用户，请联系管理员添加
         <h3>请扫码登录</h3>
     </div>
 </template>
@@ -35,11 +36,14 @@
  </template> -->
 <script>
     import store from 'root/store';
+    import auth from 'root/utils/auth';
+    import ajax from '@local/common/ajax';
 
     export default {
         data(){
             return {
                 invalid: false,
+                noUser: false,
                 timestamp: new Date().valueOf()
             }
         },
@@ -52,6 +56,7 @@
             refreshQRCode(){
                 this.timestamp = new Date().valueOf();
                 this.invalid = false;
+                this.noUser = false;
             },
             checkLoginPoll(){
                 const poll = ()=>{
@@ -65,6 +70,10 @@
                                 setTimeout(()=>{
                                     poll();
                                 }, 1000);
+                                break;
+                            case 2: //user not permitted
+                                this.invalid = true;
+                                this.noUser = true;
                                 break;
                             case 9: //qr invalid
                                 this.invalid = true;
@@ -84,7 +93,21 @@
         },
         beforeRouteEnter(to, from, next){
             if(store.getters['userInfo']){
-                //logined
+                r();
+                return;
+            }
+            auth.isLogin().then(result=>{
+                if(result){
+                    store.commit('initUserInfo', result);
+                    r();
+                } else {
+                    next();
+                }
+            }).catch(e=>{
+                next();
+            })
+
+            function r(){
                 let redirectRoute = { path:'/' }
                 if(to.query.redirect){
                     redirectRoute = JSON.parse(to.query.redirect)
@@ -92,9 +115,7 @@
                 next(Object.assign({
                     replace:true
                 }, redirectRoute));
-                return;
             }
-            next();
         }
     }
 </script>

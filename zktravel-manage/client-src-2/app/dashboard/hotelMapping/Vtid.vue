@@ -197,7 +197,6 @@
 </template>
 
 <script>
-	import store from './store'
 	import ajax from '@local/common/ajax';
 	export default {
 		props: ['updates'],

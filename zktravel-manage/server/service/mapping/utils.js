@@ -1,13 +1,15 @@
 const MappingLevel = require('./MappingLevel');
-const dbclient = requireRoot('db');
-const { zk_collection_name, sp_collection_name } = require('../config');
+const dbclient = requireRoot('dbclient');
 const Pretreatment = require('./Pretreatment');
+const intersection = require('lodash/intersection');
 
 let _zkCollection = null;
 let _spCollection = null;
 
 module.exports = {
-    diff({ dis, hotel: {[Pretreatment.field]: h1_field} }, { [Pretreatment.field]: h2_field}){
+    diff({ dis, hotel:hotel1 }, hotel2 ){
+        const h1_field = hotel1[Pretreatment.field];
+        const h2_field = hotel2[Pretreatment.field];
         let result = 0;
         
         if(
@@ -22,7 +24,7 @@ module.exports = {
         if( h1_field.address&&(h1_field.address===h2_field.address)){
             result |= MappingLevel.ADDRESS;
         }
-        if( h1_field.city_id&&(h1_field.city_id===h2_field.city_id)){
+        if( hotel1.city_ids&&intersection(hotel1.city_ids, hotel2.city_ids).length>0){
             result |= MappingLevel.CITY;
         }
         if( h1_field.url_web&&(h1_field.url_web===h2_field.url_web)){
@@ -39,23 +41,19 @@ module.exports = {
         
         return result;
     },
-    async getDb(){
-        return await dbclient.get();
-    },
     async genZkId(){
-        return await (await dbclient.get()).genId(zk_collection_name);
+        const id = await dbclient.genId('zk_hotels');
+        return parseInt(`1${id.toString()}`, 10);
     },
     async getZkHotelCollection(){
         if(!_zkCollection){
-            const db = await dbclient.get();
-            _zkCollection = await db.collection(zk_collection_name);
+            _zkCollection = await dbclient.collections.get('zk_hotels');
         }
         return _zkCollection;
     },
     async getSpHotelCollection(){
         if(!_spCollection){
-            const db = await dbclient.get();
-            _spCollection = await db.collection(sp_collection_name);
+            _spCollection = await dbclient.collections.get('sp_hotels');
         }
         return _spCollection;
     }

@@ -8,6 +8,7 @@
         fuzzy: {
             [_id]: map_key
         },
+        fuzzy_level: []
 
         offline: true,
 
@@ -35,10 +36,18 @@ module.exports = class MapState {
         return Object.assign(createBaseMapState(), { alone: true });
     }
     static createStrict(zkId, map_key){
-        return Object.assign(createBaseMapState(), { strict: zkId, map_key});
+        return Object.assign(createBaseMapState(), { strict: zkId, map_key, from: 'automap'});
     }
-    static createFuzzy(fuzzy){
-        return Object.assign(createBaseMapState, { fuzzy });
+    static createFuzzy(fuzzy, map_state = {}){
+        if(map_state.fuzzy){
+            fuzzy = Object.assign({}, map_state.fuzzy, fuzzy);
+        }
+        fuzzy._exists = true;
+        const set = new Set();
+        for(let mapKey of Object.values(fuzzy)){
+            set.add(MappingLevel.getLevel(mapKey));
+        }
+        return Object.assign(createBaseMapState(), { fuzzy, fuzzy_level: [...set] });
     }
     static isStrict(mapState){
         if(!mapState) return false;

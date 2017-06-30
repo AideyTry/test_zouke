@@ -4,7 +4,7 @@ module.exports = class ZkResolver {
     static get(supplier){
         return new ZkResolver(supplier);
     }
-    constructor(sp, mapField = sp+'_ids'){
+    constructor(sp, mapField = sp+'_id'){
         this.sp = sp;
         this.mapField = mapField;
     }
@@ -14,23 +14,31 @@ module.exports = class ZkResolver {
             $pull: { [`sp_id.${spResolver.mapField}`]: spId }
         });
     }
-    async map(zkId, spId, alias){
+    async map(zkId, spHotel, alias){
+        const spId = spHotel.id;
         const zkCollection = await getZkHotelCollection();
+        
+        const addToSet = {
+            [`sp_id.${this.mapField}`]: spId,
+            "alias":{ $each:alias }
+        };
+
         await zkCollection.updateOne({ _id: zkId }, {
-            $addToSet: { 
-                [`sp_id.${this.mapField}`]: spId,
-                "alias":{ $each:alias }
-            }
+            $addToSet: addToSet,
+            $set: { _map: true }
         });
     }
     async insert(hotel, spId){
         const id = await genZkId();
         hotel._id = id;
-        hotel.sp_id = {
-            [this.mapField]: [spId]
-        };
+        hotel._map = true;
+        if(!hotel.sp_id){
+            hotel.sp_id = {
+                [this.mapField]: [spId]
+            };
+        }
         const zkCollection = await getZkHotelCollection();
-        await zkCollection.insertOne(doc);
+        await zkCollection.insertOne(hotel);
         return id;
     }
 }

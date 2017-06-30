@@ -218,7 +218,7 @@
 <script>
     import ajax from '@local/common/ajax';
     export default {
-        props: ['updates', 'idp'],
+        props: ['updates', 'idp','sp'],
         data() {
             return {
                 isTrue: false,
@@ -227,8 +227,9 @@
             }
         },
         created() {
-            ajax.post('/api/sp-hotel/detail', {
-                id: this.idp
+            ajax.post('/api/hotel/sp-hotel/detail', {
+                id: this.idp,
+                sp: this.sp
             }).then(json => {
                 if(json.code === 0) {
                     this.phdata = json.detail;

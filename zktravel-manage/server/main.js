@@ -24,7 +24,9 @@ app.use(async (ctx, next) => {
     if(
         ctx.accepts(['html', 'image/*'])==='image/*'||                  // qr code
         ctx.path.startsWith('/trigger/')||                              // internal call
-        ctx.headers['x-requested-with'] === 'XMLHttpRequest'            // api ajax
+        ctx.headers['x-requested-with'] === 'XMLHttpRequest'||          // api ajax
+        ctx.path==='/api/team/voucher/download'||                       // voucher download
+        (DEBUG&&ctx.path.startsWith('/test/'))
     ){
         await next();
     }else{
@@ -33,16 +35,24 @@ app.use(async (ctx, next) => {
 });
 
 app.use(async (ctx, next)=>{
-    console.log(`request ${ctx.originalUrl} start`);
-    await next();
-    console.log(`request ${ctx.originalUrl} end`);
-})
-app.use(async (ctx, next)=>{
-    await next();
+    console.log(`--> request ${ctx.originalUrl} start`);
+    try{
+        await next();
+    }catch(e){
+        throw e;
+    }finally{
+        console.log(`<-- request ${ctx.originalUrl} end`);
+    }
 });
 app.use(koaMvc({
     routerConfig: {
-        areas: ['trigger', 'api']
+        areas: [
+            'trigger', 
+            'api', 
+            'api/team',         //团房
+            'api/hotel',        //酒店
+            'api/system',       //系统管理
+            ... (DEBUG?['test']:[]) ]
     },
     sessionConfig: {
         key: SESS_KEY,

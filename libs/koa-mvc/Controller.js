@@ -9,18 +9,28 @@ const pugCompileOptions = {
     doctype: 'html'
 }
 
+const viewKey = Symbol('#view');
+const rewriteControllerKey = Symbol('#rewriteControllerKey');
+
 module.exports = class Controller {
 
     $beforeAction(){}
     $afterAction(){}
 
-    constructor({ctx, route, router}){
+    constructor({ctx, route, router, view, rewriteController}){
         Object.defineProperties(this, {
             ctx: { value: ctx },
             route: { value: route },
             router: { value: router }
         });
-        this.layout = '~layout';
+        this[viewKey] = view;
+        this[rewriteControllerKey] = rewriteController;
+    }
+    isRewrite(){
+        return !!this[rewriteControllerKey];
+    }
+    get rewriteController(){
+        return this[rewriteControllerKey];
     }
     get request(){
         return this.ctx.request;
@@ -28,34 +38,43 @@ module.exports = class Controller {
     get response(){
         return this.ctx.response;
     }
+    get session(){
+        return this.ctx.session;
+    }
+    set session(s){
+        this.ctx.session = s;
+    }
+    get sessionId(){
+        return this.ctx.sessionId;
+    }
     get cookies(){
         return this.ctx.cookies;
+    }
+    get query(){
+        return this.ctx.query;
+    }
+    throw(...arg){
+        this.ctx.throw(...arg);
     }
     isAjax(){
         return this.ctx.headers['x-requested-with'] === 'XMLHttpRequest'
     }
-    renderText(txt){
-        this.ctx.body = txt;
+    renderStream(stream){
+        this.ctx.body = stream;
+    }
+    renderString(string){
+        this.ctx.body = string;
     }
     render(model = {}, view){
         const controller = this.route.controller;
         view = view || this.route.action;
 
         const viewPath = path.resolve(this.route.viewsRoot, `${controller}/${view}.pug`);
-        const content = pug.compileFile(viewPath, pugCompileOptions)({
-            model
-        });
 
-        if(this.layout){
-            const layoutPath = path.resolve(this.route.viewsRoot, `${this.layout}.pug`);
-            const body = pug.compileFile(layoutPath, pugCompileOptions)({
-                model,
-                content
-            });
-            this.ctx.body = body;
-        }else{
-            this.ctx.body = content;
-        }
+        this.ctx.body = pug.compileFile(viewPath, pugCompileOptions)({
+            model,
+            view: this[viewKey]
+        });
     }
     renderJSON(json = {}){
         this.ctx.body = json;
@@ -69,12 +88,12 @@ module.exports = class Controller {
         this.ctx.redirect(url);
     }
     async rewrite(params, area){
-        const route = new Route(params, area);
+        const route = (typeof params === 'string') ? this.router.match(params) : new Route(params, area);
         const actionTrigger = new ActionTrigger({
             ctx: this.ctx,
             route,
             router: this.router
         });
-        await actionTrigger.trigger();
+        await actionTrigger.trigger(this);
     }
 }
