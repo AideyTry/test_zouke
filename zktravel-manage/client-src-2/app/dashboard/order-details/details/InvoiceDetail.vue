@@ -61,14 +61,16 @@ import ajax  from '@local/common/ajax';
 	export default{
 		data(){
 		      return {
-			     myData:[]
+			     myData:[],
+                 arr:[]
 		  }
 	},
     methods:{
         load(){
+             let newArr=[];
             ajax.post('/api/team/order/detail',{id:this.$route.params.orderid}).then(data=>{
-                /*let arr = data.detail.voucher_detail;*/
-                
+                this.arr=data.detail.voucher_details
+                    this.myData= this.arr;
             })
         }
     },
