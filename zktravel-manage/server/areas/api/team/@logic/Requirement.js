@@ -167,7 +167,7 @@ module.exports = class TeamRequirement extends BaseOrder {
         }
         return await this.$update({_id:id, status: this.status.WAIT_FOR_PUBLISH}, { $set: set });
     }
-    async update(id, requirement, user/*更新者*/, all/*是否能更新所有需求*/){
+    async update(id, requirement, user/*更新者*/, all/*是否能更新所有需求*/, wait_for_publish){
         const collection = await this.$getCollection();
         
         const { 
@@ -179,10 +179,10 @@ module.exports = class TeamRequirement extends BaseOrder {
             WAIT_FOR_GATHERING
         } = this.status;
 
-        const query = { _id: id, status: 
+        const query = { _id: id, status:
+            wait_for_publish ? WAIT_FOR_PUBLISH:
             {
                 $in: [
-                    WAIT_FOR_PUBLISH,
                     WAIT_FOR_DISPATCH, 
                     WAIT_FOR_GIVE_PRICE, 
                     WAIT_FOR_PRICE_CHECK,

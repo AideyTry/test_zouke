@@ -41,22 +41,33 @@
             width:100%;
             height:20px;
         }
-        .warning{
-            color: #fff;
-            background: #F7BA2A;
+        .row-bg{
+            padding:15px 0;
+            background-color: #fff;
+            margin-top: 20px;
+            .eight{
+                background-color: #FF6666;
+                padding:10px 40px;
+                display: inline-block;
+            }
+            .twelve{
+                background-color: #FF9900;
+                color:green;
+                padding:10px 40px;
+                display: inline-block;
+            }
+            .twenty-four{
+                background-color: #FFFF00;
+                padding:10px 40px;
+                display: inline-block;
+            }
+            .time-out{
+                background-color: #9900cc;
+                padding:10px 40px;
+                display: inline-block;
+            }
         }
-        .danger{
-            color: #fff;
-            background: #FF4949;
-        }
-        .primary{
-            color: #fff;
-            background: #1D8CE0;
-        }
-        .overdead{
-            color: #fff;
-            background: #324057;
-        }
+        
     }
 
 </style>
@@ -86,11 +97,10 @@
                             label="紧急度"
                             v-if="true">
                         <template scope="scope">
-                            <el-tag v-if="scope.row._class=='danger'" color="#FF4949">8小时完成</el-tag>
-                            <el-tag v-if="scope.row._class=='warming'" color="#F7BA2A">24小时完成</el-tag>
-                            <el-tag v-if="scope.row._class=='primary'" color="#1D8CE0">48小时完成</el-tag>
-                            <el-tag v-if="scope.row._class=='success'" type="success">48小时以上</el-tag>
-                            <el-tag v-if="scope.row._class=='overdead'" color="#324057">已超时</el-tag>
+                            <el-tag v-if="scope.row._class=='eight'" color="#FF6666">8小时内完成</el-tag>
+                            <el-tag v-if="scope.row._class=='twelve'" color="#FF9900">24小时内完成</el-tag>
+                            <el-tag v-if="scope.row._class=='twenty-four'" color="#FFFF00">48小时内完成</el-tag>
+                            <el-tag v-if="scope.row._class=='time-out'" color="#9900cc">已超时</el-tag>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -107,14 +117,14 @@
                     </el-table-column>
                     <el-table-column
                             prop="priority"
+                            label="优先级">
+                    </el-table-column>
+                    <el-table-column
+                            prop="status"
                             label="状态">
                     </el-table-column>
                     <el-table-column
-                            prop="price"
-                            label="金额">
-                    </el-table-column>
-                    <el-table-column
-                            prop="publish"
+                            prop="creator.name"
                             label="创建人">
                     </el-table-column>
                     <el-table-column
@@ -122,9 +132,32 @@
                             label="完成时间">
                     </el-table-column>
                 </el-table>
-                <div style="height:90px">
-
-                </div>
+               <el-row 
+                    v-show="this.tableData.length!=0"
+                    type="flex"
+                    class="row-bg"
+                    align="center">
+                        <el-col :span="2">
+                            报价紧急度
+                        </el-col>
+                        <el-col :span="1" class="eight"></el-col>
+                        <el-col :span="2">
+                            8小时完成
+                        </el-col>
+                        <el-col :span="1" class="twelve"></el-col>
+                        <el-col :span="2">
+                            12小时完成
+                        </el-col>
+                        <el-col :span="1" class="twenty-four"></el-col>
+                        <el-col :span="2">
+                            24小时完成
+                        </el-col>
+                        <el-col :span="1" class="time-out"></el-col>
+                        <el-col :span="2">
+                            已超时
+                        </el-col>
+                        <el-col :span="10"></el-col>
+                </el-row>
                 <el-pagination
                         layout="total, prev, pager, next, jumper"
                         class="pagination"
@@ -168,20 +201,40 @@
                     page:this.pager.pageNum,
                     pageSize:this.pager.pageSize}).then(
                     data=>{
+                        console.log(data);
                         this.tableData=data.list;
+                        for(let obj of this.tableData){
+                            if(obj.status===1){
+                                obj.status="待发布";
+                            }else if(obj.status===2){
+                                obj.status="待分配"
+                            }else if(obj.status===3){
+                                obj.status="待报价"
+                            }else if(obj.status===4){
+                                obj.status="待审核"
+                            }else if(obj.status===5){
+                                obj.status="待报价确认"
+                            }else if(obj.status===6){
+                                obj.status="待收款"
+                            }else if(obj.status===7){
+                                obj.status="分房待确认"
+                            }else if(obj.status===8){
+                                obj.status="待控房"
+                            }else if(obj.status===9){
+                                obj.status="已控房"
+                            }
+                        }
                         this.tableData.forEach(
                             v=>{
                                 let hour=Math.floor((new Date(v.startDate)-new Date())/3600000);
                                 if(hour<=8&&0<hour){
-                                    v._class='danger'
+                                    v._class='eight'
                                 }else if(8<hour&&hour<=24){
-                                    v._class='warming'
+                                    v._class='twelve'
                                 }else if(24<hour&&hour<=48){
-                                    v._class='primary'
+                                    v._class='twenty-four'
                                 }else if(hour<0){
-                                    v._class='overdead'
-                                }else {
-                                    v._class='success'
+                                    v._class='time-out'
                                 }
                             }
                         )
@@ -199,7 +252,6 @@
             },
             changeTab(tab){
                 this.$router.push({name:"dashboard-wait-offer",params:{offer:tab.name}});
-
                 switch(this.$route.path){
                     case "/dashboard/wait-offer/wp":
                         this.status = 3;

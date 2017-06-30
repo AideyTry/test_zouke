@@ -9,6 +9,7 @@
         <el-table
                 :data="history.price_history"
                 stripe
+                border
                 style="width: 100%">
             <el-table-column
                     prop="id"
@@ -16,7 +17,14 @@
             </el-table-column>
             <el-table-column
                     prop="check_pass"
-                    label="是否通过">
+                    label="管理员审核状态">
+                <template scope="scope">
+                    {{scope.row.check_pass?'是':'否'}}
+                </template>
+            </el-table-column>
+             <el-table-column
+                    prop="check_pass"
+                    label="用户是否通过方案">
                 <template scope="scope">
                     {{scope.row.check_pass?'是':'否'}}
                 </template>

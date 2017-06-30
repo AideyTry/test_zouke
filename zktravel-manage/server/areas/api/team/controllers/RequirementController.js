@@ -3,6 +3,7 @@ const TeamRequirement = require('../@logic/Requirement');
 const Order = require('../@logic/Order');
 
 const triggerInsert = Symbol();
+const update = Symbol();
 
 // 团房需求
 module.exports = class TeamReqController extends TeamController {
@@ -68,22 +69,16 @@ module.exports = class TeamReqController extends TeamController {
         else this.renderJSON({ code:2, msg: 'can not publish this draft' });
     }
 
-    async update(id, requirement){
-        const teamRequirement = new TeamRequirement();
-        const transRequirement = teamRequirement.validRequirement(requirement);
-        if(!transRequirement){
-            this.renderJSON({ code:1, msg: 'data check valid fail' });
-            return;
-        }
-
+    async [update](id, requirement, teamRequirement, wait_for_publish){
         const result = await teamRequirement.update(
-            id, 
-            transRequirement, 
+            id,
+            requirement,
             this.$getUser(),
             this.userInfo.checkPermission(
                 'offline_order', 
                 this.P.OFFLINE_ORDER.UPDATE_ALL_REQUIREMENT
-            )
+            ),
+            wait_for_publish
         );
 
         switch(result){
@@ -100,7 +95,22 @@ module.exports = class TeamReqController extends TeamController {
                 this.renderJSON({ code: 3, msg: 'status change' });
                 return;
         }
-        //todo 
+    }
+
+    //订单处于未发布状态
+    async draftUpdate(id, requirement){
+        await this[update](id, requirement, new TeamRequirement(), true);
+    }
+    //订单处于已发布状态
+    async update(id, requirement){
+        const teamRequirement = new TeamRequirement();
+        const transRequirement = teamRequirement.validRequirement(requirement);
+        if(!transRequirement){
+            this.renderJSON({ code:1, msg: 'data check valid fail' });
+            return;
+        }
+
+        await this[update](id, transRequirement, teamRequirement, false);
     }
 
     async dispatch(id, user, dead_line){

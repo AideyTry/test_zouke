@@ -240,12 +240,12 @@
                 })
             },
             getorder(id){
-                let vm = this;
                 ajax.post('/api/team/order/detail', {
                     id: id
                 }, {lock: false}).then(
                     data => {
-                        vm.orderdata = data.detail;
+                        this.orderdata = data.detail;
+                        
                     }
                 )
             },
@@ -261,7 +261,9 @@
             },
             updatedraft(){
                 let vm = this;
-                ajax.post('/api/team/requirement/update', {
+                ajax.post(`/api/team/requirement/${
+                    this.orderdata.status===1?'draft-update':'update'
+                }`, {
                     id: vm.$route.params.orderid,
                     requirement: vm.orderdata.requirement
                 }).then(
@@ -338,6 +340,12 @@
                                 type: 'success'
                             });
                             vm.getorder(vm.$route.params.orderid);
+                        }else{
+                            this.$notify({
+                                title: '不可提交',
+                                message: '必填项信息缺失',
+                                type: 'warning'
+                            });
                         }
                     }
                 )

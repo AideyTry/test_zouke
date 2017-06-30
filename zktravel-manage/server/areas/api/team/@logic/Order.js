@@ -17,7 +17,8 @@ module.exports = class Order extends BaseOrder {
             'requirement.priority': 1,
             'requirement.start_date': 1,
             'status': 1,
-            'publish_time': 1
+            'publish_time': 1,
+            'creator':1
         }).skip(page*pageSize).limit(pageSize);
 
         const list = await cursor.toArray();
@@ -31,7 +32,8 @@ module.exports = class Order extends BaseOrder {
                     priority: item.requirement.priority,
                     startDate: item.requirement.start_date,
                     status: item.status,
-                    publishTime: item.publish_time
+                    publishTime: item.publish_time,
+                    creator:item.creator
                 };
             })
         };
@@ -44,7 +46,7 @@ module.exports = class Order extends BaseOrder {
         //查询条件
         const query = {
             'creator.id': uid,
-            'voucher_detail': { $ne: null }
+            'voucher_details': { $ne: null }
         };
 
         //符合条件的订单总条数
@@ -54,6 +56,7 @@ module.exports = class Order extends BaseOrder {
             'requirement.user.name': 1,
             'requirement.priority': 1,
             'requirement.start_date': 1,
+            'requirement.stay_details': 1,
             'status': 1,
             'create_time': 1
         }).skip(page*pageSize).limit(pageSize);
@@ -64,13 +67,23 @@ module.exports = class Order extends BaseOrder {
         return {
             count,
             list: list.map(item=>{
+
+                //返回离店日期
+                let outDate = item.requirement.stay_details.map(i=>{
+                    return i.check_out;
+                }).reduce(function (a,b) {
+                    return a>b?a:b;
+                },0);
+
+                console.log(outDate);
                 return {
                     orderId: item._id,
                     userName: item.requirement.user.name,
                     priority: item.requirement.priority,
                     startDate: item.requirement.start_date,
                     status: item.status,
-                    publishTime: item.create_time
+                    publishTime: item.create_time,
+                    outDate: outDate
                 };
             })
         }
