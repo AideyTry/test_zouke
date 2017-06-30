@@ -39,10 +39,10 @@
     import RoomingList from './cards/RoomingList'
     import ControlHouse from './cards/ControlHouse'
     export default{
-        props:["orderData"],
+        props:["orderdata"],
         data(){
             return {
-                orderdata:null
+                orderData:null
             }
         },
         components:{
@@ -69,7 +69,7 @@
         methods:{
             loadOrder(id){
                 ajax.post("/api/team/order/detail",{id:id}, {lock: false}).then(json=>{
-                    this.orderdata = json.detail;
+                    this.orderData = json.detail;
                 })
             },
             dateRange(a,b){

@@ -5,7 +5,7 @@
 </style>
 <template>
     <div>
-        <div v-if="orderStatus!=8&&choose" class="orderDetail">
+        <div v-if="orderStatus!=8&&userInfo.id==2" class="orderDetail">
             <el-row type="flex">
                 <!--<el-col :span="1"></el-col>-->
                 <el-col :span="3">
@@ -88,8 +88,8 @@
                 </div>
             </el-card>
             <p></p>
-            <el-card class="box-card">
-                <el-row type="flex" slot="header" class="clearfix">
+            <div class="box-card">
+                <el-row type="flex">
                     <h4>用户条款</h4>
                 </el-row>
                 <el-card class="">
@@ -127,21 +127,33 @@
                         </el-col>
                     </el-row>
                 </el-card>
-            </el-card>
-            <el-card>
-                <el-row type="flex" slot="header" class="clearfix">
-                    <h4>分房名单</h4>
-                </el-row>
-                <el-input
-                        type="textarea"
-                        :rows="5"
-                        v-model="orderData.allot_list.content"
-                        :disabled="true">
+            </div>
+            <!--<el-card>-->
+                <!--<el-row type="flex" slot="header" class="clearfix">-->
+                    <!--<h4>分房名单</h4>-->
+                <!--</el-row>-->
+                <!--<el-input-->
+                        <!--type="textarea"-->
+                        <!--:rows="5"-->
+                        <!--v-model="orderData.allot_list.content"-->
+                        <!--:disabled="true">-->
 
-                </el-input>
-            </el-card>
+                <!--</el-input>-->
+            <!--</el-card>-->
         </div>
-        <RoomReservationCard v-if="orderStatus!=8&&choose==false" :orderDatas="orderData"></RoomReservationCard>
+        <RoomReservationCard v-if="userInfo.id==3" :orderDatas="orderData"></RoomReservationCard>
+        <el-row type="flex">
+            <h4>分房名单</h4>
+        </el-row>
+        <el-row type="flex">
+            <el-input
+                    type="textarea"
+                    :rows="5"
+                    v-model="orderData.allot_list.content"
+                    :disabled="true">
+
+            </el-input>
+        </el-row>
     </div>
 </template>
 <script>
@@ -160,6 +172,9 @@
             RoomReservationCard:RoomReservationCard
         },
         computed:{
+            userInfo(){
+                return this.$store.getters.userInfo;
+            },
             orderStatus(){
                 if(this.orderData){
                     return this.orderData.status;
@@ -200,6 +215,7 @@
             loadOrder(id){
                 ajax.post("/api/team/order/detail",{id:id}, {lock: false}).then(json=>{
                     this.orderData = json.detail;
+                    console.log("控房",this.orderData);
                 })
             },
             dateRange(a,b){
@@ -208,6 +224,9 @@
         },
         mounted(){
             this.dateRange();
+//            this.loadOrder(this.$route.params.orderid);
+            console.log("userInfo=",this.userInfo);
+            console.log("this.ordersData=",this.orderData);
 //            this.loadOrder(this.$route.params.orderid);
         }
     }

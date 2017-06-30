@@ -466,14 +466,9 @@
             }
 
         },
-
         mounted(){
             this.dateRange();
             this.loadOrder();
-
         }
-//        beforeUpdate(){
-//
-//        }
     }
 </script>

@@ -99,7 +99,7 @@
                 params:{
                     id:this.$route.params.orderid,
                     paytime:new Date(),
-                    provider:'走客转账',
+                    provider:'',
                     extras:''
                 }
             }
@@ -126,6 +126,11 @@
                                 type: 'success'
                             });
                             this.$emit('loadorder');
+                        }else if(data.code==1){
+                            this.$notify.error({
+                                title: '无法提交',
+                                message: '请将必填项填写完整~！'
+                            });
                         }
                     }
                 )
