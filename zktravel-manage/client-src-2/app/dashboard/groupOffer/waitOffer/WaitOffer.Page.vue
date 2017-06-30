@@ -128,7 +128,7 @@
                             label="创建人">
                     </el-table-column>
                     <el-table-column
-                            prop="startDate"
+                            prop="finishTime"
                             label="完成时间">
                     </el-table-column>
                 </el-table>

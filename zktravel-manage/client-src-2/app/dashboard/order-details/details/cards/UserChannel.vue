@@ -46,8 +46,8 @@
             <el-form-item label="取消政策" prop="cancel">
                 <el-input type="textarea" v-model="userchannel.cancel"></el-input>
             </el-form-item>
-            <el-form-item label="报价说明" prop="explain">
-                <el-input type="textarea" v-model="userchannel.explain"></el-input>
+            <el-form-item label="报价说明">
+                <el-input type="textarea"></el-input>
             </el-form-item>
         </el-form>
     </div>
@@ -59,7 +59,6 @@
             return{
                 rule:{
                     cancel:[{type:'string',required: true, message: '请填写政策', trigger: 'blur'}],
-                    explain:[{type:'string',required: true, message: '请填写报价', trigger: 'blur'}]
                 },
                 rule2:{
                     price:[{type:'string',required: true, message: '请填写金额', trigger: 'blur'}]

@@ -18,7 +18,8 @@ module.exports = class Order extends BaseOrder {
             'requirement.start_date': 1,
             'status': 1,
             'publish_time': 1,
-            'creator':1
+            'creator': 1,
+            'booking_dead_line': 1
         }).skip(page*pageSize).limit(pageSize);
 
         const list = await cursor.toArray();
@@ -33,7 +34,8 @@ module.exports = class Order extends BaseOrder {
                     startDate: item.requirement.start_date,
                     status: item.status,
                     publishTime: item.publish_time,
-                    creator:item.creator
+                    creator:item.creator,
+                    finishTime: new Date(item.booking_dead_line).format('YYYY-MM-DD')
                 };
             })
         };

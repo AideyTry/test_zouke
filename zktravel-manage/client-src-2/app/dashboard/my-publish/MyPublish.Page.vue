@@ -381,7 +381,7 @@ export default{
                 this.loadTable();
             }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
                 this.status=10;
-                this.voucherLoadding();
+                this.loadTable();
             }
         },
         changeTabNoneffective(tab){
@@ -456,7 +456,6 @@ export default{
     },
     mounted(){
         this.loadTable();
-        this.voucherLoadding();
         if(this.publish.isTrue){
             this.value2=this.sorts[0].value;
         }else{
