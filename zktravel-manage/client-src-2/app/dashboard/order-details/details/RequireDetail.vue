@@ -112,7 +112,7 @@
 
                 </el-col>
                 <el-col :span="6">
-                    <div><span class="title">预算范围：</span>每间夜{{orderdata.requirement.budget_min}}~{{orderdata.requirement.budget_max}}€</div>
+                    <div><span class="title">预算范围：</span>每间夜{{orderdata.requirement.budget_min}}~{{orderdata.requirement.budget_max}}{{cash}}</div>
                 </el-col>
                 <el-col :span="8">
                     <div style="width: 250px"><span class="title">备注：</span>{{orderdata.requirement.budget_mark}}</div>
@@ -170,7 +170,8 @@
                     RMB:'人民币',
                     GBP:'英镑',
                     USD:'美元'
-                }
+                },
+                cash:''
             }
         },
         methods:{
@@ -178,10 +179,17 @@
                 return new Date(a).daySpan(new Date(b));
                 /*var range = Math.round(Math.abs((new Date(Date.parse(a.replace(/-/g,"/"))).getTime() - new Date(Date.parse(b.replace(/-/g,"/"))).getTime()))/(1000*60*60*24)); 
                 return range;*/  
+            },
+            cash(){
+                console.log(orderdata);
             }
         },
         created(){
-            
+            if(this.orderdata.requirement.currency =="EUR"){
+                this.cash ="€";
+            }else if(this.orderdata.requirement.currency =="GBP"){
+                this.cash ="￡";
+            }
         }
 
     }
