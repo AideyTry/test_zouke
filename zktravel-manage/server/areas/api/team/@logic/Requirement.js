@@ -50,7 +50,7 @@ function patchPriceDiff(old_stay_details, stay_details, price){
                 if(d._matched) return false;
                 if(d.check_in!==detail.check_in) return false;
                 if(d.check_out!==detail.check_out) return false;
-                if(d.city.code!==detail.city.code) return false;
+                if(d.city.id!==detail.city.id) return false;
 
                 const oldHotel = d.hotel||{ custom:true, name:'' };
                 const hotel = detail.hotel||{ custom:true, name:'' };
