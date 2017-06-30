@@ -289,8 +289,6 @@ export default{
                         this.orderAmount=true;
                         this.publishTimes=true;
                         obj.status="需要开票"
-                    }else if(obj.status===11){
-                        obj.newStatus="待分配"
                     }
                 }
             })
@@ -328,8 +326,6 @@ export default{
                         obj.newStatus="已控房"
                     }else if(obj.status===10){
                         obj.status="需要开票"
-                    }else if(obj.status===11){
-                        obj.newStatus="待分配"
                     }
                 }
             })

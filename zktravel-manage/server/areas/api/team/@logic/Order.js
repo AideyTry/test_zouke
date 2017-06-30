@@ -46,7 +46,8 @@ module.exports = class Order extends BaseOrder {
         //查询条件
         const query = {
             'creator.id': uid,
-            'voucher_details': { $ne: null }
+            'voucher_details': { $ne: null },
+            'status': 9,
         };
 
         //符合条件的订单总条数
@@ -56,7 +57,7 @@ module.exports = class Order extends BaseOrder {
             'requirement.user.name': 1,
             'requirement.priority': 1,
             'requirement.start_date': 1,
-            'requirement.stay_details': 1,
+            'order_detail': 1,
             'status': 1,
             'create_time': 1
         }).skip(page*pageSize).limit(pageSize);
@@ -69,13 +70,12 @@ module.exports = class Order extends BaseOrder {
             list: list.map(item=>{
 
                 //返回离店日期
-                let outDate = item.requirement.stay_details.map(i=>{
+                let outDate = item.order_detail.orders.map(i=>{
                     return i.check_out;
                 }).reduce(function (a,b) {
                     return a>b?a:b;
                 },0);
 
-                console.log(outDate);
                 return {
                     orderId: item._id,
                     userName: item.requirement.user.name,
