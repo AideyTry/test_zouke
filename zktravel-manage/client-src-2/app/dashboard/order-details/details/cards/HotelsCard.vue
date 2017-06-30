@@ -46,7 +46,7 @@
                 <el-row type="flex" >
                     <el-col :span="20">
                         <!--<el-button v-if="(isTrue_supplier==false)" type="text" @click="addSupplier()">添加供应商</el-button>-->
-                        <AddSupplierCard  :currentData="params" :item="v.suppliers"></AddSupplierCard>
+                        <AddSupplierCard  :currentData="params" :item="v.suppliers" :orders="orders"></AddSupplierCard>
                     </el-col>
                 </el-row>
                 <!--添加供应商end-->
@@ -140,6 +140,7 @@
                 if(this.item.length>1){
                     this.item.splice(index,1);
                     this.$commit("deleteCount");
+                    this.$store.dispatch("updateOrders",this.orders);
                 }
             }
         },
@@ -155,6 +156,8 @@
 //            if (this.items.hotel.name) {
 //                this.hotel = this.items.hotel.name;
 //            }
+        },
+        mounted(){
         }
     }
 </script>

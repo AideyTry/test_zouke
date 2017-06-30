@@ -54,7 +54,7 @@
 
                     </el-col>
                     <el-col :span="2">
-                        <el-button type="success" @click="submitform" size="small">保存
+                        <el-button type="success" @click="isTrue=true" size="small">保存
                         </el-button>
                     </el-col>
                 </el-row>
@@ -93,6 +93,14 @@
 
             </el-input>
         </el-row>
+        <!--保存二次确认弹出框start-->
+        <el-dialog title="保存后不能修改订单，是否确定？" :visible.sync="isTrue" size="tiny">
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="isTrue = false">取 消</el-button>
+                <el-button type="primary" @click="submitform">确 定</el-button>
+            </div>
+        </el-dialog>
+        <!--保存二次确认弹出框end-->
     </div>
 </template>
 <script>
@@ -104,6 +112,7 @@
         props:['orderData'],
         data(){
             return {
+                isTrue:false,
                 change:false,
                 cityTabs:null,
                 order:{},
@@ -457,14 +466,9 @@
             }
 
         },
-
         mounted(){
             this.dateRange();
             this.loadOrder();
-
         }
-//        beforeUpdate(){
-//
-//        }
     }
 </script>

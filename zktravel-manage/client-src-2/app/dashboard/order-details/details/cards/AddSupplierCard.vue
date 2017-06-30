@@ -53,7 +53,7 @@
 <script>
     import RoomsCard from './RoomsCard'
     export default{
-        props: ["currentData","item"],
+        props: ["currentData","item","orders"],
         data(){
             return {
                 index:null,
@@ -131,11 +131,10 @@
                         }
                     ]
                 });
-                console.log("供应商+=",this.item);
             },
             closeSupplier(index){
                 this.item.splice(index,1);
-                console.log("供应商-=",this.item);
+                this.$store.dispatch("updateOrders",this.orders);
             },
             supplierChange(value){
                 console.log("value=",value);

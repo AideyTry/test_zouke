@@ -107,8 +107,10 @@
             </div>
             <el-row type="flex" class="computed">
                 <el-col style="text-align: right">
-                    <span>还需收款 ：{{leftmoney}} €</span>
-                    <span>收款总额 ：{{income}} €</span>
+                    <!--<span>还需收款 ：{{leftmoney}} €</span>-->
+                    <!--<span>收款总额 ：{{income}} €</span>-->
+                    <span>还需收款 ：{{newLeftmoney}} €</span>
+                    <span>收款总额 ：{{newIncome}} €</span>
                     <span>xx ¥</span>
                 </el-col>
             </el-row>
@@ -192,6 +194,10 @@
         },
         data(){
             return {
+                counts:0,
+                newLeftmoney:0,
+                newIncome:0,
+                newMoney:0,
                 radio: '',
                 order: null,
                 payplan: null,
@@ -216,11 +222,26 @@
                 }
             }
         },
+        watch:{
+            newMoney(){
+                let num=0;
+                if(this.newMoney){
+                    num=parseFloat(this.newMoney);
+                }
+                this.newIncome=num;
+            },
+            newIncome(){
+                this.newLeftmoney=this.counts-this.newIncome;
+            }
+
+        },
         methods: {
             loadorder(){
                 ajax.post('/api/team/order/detail', {id: this.$route.params.orderid}).then(
                     data => {
+
                         this.order = data.detail;
+                        console.log("收款=",this.order);
                         if (data.detail.collection_info) {
                             this.params = data.detail.collection_info;
                             this.payflag = true;
@@ -228,6 +249,23 @@
                             this.params = {reo: 0, currency: '欧元', money: 0, id: ''}
                             this.payflag = false;
                         }
+                        /*加载数据start*/
+                        let newArr=[];
+                        let count=0;
+                        console.log("this.order.price.cases=",this.order.price.cases);
+                        this.order.price.cases.forEach(function(value){
+                            value.price.forEach(function(item){
+                                item.rooms.forEach(function(room,index){
+                                    newArr.push(room.price.cost);
+                                })
+                            });
+                        });
+                        for(let i=0;i<newArr.length;i++){
+                            count+=newArr[i];
+                        }
+                        this.counts=count;
+                        console.log("count=",this.counts);
+                        /*加载数据end*/
                     }
                 )
             },
@@ -329,6 +367,9 @@
         },
         mounted(){
             this.loadorder();
+        },
+        beforeUpdate(){
+            this.newMoney=this.params.money;
         }
     }
 </script>
