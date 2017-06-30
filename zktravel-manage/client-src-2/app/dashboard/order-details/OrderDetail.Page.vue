@@ -240,12 +240,12 @@
                 })
             },
             getorder(id){
-                let vm = this;
                 ajax.post('/api/team/order/detail', {
                     id: id
                 }, {lock: false}).then(
                     data => {
-                        vm.orderdata = data.detail;
+                        this.orderdata = data.detail;
+                        
                     }
                 )
             },

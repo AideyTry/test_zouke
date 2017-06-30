@@ -35,24 +35,27 @@
         .row-bg{
             padding:15px 0;
             background-color: #fff;
-            width:70%;
             margin-top: 20px;
-            a{  
-                padding:10px 40px;
-                width:45px;
-                display: inline-block;
-            }
             .eight{
                 background-color: #FF6666;
+                padding:10px 40px;
+                display: inline-block;
             }
             .twelve{
                 background-color: #FF9900;
+                color:green;
+                padding:10px 40px;
+                display: inline-block;
             }
             .twenty-four{
                 background-color: #FFFF00;
+                padding:10px 40px;
+                display: inline-block;
             }
             .time-out{
                 background-color: #9900cc;
+                padding:10px 40px;
+                display: inline-block;
             }
         }
     }
@@ -87,10 +90,10 @@
                             label="紧急度"
                             v-if="true">
                         <template scope="scope">
-                            <el-tag style="width:100%;height:35px;" v-if="scope.row._class=='eight'" color="#FF6666"></el-tag>
-                            <el-tag style="width:100%;height:35px;" v-if="scope.row._class=='twelve'" color="#FF9900"></el-tag>
-                            <el-tag style="width:100%;height:35px;" v-if="scope.row._class=='twenty-four'" color="#FFFF00"></el-tag>
-                            <el-tag style="width:100%;height:35px;" v-if="scope.row._class=='time-out'" color="#9900cc"></el-tag>
+                            <el-tag v-if="scope.row._class=='eight'" color="#FF6666">8小时内完成</el-tag>
+                            <el-tag v-if="scope.row._class=='twelve'" color="#FF9900">24小时内完成</el-tag>
+                            <el-tag v-if="scope.row._class=='twenty-four'" color="#FFFF00">48小时内完成</el-tag>
+                            <el-tag v-if="scope.row._class=='time-out'" color="#9900cc">已超时</el-tag>
                         </template>
                     </el-table-column>
 
@@ -127,25 +130,30 @@
                 </el-table>
                 
                 <el-row 
+                    v-show="this.currentData.length!=0"
                     type="flex"
                     class="row-bg"
-                    justify="space-between"
                     align="center">
-                        <el-col :span="4">
+                        <el-col :span="2">
                             报价紧急度
                         </el-col>
-                        <el-col :span="4">
-                            <a class="eight"></a>8小时完成
+                        <el-col :span="1" class="eight"></el-col>
+                        <el-col :span="2">
+                            8小时完成
                         </el-col>
-                        <el-col :span="4">
-                            <a class="twelve"></a>12小时完成
+                        <el-col :span="1" class="twelve"></el-col>
+                        <el-col :span="2">
+                            12小时完成
                         </el-col>
-                        <el-col :span="4">
-                            <a class="twenty-four"></a>24小时完成
+                        <el-col :span="1" class="twenty-four"></el-col>
+                        <el-col :span="2">
+                            24小时完成
                         </el-col>
-                        <el-col :span="4">
-                            <a class="time-out"></a>已超时
+                        <el-col :span="1" class="time-out"></el-col>
+                        <el-col :span="2">
+                            已超时
                         </el-col>
+                        <el-col :span="10"></el-col>
                 </el-row>
                 <el-pagination
                         layout="total, prev, pager, next, jumper"
@@ -197,7 +205,7 @@
                     }else if(obj.status===3){
                         obj.status="待报价"
                     }else if(obj.status===4){
-                        obj.status="待报价"
+                        obj.status="待审核"
                     }else if(obj.status===5){
                         obj.status="待报价确认"
                     }else if(obj.status===6){
