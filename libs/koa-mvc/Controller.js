@@ -51,6 +51,9 @@ module.exports = class Controller {
     isAjax(){
         return this.ctx.headers['x-requested-with'] === 'XMLHttpRequest'
     }
+    renderStream(stream){
+        this.ctx.body = stream;
+    }
     renderText(txt){
         this.ctx.body = txt;
     }

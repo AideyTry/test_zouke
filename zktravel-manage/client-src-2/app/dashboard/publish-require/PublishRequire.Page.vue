@@ -204,10 +204,10 @@
                     </el-input>
                 </el-col>
             </el-row>
-            <template v-for="(v,k) of params.stay_details">
-                <date-card :valid="valid" @cancelthis="cancelCard" v-if="v" @addroom="addroom" @deleteroom="deleteroom" :item="v"
-                           :index="k"></date-card>
-            </template>
+            <date-card v-for="(v,k) of params.stay_details" 
+                :valid="valid" @cancelthis="cancelCard"
+                 @addroom="addroom" @deleteroom="deleteroom" :item="v" :key="v._t"
+                        :index="k"></date-card>
             <el-row class="addcard">
                 <el-col>
                     <el-button @click="addCard">添加</el-button>
@@ -267,6 +267,7 @@
                     other_req: '',
                     stay_details: [
                         {
+                            _t: new Date().valueOf(),
                             check_in: new Date().format('YYYY-MM-DD'),
                             check_out: new Date().format('YYYY-MM-DD'),
                             city: '',
@@ -309,10 +310,11 @@
             addCard(){
                 this.params.stay_details.push(
                     {
+                        _t: new Date().valueOf(),
                         check_in: new Date().format('YYYY-MM-DD'),
                         check_out: new Date().format('YYYY-MM-DD'),
-                        city: '',
-                        hotel: {custom:true,name:''},
+                        city: null,
+                        hotel: null,
                         rooms: [{
                             type: 'Double',
                             number: '1',
@@ -322,15 +324,12 @@
                 );
 
             },
-            cardChange(k){
-                console.info(k);
-            },
             cancelCard(k){
+                console.log(k);
                 if (this.params.stay_details.length === 1) {
                     return
                 }
                 this.params.stay_details.splice(k, 1);
-
             },
             searchuser: debounce(function (queryString) {
                 if (queryString.trim()) {

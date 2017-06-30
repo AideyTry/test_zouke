@@ -47,19 +47,20 @@
                                         <span></span>
                                     </el-col>
                                 </el-row>
-                                    <el-card>
+                                <div>
+                                    <el-card v-for="(item,index) in v.suppliers" :key="item">
                                         <el-row type="flex">
                                             <el-col :span="4">
-                                                <strong>采购渠道:</strong>
-                                                <span>{{v.suppliers.supplier_name}}</span>
+                                                <strong>采购渠道{{index+1}}:</strong>
+                                                <span>{{item.supplier_name}}</span>
                                             </el-col>
                                             <el-col :span="1"></el-col>
                                             <el-col :span="8">
                                                 <strong>入住编号:</strong>
-                                                <span>{{v.suppliers.at_number}}</span>
+                                                <span>{{item.at_number}}</span>
                                             </el-col>
                                         </el-row>
-                                        <template v-for="(item,index) in v.suppliers.rooms">
+                                        <template v-for="(item,index) in item.rooms">
                                             <el-row type="flex">
                                                 <el-col :span="2"><strong>房型{{index+1}}:</strong></el-col>
                                                 <el-col :span="3">
@@ -80,6 +81,7 @@
                                             </el-row>
                                         </template>
                                     </el-card>
+                                </div>
                             </div>
                         </el-tab-pane>
                     </template>

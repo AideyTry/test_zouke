@@ -87,7 +87,41 @@ const store = new Vuex.Store({
             return ajax.post('/api/auth/logout', null, {loadingText: '注销中...'}).then(result=>{
                 commit('initUserInfo', null);
             })
+        },
+        /*待控房start*/
+        updateOrders({commit},orders){
+                    let arr=[];
+                    let count_GTA=0;
+                    let count_miki=0;
+                    let str='';
+                    orders.forEach(function(order){
+                        order.hotels.forEach(function(hotels){
+                            hotels.suppliers.forEach(function(supplier,index){
+                                arr.push(supplier.supplier_name);
+                            })
+                        })
+                    });
+                    for(let i=0;i<arr.length;i++){
+                        if(arr[i]=='GTA'){
+                            count_GTA++;
+                        }
+                        if(arr[i]=='miki'){
+                            count_miki++;
+                        }
+                    }
+                    if(count_GTA==0&&count_miki==0){
+                        commit('supplier',str)
+                    }
+                    if(count_GTA!=0&&count_miki==0){
+                        str="GTA";
+                        commit('supplier',str)
+                    }
+                    if(count_GTA==0&&count_miki!=0){
+                        str="miki";
+                        commit('supplier',str)
+                    }
         }
+        /*待控房end*/
     }
 });
 

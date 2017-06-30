@@ -52,6 +52,7 @@
                 }).then(
                     data=>{
                         if(data.code==0){
+                            console.log("打印返回的值",data);
                             vm.close();
                             vm.$notify({
                                 title: '操作成功',

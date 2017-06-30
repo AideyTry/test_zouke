@@ -176,7 +176,7 @@
                 this.loadTable();
             },
             groupOrder(id){
-                this.$router.push({name:'dashboard-order-detail',params:{orderid:id,status:'require-node'}});
+                this.$router.push({name:'dashboard-order-detail',params:{orderid:id,status:'order-detail'}});
             }
         },
         mounted(){
