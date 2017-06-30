@@ -138,8 +138,8 @@
                             <div>{{v.check_in}}-{{v.check_out}}</div>
                             <div>{{daterange(v.check_in,v.check_out)}}晚</div>
                         </el-col>
-                        <el-col :span="6"><span class="title">城市：</span>{{v.city.name}}</el-col>
-                        <el-col :span="8"><span class="title">指定的酒店：</span>{{v.hotel.name}}</el-col>
+                        <el-col :span="6"><span class="title">城市：</span>{{v.city&&v.city.name}}</el-col>
+                        <el-col :span="8"><span class="title">指定的酒店：</span>{{v.hotel&&v.hotel.name}}</el-col>
                     </el-row>
                     <template v-for="(k,w) in v.rooms">
                         <el-row class="room">
