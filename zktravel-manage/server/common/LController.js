@@ -28,8 +28,6 @@ module.exports = class LoginController extends SController {
         const result = await super.$beforeAction();
         if(result===false) return false;
 
-        if(this.ctx.headers['x-requested-with']!=='XMLHttpRequest') return false;
-
         const uid = this.session.uid;
 
         let userInfo = null;

@@ -177,7 +177,6 @@
                 startdate: new Date(),
                 enddate: new Date(),
                 hotelgroup: [],
-                hotelflag: false,
                 rule: {
                     number: [{type: 'string', required: true, message: '请输入间数', trigger: 'blur'}]
                 },
@@ -263,12 +262,6 @@
             },
             enddate(val){
                 this.myitem.check_out = val.format('YYYY-MM-DD');
-            },
-            hotel(val){
-                if (!this.hotelflag) {
-                    this.myitem.hotel = {name: val, custom: true}
-                }
-                this.hotelflag = false;
             },
             valid(val){
                 if (val) {

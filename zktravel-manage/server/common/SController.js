@@ -45,11 +45,14 @@ module.exports = class SessionController extends Controller{
                 path,
                 port
             }, res=>{
-                r();
                 this.renderStream(res);
+                this.response.set('content-type', res.headers['content-type']);
+                if(res.headers['content-disposition']) 
+                    this.response.set('content-disposition', res.headers['content-disposition'])
+                r();
             }).on('error', e=>{
                 j(e);
-            })
+            }).end();
         })
     }
 }
