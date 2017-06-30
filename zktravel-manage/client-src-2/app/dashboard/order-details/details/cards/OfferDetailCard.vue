@@ -34,7 +34,7 @@
             <el-col :span="12">B评分：9.0</el-col>
         </el-row>
         <template v-for="(v,k) in params.rooms">
-            <room   :v="v" :k="k" :room="order.rooms[k]"></room>
+            <room   :v="v" :k="k" :room="order.rooms[k]" :cash="cash"></room>
         </template>
         </el-form>
     </div>
@@ -47,7 +47,7 @@
         components:{
             room:room
         },
-        props:['i','k','order','params'],
+        props:['i','k','order','params','cash'],
         data(){
             return{
                 hotel:'',

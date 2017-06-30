@@ -74,10 +74,8 @@
                         label="出发日期">
                 </el-table-column>
                 <el-table-column
+                        prop="status"
                         label="状态">
-                    <template scope="scope">
-                        <span>待审核</span>
-                    </template>
                 </el-table-column>
                 <el-table-column
                         prop="creator"
@@ -117,6 +115,27 @@
                 ajax.post('/api/team/order/query',{status:2,page:vm.currentpage-1,pageSize:vm.currentlimit}).then(
                     data=>{
                         vm.currentdata =  data.list;
+                        for(let obj of this.currentdata){
+                            if(obj.status===1){
+                                obj.status="待发布";
+                            }else if(obj.status===2){
+                                obj.status="待分配"
+                            }else if(obj.status===3){
+                                obj.status="待报价"
+                            }else if(obj.status===4){
+                                obj.status="待审核"
+                            }else if(obj.status===5){
+                                obj.status="待报价确认"
+                            }else if(obj.status===6){
+                                obj.status="待收款"
+                            }else if(obj.status===7){
+                                obj.status="分房待确认"
+                            }else if(obj.status===8){
+                                obj.status="待控房"
+                            }else if(obj.status===9){
+                                obj.status="已控房"
+                            }
+                        }
                         vm.total = data.count;
                     }
                 )
