@@ -2,7 +2,20 @@ const TeamController = require('../TeamController');
 const { DEBUG } = requireRoot('env');
 
 module.exports = class VoucherController extends TeamController {
-    async download(){
+    $meta(){
+        return {
+            access: {
+                'download': {
+                    'offline_order': this.P.OFFLINE_ORDER.EXPORT_VOUCHER
+                },
+                default: {
+                    'offline_order': this.P.OFFLINE_ORDER.EXPORT_VOUCHER
+                }
+            }
+        }
+    }
+
+    async download(id){
         const data ={
             checkIn: '2017-06-30',
             checkOut: '2017-07-01',
