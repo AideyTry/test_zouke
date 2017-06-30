@@ -28,19 +28,24 @@ module.exports = class LoginController extends SController {
         const result = await super.$beforeAction();
         if(result===false) return false;
 
-        const uid = this.session.uid;
+        if(this.isRewrite()&&this.rewriteController[$$userInfo]){
+            this[$$userInfo] = this.rewriteController[$$userInfo];
+        }else{
+            const uid = this.session.uid;
 
-        let userInfo = null;
-        if(uid) userInfo = await User.get(uid);
+            let userInfo = null;
+            if(uid) userInfo = await User.get(uid);
 
-        if(!userInfo){
-            this.renderJSON({ code: -1, msg: 'not login' });
-            return false; //pass
+            if(!userInfo){
+                this.renderJSON({ code: -1, msg: 'not login' });
+                return false; //pass
+            }
+
+            console.log('\tuid: ', uid);
+
+            this[$$userInfo] = userInfo;
         }
 
-        console.log('\tuid: ', uid);
-
-        this[$$userInfo] = userInfo;
         const { access } = (this.$meta&&this.$meta()) || {};
         const action = this.route.action;
         if(!access) return;
