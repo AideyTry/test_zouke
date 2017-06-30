@@ -18,10 +18,10 @@
 </style>
 <template>
     <div>
-        <div v-if="offlineRole.UPDATE_PRICE||offlineRole.CHECK_PRICE" class="offer-detail-container">
+        <div v-if="offlineRole.UPDATE_PRICE||offlineRole.CHECK_PRICE" v-show="this.status>=2&&userInfo.id!=1" class="offer-detail-container">
             <el-row style="height: 40px" type="flex">
                 <el-col :span="2">
-                    <h4>报价详情</h4>
+                    <h4>报价详情{{userInfo.id}}</h4>
                 </el-col>
                 <el-col :span="19" class="creator-info">
                     <div v-show="this.status>2" class="finish-time">{{booking_dead_line}} 前完成</div>
@@ -137,7 +137,7 @@
                     id: id
                 }, {lock: false}).then(
                     data => {
-                        console.log(data.detail.requirement.currency);
+                        console.log(data);
                         this.booking_dead_line=new Date(data.detail.booking_dead_line).format('YYYY.MM.DD HH:MM');
                         this.status = data.detail.status;
                         this.currency = data.detail.requirement.currency;
@@ -280,6 +280,9 @@
                     return 0
                 }
 
+            },
+            userInfo(){
+                return this.$store.getters.userInfo;
             }
         },
         mounted(){
