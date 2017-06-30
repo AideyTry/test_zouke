@@ -1,6 +1,7 @@
 const Controller = require('@local/koa-mvc/Controller');
 const { SESS_KEY } = requireRoot('env');
 const qrcode = require('qrcode');
+const http = require('http');
 
 const logResponse = Symbol();
 
@@ -35,5 +36,20 @@ module.exports = class SessionController extends Controller{
                 }
             );
         });
+    }
+
+    renderRemote({ path='/', host='localhost', port=80 }={}){
+        return new Promise((r,j)=>{
+            http.request({
+                host,
+                path,
+                port
+            }, res=>{
+                r();
+                this.renderStream(res);
+            }).on('error', e=>{
+                j(e);
+            })
+        })
     }
 }
