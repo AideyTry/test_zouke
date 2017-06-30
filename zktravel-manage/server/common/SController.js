@@ -38,12 +38,14 @@ module.exports = class SessionController extends Controller{
         });
     }
 
-    renderRemote({ path='/', host='localhost', port=80 }={}){
+    renderRemote({ path='/', host='localhost', port=80, method="GET", headers={}, data }={}){
         return new Promise((r,j)=>{
-            http.request({
+            const client = http.request({
                 host,
                 path,
-                port
+                port,
+                method,
+                headers
             }, res=>{
                 this.renderStream(res);
                 this.response.set('content-type', res.headers['content-type']);
@@ -52,7 +54,10 @@ module.exports = class SessionController extends Controller{
                 r();
             }).on('error', e=>{
                 j(e);
-            }).end();
+            });
+
+            if(data) client.write(JSON.stringify(data));
+            client.end();
         })
     }
 }
