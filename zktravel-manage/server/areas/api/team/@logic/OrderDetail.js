@@ -58,9 +58,7 @@ module.exports = class OrderDetail extends BaseOrder {
             {
                 //插入数据
                 $set:{
-                    order_detail:{
-                        orders: order_obj,
-                    },
+                    order_detail: order_obj,
                     status:this.status.ORDER_RESOLVE
                 },
                 $push: {
