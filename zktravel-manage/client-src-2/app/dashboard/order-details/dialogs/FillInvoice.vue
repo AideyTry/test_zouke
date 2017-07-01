@@ -5,7 +5,7 @@
 </style>
 <template>
  <el-dialog title="填写发票信息"
-  :visible.sync="dialoggroup[3].show" size="tiny">
+            :visible.sync="dialoggroup[3].show" size="tiny">
                         <el-form label-width="80px" label-position="left" :model="voucher_obj">
                           <el-form-item label="公司名称">
                             <el-input v-model="voucher_obj.company"></el-input>

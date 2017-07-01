@@ -231,6 +231,7 @@ export default{
             let newArr=[];
             ajax.post('/api/team/my-publish/query',{status:this.status}).then(json=>{
                 this.arr=json.list;
+                console.log(this.arr);
                     for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
                         if(this.arr[num]){
                             newArr.push(this.arr[num]);
@@ -297,7 +298,7 @@ export default{
             let newArr=[];
             ajax.post('/api/team/order/query-need-voucher',{page:0,pageSize:10}).then(json=>{
                 this.arr=json.list;
-                console.log(this.arr);
+                console.log(json);
                     for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
                         if(this.arr[num]){
                             newArr.push(this.arr[num]);
@@ -347,10 +348,6 @@ export default{
                 this.status=8;
             }else if(this.$route.path=="/dashboard/my-publish/control-house"){
                 this.status=9;
-            }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
-                this.status=10;
-            }else if(this.$route.path=="/dashboard/my-publish/nonEffective-require"){
-                this.status=11;
             }
         },
         changeTabEffective(tab){
@@ -380,8 +377,7 @@ export default{
                 this.status=9;
                 this.loadTable();
             }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
-                this.status=10;
-                this.loadTable();
+                this.voucherLoadding();
             }
         },
         changeTabNoneffective(tab){
