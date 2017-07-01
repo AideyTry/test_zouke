@@ -61,6 +61,7 @@ module.exports = class User {
         });
     }
     constructor(id,  { name, p, role, roleName }){
+        if(Array.isArray(role)) role = role[0];
         Object.defineProperties(this, {
             id: { value: id },
             name: { value: name },

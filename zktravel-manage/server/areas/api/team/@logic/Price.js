@@ -71,7 +71,7 @@ module.exports = class Price extends BaseOrder {
         const { price, price_history=[], requirement } = queryResult;
         price.requirement = requirement;
         price.check_pass = false;
-        price.id = `${this.$createDate()}(${price_history.length})`;
+        price.id = `${this.$createDate()}(${price_history.length+1})`;
 
         return await this.$update(
             {

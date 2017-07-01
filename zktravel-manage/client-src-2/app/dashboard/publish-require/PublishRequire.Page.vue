@@ -110,17 +110,13 @@
                 </el-col>
             </el-row>
             <el-row type="flex">
-                <el-col :span="3">
-                    <div>酒店星级（默认全选）<i class="red">*</i></div>
+                <el-col :span="2">
+                    <div>酒店星级<i class="red">*</i></div>
                 </el-col>
                 <el-col :span="21">
                     <el-checkbox-group v-model="params.star" @change="starchange">
-                        <el-checkbox-button name="不限" label="不限"></el-checkbox-button>
-                        <el-checkbox-button name="一星" label="一星"></el-checkbox-button>
-                        <el-checkbox-button name="二星" label="二星"></el-checkbox-button>
-                        <el-checkbox-button name="三星" label="三星"></el-checkbox-button>
-                        <el-checkbox-button name="四星" label="四星"></el-checkbox-button>
-                        <el-checkbox-button name="五星" label="五星"></el-checkbox-button>
+                        <el-checkbox-button v-for="l of ['不限','一星', '二星', '三星', '四星', '五星']" 
+                            :key="l" :name="l" :label="l"></el-checkbox-button>
                     </el-checkbox-group>
                 </el-col>
             </el-row>
@@ -153,10 +149,11 @@
                     <div>
                         <span>每间夜</span>
                         <el-form-item prop="budget_min">
-                        <el-input size="small" type="number" v-model="params.budget_min" placeholder="最低"></el-input><span style="margin-left: 8px">~</span>
+                            <el-input size="small" type="number" v-model="params.budget_min" placeholder="最低"></el-input><span style="margin-left: 8px">~</span>
                         </el-form-item>
                         <el-form-item prop="budget_max">
-                        <el-input size="small" type="number" v-model="params.budget_max" placeholder="最高"></el-input><span>€</span>
+                            <el-input size="small" type="number" v-model="params.budget_max" placeholder="最高"></el-input>
+                            <div style="width:1.2em;text-align:right;display:inline-block;">{{getSign(params.currency)}}</div>
                         </el-form-item>
                         <el-form-item prop="budget_mark">
                         <el-input v-model="params.budget_mark" size="small"
@@ -204,10 +201,10 @@
                     </el-input>
                 </el-col>
             </el-row>
-            <template v-for="(v,k) of params.stay_details">
-                <date-card :valid="valid" @cancelthis="cancelCard" v-if="v" @addroom="addroom" @deleteroom="deleteroom" :item="v"
-                           :index="k"></date-card>
-            </template>
+            <date-card v-for="(v,k) of params.stay_details" 
+                :valid="valid" @cancelthis="cancelCard"
+                 @addroom="addroom" :item="v" :key="v._t" :removeable="params.stay_details.length>1"
+                        :index="k"></date-card>
             <el-row class="addcard">
                 <el-col>
                     <el-button @click="addCard">添加</el-button>
@@ -241,12 +238,16 @@
     import debounce from 'lodash/debounce'
     import ajax from '@local/common/ajax';
     import DateCard from './Card.vue'
+
     export default{
         props: ['ordertype', 'orderid', 'orderdata'],
         components: {
             DateCard
         },
         data(){
+            const today = new Date();
+            const next = new Date();
+            next.setDate(next.getDate()+1);
             return {
                 users:[],
                 ufetch:false,
@@ -267,10 +268,11 @@
                     other_req: '',
                     stay_details: [
                         {
-                            check_in: new Date().format('YYYY-MM-DD'),
-                            check_out: new Date().format('YYYY-MM-DD'),
-                            city: '',
-                            hotel: {custom:true,name:''},
+                            _t: new Date().valueOf(),
+                            check_in: today.format('YYYY-MM-DD'),
+                            check_out: next.format('YYYY-MM-DD'),
+                            city: null,
+                            hotel: null,
                             rooms: [{
                                 type: 'Double',
                                 number: '1',
@@ -283,8 +285,7 @@
                     user:[{type:'object',required: true, message: '请输入关键字查找用户名', trigger: 'change'}],
                     number:[{type:'string',required: true, message: '请输入出发人数', trigger: 'blur'}],
                     budget_min:[{type:'string',required: true, message: '请输入数字', trigger: 'blur'}],
-                    budget_max:[{type:'string',required: true, message: '请输入数字', trigger: 'blur'}],
-                    budget_mark:[{type:'string',required: true, message: '请输入备注', trigger: 'blur'}]
+                    budget_max:[{type:'string',required: true, message: '请输入数字', trigger: 'blur'}]
                 },
                 pickerOptions: {
                     disabledDate(time) {
@@ -302,17 +303,30 @@
         },
         computed: {},
         methods: {
+            getSign(cur){
+                switch(cur){
+                    case 'EUR':
+                        return "€";
+                    case 'GBP':
+                        return "￡";
+                }
+            },
             starchange(stars){
                 if((stars[stars.length-1]==='不限')||stars.length===0) stars.splice(0, stars.length, '不限');
                 else stars.remove('不限');
             },
             addCard(){
+                const { check_out: lastCheckOut } = this.params.stay_details[this.params.stay_details.length-1];
+                const next = new Date(lastCheckOut);
+                next.setDate(next.getDate()+1);
+
                 this.params.stay_details.push(
                     {
-                        check_in: new Date().format('YYYY-MM-DD'),
-                        check_out: new Date().format('YYYY-MM-DD'),
-                        city: '',
-                        hotel: {custom:true,name:''},
+                        _t: new Date().valueOf(),
+                        check_in: lastCheckOut,
+                        check_out: next.format('YYYY-MM-DD'),
+                        city: null,
+                        hotel: null,
                         rooms: [{
                             type: 'Double',
                             number: '1',
@@ -322,29 +336,33 @@
                 );
 
             },
-            cardChange(k){
-                console.info(k);
-            },
             cancelCard(k){
+                console.log(k);
                 if (this.params.stay_details.length === 1) {
                     return
                 }
                 this.params.stay_details.splice(k, 1);
-
             },
-            searchuser: debounce(function (queryString) {
+            searchuser: debounce(function s(queryString) {
+                const d = new Date().valueOf();
+                s.d = d;
+
                 if (queryString.trim()) {
                     this.ufetch=true;
                     ajax.postSilence('/api/user/search', {
                         keyword: queryString.trim()
                     }).then(data => {
-                        this.ufetch=false;
-                        this.users = data.list.map(item=>{
-                            const sameItem = this.users.find(u=>u.id===item.id);
-                            return sameItem?sameItem:item;
-                        });
+                        if(s.d===d){
+                            this.ufetch=false;
+                            this.users = data.list.map(item=>{
+                                const sameItem = this.users.find(u=>u.id===item.id);
+                                return sameItem?sameItem:item;
+                            });
+                        }
                     }).catch(e=>{
-                        this.ufetch=false;
+                        if(s.d===d){
+                            this.ufetch=false;
+                        }
                         throw(e);
                     })
                 }
@@ -411,13 +429,7 @@
                     number: '1',
                     mark: ''
                 })
-            },
-            deleteroom(k){
-                if (this.params.stay_details[k].rooms.length > 1) {
-                    this.params.stay_details[k].rooms.pop();
-                }
             }
-
         },
         created(){
             if (this.orderdata) {

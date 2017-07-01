@@ -123,7 +123,7 @@
                     </el-table-column>
                     <el-table-column
                             sortable
-                            prop="startDate"
+                            prop="finishTime"
                             label="完成时间">
                     </el-table-column>
 

@@ -24,7 +24,7 @@
 </template>
 <script>
     export default{
-        props:['params','order','index','cash'],
+        props:['params','order','index','cash','night'],
         data(){
             return{
                 myparams:this.params
@@ -38,9 +38,9 @@
                     (a,b)=>{
                         a.rooms.forEach(
                             (v, k) => {
-                                _arr.cost+=v.price.cost?v.price.cost*vm.order[b].rooms[k].number:0;
-                                _arr.bk+=v.price.bk?v.price.bk*vm.order[b].rooms[k].number:0;
-                                _arr.quoted+=v.price.quoted?v.price.quoted*vm.order[b].rooms[k].number:0
+                                _arr.cost+=v.price.cost?v.price.cost*vm.order[b].rooms[k].number*vm.night:0;
+                                _arr.bk+=v.price.bk?v.price.bk*vm.order[b].rooms[k].number*vm.night:0;
+                                _arr.quoted+=v.price.quoted?v.price.quoted*vm.order[b].rooms[k].number*vm.night:0
                             }
                         )
                     }

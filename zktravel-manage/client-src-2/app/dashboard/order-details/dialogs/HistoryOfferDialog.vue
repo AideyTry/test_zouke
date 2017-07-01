@@ -28,7 +28,7 @@
     import require from '../details/RequireDetail';
     import offer from '../details/cards/BookingOfferCard';
     export default{
-        props:['data'],
+        props:['data'], //包裹的是case方案
         components:{
             require :require,
             offer:offer
@@ -42,12 +42,13 @@
             offerdata(){
                 let vm=this;
                 let editableTabs=[];
-                vm.data.cases.forEach(
+                console.log(this.data);
+                vm.data.cases.forEach(  //循环方案
                     (a,b)=>{
                         editableTabs.push({
                             title: '方案'+(b*1+1),
                             name: '方案'+(b*1+1),
-                            order: vm.data.requirement.stay_details,
+                            order: vm.data.requirement.stay_details,//放的是每个酒店入住的时间段
                             params: a.price,
                             provider:{
                                 booking_channel:a.sp_policy.booking_channel,

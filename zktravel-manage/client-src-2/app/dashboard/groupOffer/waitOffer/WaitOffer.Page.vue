@@ -70,7 +70,7 @@
         .hidden{
             display:none;
         }
-        
+
     }
 
 </style>
@@ -124,7 +124,7 @@
                             label="优先级">
                     </el-table-column>
                     <el-table-column
-                            prop="newStatus"
+                            prop="status"
                             label="状态">
                     </el-table-column>
                     <el-table-column

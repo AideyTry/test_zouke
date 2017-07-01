@@ -69,7 +69,6 @@
                     <el-input
                             type="textarea"
                             :rows="8"
-
                             v-model="msg"
                     >
 

@@ -18,7 +18,7 @@
 </style>
 <template>
     <div>
-        <div v-if="offlineRole.UPDATE_PRICE||offlineRole.CHECK_PRICE" class="offer-detail-container">
+        <div v-if="offlineRole.UPDATE_PRICE||offlineRole.CHECK_PRICE" v-show="this.status>=2" class="offer-detail-container">
             <el-row style="height: 40px" type="flex">
                 <el-col :span="2">
                     <h4>报价详情</h4>
@@ -40,11 +40,11 @@
                         <el-tabs v-model="countryTabs" type="border-card" :active-name="countryTabs">
                             <template v-for="(v,k) in item.order">
                                 <el-tab-pane :label="v.city.name" :name="v.city.name+k">
-                                    <city :i="index" :k="k" :order="v" :params="editableTabs[index].params[k]" :cash="cash"></city>
+                                    <city :i="index" :k="k" :order="v" :params="editableTabs[index].params[k]" :cash="cash" @child-info="get"></city>
                                 </el-tab-pane>
                             </template>
                         </el-tabs>
-                        <computed  :params="item.params" :index="index" :order="item.order" :cash="cash"></computed>
+                        <computed  :params="item.params" :index="index" :order="item.order" :cash="cash" :night="night"></computed>
                         <el-row>
                              <el-col>
                                  <h4>供应商政策</h4>
@@ -100,6 +100,7 @@
         },
         data(){
             return {
+                night:'',
                 cash:'',
                 status:""-0,
                 booking_dead_line:'',
@@ -137,7 +138,7 @@
                     id: id
                 }, {lock: false}).then(
                     data => {
-                        console.log(data.detail.requirement.currency);
+                        console.log(data);
                         this.booking_dead_line=new Date(data.detail.booking_dead_line).format('YYYY.MM.DD HH:MM');
                         this.status = data.detail.status;
                         this.currency = data.detail.requirement.currency;
@@ -198,6 +199,9 @@
                         }
                     }
                 )
+            },
+            get(meg){
+                this.night = meg;
             },
             handleTabsEdit(targetName, action){
                 if (action === 'add') {
@@ -280,6 +284,9 @@
                     return 0
                 }
 
+            },
+            userInfo(){
+                return this.$store.getters.userInfo;
             }
         },
         mounted(){

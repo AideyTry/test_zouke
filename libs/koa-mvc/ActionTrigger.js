@@ -38,7 +38,7 @@ module.exports = class ActionTrigger{
         this._controllerName = route.controllerFileName;
         this._actionName = route.actionMethodName;
     }
-    build(){
+    build(rewriteController){
         const RouteController = findControllerByPath(path.resolve(
             this._route.controllersRoot,
             this._controllerName
@@ -48,11 +48,12 @@ module.exports = class ActionTrigger{
             ctx: this._ctx,
             route: this._route,
             router: this._router,
-            view: this._view
+            view: this._view,
+            rewriteController
         });
     }
-    async trigger(){
-        if(!this._controller) this.build();
+    async trigger(rewriteController){
+        if(!this._controller) this.build(rewriteController);
 
         const controller = this._controller;
         if(Reflect.getPrototypeOf(controller).hasOwnProperty(this._actionName)){

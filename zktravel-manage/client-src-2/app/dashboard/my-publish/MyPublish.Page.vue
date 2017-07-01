@@ -231,6 +231,7 @@ export default{
             let newArr=[];
             ajax.post('/api/team/my-publish/query',{status:this.status}).then(json=>{
                 this.arr=json.list;
+                console.log(this.arr);
                     for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
                         if(this.arr[num]){
                             newArr.push(this.arr[num]);
@@ -289,8 +290,6 @@ export default{
                         this.orderAmount=true;
                         this.publishTimes=true;
                         obj.status="需要开票"
-                    }else if(obj.status===11){
-                        obj.newStatus="待分配"
                     }
                 }
             })
@@ -299,7 +298,7 @@ export default{
             let newArr=[];
             ajax.post('/api/team/order/query-need-voucher',{page:0,pageSize:10}).then(json=>{
                 this.arr=json.list;
-                console.log(this.arr);
+                console.log(json);
                     for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
                         if(this.arr[num]){
                             newArr.push(this.arr[num]);
@@ -328,8 +327,6 @@ export default{
                         obj.newStatus="已控房"
                     }else if(obj.status===10){
                         obj.status="需要开票"
-                    }else if(obj.status===11){
-                        obj.newStatus="待分配"
                     }
                 }
             })
@@ -351,10 +348,6 @@ export default{
                 this.status=8;
             }else if(this.$route.path=="/dashboard/my-publish/control-house"){
                 this.status=9;
-            }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
-                this.status=10;
-            }else if(this.$route.path=="/dashboard/my-publish/nonEffective-require"){
-                this.status=11;
             }
         },
         changeTabEffective(tab){
@@ -384,7 +377,6 @@ export default{
                 this.status=9;
                 this.loadTable();
             }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
-                this.status=10;
                 this.voucherLoadding();
             }
         },
@@ -460,7 +452,6 @@ export default{
     },
     mounted(){
         this.loadTable();
-        this.voucherLoadding();
         if(this.publish.isTrue){
             this.value2=this.sorts[0].value;
         }else{

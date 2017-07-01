@@ -10,19 +10,27 @@ const pugCompileOptions = {
 }
 
 const viewKey = Symbol('#view');
+const rewriteControllerKey = Symbol('#rewriteControllerKey');
 
 module.exports = class Controller {
 
     $beforeAction(){}
     $afterAction(){}
 
-    constructor({ctx, route, router, view}){
+    constructor({ctx, route, router, view, rewriteController}){
         Object.defineProperties(this, {
             ctx: { value: ctx },
             route: { value: route },
             router: { value: router }
         });
         this[viewKey] = view;
+        this[rewriteControllerKey] = rewriteController;
+    }
+    isRewrite(){
+        return !!this[rewriteControllerKey];
+    }
+    get rewriteController(){
+        return this[rewriteControllerKey];
     }
     get request(){
         return this.ctx.request;
@@ -51,8 +59,11 @@ module.exports = class Controller {
     isAjax(){
         return this.ctx.headers['x-requested-with'] === 'XMLHttpRequest'
     }
-    renderText(txt){
-        this.ctx.body = txt;
+    renderStream(stream){
+        this.ctx.body = stream;
+    }
+    renderString(string){
+        this.ctx.body = string;
     }
     render(model = {}, view){
         const controller = this.route.controller;
@@ -83,6 +94,6 @@ module.exports = class Controller {
             route,
             router: this.router
         });
-        await actionTrigger.trigger();
+        await actionTrigger.trigger(this);
     }
 }
