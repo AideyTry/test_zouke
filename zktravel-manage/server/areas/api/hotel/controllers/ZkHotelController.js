@@ -20,7 +20,11 @@ module.exports = class ZkHotelController extends LController {
 
         this.renderJSON({ code:0, list:list.map(h=>({
             id: h._id,
-            name: h.name
+            name: h.name,
+            ename: h.name_en,
+            country: h.country_name||h.country_name_en,
+            city: h.city_name||h.city_name_en||h.city,
+            booking: h.url
         }))})
     }
 }

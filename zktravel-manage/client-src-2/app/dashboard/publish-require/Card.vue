@@ -61,23 +61,15 @@
                     </el-col>
                     <el-col :span="20">
                         <el-date-picker
-                                v-model="startdate"
-                                type="date"
-                                size="small"
-                                placeholder="选择日期"
-                                format = "yyyy-MM-dd"
-                                :picker-options="pickerOptions">
+                            v-model="daterange"
+                            type="daterange"
+                            placeholder="选择日期范围"
+                            format = "yyyy-MM-dd"
+                            :picker-options="pickerOptions"
+                            style="width:220px"
+                        >
                         </el-date-picker>
-                        -
-                        <el-date-picker
-                                v-model="enddate"
-                                type="date"
-                                size="small"
-                                placeholder="选择日期"
-                                format = "yyyy-MM-dd"
-                                :picker-options="pickerOptions">
-                        </el-date-picker>
-                        <span style="margin-right: 20px">{{daterange}} 晚</span>
+                        <span style="margin-right: 20px">{{dayspan}} 晚</span>
                         <span>城市 <i class="red">*</i></span>
                         <el-form-item prop="city">
                             <el-select
@@ -95,65 +87,62 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
-                <el-row>
+                <el-row style="margin-bottom:10px;">
                     <el-col :span="3" class="title">
                         <div>指定的酒店<i class="red"></i></div>
                     </el-col>
-                    <el-col :span="20">
+                    <el-col :span="15">
                         <el-select
+                                style="width:100%"
                                 filterable
                                 remote
-                                allow-create
                                 placeholder="输入关键字选择"
                                 :remote-method="searchhotel"
                                 v-model="item.hotel"
                                 :loading="hfetch"
                                 @change="selectHotel"
                             >
-                            <el-option v-for="hotel of hotels" :key="hotel.id" :label="hotel.name" :value="hotel">
+                            <el-option v-for="hotel of hotels" :key="hotel.id" 
+                                :label="genHotelLavel(hotel)" :value="hotel">
 
                             </el-option>
                         </el-select>
                     </el-col>
+                    <el-button style="margin-left:10px;" size="mini" v-if="item.hotel" type="warming" @click="item.hotel=null">清空酒店</el-button>
                 </el-row>
-                <template v-for="(v,k) of myitem.rooms">
-                    <el-form ref="ruleForm1" :rules="rule" :model="v">
-                        <el-row>
-                            <el-col :span="3">
-                                <div>房型{{k + 1}} <i class="red">*</i></div>
-                            </el-col>
-                            <el-col :span="19">
-                                <el-select v-model="v.type" size="small">
-                                    <el-option label="Single" value="Single"></el-option>
-                                    <el-option label="Double" value="Double"></el-option>
-                                    <el-option label="Triple" value="Triple"></el-option>
-                                    <el-option label="Twins" value="Twins"></el-option>
-                                    <el-option label="Other" value="Other"></el-option>
-                                </el-select>
-                                x
-                                <el-form-item prop="number">
-                                    <el-input v-model="v.number" type="number" style="width: 80px" size="small">
-                                    </el-input>
-                                </el-form-item>
-                                <el-form-item prop="mark" label="备注">
-                                    <el-input v-model="v.mark" size="small" style="width: 60%">
-                                    </el-input>
-                                </el-form-item>
-                            </el-col>
-                            <el-col :span="1"></el-col>
-                        </el-row>
-                    </el-form>
-                </template>
+                <el-form v-for="(v,k) of myitem.rooms" :key="k" ref="ruleForm1" :rules="rule" :model="v">
+                    <el-row>
+                        <el-col :span="3">
+                            <div>房型{{k + 1}} <i class="red">*</i></div>
+                        </el-col>
+                        <el-col :span="19">
+                            <el-select v-model="v.type" size="small">
+                                <el-option label="Single" value="Single"></el-option>
+                                <el-option label="Double" value="Double"></el-option>
+                                <el-option label="Triple" value="Triple"></el-option>
+                                <el-option label="Twins" value="Twins"></el-option>
+                                <el-option label="Other" value="Other"></el-option>
+                            </el-select>
+                            x
+                            <el-form-item prop="number">
+                                <el-input v-model="v.number" type="number" style="width: 80px" size="small">
+                                </el-input>
+                            </el-form-item>
+                            <el-form-item prop="mark" label="备注">
+                                <el-input v-model="v.mark" size="small" style="width: 60%">
+                                </el-input>
+                            </el-form-item>
+                            <el-button size="mini" v-if="myitem.rooms.length>1" type="warming" @click="myitem.rooms.remove(v)">-删除房型</el-button>
+                        </el-col>
+                    </el-row>
+                </el-form>
                 <el-row class="button-group">
                     <el-col :span="3">
                         <el-button size="mini" type="info" @click="addroom">+新增房型</el-button>
                     </el-col>
-                    <el-col :span="3">
-                        <el-button size="mini" type="warming" @click="deleteroom">-删除房型</el-button>
-                    </el-col>
                 </el-row>
             </div>
-            <span class="cancel" @click="cancelthis">删除</span>
+            <span v-if="removeable" class="cancel" @click="cancelthis">删除</span>
         </el-form>
     </div>
 </template>
@@ -161,7 +150,7 @@
     import debounce from 'lodash/debounce';
     import ajax from '@local/common/ajax';
     export default{
-        props: ['item', 'index', 'valid'],
+        props: ['item', 'index', 'valid', 'removeable'],
         data(){
             return {
                 cities:[],
@@ -174,8 +163,8 @@
                     }
                 },
                 myitem: this.item,
-                startdate: new Date(),
-                enddate: new Date(),
+                startdate: null,
+                enddate: null,
                 hotelgroup: [],
                 rule: {
                     number: [{type: 'string', required: true, message: '请输入间数', trigger: 'blur'}]
@@ -185,15 +174,41 @@
                 }
             }
         },
+        computed:{
+            daterange:{
+                get(){
+                    if(!this.startdate||!this.enddate) return '';
+                    return [this.startdate, this.enddate];
+                },
+                set([startdate,enddate]){
+                    this.startdate = startdate;
+                    this.enddate = enddate;
+                    this.myitem.check_in = startdate.format('YYYY-MM-DD');
+                    this.myitem.check_out = enddate.format('YYYY-MM-DD');
+                }
+            },
+            dayspan(){
+                return this.startdate.daySpan(this.enddate);
+            }
+        },
         methods: {
+            genHotelLavel(hotel){
+                let l = '';
+                if(hotel.name){
+                    l+=hotel.name;
+                    if(hotel.ename) l+=`(${hotel.ename})`;
+                }else{
+                    l+=hotel.ename;
+                }
+
+                l+= ` - ${hotel.country} - ${hotel.city}`;
+                return l;
+            },
             cancelthis: function () {
                 this.$emit('cancelthis', this.index);
             },
             addroom: function (index) {
                 this.$emit('addroom', this.index);
-            },
-            deleteroom: function (index) {
-                this.$emit('deleteroom', this.index);
             },
             searchcity: debounce(function (queryString) {
                 if (queryString.trim()) {
@@ -237,11 +252,6 @@
                 }
             }
         },
-        computed: {
-            daterange(){
-                return new Date(this.startdate).daySpan(new Date(this.enddate));
-            }
-        },
         created(){
             if(this.item.city){
                 this.cities.push(this.item.city);
@@ -257,12 +267,6 @@
             }
         },
         watch: {
-            startdate(val){
-                this.myitem.check_in = val.format('YYYY-MM-DD');
-            },
-            enddate(val){
-                this.myitem.check_out = val.format('YYYY-MM-DD');
-            },
             valid(val){
                 if (val) {
                     this.$refs['ruleForm2'].validate();

@@ -110,17 +110,13 @@
                 </el-col>
             </el-row>
             <el-row type="flex">
-                <el-col :span="3">
-                    <div>酒店星级（默认全选）<i class="red">*</i></div>
+                <el-col :span="2">
+                    <div>酒店星级<i class="red">*</i></div>
                 </el-col>
                 <el-col :span="21">
                     <el-checkbox-group v-model="params.star" @change="starchange">
-                        <el-checkbox-button name="不限" label="不限"></el-checkbox-button>
-                        <el-checkbox-button name="一星" label="一星"></el-checkbox-button>
-                        <el-checkbox-button name="二星" label="二星"></el-checkbox-button>
-                        <el-checkbox-button name="三星" label="三星"></el-checkbox-button>
-                        <el-checkbox-button name="四星" label="四星"></el-checkbox-button>
-                        <el-checkbox-button name="五星" label="五星"></el-checkbox-button>
+                        <el-checkbox-button v-for="l of ['不限','一星', '二星', '三星', '四星', '五星']" 
+                            :key="l" :name="l" :label="l"></el-checkbox-button>
                     </el-checkbox-group>
                 </el-col>
             </el-row>
@@ -206,7 +202,7 @@
             </el-row>
             <date-card v-for="(v,k) of params.stay_details" 
                 :valid="valid" @cancelthis="cancelCard"
-                 @addroom="addroom" @deleteroom="deleteroom" :item="v" :key="v._t"
+                 @addroom="addroom" :item="v" :key="v._t" :removeable="params.stay_details.length>1"
                         :index="k"></date-card>
             <el-row class="addcard">
                 <el-col>
@@ -247,6 +243,9 @@
             DateCard
         },
         data(){
+            const today = new Date();
+            const next = new Date();
+            next.setDate(next.getDate()+1);
             return {
                 users:[],
                 ufetch:false,
@@ -268,10 +267,10 @@
                     stay_details: [
                         {
                             _t: new Date().valueOf(),
-                            check_in: new Date().format('YYYY-MM-DD'),
-                            check_out: new Date().format('YYYY-MM-DD'),
-                            city: '',
-                            hotel: {custom:true,name:''},
+                            check_in: today.format('YYYY-MM-DD'),
+                            check_out: next.format('YYYY-MM-DD'),
+                            city: null,
+                            hotel: null,
                             rooms: [{
                                 type: 'Double',
                                 number: '1',
@@ -308,11 +307,15 @@
                 else stars.remove('不限');
             },
             addCard(){
+                const { check_out: lastCheckOut } = this.params.stay_details[this.params.stay_details.length-1];
+                const next = new Date(lastCheckOut);
+                next.setDate(next.getDate()+1);
+
                 this.params.stay_details.push(
                     {
                         _t: new Date().valueOf(),
-                        check_in: new Date().format('YYYY-MM-DD'),
-                        check_out: new Date().format('YYYY-MM-DD'),
+                        check_in: lastCheckOut,
+                        check_out: next.format('YYYY-MM-DD'),
                         city: null,
                         hotel: null,
                         rooms: [{
@@ -410,13 +413,7 @@
                     number: '1',
                     mark: ''
                 })
-            },
-            deleteroom(k){
-                if (this.params.stay_details[k].rooms.length > 1) {
-                    this.params.stay_details[k].rooms.pop();
-                }
             }
-
         },
         created(){
             if (this.orderdata) {
