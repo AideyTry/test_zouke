@@ -3,6 +3,7 @@
         height: 90%;
         width: 100%;
         padding: 0 30px;
+        box-sizing:border-box;
         color: #1F2D3D;
         .title {
             height: 60px;
@@ -28,6 +29,7 @@
             width: 100%;
             background: #F9FAFC;
             padding: 0px 20px;
+            box-sizing:border-box;
             overflow-y: auto;
             margin-bottom: 80px;
             h4 {

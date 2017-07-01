@@ -158,6 +158,7 @@
                     this.orders=this.orderData.orders;
                     this.suppliers=this.orderData.suppliers;
                     this.cityTabs=this.orderData.orders[0].city.name+'0';
+                    console.log("160===",this.cityTabs);
                     this.supplierTabs=this.orderData.suppliers[0].supplier_name+"0";
                     console.log("orderdata=",this.orderData);
                 })

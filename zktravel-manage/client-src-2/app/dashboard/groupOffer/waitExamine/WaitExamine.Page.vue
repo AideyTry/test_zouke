@@ -1,5 +1,8 @@
 <style lang="scss" scoped>
     .wait-offer{
+        .pointer{
+            cursor:pointer;
+        }
         .tableOne{
             display:block;
             height:100%;
@@ -100,7 +103,7 @@
                     <el-table-column
                             label="订单号">
                         <template scope="scope">
-                            <a @click="cellClick(scope.row.orderId)">
+                            <a class="pointer" @click="cellClick(scope.row.orderId)">
                                 {{scope.row.orderId}}
                             </a>
                         </template>
@@ -126,9 +129,7 @@
                             prop="finishTime"
                             label="完成时间">
                     </el-table-column>
-
                 </el-table>
-                
                 <el-row 
                     v-show="this.currentData.length!=0"
                     type="flex"
@@ -155,6 +156,9 @@
                         </el-col>
                         <el-col :span="10"></el-col>
                 </el-row>
+                <div style="height:30px">
+
+                </div>
                 <el-pagination
                         layout="total, prev, pager, next, jumper"
                         class="pagination"
@@ -176,7 +180,7 @@
                 pager:{
                     status:4,
                     pageNum:0,
-                    pageSize:8,
+                    pageSize:15,
                     total:0,
                     keyword:'',
                     valid:true
@@ -197,6 +201,7 @@
                 ajax.post("/api/team/order/query",{status:this.pager.status,page:this.pager.pageNum,pageSize:this.pager.pageSize}).then(json=>{
                     console.log(json);
                     this.currentData=json.list;
+                    this.pager.total=json.count;
                     for(let obj of this.currentData){
                     if(obj.status===1){
                         obj.status="待发布";
@@ -239,7 +244,7 @@
 
             },
             changePage(page){
-                this.pager.pageNum=page;
+                this.pager.pageNum=page-1;
                 this.loadTable();
             },
             cellClick(orderId){
