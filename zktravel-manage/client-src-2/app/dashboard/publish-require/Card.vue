@@ -61,6 +61,7 @@
                     </el-col>
                     <el-col :span="20">
                         <el-date-picker
+                            :clearable="false"
                             v-model="daterange"
                             type="daterange"
                             placeholder="选择日期范围"

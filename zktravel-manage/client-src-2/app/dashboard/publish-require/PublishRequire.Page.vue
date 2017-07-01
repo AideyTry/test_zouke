@@ -284,8 +284,7 @@
                     user:[{type:'object',required: true, message: '请输入关键字查找用户名', trigger: 'change'}],
                     number:[{type:'string',required: true, message: '请输入出发人数', trigger: 'blur'}],
                     budget_min:[{type:'string',required: true, message: '请输入数字', trigger: 'blur'}],
-                    budget_max:[{type:'string',required: true, message: '请输入数字', trigger: 'blur'}],
-                    budget_mark:[{type:'string',required: true, message: '请输入备注', trigger: 'blur'}]
+                    budget_max:[{type:'string',required: true, message: '请输入数字', trigger: 'blur'}]
                 },
                 pickerOptions: {
                     disabledDate(time) {
