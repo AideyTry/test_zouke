@@ -238,6 +238,7 @@
     import debounce from 'lodash/debounce'
     import ajax from '@local/common/ajax';
     import DateCard from './Card.vue'
+
     export default{
         props: ['ordertype', 'orderid', 'orderdata'],
         components: {
@@ -342,19 +343,26 @@
                 }
                 this.params.stay_details.splice(k, 1);
             },
-            searchuser: debounce(function (queryString) {
+            searchuser: debounce(function s(queryString) {
+                const d = new Date().valueOf();
+                s.d = d;
+
                 if (queryString.trim()) {
                     this.ufetch=true;
                     ajax.postSilence('/api/user/search', {
                         keyword: queryString.trim()
                     }).then(data => {
-                        this.ufetch=false;
-                        this.users = data.list.map(item=>{
-                            const sameItem = this.users.find(u=>u.id===item.id);
-                            return sameItem?sameItem:item;
-                        });
+                        if(s.d===d){
+                            this.ufetch=false;
+                            this.users = data.list.map(item=>{
+                                const sameItem = this.users.find(u=>u.id===item.id);
+                                return sameItem?sameItem:item;
+                            });
+                        }
                     }).catch(e=>{
-                        this.ufetch=false;
+                        if(s.d===d){
+                            this.ufetch=false;
+                        }
                         throw(e);
                     })
                 }

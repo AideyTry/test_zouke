@@ -211,40 +211,54 @@
             addroom: function (index) {
                 this.$emit('addroom', this.index);
             },
-            searchcity: debounce(function (queryString) {
+            searchcity: debounce(function s(queryString) {
+                const d = new Date().valueOf();
+                s.d = d;
+
                 if (queryString.trim()) {
                     this.cfetch=true;
                     ajax.postSilence('/api/city/search', {
                         keyword: queryString.trim()
                     }).then(data => {
-                        this.cfetch=false;
-                        this.cities = data.list.map(item=>{
-                            const sameItem = this.cities.find(u=>u.id===item.id);
-                            return sameItem?sameItem:item;
-                        })
+                        if(s.d===d){
+                            this.cfetch=false;
+                            this.cities = data.list.map(item=>{
+                                const sameItem = this.cities.find(u=>u.id===item.id);
+                                return sameItem?sameItem:item;
+                            })
+                        }
                     }).catch(e=>{
-                        this.cfetch=false;
+                        if(s.d===d){
+                            this.cfetch=false;
+                        }
                         throw(e);
                     })
                 }
-            }, 500),
-            searchhotel: debounce(function (queryString, cb) {
+            }, 300),
+            searchhotel: debounce(function s(queryString) {
+                const d = new Date().valueOf();
+                s.d = d;
+
                 if (queryString.trim()) {
                     this.hfetch=true;
                     ajax.postSilence('/api/hotel/zk-hotel/search', {
                         keyword: queryString.trim()
                     }).then(data => {
-                        this.hfetch=false;
-                        this.hotels = data.list.map(item=>{
-                            const sameItem = this.hotels.find(u=>u.id===item.id);
-                            return sameItem?sameItem:item;
-                        })
+                        if(s.d === d){
+                            this.hfetch=false;
+                            this.hotels = data.list.map(item=>{
+                                const sameItem = this.hotels.find(u=>u.id===item.id);
+                                return sameItem?sameItem:item;
+                            })
+                        }
                     }).catch(e=>{
-                        this.hfetch=false;
+                        if(s.d===d){
+                            this.hfetch=false;
+                        }
                         throw e;
                     })
                 }
-            }, 500),
+            }, 300),
             selectHotel(h){
                 if(typeof h === 'string'){
                     const item = { name:h, custom:true };
