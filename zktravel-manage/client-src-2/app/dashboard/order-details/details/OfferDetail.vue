@@ -40,7 +40,7 @@
                     <div class="offer-container">
                         <el-tabs v-model="countryTabs" type="border-card" :active-name="countryTabs">
                             <el-tab-pane v-for="(v,k) in item.order" :key="k" :label="v.city.name" :name="v.city.name+k">
-                                <city :i="index" :k="k" :order="v" :params="editableTabs[index].params[k]" :cash="cash" @child-info="get"></city>
+                                <city :i="index" :k="k" :order="v" :params="editableTabs[index].params[k]" :cash="cash"></city>
                             </el-tab-pane>
                         </el-tabs>
                         <computed  :params="item.params" :index="index" :order="item.order" :cash="cash" :night="night"></computed>
@@ -137,6 +137,7 @@
                 }, {lock: false}).then(
                     data => {
                         console.log(data.detail);
+                        
                         this.booking_dead_line=new Date(data.detail.booking_dead_line).format('YYYY.MM.DD HH:MM');
                         this.status = data.detail.status;
                         this.currency = data.detail.requirement.currency;
@@ -196,9 +197,6 @@
                         }
                     }
                 )
-            },
-            get(meg){
-                this.night = meg;
             },
             handleTabsEdit(targetName, action){
                 if (action === 'add') {
@@ -282,6 +280,7 @@
         },
         mounted(){
             this.loadorder(this.$route.params.orderid);
+            console.log(this.orderdata);
         }
     }
 </script>

@@ -34,7 +34,7 @@
             <el-col :span="12">B评分：9.0</el-col>
         </el-row>
         <template v-for="(v,k) in params.rooms">
-            <room   :v="v" :k="k" :room="order.rooms[k]" :cash="cash"></room>
+            <room   :v="v" :k="k" :room="order.rooms[k]" :cash="this.cash"></room>
         </template>
         </el-form>
     </div>
@@ -82,9 +82,6 @@
                 let arr = item.item;
                 this.hotelflag=true;
                 this.params.hotel = arr;
-            },
-            send(){
-                this.$emit('child-info',this.night)
             }
         },
         watch:{
@@ -107,7 +104,6 @@
             if(this.params.hotel){
                 this.hotel=this.params.hotel.name
             }
-            this.send();
         }
     }
 </script>

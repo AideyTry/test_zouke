@@ -19,7 +19,7 @@
                             <el-col :span="12" class="creator-info">
                             </el-col>
                         </el-row>
-                        <offer :offer="o" :index="p" v-if="o"></offer>
+                        <offer :offer="o" :index="p" v-if="o" :orderdata="data"></offer>
                     </div>
                 </template>
             </el-tab-pane>
