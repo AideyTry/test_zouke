@@ -30,7 +30,8 @@
                     <div v-show="this.status>2">报价：{{booking_user}}</div>
                 </el-col>
             </el-row>
-            <el-tabs v-model="editableTabsValue" active-name="方案1" type="card" editable closable @edit="handleTabsEdit">
+            <el-tabs v-model="editableTabsValue" active-name="方案1" type="card" editable closable 
+                            @edit="handleTabsEdit">
                 <el-tab-pane
                         :key="item.name"
                         v-for="(item, index) in editableTabs"
@@ -38,11 +39,9 @@
                         :name="item.title">
                     <div class="offer-container">
                         <el-tabs v-model="countryTabs" type="border-card" :active-name="countryTabs">
-                            <template v-for="(v,k) in item.order">
-                                <el-tab-pane :label="v.city.name" :name="v.city.name+k">
-                                    <city :i="index" :k="k" :order="v" :params="editableTabs[index].params[k]" :cash="cash" @child-info="get"></city>
-                                </el-tab-pane>
-                            </template>
+                            <el-tab-pane v-for="(v,k) in item.order" :key="k" :label="v.city.name" :name="v.city.name+k">
+                                <city :i="index" :k="k" :order="v" :params="editableTabs[index].params[k]" :cash="cash" @child-info="get"></city>
+                            </el-tab-pane>
                         </el-tabs>
                         <computed  :params="item.params" :index="index" :order="item.order" :cash="cash" :night="night"></computed>
                         <el-row>
@@ -75,7 +74,7 @@
                     </el-col>
                     <el-col :span="12" class="creator-info">
                     </el-col>
-                </el-row>
+                </el-row>cc
                 <bookoffer :tab="o" :index="p" v-if="o"></bookoffer>
             </template>
         </div>
@@ -138,7 +137,7 @@
                     id: id
                 }, {lock: false}).then(
                     data => {
-                        console.log(data);
+                        console.log(data.detail);
                         this.booking_dead_line=new Date(data.detail.booking_dead_line).format('YYYY.MM.DD HH:MM');
                         this.status = data.detail.status;
                         this.currency = data.detail.requirement.currency;
@@ -158,7 +157,7 @@
                                     vm.editableTabs.push({
                                         title: '方案'+(b*1+1),
                                         name: '方案'+(b*1+1),
-                                        order: data.detail.requirement.stay_details,
+                                        order: data.detail.requirement.stay_details, //
                                         params: a.price,
                                         provider:{
                                             booking_channel:a.sp_policy.booking_channel,

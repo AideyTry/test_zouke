@@ -100,7 +100,7 @@
         },
         computed:{
             night(){
-                return new Date(this.order.check_out).getDate()-new Date(this.order.check_in).getDate()
+                return new Date(this.order.check_in).daySpan(new Date(this.order.check_out))
             }
         },
         mounted(){

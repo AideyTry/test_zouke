@@ -71,6 +71,7 @@
             showdialog(history){
                 this.data=history;
                 this.dialog.show=true;
+                console.log(this.data);
             },
             closedialog(){
                 this.dialog.show=false;
