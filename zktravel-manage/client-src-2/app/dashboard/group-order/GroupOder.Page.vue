@@ -96,7 +96,7 @@
                             >
                     </el-table-column>
                     <el-table-column
-                            prop=""
+                            prop="(!!creator)?"
                             label="创建人">
                     </el-table-column>
                     <el-table-column
