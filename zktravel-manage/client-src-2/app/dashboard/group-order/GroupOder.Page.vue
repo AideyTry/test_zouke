@@ -136,7 +136,7 @@
                 activeName:'effective',
                 pager:{
                     status:1,
-                    pageNum:0,
+                    pageNum:1,
                     pageSize:15,
                     total:0,
                     keyword:'',

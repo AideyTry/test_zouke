@@ -454,6 +454,8 @@
                                 message: '已保存成功，请到已控房中查看',
                                 type: 'success'
                             });
+                            this.isTrue=false;
+                            this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'order-detail'}});
 //                            this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'require-node'}});
                         }else if(data.code==1){
                             this.$notify.error({

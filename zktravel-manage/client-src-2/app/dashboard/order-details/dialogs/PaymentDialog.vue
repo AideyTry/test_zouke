@@ -126,7 +126,7 @@
                 let vm=this;
                 let _params=JSON.parse(JSON.stringify(this.params));
                 _params.paytime=new Date(_params.paytime).format('YYYY-MM-DD');
-                ajax.post('/api/team/pay-stream/commit').then(
+                ajax.post('/api/team/pay-stream/commit',_params).then(
                     data=>{
                         if(data.code==0){
                             vm.closedialog();

@@ -176,7 +176,7 @@
                 pager:{
                     status:4,
                     pageNum:0,
-                    pageSize:8,
+                    pageSize:15,
                     total:0,
                     keyword:'',
                     valid:true
@@ -197,6 +197,7 @@
                 ajax.post("/api/team/order/query",{status:this.pager.status,page:this.pager.pageNum,pageSize:this.pager.pageSize}).then(json=>{
                     console.log(json);
                     this.currentData=json.list;
+                    this.pager.total=json.count;
                     for(let obj of this.currentData){
                     if(obj.status===1){
                         obj.status="待发布";
@@ -239,7 +240,7 @@
 
             },
             changePage(page){
-                this.pager.pageNum=page;
+                this.pager.pageNum=page+1;
                 this.loadTable();
             },
             cellClick(orderId){
