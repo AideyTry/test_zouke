@@ -25,7 +25,7 @@
             </el-form-item>
             <template v-for="(v,k) in userchannel.payment">
                 <el-form v-if="v"  ref="ruleForm2" :rules="rule2" :model="v">
-                <el-form-item label="截止时间">
+                <el-form-item label="截止时间" v-if="userchannel.type=='分期'">
                     <el-date-picker
                             v-model="v.dead_line"
                             type="date"
@@ -38,6 +38,15 @@
                     </el-input>
                     </el-form-item>
                 </el-form-item>
+                <el-form-item label="截止时间" v-if="userchannel.type=='全款'">
+                    <el-date-picker
+                            v-model="v.dead_line"
+                            type="date"
+                            size="small"
+                            placeholder="选择日期">
+                    </el-date-picker>
+                </el-form-item>
+
                 </el-form>
             </template>
             <el-row>

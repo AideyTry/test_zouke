@@ -24,7 +24,7 @@
 </template>
 <script>
     export default{
-        props:['params','order','index','cash','night'],
+        props:['params','order','index','cash'],
         data(){
             return{
                 myparams:this.params
@@ -36,11 +36,15 @@
                 let _arr={cost: 0, bk: 0, quoted: 0};
                 this.params.forEach(
                     (a,b)=>{
+                        const checkIn = this.order[b].check_in;
+                        const checkOut = this.order[b].check_out;
+
+                        const days = new Date(checkIn).daySpan(new Date(checkOut)); 
                         a.rooms.forEach(
                             (v, k) => {
-                                _arr.cost+=v.price.cost?v.price.cost*vm.order[b].rooms[k].number*vm.night:0;
-                                _arr.bk+=v.price.bk?v.price.bk*vm.order[b].rooms[k].number*vm.night:0;
-                                _arr.quoted+=v.price.quoted?v.price.quoted*vm.order[b].rooms[k].number*vm.night:0
+                                _arr.cost+=v.price.cost?v.price.cost*vm.order[b].rooms[k].number*days:0;//单价*房间数*天数
+                                _arr.bk+=v.price.bk?v.price.bk*vm.order[b].rooms[k].number*days:0;
+                                _arr.quoted+=v.price.quoted?v.price.quoted*vm.order[b].rooms[k].number*days:0
                             }
                         )
                     }

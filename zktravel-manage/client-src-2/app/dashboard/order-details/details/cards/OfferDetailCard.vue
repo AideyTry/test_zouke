@@ -15,7 +15,7 @@
         <el-row>
             <el-col :span="3">入住/离店:</el-col>
             <el-col :span="9">{{order.check_in}} - {{order.check_out}} {{night}}晚</el-col>
-            <el-col :span="12">指定的酒店：{{order.hotel.name}}</el-col>
+            <el-col :span="12" v-if="order.hotel">指定的酒店：{{order.hotel.name}}</el-col>
         </el-row>
         <el-row>
             <el-col :span="3"><div>酒店<i class="red">*</i>：</div></el-col>
@@ -100,7 +100,7 @@
         },
         computed:{
             night(){
-                return new Date(this.order.check_out).getDate()-new Date(this.order.check_in).getDate()
+                return new Date(this.order.check_in).daySpan(new Date(this.order.check_out))
             }
         },
         mounted(){
