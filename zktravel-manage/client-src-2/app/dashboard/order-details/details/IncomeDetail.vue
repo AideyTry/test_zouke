@@ -250,9 +250,9 @@
                             this.payflag = false;
                         }
 
-//                        if(this.leftmoney<=0){
-//                            this.payflag = true;
-//                        }
+                        if(this.leftmoney<=0){
+                            this.payflag = true;
+                        }
                         /*加载数据start*/
                         let newArr=[];
                         let count=0;
@@ -289,12 +289,12 @@
                     data => {
                         if (data.code == 0) {
                             this.dialog.show = true;
-                            this.$notify({
-                                title: '提交成功',
-                                message: '已提交付款信息',
-                                type: 'success'
-                            });
-                            this.loadorder(this.newLeftmoney);
+//                            this.$notify({
+//                                title: '提交成功',
+//                                message: '已提交付款信息',
+//                                type: 'success'
+//                            });
+//                            this.loadorder(this.newLeftmoney);
                         }
                     }
                 )
