@@ -71,8 +71,8 @@
                     <span>{{currency.name}} ={{money}}¥</span>
                 </el-col>
 
-                <el-col :span="14" class="button-group" v-if="this.userole.GATHERING">
-                    <el-button type="info" @click="payment" v-if="!payflag">收款</el-button>
+                <el-col :span="14" class="button-group" v-if="userole.GATHERING">
+                    <el-button type="info" @click="payment" v-if="(!payflag)">收款</el-button>
                     <el-button type="info" @click="markpayment" v-if="payflag">录入线下付款</el-button>
                     <el-button type="danger" @click="cancelpayment" v-if="payflag">取消收款</el-button>
                 </el-col>
@@ -128,7 +128,7 @@
         <div class="divline"></div>
         <div class="card">
             <div class="title">退款流水
-                <el-button type="danger" style="float: right" @click="refundorder" v-if="this.userole.GATHERING">
+                <el-button type="danger" style="float: right" @click="refundorder" v-if="userRole.REFUND">
                     退款
                 </el-button>
             </div>
@@ -157,7 +157,7 @@
         <div class="divline"></div>
         <div class="card">
             <div class="title">供应商成本流水
-                <el-button type="info" style="float: right" @click="changecost" v-if="this.userole.GATHERING">
+                <el-button type="info" style="float: right" @click="changecost" v-if="userRole.REFUND">
                     修改成本
                 </el-button>
             </div>
@@ -248,9 +248,9 @@
                             this.payflag = false;
                         }
 
-//                        if(this.leftmoney<=0){
-//                            this.payflag = true;
-//                        }
+                        if(this.leftmoney<=0){
+                            this.payflag = true;
+                        }
                         /*加载数据start*/
                         let newArr=[];
                         let count=0;
@@ -287,12 +287,12 @@
                     data => {
                         if (data.code == 0) {
                             this.dialog.show = true;
-                            this.$notify({
-                                title: '提交成功',
-                                message: '已提交付款信息',
-                                type: 'success'
-                            });
-                            this.loadorder(this.newLeftmoney);
+//                            this.$notify({
+//                                title: '提交成功',
+//                                message: '已提交付款信息',
+//                                type: 'success'
+//                            });
+//                            this.loadorder(this.newLeftmoney);
                         }
                     }
                 )
@@ -332,6 +332,9 @@
             /*款项收齐后不显示收款end*/
         },
         computed: {
+            userRole(){
+                return this.$store.getters.offlineRole;
+            },
             currency(){
                 if(!this.order) return {};
                 switch(this.order.requirement.currency){

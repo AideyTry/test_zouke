@@ -52,6 +52,7 @@
             </div>
         </el-dialog>
         <el-dialog title="付款信息"
+                   @close="newCloseDialog2"
                    :visible.sync="dialog2.show"
                    size="tiny">
             <div class="dialogcontent">
@@ -112,16 +113,20 @@
             },
             opendialog(){
                 this.dialog2.show=true;
-                this.dialog.show=false;
+//                this.dialog.show=false;
             },
             newCloseDialog(){
                 this.$emit("loadorder");
+            },
+            newCloseDialog2(){
+                this.dialog.show=false;
+                this.dialog.show=false;
             },
             submit(){
                 let vm=this;
                 let _params=JSON.parse(JSON.stringify(this.params));
                 _params.paytime=new Date(_params.paytime).format('YYYY-MM-DD');
-                ajax.post('/api/team/pay-stream/commit',_params).then(
+                ajax.post('/api/team/pay-stream/commit').then(
                     data=>{
                         if(data.code==0){
                             vm.closedialog();
