@@ -102,7 +102,7 @@
             <template scope="scope">
                 <template v-for="(v,k) in scope.row.rooms">
                     <el-row style="height: 40px">
-                        {{v.number*scope.row.params.rooms[k].price.quoted}}
+                        {{v.number*scope.row.params.rooms[k].price.quoted*scope.row.num}}
                     </el-row>
                 </template>
             </template>
@@ -113,7 +113,7 @@
             <template scope="scope">
                 <template v-for="(v,k) in scope.row.rooms">
                     <el-row style="height: 40px">
-                        {{v.number*scope.row.params.rooms[k].price.bk}}
+                        {{v.number*scope.row.params.rooms[k].price.bk*scope.row.num}}
                     </el-row>
                 </template>
             </template>
@@ -124,7 +124,7 @@
             <template scope="scope">
                 <template v-for="(v,k) in scope.row.rooms">
                     <el-row style="height: 40px">
-                        {{v.number*scope.row.params.rooms[k].price.bk-v.number*scope.row.params.rooms[k].price.quoted}}
+                        {{v.number*scope.row.params.rooms[k].price.bk*scope.row.num-v.number*scope.row.params.rooms[k].price.quoted*scope.row.num}}
                     </el-row>
                 </template>
             </template>
@@ -168,6 +168,12 @@
                     (v,k)=>{
                         v.num=new Date(v.check_out).getDate()-new Date(v.check_in).getDate(); //循环每个酒店所在的天数
                         v.params=this.tab.params[k];   //下标
+                        let newArr = v.rooms;
+                        newArr.forEach(
+                        (a,b)=>{
+                            v.number = a.number;  
+                        }        
+                            )
                     }
                 )
                 return arr;
@@ -181,7 +187,7 @@
                         v.params=this.tab.params[k];
                         v.params.rooms.forEach(
                             (a,b)=>{
-                                bk+=a.price.bk*v.num;
+                                bk+=a.price.bk*v.num*v.number;
                             }
                         )
                     }
@@ -197,7 +203,7 @@
                         v.params=this.tab.params[k];
                         v.params.rooms.forEach(
                             (a,b)=>{
-                                cost+=a.price.quoted*v.num;
+                                cost+=a.price.quoted*v.num*v.number;
                             }
                         )
                     }

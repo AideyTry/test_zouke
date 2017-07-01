@@ -18,7 +18,7 @@
 </style>
 <template>
     <div>
-        <div v-if="offlineRole.UPDATE_PRICE||offlineRole.CHECK_PRICE" v-show="this.status>=2&&userInfo.id!=1" class="offer-detail-container">
+        <div v-if="offlineRole.UPDATE_PRICE||offlineRole.CHECK_PRICE" v-show="this.status>=2" class="offer-detail-container">
             <el-row style="height: 40px" type="flex">
                 <el-col :span="2">
                     <h4>报价详情</h4>
