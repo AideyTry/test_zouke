@@ -37,7 +37,15 @@
                     <el-input type="number" v-model="v.price">
                     </el-input>
                     </el-form-item>
+                    <el-form-item prop="price" style="display:inline-block;">
+                    <el-button  @click="userchannel.payment.remove(v)">
+                        删除分期
+                    </el-button>
+                    </el-form-item>
                 </el-form-item>
+                <el-row>
+                    <el-button @click="userchannel.payment.remove(v)" v-if="userchannel.type=='分期'" type="info">新增政策</el-button>
+                </el-row>
                 <el-form-item label="截止时间" v-if="userchannel.type=='全款'">
                     <el-date-picker
                             v-model="v.dead_line"
@@ -46,12 +54,8 @@
                             placeholder="选择日期">
                     </el-date-picker>
                 </el-form-item>
-
                 </el-form>
             </template>
-            <el-row>
-                <el-button @click="addchannel" v-if="userchannel.type=='分期'" type="info">新增政策</el-button>
-            </el-row>
             <el-form-item label="取消政策" prop="cancel">
                 <el-input type="textarea" v-model="userchannel.cancel"></el-input>
             </el-form-item>
@@ -76,13 +80,15 @@
         },
         methods:{
             addchannel(){
-                this.userchannel.payment.push(
+               
+                    this.userchannel.payment.push(
                     {
                         dead_line:new Date,
                         price:'1'
                     }
                 )
-            }
-        }
-    }
+                }  
+            
+         }
+     }
 </script>

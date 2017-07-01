@@ -168,6 +168,9 @@
                         </el-col>
                         <el-col :span="10"></el-col>
                 </el-row>
+                <div style="height:50px">
+
+                </div>
                 <el-pagination
                         layout="total, prev, pager, next, jumper"
                         class="pagination"
@@ -191,7 +194,7 @@
                 pager:{
                     status:3,
                     pageNum:0,
-                    pageSize:8,
+                    pageSize:15,
                     total:0,
                     keyword:'',
                     valid:true
