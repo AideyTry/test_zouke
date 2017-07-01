@@ -245,7 +245,6 @@
                 }, {lock: false}).then(
                     data => {
                         this.orderdata = data.detail;
-                        
                     }
                 )
             },

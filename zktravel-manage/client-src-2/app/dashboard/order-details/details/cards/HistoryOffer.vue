@@ -64,7 +64,8 @@
                 dialog:{
                     show:false
                 },
-                data:''
+                data:'',
+                cash:''
             }
         },
         methods:{
@@ -72,6 +73,11 @@
                 this.data=history;
                 this.dialog.show=true;
                 console.log(this.data);
+                if(this.data.requirement.currency=="EUR"){
+                    this.cash="€";
+                }else if(this.data.requirement.currency=="GBP"){
+                    this.cash="￡";
+                }
             },
             closedialog(){
                 this.dialog.show=false;

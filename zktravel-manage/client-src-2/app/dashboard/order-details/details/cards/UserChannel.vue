@@ -18,7 +18,7 @@
     <div class="provider">
         <el-form  ref="ruleForm" :rules="rule" :model="userchannel">
             <el-form-item label="付款政策">
-                <el-radio-group v-model="userchannel.type">
+                <el-radio-group v-model="userchannel.type" @change="changeType($event)">
                     <el-radio label="全款" value="全款"></el-radio>
                     <el-radio label="分期" value="分期"></el-radio>
                 </el-radio-group>
@@ -38,15 +38,12 @@
                     </el-input>
                     </el-form-item>
                     <el-form-item prop="price" style="display:inline-block;">
-                    <el-button  @click="userchannel.payment.remove(v)">
-                        删除分期
-                    </el-button>
+                        <el-button v-if="userchannel.payment.length>1" @click="userchannel.payment.remove(v)">
+                            删除分期
+                        </el-button>
                     </el-form-item>
-                </el-form-item>
-                <el-row>
-                    <el-button @click="userchannel.payment.remove(v)" v-if="userchannel.type=='分期'" type="info">新增政策</el-button>
-                </el-row>
-                <el-form-item label="截止时间" v-if="userchannel.type=='全款'">
+                </el-form-item>  
+                <el-form-item label="截止时间" v-if="userchannel.type=='全款'"> 
                     <el-date-picker
                             v-model="v.dead_line"
                             type="date"
@@ -56,6 +53,9 @@
                 </el-form-item>
                 </el-form>
             </template>
+                <el-row>
+                    <el-button @click="addchannel" v-if="userchannel.type=='分期'" type="info">新增政策</el-button>
+                </el-row>
             <el-form-item label="取消政策" prop="cancel">
                 <el-input type="textarea" v-model="userchannel.cancel"></el-input>
             </el-form-item>
@@ -67,7 +67,7 @@
 </template>
 <script>
     export default{
-        props:['userchannel'],
+        props:['userchannel','mycost="mycost'],
         data(){
             return{
                 rule:{
@@ -80,15 +80,24 @@
         },
         methods:{
             addchannel(){
-               
-                    this.userchannel.payment.push(
-                    {
+                const { dead_line } = this.userchannel.payment[this.userchannel.payment.length-1];
+
+                this.userchannel.payment.push({
+                    dead_line:new Date(dead_line),
+                    price:'1'
+                })    
+            },
+            changeType(label){
+                if(label=="全款"){
+                    this.userchannel.payment = [{
                         dead_line:new Date,
-                        price:'1'
-                    }
-                )
-                }  
-            
+                        price:0
+                    }]
+                }
+            }   
+         },
+         created(){
+            console.log(this.mycost);
          }
      }
 </script>

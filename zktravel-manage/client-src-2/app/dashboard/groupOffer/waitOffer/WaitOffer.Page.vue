@@ -99,7 +99,7 @@
                     <el-table-column
                             label="紧急度"
                             :class="isTrue?'abc':'hidden'"
-                    >
+                            v-if="this.status<=3">
                         <template scope="scope">
                             <el-tag v-if="scope.row._class=='eight'" color="#FF6666">8小时内完成</el-tag>
                             <el-tag v-else-if="scope.row._class=='twelve'" color="#FF9900">24小时内完成</el-tag>
@@ -124,7 +124,7 @@
                             label="优先级">
                     </el-table-column>
                     <el-table-column
-                            prop="status"
+                            prop="newStatus"
                             label="状态">
                     </el-table-column>
                     <el-table-column
@@ -133,7 +133,7 @@
                     </el-table-column>
                     <el-table-column
                             v-if="isTrue"
-                            prop="startDate"
+                            prop="finishTime"
                             label="完成时间">
                     </el-table-column>
                     <el-table-column
@@ -156,11 +156,11 @@
                         </el-col>
                         <el-col :span="1" class="twelve"></el-col>
                         <el-col :span="2">
-                            12小时完成
+                            24小时完成
                         </el-col>
                         <el-col :span="1" class="twenty-four"></el-col>
                         <el-col :span="2">
-                            24小时完成
+                            48小时完成
                         </el-col>
                         <el-col :span="1" class="time-out"></el-col>
                         <el-col :span="2">
@@ -186,7 +186,7 @@
     export default{
         data(){
             return{
-
+                status:'',
                 isTrue:true,
                 pIsTrue:false,
                 page:3,
@@ -212,7 +212,6 @@
         methods:{
             loadTable(){
                 ajax.post("/api/team/order/query",{
-//                    status:this.statusmap[this.$route.params.offer],
                     status:this.status,
                     page:this.pager.pageNum,
                     pageSize:this.pager.pageSize}).then(
@@ -220,7 +219,6 @@
                         console.log(data);
                         this.tableData=data.list;
                         this.pager.total=data.count;
-
                         for(let obj of this.tableData){
                             if(obj.status===3){
                                 this.isTrue=true;
@@ -240,27 +238,6 @@
 //                                obj.status="待控房"
                                 obj.newStatus='待控房'
                             }
-//                            if(obj.status===1){
-//                                obj.status="待发布";
-//                            }else if(obj.status===2){
-//                                obj.status="待分配"
-//                            }else if(obj.status===3){
-////                                this.isTrue=true;
-//                                obj.status="待报价"
-//                            }else if(obj.status===4){
-//                                obj.status="待审核"
-//                            }else if(obj.status===5){
-//                                obj.status="待报价确认"
-//                            }else if(obj.status===6){
-//                                obj.status="待收款"
-//                            }else if(obj.status===7){
-//                                obj.status="分房待确认"
-//                            }else if(obj.status===8){
-//                                this.isTrue=false;
-//                                obj.status="待控房"
-//                            }else if(obj.status===9){
-//                                obj.status="已控房"
-//                            }
                         }
                         this.tableData.forEach(
                             v=>{
