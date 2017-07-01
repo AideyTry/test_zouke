@@ -84,7 +84,7 @@
             <el-tab-pane label="待审核" name="we"></el-tab-pane>
             <el-tab-pane label="待控房" name="wv"></el-tab-pane>
         </el-tabs>
-        <el-row type="flex" class="search-group">
+        <el-row type="flex" class="search-group" v-if="conceal">
             <el-col :span="6">
                 <el-input
                         placeholder="搜索用户名/订单号/订房员/创建人"
@@ -190,7 +190,7 @@
     export default{
         data(){
             return{
-
+                conceal:false,
                 isTrue:true,
                 pIsTrue:false,
                 page:3,

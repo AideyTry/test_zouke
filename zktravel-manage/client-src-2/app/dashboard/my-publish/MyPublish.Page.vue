@@ -330,7 +330,7 @@ export default{
                     }else if(obj.status===9){
                         obj.newStatus="已控房"
                     }else if(obj.status===10){
-                        obj.status="需要开票"
+                        obj.newStatus="需要开票"
                     }
                 }
             })
@@ -456,6 +456,7 @@ export default{
     },
     mounted(){
         this.loadTable();
+        this.voucherLoadding();
         if(this.publish.isTrue){
             this.value2=this.sorts[0].value;
         }else{
