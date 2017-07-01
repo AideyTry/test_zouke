@@ -100,6 +100,7 @@
                 <el-pagination
                         layout="total, prev, pager, next, jumper"
                         class="pagination"
+                        :page-size="15"
                         @current-change="changePage"
                         :total="pager.total"
                 >
@@ -118,7 +119,7 @@ export default{
         return{
             pager:{
                 status:1,
-                pageNum:1,
+                pageNum:0,
                 pageSize:15,
                 total:0,
                 keyword:'',
@@ -180,7 +181,7 @@ export default{
 
         },
         changePage(page){
-            this.pager.pageNum=page;
+            this.pager.pageNum=page-1;
             this.loadTable();
         }
     },

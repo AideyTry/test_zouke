@@ -86,7 +86,7 @@
                             label="发布时间">
                     </el-table-column>
                     <el-table-column
-                            prop="status"
+                            prop="newStatus"
                             label="状态"
                             >
                     </el-table-column>
@@ -117,6 +117,7 @@
                 <el-pagination
                         layout="total, prev, pager, next, jumper"
                         class="pagination"
+                        :page-size="15"
                         @current-change="changePage"
                         :total="pager.total"
                 >
@@ -136,7 +137,7 @@
                 activeName:'effective',
                 pager:{
                     status:1,
-                    pageNum:1,
+                    pageNum:0,
                     pageSize:15,
                     total:0,
                     keyword:'',
@@ -161,6 +162,29 @@
                 ajax.post("/api/team/order/query",{status:this.statusMap[this.$route.params.order],page:this.pager.pageNum,pageSize:this.pager.pageSize}).then(json=>{
                     this.currentData=json.list;
                     this.pager.total=json.count;
+                    for(let obj of this.currentData){
+                        if(obj.status===1){
+                            obj.newStatus="待发布";
+                        }else if(obj.status===2){
+                            obj.newStatus="待分配"
+                        }else if(obj.status===3){
+                            obj.newStatus="报价中"
+                        }else if(obj.status===4){
+                            obj.newStatus="报价中"
+                        }else if(obj.status===5){
+                            obj.newStatus="待报价确认"
+                        }else if(obj.status===6){
+                            obj.newStatus="待收款"
+                        }else if(obj.status===7){
+                            obj.newStatus="分房待确认"
+                        }else if(obj.status===8){
+                            obj.newStatus="待控房"
+                        }else if(obj.status===9){
+                            obj.newStatus="已控房"
+                        }else if(obj.status===10){
+                            obj.newStatus="需要开票"
+                        }
+                    }
 
                 })
             },
@@ -172,7 +196,7 @@
 
             },
             changePage(page){
-                this.pager.pageNum=page;
+                this.pager.pageNum=page-1;
                 this.loadTable();
             },
             groupOrder(id){

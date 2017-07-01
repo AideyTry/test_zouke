@@ -177,6 +177,7 @@
                 <el-pagination
                         layout="total, prev, pager, next, jumper"
                         class="pagination"
+                        :page-size="15"
                         @current-change="changePage"
                         :total="pager.total">
                 </el-pagination>
