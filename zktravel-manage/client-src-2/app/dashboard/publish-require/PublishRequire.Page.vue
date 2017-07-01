@@ -149,10 +149,11 @@
                     <div>
                         <span>每间夜</span>
                         <el-form-item prop="budget_min">
-                        <el-input size="small" type="number" v-model="params.budget_min" placeholder="最低"></el-input><span style="margin-left: 8px">~</span>
+                            <el-input size="small" type="number" v-model="params.budget_min" placeholder="最低"></el-input><span style="margin-left: 8px">~</span>
                         </el-form-item>
                         <el-form-item prop="budget_max">
-                        <el-input size="small" type="number" v-model="params.budget_max" placeholder="最高"></el-input><span>€</span>
+                            <el-input size="small" type="number" v-model="params.budget_max" placeholder="最高"></el-input>
+                            <div style="width:1.2em;text-align:right;display:inline-block;">{{getSign(params.currency)}}</div>
                         </el-form-item>
                         <el-form-item prop="budget_mark">
                         <el-input v-model="params.budget_mark" size="small"
@@ -302,6 +303,14 @@
         },
         computed: {},
         methods: {
+            getSign(cur){
+                switch(cur){
+                    case 'EUR':
+                        return "€";
+                    case 'GBP':
+                        return "￡";
+                }
+            },
             starchange(stars){
                 if((stars[stars.length-1]==='不限')||stars.length===0) stars.splice(0, stars.length, '不限');
                 else stars.remove('不限');
