@@ -1,13 +1,24 @@
 <style lang="scss" scoped>
     .hotels{
-        .red{
-            color:#f00;
+        .hotel{
+            margin:10px 0;
+            .line{
+                width:100%;
+                height:1px;
+                border-top:1px solid #ccc;
+            }
+            .red{
+                color:#f00;
+            }
         }
     }
 </style>
 <template>
     <div class="hotels">
-        <el-form v-for="(v,index) in item" :key="v.suppliers" :model="myItem">
+        <el-form class="hotel" v-for="(v,index) in item" :key="v.suppliers" :model="myItem">
+                <el-row type="flex">
+                    <p class="line"></p>
+                </el-row>
                 <el-row type="flex">
                     <el-col :span="2"><strong>酒店<i class="red">*</i></strong></el-col>
                     <el-col :span="8">
@@ -26,7 +37,7 @@
                         <span></span>
                     </el-col>
                     <el-col :span="2">
-                        <el-button type="text" class="delete" @click="deleteHotel(index)">删除</el-button>
+                        <el-button v-if="deleteIsTrue" type="text" class="delete" @click="deleteHotel(index)">删除</el-button>
                     </el-col>
                     <el-col :span="2">
                         <el-button type="text" @click="addHotel()">添加酒店</el-button>
@@ -50,6 +61,9 @@
                     </el-col>
                 </el-row>
                 <!--添加供应商end-->
+                <el-row type="flex">
+                    <p class="line"></p>
+                </el-row>
         </el-form>
     </div>
 </template>
@@ -64,7 +78,8 @@
                 myItem:this.items,
                 hotel:'',
                 hotelFlag:false,
-                input:''
+                input:'',
+                deleteIsTrue:true
             }
         },
         components:{
@@ -106,7 +121,7 @@
             },
             /*search end*/
             addHotel(){
-
+                this.deleteIsTrue=true;
                 this.item.push({
                     hotel:{
                         name:''
@@ -138,9 +153,14 @@
             },
             deleteHotel(index){
                 if(this.item.length>1){
+                    if(this.item.length==2){
+                        this.deleteIsTrue=false;
+                    }
                     this.item.splice(index,1);
                     this.$commit("deleteCount");
                     this.$store.dispatch("updateOrders",this.orders);
+                }else{
+                    this.deleteIsTrue=false;
                 }
             }
         },
@@ -150,6 +170,13 @@
                     this.myItem.hotel = {name: val, custom: true}
                 }
                 this.hotelflag = false;
+            },
+            deleteIsTrue(){
+                if(this.item.length==1){
+                    this.deleteIsTrue=false;
+                }else{
+                    this.deleteIsTrue=true;
+                }
             }
         },
         created(){
@@ -158,6 +185,19 @@
 //            }
         },
         mounted(){
+            if(this.item.length==1){
+                this.deleteIsTrue=false;
+            }else{
+                this.deleteIsTrue=true;
+            }
         }
+//        beforeUpdated(){
+//            console.log("item=",this.item);
+//            if(this.item.length==1){
+//                this.deleteIsTrue=false;
+//            }else{
+//                this.deleteIsTrue=true;
+//            }
+//        }
     }
 </script>

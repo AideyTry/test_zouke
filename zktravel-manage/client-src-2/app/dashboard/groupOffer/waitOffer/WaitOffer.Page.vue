@@ -67,6 +67,9 @@
                 display: inline-block;
             }
         }
+        .hidden{
+            display:none;
+        }
         
     }
 
@@ -95,12 +98,13 @@
                         style="width: 100%">
                     <el-table-column
                             label="紧急度"
-                            v-if="true">
+                            :class="isTrue?'abc':'hidden'"
+                    >
                         <template scope="scope">
                             <el-tag v-if="scope.row._class=='eight'" color="#FF6666">8小时内完成</el-tag>
-                            <el-tag v-if="scope.row._class=='twelve'" color="#FF9900">24小时内完成</el-tag>
-                            <el-tag v-if="scope.row._class=='twenty-four'" color="#FFFF00">48小时内完成</el-tag>
-                            <el-tag v-if="scope.row._class=='time-out'" color="#9900cc">已超时</el-tag>
+                            <el-tag v-else-if="scope.row._class=='twelve'" color="#FF9900">24小时内完成</el-tag>
+                            <el-tag v-else-if="scope.row._class=='twenty-four'" color="#FFFF00">48小时内完成</el-tag>
+                            <el-tag v-else-if="scope.row._class=='time-out'" color="#9900cc">已超时</el-tag>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -120,7 +124,7 @@
                             label="优先级">
                     </el-table-column>
                     <el-table-column
-                            prop="status"
+                            prop="newStatus"
                             label="状态">
                     </el-table-column>
                     <el-table-column
@@ -128,8 +132,14 @@
                             label="创建人">
                     </el-table-column>
                     <el-table-column
+                            v-if="isTrue"
                             prop="startDate"
                             label="完成时间">
+                    </el-table-column>
+                    <el-table-column
+                            v-if="pIsTrue"
+                            prop="publishTime"
+                            label="发布时间">
                     </el-table-column>
                 </el-table>
                <el-row 
@@ -173,6 +183,9 @@
     export default{
         data(){
             return{
+
+                isTrue:true,
+                pIsTrue:false,
                 page:3,
                 activeName:'wp',
                 pager:{
@@ -203,26 +216,48 @@
                     data=>{
                         console.log(data);
                         this.tableData=data.list;
+                        this.pager.total=data.count;
+
                         for(let obj of this.tableData){
-                            if(obj.status===1){
-                                obj.status="待发布";
-                            }else if(obj.status===2){
-                                obj.status="待分配"
-                            }else if(obj.status===3){
-                                obj.status="待报价"
-                            }else if(obj.status===4){
-                                obj.status="待审核"
-                            }else if(obj.status===5){
-                                obj.status="待报价确认"
-                            }else if(obj.status===6){
-                                obj.status="待收款"
-                            }else if(obj.status===7){
-                                obj.status="分房待确认"
-                            }else if(obj.status===8){
-                                obj.status="待控房"
-                            }else if(obj.status===9){
-                                obj.status="已控房"
+                            if(obj.status===3){
+                                this.isTrue=true;
+                                this.pIsTrue=false;
+                                obj.newStatus='待报价'
+//                                obj.status="待报价"
                             }
+                            if(obj.status===4){
+                                this.isTrue=true;
+                                this.pIsTrue=false;
+                                obj.newStatus='待审核'
+//                                obj.status="待报价"
+                            }
+                            if(obj.status===8){
+                                this.isTrue=false;
+                                this.pIsTrue=true;
+//                                obj.status="待控房"
+                                obj.newStatus='待控房'
+                            }
+//                            if(obj.status===1){
+//                                obj.status="待发布";
+//                            }else if(obj.status===2){
+//                                obj.status="待分配"
+//                            }else if(obj.status===3){
+////                                this.isTrue=true;
+//                                obj.status="待报价"
+//                            }else if(obj.status===4){
+//                                obj.status="待审核"
+//                            }else if(obj.status===5){
+//                                obj.status="待报价确认"
+//                            }else if(obj.status===6){
+//                                obj.status="待收款"
+//                            }else if(obj.status===7){
+//                                obj.status="分房待确认"
+//                            }else if(obj.status===8){
+//                                this.isTrue=false;
+//                                obj.status="待控房"
+//                            }else if(obj.status===9){
+//                                obj.status="已控房"
+//                            }
                         }
                         this.tableData.forEach(
                             v=>{
@@ -238,16 +273,27 @@
                                 }
                             }
                         )
+//
+//                        if (this.$route.path == "/dashboard/wait-offer/wp") {
+//
+//                             this.isTrue=true;
+//
+//                        }
+//                        if (this.$route.path == "/dashboard/wait-offer/wv") {
+//                            this.isTrue=false;
+//                        }
                     }
                 )
             },
             updateTab(){
                 if (this.$route.path == "/dashboard/wait-offer/wp") {
                     this.status = 3;
+//                    this.isTrue=true;
                 } else if (this.$route.path == "/dashboard/wait-offer/we") {
                     this.status = 4;
                 } else if (this.$route.path == "/dashboard/wait-offer/wv") {
                     this.status =8;
+//                    this.isTrue=false;
                 }
             },
             changeTab(tab){
@@ -271,7 +317,7 @@
 
             },
             changePage(page){
-                this.pager.pageNum=page;
+                this.pager.pageNum=page-1;
                 this.loadTable();
             },
             cellClick(orderId,status){

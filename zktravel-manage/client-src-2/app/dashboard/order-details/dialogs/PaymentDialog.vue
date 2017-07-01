@@ -34,6 +34,7 @@
 <template>
     <div>
         <el-dialog title="收款码"
+                   @close="newCloseDialog"
                    :visible.sync="dialog.show"
                    size="tiny">
             <div class="dialogcontent">
@@ -90,7 +91,7 @@
 <script>
     import ajax from '@local/common/ajax';
     export default{
-        props: ['dialog'],
+        props: ['dialog','income','leftmoney'],
         data(){
             return {
                 dialog2:{
@@ -100,7 +101,8 @@
                     id:this.$route.params.orderid,
                     paytime:new Date(),
                     provider:'',
-                    extras:''
+                    extras:'',
+
                 }
             }
         },
@@ -111,6 +113,9 @@
             opendialog(){
                 this.dialog2.show=true;
                 this.dialog.show=false;
+            },
+            newCloseDialog(){
+                this.$emit("loadorder");
             },
             submit(){
                 let vm=this;
@@ -125,7 +130,7 @@
                                 message: '已提交付款信息',
                                 type: 'success'
                             });
-                            this.$emit('loadorder');
+                            this.$emit('loadorder',{income:this.income,leftmoney:this.leftmoney});
                         }else if(data.code==1){
                             this.$notify.error({
                                 title: '无法提交',

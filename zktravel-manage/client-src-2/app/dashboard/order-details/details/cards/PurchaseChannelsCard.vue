@@ -74,18 +74,27 @@
                                     <el-input v-model="v.number" type="number" size="mini"></el-input>
 
                                 </el-col>
-                                €
+                                <el-col :span="1">
+                                    €
+                                </el-col>
+                                <el-col :span="2">
+                                    <el-button type="primary" icon="delete" size="mini" @click="deletePurchase(item.cancel_policy.cancel.pay_cancel,index)"></el-button>
+                                </el-col>
                             </el-row>
 
                         </template>
                         <el-row type="flex">
                             <el-col :span="9"></el-col>
                             <el-col :span="10">
-                                <el-button type="primary" @click="addCancelPolicy(item.cancel_policy.cancel.pay_cancel)">+取消政策</el-button>
+                                <el-button type="primary" @click="addCancelPolicy(item.cancel_policy.cancel.pay_cancel)" size="mini">+取消政策</el-button>
                             </el-col>
                         </el-row>
                     </template>
-
+                    <el-row type="flex">
+                        <el-col>
+                            <h2></h2>
+                        </el-col>
+                    </el-row>
                     <template v-for="(v,index) in item.pay_policy">
                         <el-row type="flex">
                             <el-col :span="2">
@@ -107,12 +116,17 @@
                             <el-col :span="2">
                                 <el-input v-model="v.number" type="number" size="mini"></el-input>
                             </el-col>
-                            €
+                            <el-col :span="1">
+                                €
+                            </el-col>
+                            <el-col :span="2">
+                                <el-button type="primary" icon="delete" size="mini" @click="deletePayPolicy(item.pay_policy,index)"></el-button>
+                            </el-col>
                         </el-row>
                     </template>
                     <el-row type="flex">
                         <el-col :span="4">
-                            <el-button type="primary" @click="addPayPolicy(index)">付款政策</el-button>
+                            <el-button type="primary" @click="addPayPolicy(index)" size="mini">付款政策</el-button>
                         </el-col>
                     </el-row>
                 </el-tab-pane>
@@ -132,6 +146,7 @@
                       return time.getTime() < Date.now() - 8.64e7;
                   }
               },
+              deleteIsTrue:true
 
           }
         },
@@ -208,12 +223,27 @@
                     number:null
                 })
             },
+            deletePurchase(v,index){
+                if(v.length>1){
+                    if(v.length==2){
+                        this.deleteIsTrue=false;
+                    }
+                    v.splice(index,1);
+                }else{
+                    this.deleteIsTrue=false;
+                }
+            },
             addPayPolicy(index){
                 this.purchase_channel[index].pay_policy.push(
                     {
                     pay_date:'',
                     number:null
                 });
+            },
+            deletePayPolicy(v,index){
+                if(v.length>1){
+                    v.splice(index,1);
+                }
             },
             handleClick(){
 
@@ -267,10 +297,22 @@
                         this.purchase_channel.splice(1,1);
                     }
                 }
+            },
+            deleteIsTrue(){
+//                if(this.item.length==1){
+//                    this.deleteIsTrue=false;
+//                }else{
+//                    this.deleteIsTrue=true;
+//                }
             }
         },
         mounted(){
             this.loadSupplier();
+//            if(this.item.length==1){
+//                this.deleteIsTrue=false;
+//            }else{
+//                this.deleteIsTrue=true;
+//            }
         }
     }
 </script>

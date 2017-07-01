@@ -1,5 +1,13 @@
 <style lang="scss" scoped>
     .rooms{
+        .line{
+            width:100%;
+            height:1px;
+            border-top:1px solid #ccc;
+        }
+        .room{
+            margin-top:10px;
+        }
         .red{
             color:#f00;
         }
@@ -7,7 +15,7 @@
 </style>
 <template>
     <div class="rooms">
-        <div v-for="(item,indexOf) in items.rooms">
+        <div v-for="(item,indexOf) in items.rooms" :key="indexOf">
             <el-row type="flex">
                 <el-col :span="1"></el-col>
                 <el-col :span="2">
@@ -34,16 +42,19 @@
                 </el-col>
             </el-row>
             <PeoplesCard :peoples="item.peoples" :add="add" :subtract="subtract" :num="indexOf" :room="item"></PeoplesCard>
-            <el-row type="flex">
+            <el-row type="flex" class="room">
                 <el-col :span="1">
                 </el-col>
                 <el-col :span="3">
-                    <el-button type="primary" @click="addRooms(indexOf)">+添加房型</el-button>
+                    <el-button type="primary" @click="addRooms(indexOf)" size="mini">+添加房型</el-button>
                 </el-col>
                 <el-col :span="1"></el-col>
                 <el-col :span="3">
-                    <el-button type="primary" @click="deleteRooms(indexOf)">+删除房型</el-button>
+                    <el-button type="primary" v-if="items.rooms.length>1" @click="deleteRooms(indexOf)" size="mini">+删除房型</el-button>
                 </el-col>
+            </el-row>
+            <el-row type="flex">
+                <p class="line"></p>
             </el-row>
         </div>
 
@@ -266,6 +277,22 @@
                 }
             }
 
+        },
+        watch:{
+            deleteIsTrue(){
+                if(this.items.rooms.length==1){
+                    this.deleteIsTrue=false;
+                }else{
+                    this.deleteIsTrue=true;
+                }
+            }
+        },
+        mounted(){
+            if(this.items.rooms.length==1){
+                this.deleteIsTrue=false;
+            }else{
+                this.deleteIsTrue=true;
+            }
         }
     }
 </script>

@@ -1,5 +1,6 @@
 <style lang="scss" scoped>
     .box-card {
+        margin-top:15px;
         .el-row {
             padding: 10px 0;
         }
@@ -39,7 +40,7 @@
                         <el-input v-model="v.at_number" type="text"></el-input>
                     </el-col>
                     <el-col :span="2"></el-col>
-                    <el-col :span="1"><span  class="el-icon-circle-close iconSize" @click="closeSupplier(index)"></span></el-col>
+                    <el-col :span="1"><span v-if="deleteIsTrue" class="el-icon-circle-close iconSize" @click="closeSupplier(index)"></span></el-col>
                 </el-row>
                 <!--<div v-for="(item,index) in v.rooms">-->
                     <RoomsCard :items="v" :index="index"></RoomsCard>
@@ -58,6 +59,7 @@
             return {
                 index:null,
                 isTrue_supplier:false,
+                deleteIsTrue:true,
                 channel: [{
                     value: 'GTA',
                     label: 'GTA'
@@ -113,6 +115,7 @@
         },
         methods: {
             addSupplier(){
+                this.deleteIsTrue=true;
                 this.item.push({
                     supplier_name:'',
                     at_number:'',
@@ -133,16 +136,36 @@
                 });
             },
             closeSupplier(index){
-                this.item.splice(index,1);
-                this.$store.dispatch("updateOrders",this.orders);
+                if(this.item.length>1){
+                    if(this.item.length==2){
+                        this.deleteIsTrue=false;
+                    }
+                    this.item.splice(index,1);
+                    this.$store.dispatch("updateOrders",this.orders);
+                }else{
+                    this.deleteIsTrue=false;
+                }
             },
             supplierChange(value){
                 console.log("value=",value);
                 this.$commit("supplier",value);
-
+            }
+        },
+        watch:{
+            deleteIsTrue(){
+                if(this.item.length==1){
+                    this.deleteIsTrue=false;
+                }else{
+                    this.deleteIsTrue=true;
+                }
             }
         },
         mounted(){
+            if(this.item.length==1){
+                this.deleteIsTrue=false;
+            }else{
+                this.deleteIsTrue=true;
+            }
         }
     }
 </script>

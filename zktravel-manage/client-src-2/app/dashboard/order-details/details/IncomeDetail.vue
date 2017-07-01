@@ -109,9 +109,9 @@
                 <el-col style="text-align: right">
                     <!--<span>还需收款 ：{{leftmoney}} €</span>-->
                     <!--<span>收款总额 ：{{income}} €</span>-->
-                    <span>还需收款 ：{{newLeftmoney}} €</span>
-                    <span>收款总额 ：{{newIncome}} €</span>
-                    <span>xx ¥</span>
+                    <span>还需收款 ：{{leftmoney}} €</span>
+                    <span>收款总额 ：{{income}} €</span>
+                    <span>{{incomeRmb}}¥</span>
                 </el-col>
             </el-row>
         </div>
@@ -176,7 +176,7 @@
                 </el-table>
             </div>
         </div>
-        <paymentdialog @loadorder="loadorder" ref="dialogroup" :dialog="dialog" @closedialog="closedialog"></paymentdialog>
+        <paymentdialog @loadorder="loadorder" ref="dialogroup" :dialog="dialog" :income="newIncome" :leftmoney="newLeftmoney" @closedialog="closedialog"></paymentdialog>
         <refunddialog @loadorder="loadorder" ref="refund" :dialog="refunddialog" @closedialog="closedialog"></refunddialog>
         <changecost @loadorder="loadorder" ref="changecost" :dialog="changedialog" @closedialog="closedialog"></changecost>
     </div>
@@ -236,23 +236,26 @@
 
         },
         methods: {
-            loadorder(){
+            loadorder(newLeftmoney){
                 ajax.post('/api/team/order/detail', {id: this.$route.params.orderid}).then(
                     data => {
 
                         this.order = data.detail;
-                        console.log("收款=",this.order);
                         if (data.detail.collection_info) {
                             this.params = data.detail.collection_info;
+                            this.params.money+=this.params.currency;
                             this.payflag = true;
-                        } else {
+                        }else {
                             this.params = {reo: 0, currency: '欧元', money: 0, id: ''}
                             this.payflag = false;
                         }
+
+//                        if(this.leftmoney<=0){
+//                            this.payflag = true;
+//                        }
                         /*加载数据start*/
                         let newArr=[];
                         let count=0;
-                        console.log("this.order.price.cases=",this.order.price.cases);
                         this.order.price.cases.forEach(function(value){
                             value.price.forEach(function(item){
                                 item.rooms.forEach(function(room,index){
@@ -264,7 +267,18 @@
                             count+=newArr[i];
                         }
                         this.counts=count;
-                        console.log("count=",this.counts);
+                        this.params.money=parseFloat(this.params.money);
+
+                        if(this.params.money===0){
+                            this.newLeftmoney=this.counts;
+                            if(newLeftmoney){
+                                this.newLeftmoney=newLeftmoney;
+                            }
+                        }
+                        if(typeof(newLeftmoney)=='object'){
+                            this.newIncome=newLeftmoney.income;
+//                    this.newLeftmoney=leftmoney;
+                        }
                         /*加载数据end*/
                     }
                 )
@@ -280,7 +294,7 @@
                                 message: '已提交付款信息',
                                 type: 'success'
                             });
-                            this.loadorder();
+                            this.loadorder(this.newLeftmoney);
                         }
                     }
                 )
@@ -310,11 +324,19 @@
             },
             changecost(){
                 this.changedialog.show=true;
+            },
+            /*款项收齐后不显示收款start*/
+            collectPayment(){
+            if(this.leftmoney<=0){
+                    this.payflag = true;
+                }
             }
+            /*款项收齐后不显示收款end*/
         },
         computed: {
             money(){
-                return this.params.reo * this.params.money;
+//                return parseFloat((this.params.reo * this.params.money).toFixed(2));
+                return parseInt(this.params.reo * this.params.money);
             },
             userole(){
                 return this.$store.getters.offlineRole;
@@ -325,7 +347,7 @@
             },
             leftmoney(){
                 let pay=0;
-                let income=0;
+                let income= (this.params.money*1)||0;
                 if(this.order&& this.order.user_policy){
                     this.order.user_policy.payment.forEach(
                         (v,k)=>{
@@ -340,10 +362,27 @@
                         }
                     )
                 }
+
+                /*收款总额start*/
+//                let newArr=[];
+//                let count=0;
+//                console.log("this.order.price.cases=",this.order.price.cases);
+//                this.order.price.cases.forEach(function(value){
+//                    value.price.forEach(function(item){
+//                        item.rooms.forEach(function(room,index){
+//                            newArr.push(room.price.cost);
+//                        })
+//                    });
+//                });
+//                for(let i=0;i<newArr.length;i++){
+//                    count+=newArr[i];
+//                }
+//                pay=count;
+                /*收款总额end*/
                 return pay-income;
             },
             income(){
-                let income=0;
+                let income=(this.params.money*1)||0;
                 if(this.order&&this.order.pay_stream){
                     this.order.pay_stream.forEach(
                         (v,k)=>{
@@ -353,6 +392,25 @@
                 }
                 return income;
             },
+            /*收款总额人民币start*/
+            incomeRmb(){
+                let reo=0;
+                if(this.order&& this.order.pay_stream){
+                    this.order.pay_stream.forEach(
+                        (v,k)=>{
+                            reo=v.collection_info.reo;
+                        }
+                    )
+                }
+                if(reo){
+//                    return parseFloat((this.income*reo).toFixed(2));
+                    return parseInt(this.income*reo);
+                }else{
+//                    return parseFloat((this.income*this.params.reo).toFixed(2));
+                    return parseInt(this.income*this.params.reo);
+                }
+            },
+            /*收款总额人民币end*/
             refundmoney(){
                 let money=0;
                 if(this.order&&this.order.refund_stream){
