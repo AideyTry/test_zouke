@@ -40,7 +40,7 @@
             <el-tab-pane label="无效订单" name="nonEffective"></el-tab-pane>
 
         </el-tabs>
-        <el-row type="flex" class="search-group">
+        <el-row type="flex" class="search-group" v-if="conceal">
             <el-col :span="6">
                 <el-input
                         placeholder="搜索用户名/订单号/订房员/创建人"
@@ -117,6 +117,7 @@ import ajax from '@local/common/ajax';
 export default{
     data(){
         return{
+            conceal:false,
             pager:{
                 status:1,
                 pageNum:0,

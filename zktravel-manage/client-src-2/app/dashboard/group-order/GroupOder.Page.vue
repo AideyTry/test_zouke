@@ -33,7 +33,7 @@
             <el-tab-pane label="有效订单" name="effective"></el-tab-pane>
             <el-tab-pane label="无效订单" name="nonEffective"></el-tab-pane>
         </el-tabs>
-        <el-row type="flex" class="search-group">
+        <el-row type="flex" class="search-group" v-if="conceal">
             <span>&nbsp&nbsp&nbsp&nbsp</span>
             <el-col :span="6">
                 <el-input
@@ -96,11 +96,11 @@
                             >
                     </el-table-column>
                     <el-table-column
-                            prop="(!!creator)?"
+                            :prop="'creator'&&'creator.name'"
                             label="创建人">
                     </el-table-column>
                     <el-table-column
-                            prop=""
+                            :prop="'booking_user'&&'booking_user.name'"
                             label="报价员"
                           >
                     </el-table-column>
@@ -133,6 +133,7 @@
     export default{
         data(){
             return{
+                conceal:false,
                 page:3,
                 activeName:'effective',
                 pager:{

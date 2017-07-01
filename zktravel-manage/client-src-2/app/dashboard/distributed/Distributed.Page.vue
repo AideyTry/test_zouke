@@ -37,7 +37,7 @@
                 </el-select>
             </el-col>
         </el-row>
-        <el-row>
+        <el-row type="flex" v-if="conceal">
             <el-col :span="5" type="flex">
                 <el-input size="small" placeholder="搜索用户名/订单号/订房员/创建人"></el-input>
             </el-col>
@@ -78,7 +78,7 @@
                         label="状态">
                 </el-table-column>
                 <el-table-column
-                        prop="creator"
+                        :prop="'booking_user'&&'booking_user.name'"
                         label="报价员">
                 </el-table-column>
                 <el-table-column
@@ -106,7 +106,8 @@
                 tabledata:[],
                 currentpage: 1,
                 currentlimit: 15,
-                total:100
+                total:100,
+                conceal:false
             }
         },
         methods:{

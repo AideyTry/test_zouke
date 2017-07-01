@@ -69,7 +69,7 @@
         <el-tabs v-model="$route.name"  @tab-click="changeTab">
             <el-tab-pane label="待审核" name="dashboard-wait-examine"></el-tab-pane>
         </el-tabs>
-        <el-row type="flex" class="search-group">
+        <el-row type="flex" class="search-group" v-if="conceal">
             <span>&nbsp&nbsp&nbsp&nbsp</span>
             <el-col :span="6">
                 <el-input
@@ -175,6 +175,7 @@
     export default{
         data(){
             return{
+                conceal:false,
                 page:3,
                 activeName:'wp',
                 pager:{

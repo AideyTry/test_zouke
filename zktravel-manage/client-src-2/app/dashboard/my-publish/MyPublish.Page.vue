@@ -68,7 +68,7 @@
         <el-tabs v-if="isTrue===false" type="border-card" v-model="$route.params.status" @tab-click="changeTabNoneffective">
             <el-tab-pane label="无效需求" name="nonEffective-require"></el-tab-pane>
         </el-tabs>
-        <el-row type="flex" class="search-group">
+        <el-row type="flex" class="search-group" v-if="conceal">
             <span>&nbsp&nbsp&nbsp&nbsp</span>
             <el-col :span="6">
                 <el-input
@@ -134,7 +134,7 @@
                     </el-table-column>
                     <el-table-column
                             v-if="quoter"
-                            prop=""
+                            :prop="'booking_user'&&'booking_user.name'"
                             label="报价员">
                     </el-table-column>
                     <el-table-column
@@ -177,6 +177,7 @@ import ajax from '@local/common/ajax'
 export default{
     data(){
         return{
+            conceal:false,
             selectState:0,
             isTrue:true,
             quoter:true,
