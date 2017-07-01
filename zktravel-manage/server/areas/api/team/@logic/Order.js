@@ -67,8 +67,6 @@ module.exports = class Order extends BaseOrder {
         //在数据量比较小的情况下直接转数组，否则应该是遍历push
         const list = await cursor.toArray();
 
-        console.log(list);
-
         return {
             count,
             list: list.map(item=>{
