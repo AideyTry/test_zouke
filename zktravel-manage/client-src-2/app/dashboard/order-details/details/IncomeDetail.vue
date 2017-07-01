@@ -57,8 +57,8 @@
                 </el-col>
                 <el-col :span="14">
                     <span>收款币种</span>
-                    <el-radio disabled class="radio" v-model="params.currency" value="欧元" size="small" :label="currency.name">{{currency.name}}</el-radio>
-                    <el-radio disabled class="radio" v-model="params.currency" value="人民币" size="small" label="人民币">人民币
+                    <el-radio disabled class="radio" size="small" value="1" label="1">{{currency.name}}</el-radio>
+                    <el-radio disabled class="radio" size="small" value="2" label="1">人民币
                     </el-radio>
                 </el-col>
             </el-row>
@@ -107,8 +107,6 @@
             </div>
             <el-row type="flex" class="computed">
                 <el-col style="text-align: right">
-                    <!--<span>还需收款 ：{{leftmoney}} €</span>-->
-                    <!--<span>收款总额 ：{{income}} €</span>-->
                     <span>还需收款 ：{{leftmoney}} {{currency.sign}}</span>
                     <span>收款总额 ：{{income}} {{currency.sign}}</span>
                     <span>{{incomeRmb}}¥</span>
@@ -208,7 +206,6 @@
                 payflag: false,
                 params: {
                     reo: 0,
-                    currency: '欧元',
                     money: 0,
                     id: ''
                 },
@@ -356,40 +353,19 @@
                 return this.orderdata ? this.orderdata.status : '0'
             },
             leftmoney(){
+                if(!this.order) return 0;
                 let pay=0;
-                let income= (this.params.money*1)||0;
-                if(this.order&& this.order.user_policy){
-                    this.order.user_policy.payment.forEach(
-                        (v,k)=>{
-                            pay+=v.price*1;
-                        }
-                    )
-                }
-                if(this.order&& this.order.pay_stream){
-                    this.order.pay_stream.forEach(
-                        (v,k)=>{
-                            income+=v.collection_info.money*1;
-                        }
-                    )
-                }
+                const priceList = this.order.user_select_case.price;
+                const stay_details = this.order.requirement.stay_details;
 
-                /*收款总额start*/
-//                let newArr=[];
-//                let count=0;
-//                console.log("this.order.price.cases=",this.order.price.cases);
-//                this.order.price.cases.forEach(function(value){
-//                    value.price.forEach(function(item){
-//                        item.rooms.forEach(function(room,index){
-//                            newArr.push(room.price.cost);
-//                        })
-//                    });
-//                });
-//                for(let i=0;i<newArr.length;i++){
-//                    count+=newArr[i];
-//                }
-//                pay=count;
-                /*收款总额end*/
-                return pay-income;
+                for(let i = 0; i<priceList.length; ++i){
+                    const price = priceList[i].rooms.reduce((n, room, index)=>{
+                        return n + room.price.quoted * stay_details[i].rooms[index].number;
+                    },0);
+                    const { check_in, check_out } = stay_details[i];
+                    pay += price * new Date(check_in).daySpan(new Date(check_out));
+                }
+                return pay-this.income;
             },
             income(){
                 let income=(this.params.money*1)||0;

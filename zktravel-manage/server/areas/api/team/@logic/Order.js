@@ -19,7 +19,8 @@ module.exports = class Order extends BaseOrder {
             'status': 1,
             'publish_time': 1,
             'creator': 1,
-            'booking_dead_line': 1
+            'booking_dead_line': 1,
+            'booking_user':1
         }).skip(page*pageSize).limit(pageSize);
 
         const list = await cursor.toArray();
