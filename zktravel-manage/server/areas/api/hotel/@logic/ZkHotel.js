@@ -36,19 +36,19 @@ module.exports = class ZkHotel {
             {
                 name: 1,
                 name_en: 1,
-                category_name: 1,
+                star: 1,
+                star_desc:1,
                 address: 1,
+                city:1,
                 city_name: 1,
-                city_name_en: 1,
+                city_name_en:1,
                 country_name: 1,
                 country_name_en: 1,
                 phone: 1,
                 email: 1,
-                url_web: 1,
                 description: 1,
-                booking_info: 1,
-                alias: 1,
-                sp_id: 1
+                url: 1,
+                alias: 1
             }
         ).skip(skipNum).limit(pageSize).toArray()
 
