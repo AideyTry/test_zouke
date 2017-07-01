@@ -4,6 +4,7 @@
         height: 100%;
         width: 100%;
         background: #F9FAFC;
+        box-sizing:border-box;
         padding: 0px 20px;
         h4 {
             display: inline-block;

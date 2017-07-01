@@ -50,15 +50,15 @@
             <el-row>
                 <el-col :span="10">
                     <span>收款汇率<i></i></span>
-                    <span>1€=</span>
+                    <span>1{{currency.sign}}=</span>
                     <el-input size="mini" type="number" v-model="params.reo"></el-input>
-                    <!--                    <span>¥</span>
-                                        <span>实时汇率：1€=4546¥</span>-->
+                                        <span>¥</span>
+                    <!--                    <span>实时汇率：1€=4546¥</span>-->
                 </el-col>
                 <el-col :span="14">
                     <span>收款币种</span>
-                    <el-radio class="radio" v-model="params.currency" value="欧元" size="small" label="欧元">欧元</el-radio>
-                    <el-radio class="radio" v-model="params.currency" value="人民币" size="small" label="人民币">人民币
+                    <el-radio disabled class="radio" size="small" value="1" label="1">{{currency.name}}</el-radio>
+                    <el-radio disabled class="radio" size="small" value="2" label="1">人民币
                     </el-radio>
                 </el-col>
             </el-row>
@@ -68,11 +68,11 @@
                         本次收款
                     </span>
                     <el-input size="mini" type="number" v-model="params.money"></el-input>
-                    <span>€ ={{money}}¥</span>
+                    <span>{{currency.name}} ={{money}}¥</span>
                 </el-col>
 
-                <el-col :span="14" class="button-group" v-if="this.userole.GATHERING">
-                    <el-button type="info" @click="payment" v-if="!payflag">收款</el-button>
+                <el-col :span="14" class="button-group" v-if="userole.GATHERING">
+                    <el-button type="info" @click="payment" v-if="(!payflag)">收款</el-button>
                     <el-button type="info" @click="markpayment" v-if="payflag">录入线下付款</el-button>
                     <el-button type="danger" @click="cancelpayment" v-if="payflag">取消收款</el-button>
                 </el-col>
@@ -92,7 +92,7 @@
                     <el-table-column label="收款金额" prop="collection_info.money">
                         <template scope="scope">
                             <span>
-                                {{scope.row.collection_info.money?scope.row.collection_info.money:0}}{{scope.row.collection_info.currency}}
+                                {{scope.row.collection_info.money?scope.row.collection_info.money:0}}{{currency.name}}
                             </span>
                         </template>
                     </el-table-column>
@@ -107,10 +107,8 @@
             </div>
             <el-row type="flex" class="computed">
                 <el-col style="text-align: right">
-                    <!--<span>还需收款 ：{{leftmoney}} €</span>-->
-                    <!--<span>收款总额 ：{{income}} €</span>-->
-                    <span>还需收款 ：{{leftmoney}} €</span>
-                    <span>收款总额 ：{{income}} €</span>
+                    <span>还需收款 ：{{leftmoney}} {{currency.sign}}</span>
+                    <span>收款总额 ：{{income}} {{currency.sign}}</span>
                     <span>{{incomeRmb}}¥</span>
                 </el-col>
             </el-row>
@@ -120,17 +118,15 @@
             <div class="title">收款计划
             </div>
             <el-row type="flex" class="computed" v-if="order.user_policy">
-                <template v-for="(v,k) in order.user_policy.payment">
-                    <el-col :span="6">
-                        {{v.price}}({{v.dead_line}}前)
-                    </el-col>
-                </template>
+                <el-col :span="6" v-for="(v,k) in order.user_policy.payment" :key="k">
+                    {{v.price}}({{v.dead_line}}前)
+                </el-col>
             </el-row>
         </div>
         <div class="divline"></div>
         <div class="card">
             <div class="title">退款流水
-                <el-button type="danger" style="float: right" @click="refundorder" v-if="this.userole.GATHERING">
+                <el-button type="danger" style="float: right" @click="refundorder" v-if="userRole.REFUND">
                     退款
                 </el-button>
             </div>
@@ -159,7 +155,7 @@
         <div class="divline"></div>
         <div class="card">
             <div class="title">供应商成本流水
-                <el-button type="info" style="float: right" @click="changecost" v-if="this.userole.GATHERING">
+                <el-button type="info" style="float: right" @click="changecost" v-if="userRole.REFUND">
                     修改成本
                 </el-button>
             </div>
@@ -210,7 +206,6 @@
                 payflag: false,
                 params: {
                     reo: 0,
-                    currency: '欧元',
                     money: 0,
                     id: ''
                 },
@@ -250,9 +245,9 @@
                             this.payflag = false;
                         }
 
-//                        if(this.leftmoney<=0){
-//                            this.payflag = true;
-//                        }
+                        if(this.leftmoney<=0){
+                            this.payflag = true;
+                        }
                         /*加载数据start*/
                         let newArr=[];
                         let count=0;
@@ -289,12 +284,12 @@
                     data => {
                         if (data.code == 0) {
                             this.dialog.show = true;
-                            this.$notify({
-                                title: '提交成功',
-                                message: '已提交付款信息',
-                                type: 'success'
-                            });
-                            this.loadorder(this.newLeftmoney);
+//                            this.$notify({
+//                                title: '提交成功',
+//                                message: '已提交付款信息',
+//                                type: 'success'
+//                            });
+//                            this.loadorder(this.newLeftmoney);
                         }
                     }
                 )
@@ -334,6 +329,18 @@
             /*款项收齐后不显示收款end*/
         },
         computed: {
+            userRole(){
+                return this.$store.getters.offlineRole;
+            },
+            currency(){
+                if(!this.order) return {};
+                switch(this.order.requirement.currency){
+                    case 'EUR':
+                        return { name:'欧元', sign:'€' };
+                    case 'GBP':
+                        return { name:'英镑', sign:'￡' };
+                }
+            },
             money(){
 //                return parseFloat((this.params.reo * this.params.money).toFixed(2));
                 return parseInt(this.params.reo * this.params.money);
@@ -346,40 +353,19 @@
                 return this.orderdata ? this.orderdata.status : '0'
             },
             leftmoney(){
+                if(!this.order) return 0;
                 let pay=0;
-                let income= (this.params.money*1)||0;
-                if(this.order&& this.order.user_policy){
-                    this.order.user_policy.payment.forEach(
-                        (v,k)=>{
-                            pay+=v.price*1;
-                        }
-                    )
-                }
-                if(this.order&& this.order.pay_stream){
-                    this.order.pay_stream.forEach(
-                        (v,k)=>{
-                            income+=v.collection_info.money*1;
-                        }
-                    )
-                }
+                const priceList = this.order.user_select_case.price;
+                const stay_details = this.order.requirement.stay_details;
 
-                /*收款总额start*/
-//                let newArr=[];
-//                let count=0;
-//                console.log("this.order.price.cases=",this.order.price.cases);
-//                this.order.price.cases.forEach(function(value){
-//                    value.price.forEach(function(item){
-//                        item.rooms.forEach(function(room,index){
-//                            newArr.push(room.price.cost);
-//                        })
-//                    });
-//                });
-//                for(let i=0;i<newArr.length;i++){
-//                    count+=newArr[i];
-//                }
-//                pay=count;
-                /*收款总额end*/
-                return pay-income;
+                for(let i = 0; i<priceList.length; ++i){
+                    const price = priceList[i].rooms.reduce((n, room, index)=>{
+                        return n + room.price.quoted * stay_details[i].rooms[index].number;
+                    },0);
+                    const { check_in, check_out } = stay_details[i];
+                    pay += price * new Date(check_in).daySpan(new Date(check_out));
+                }
+                return pay-this.income;
             },
             income(){
                 let income=(this.params.money*1)||0;

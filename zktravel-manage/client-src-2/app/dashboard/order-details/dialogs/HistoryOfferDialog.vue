@@ -10,15 +10,17 @@
                 <require :orderdata="data"></require>
             </el-tab-pane>
             <el-tab-pane label="历史报价" name="历史报价">
-                <template v-for="(o,p) in offerdata" v-if="offerdata">
-                    <el-row style="height: 40px" type="flex">
-                        <el-col :span="9">
-                            <h4>方案{{p*1+1}}</h4>
-                        </el-col>
-                        <el-col :span="12" class="creator-info">
-                        </el-col>
-                    </el-row>
-                    <offer :tab="o" :index="p" v-if="o" :orderdata="data"></offer>
+                <template v-if="offerdata">
+                    <div v-for="(o,p) in offerdata" :key="p">
+                        <el-row style="height: 40px" type="flex">
+                            <el-col :span="9">
+                                <h4>方案{{p*1+1}}</h4>
+                            </el-col>
+                            <el-col :span="12" class="creator-info">
+                            </el-col>
+                        </el-row>
+                        <offer :offer="o" :index="p" v-if="o" :orderdata="data"></offer>
+                    </div>
                 </template>
             </el-tab-pane>
         </el-tabs>

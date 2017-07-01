@@ -151,7 +151,7 @@
 </template>
 <script>
     export default{
-        props:['tab','index','orderdata'],
+        props:['offer', 'index','orderdata'],
         data(){
             return{
                 cash:''
@@ -161,19 +161,21 @@
 
         },
         computed:{
+            tab(){
+                return JSON.parse(JSON.stringify(this.offer));
+            },
             tabledata(){
                 let arr= this.tab.order||[]; //循环每个酒店住宿时间段
                 let num=0;
-                    arr.forEach(
+                
+                arr.forEach(
                     (v,k)=>{
-                        v.num=new Date(v.check_out).getDate()-new Date(v.check_in).getDate(); //循环每个酒店所在的天数
+                        v.num=new Date(v.check_in).daySpan(new Date(v.check_out)); //循环每个酒店所在的天数
                         v.params=this.tab.params[k];   //下标
                         let newArr = v.rooms;
-                        newArr.forEach(
-                        (a,b)=>{
+                        newArr.forEach((a,b)=>{
                             v.number = a.number;  
-                        }        
-                            )
+                        });
                     }
                 )
                 return arr;

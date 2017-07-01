@@ -1,5 +1,8 @@
 <style lang="scss" scoped>
     .wait-offer{
+        .pointer{
+            cursor:pointer;
+        }
         .tableOne{
             display:block;
             height:100%;
@@ -110,7 +113,7 @@
                     <el-table-column
                             label="订单号">
                         <template scope="scope">
-                            <a @click="cellClick(scope.row.orderId,status)">
+                            <a class="pointer" @click="cellClick(scope.row.orderId,status)">
                                 {{scope.row.orderId}}
                             </a>
                         </template>

@@ -30,7 +30,7 @@
                     <div v-show="this.status>2">报价：{{booking_user}}</div>
                 </el-col>
             </el-row>
-            <el-tabs v-model="editableTabsValue" active-name="方案1" type="card" editable closable 
+            <el-tabs v-model="editableTabsValue" type="card" editable closable 
                             @edit="handleTabsEdit">
                 <el-tab-pane
                         :key="item.name"
@@ -105,7 +105,7 @@
                 booking_dead_line:'',
                 booking_user:'',
                 tabnum: 1,
-                editableTabsValue: null,
+                editableTabsValue: '方案1',
                 editableTabs: [{
                     title: '方案1',
                     name: '方案1',
@@ -114,7 +114,6 @@
                 orderdata: null,
                 countryTabs: null,
                 offergroup: 1,
-                paramsModel:null,
                 userchannel:{
                     payment:[
                         {
@@ -195,7 +194,6 @@
                                     )
                                 }
                             )
-                            vm.paramsModel=JSON.parse(JSON.stringify(vm.editableTabs[0].params));
                         }
                     }
                 )
@@ -211,18 +209,12 @@
             /*添加方案*/
             addtab(){
                 this.tabnum = this.editableTabs.length + 1;
-                this.editableTabs.push({
-                    title: '方案' + this.tabnum,
-                    name: '方案' + this.tabnum,
-                    order: JSON.parse(JSON.stringify(this.orderdata.requirement.stay_details)),
-                    params: JSON.parse(JSON.stringify(this.paramsModel)),
-                    provider:{
-                        booking_channel:'',
-                        payment_policy:'',
-                        cancel_policy:'',
-                        remark:''
-                    }
-                })
+                const pricecase = JSON.parse(JSON.stringify(this.editableTabs[this.editableTabs.length-1]));
+                pricecase.title = '方案' + this.tabnum,
+                pricecase.name = '方案' + this.tabnum
+                this.editableTabsValue = pricecase.title;
+
+                this.editableTabs.push(pricecase);
             },
             /*删除方案*/
             closetab(targetName){
