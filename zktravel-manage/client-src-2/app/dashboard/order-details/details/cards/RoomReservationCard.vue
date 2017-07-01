@@ -115,7 +115,7 @@
                                     <template v-for="(v,index) in item.pay_policy">
                                         <el-row type="flex">
                                             <el-col>
-                                                <span>{{v.pay_date}}</span>
+                                                <span>{{v.pay_date.substr(0,10)}}</span>
                                                 <span>前续支付</span>
                                                 <span>{{v.number}}</span>
                                                 €
