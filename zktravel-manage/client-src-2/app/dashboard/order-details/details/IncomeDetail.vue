@@ -50,15 +50,15 @@
             <el-row>
                 <el-col :span="10">
                     <span>收款汇率<i></i></span>
-                    <span>1€=</span>
+                    <span>1{{currency.sign}}=</span>
                     <el-input size="mini" type="number" v-model="params.reo"></el-input>
-                    <!--                    <span>¥</span>
-                                        <span>实时汇率：1€=4546¥</span>-->
+                                        <span>¥</span>
+                    <!--                    <span>实时汇率：1€=4546¥</span>-->
                 </el-col>
                 <el-col :span="14">
                     <span>收款币种</span>
-                    <el-radio class="radio" v-model="params.currency" value="欧元" size="small" label="欧元">欧元</el-radio>
-                    <el-radio class="radio" v-model="params.currency" value="人民币" size="small" label="人民币">人民币
+                    <el-radio disabled class="radio" v-model="params.currency" value="欧元" size="small" :label="currency.name">{{currency.name}}</el-radio>
+                    <el-radio disabled class="radio" v-model="params.currency" value="人民币" size="small" label="人民币">人民币
                     </el-radio>
                 </el-col>
             </el-row>
@@ -68,7 +68,7 @@
                         本次收款
                     </span>
                     <el-input size="mini" type="number" v-model="params.money"></el-input>
-                    <span>€ ={{money}}¥</span>
+                    <span>{{currency.name}} ={{money}}¥</span>
                 </el-col>
 
                 <el-col :span="14" class="button-group" v-if="this.userole.GATHERING">
@@ -92,7 +92,7 @@
                     <el-table-column label="收款金额" prop="collection_info.money">
                         <template scope="scope">
                             <span>
-                                {{scope.row.collection_info.money?scope.row.collection_info.money:0}}{{scope.row.collection_info.currency}}
+                                {{scope.row.collection_info.money?scope.row.collection_info.money:0}}{{currency.name}}
                             </span>
                         </template>
                     </el-table-column>
@@ -109,8 +109,8 @@
                 <el-col style="text-align: right">
                     <!--<span>还需收款 ：{{leftmoney}} €</span>-->
                     <!--<span>收款总额 ：{{income}} €</span>-->
-                    <span>还需收款 ：{{leftmoney}} €</span>
-                    <span>收款总额 ：{{income}} €</span>
+                    <span>还需收款 ：{{leftmoney}} {{currency.sign}}</span>
+                    <span>收款总额 ：{{income}} {{currency.sign}}</span>
                     <span>{{incomeRmb}}¥</span>
                 </el-col>
             </el-row>
@@ -120,11 +120,9 @@
             <div class="title">收款计划
             </div>
             <el-row type="flex" class="computed" v-if="order.user_policy">
-                <template v-for="(v,k) in order.user_policy.payment">
-                    <el-col :span="6">
-                        {{v.price}}({{v.dead_line}}前)
-                    </el-col>
-                </template>
+                <el-col :span="6" v-for="(v,k) in order.user_policy.payment" :key="k">
+                    {{v.price}}({{v.dead_line}}前)
+                </el-col>
             </el-row>
         </div>
         <div class="divline"></div>
@@ -334,6 +332,15 @@
             /*款项收齐后不显示收款end*/
         },
         computed: {
+            currency(){
+                if(!this.order) return {};
+                switch(this.order.requirement.currency){
+                    case 'EUR':
+                        return { name:'欧元', sign:'€' };
+                    case 'GBP':
+                        return { name:'英镑', sign:'￡' };
+                }
+            },
             money(){
 //                return parseFloat((this.params.reo * this.params.money).toFixed(2));
                 return parseInt(this.params.reo * this.params.money);
