@@ -116,7 +116,7 @@
 //                this.dialog.show=false;
             },
             newCloseDialog(){
-                this.$emit("loadorder");
+                //this.$emit("loadorder");
             },
             newCloseDialog2(){
                 this.dialog.show=false;

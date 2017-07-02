@@ -49,7 +49,7 @@ module.exports = class PayStream extends BaseOrder {
                     collection_info:1
                 },
                 //更新状态码
-                $set: {
+                $set: preStatus===this.status.ORDER_RESOLVE ? {} : {
                     status: allot_list ? this.status.WAIT_FOR_BOOKING : this.status.WAIT_FOR_ROOM_PERSON
                 },
                 //插入构造好的pay_stream对象

@@ -201,8 +201,9 @@
                 }else{
                     l+=hotel.ename;
                 }
-
-                l+= ` - ${hotel.country} - ${hotel.city}`;
+                if(hotel.country){
+                    l+= ` - ${hotel.country} - ${hotel.city}`;
+                }
                 return l;
             },
             cancelthis: function () {

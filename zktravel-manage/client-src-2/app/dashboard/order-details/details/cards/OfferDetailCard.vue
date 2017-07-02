@@ -71,8 +71,9 @@
                 }else{
                     l+=hotel.ename;
                 }
-
-                l+= ` - ${hotel.country} - ${hotel.city}`;
+                if(hotel.country){
+                    l+= ` - ${hotel.country} - ${hotel.city}`;
+                }
                 return l;
             },
             searchhotel: debounce(function s(queryString) {
@@ -104,6 +105,11 @@
         computed:{
             night(){
                 return new Date(this.order.check_in).daySpan(new Date(this.order.check_out))
+            }
+        },
+        mounted(){
+            if(this.params.hotel){
+                this.hotels.push(this.params.hotel);
             }
         }
     }
