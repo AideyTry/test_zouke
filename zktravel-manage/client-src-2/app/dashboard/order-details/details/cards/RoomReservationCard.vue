@@ -106,8 +106,8 @@
                             <el-row type="flex">
                                 <el-col :span="2"><strong>取消政策:</strong></el-col>
                                 <el-col :span="8">
-                                    <span>{{item.cancel_policy.cancel.free_cancel_date}}</span>
-                                    <span>前可免费取消</span>
+                                    <span>{{item.cancel_policy.cancel.free_cancel_date.substr(0,10)}}</span>
+                                    <span>{{item.cancel_policy.cancel.free_cancel_date?'前可免费取消':'不可取消'}}</span>
                                 </el-col>
                                 <el-col :span="2"></el-col>
                                 <el-col :span="2"><strong>付款政策:</strong></el-col>
