@@ -162,7 +162,7 @@
             <el-col :span="10">
                 <el-pagination
                         @current-change="handleCurrentChange"
-                        :current-page="pageNum"
+                        :current-page.sync="pageNum"
                         :page-size="pageSize"
                         layout="total, prev, pager, next, jumper"
                         :total="total">
@@ -233,7 +233,7 @@ export default{
     methods:{
         loadTable(){
             let newArr=[];
-            ajax.post('/api/team/my-publish/query',{status:this.status}).then(json=>{
+            ajax.post('/api/team/my-publish/query',{status:this.status},{lock: false}).then(json=>{
                 this.arr=json.list;
                 console.log(this.arr);
                     for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
@@ -244,145 +244,186 @@ export default{
                     this.currentData=newArr;
                     this.total=this.arr.length;
                 for(let obj of this.currentData){
-                    if(obj.status===1){
-                        this.quoter=false;
-                        this.orderAmount=false;
-                        this.publishTimes=false;
-                        obj.newStatus="待发布";
-                    }else if(obj.status===2){
-                        this.quoter=false;
-                        this.orderAmount=false;
-                        this.publishTimes=true;
-                        obj.newStatus="待分配"
-                    }else if(obj.status===3){
-                        this.quoter=true;
-                        this.orderAmount=true;
-                        this.publishTimes=true;
-                        obj.newStatus="报价中"
-                    }else if(obj.status===4){
-                        this.quoter=true;
-                        this.orderAmount=true;
-                        this.publishTimes=true;
-                        obj.newStatus="报价中"
-                    }else if(obj.status===5){
-                        this.quoter=true;
-                        this.orderAmount=true;
-                        this.publishTimes=true;
-                        obj.newStatus="待报价确认"
-                    }else if(obj.status===6){
-                        this.quoter=true;
-                        this.orderAmount=true;
-                        this.publishTimes=true;
-                        obj.newStatus="待收款"
-                    }else if(obj.status===7){
-                        this.quoter=true;
-                        this.orderAmount=true;
-                        this.publishTimes=true;
-                        obj.newStatus="分房待确认"
-                    }else if(obj.status===8){
-                        this.quoter=true;
-                        this.orderAmount=true;
-                        this.publishTimes=true;
-                        obj.newStatus="待控房"
-                    }else if(obj.status===9){
-                        this.quoter=true;
-                        this.orderAmount=true;
-                        this.publishTimes=true;
-                        obj.newStatus="已控房"
-                    }else if(obj.status===10){
-                        this.quoter=true;
-                        this.orderAmount=true;
-                        this.publishTimes=true;
-                        obj.status="需要开票"
+                    switch(obj.status){
+                        case 1:
+                            this.quoter=false;
+                            this.orderAmount=false;
+                            this.publishTimes=false;
+                            obj.newStatus="待发布";
+                            break;
+                        case 2:
+                            this.quoter=false;
+                            this.orderAmount=false;
+                            this.publishTimes=true;
+                            obj.newStatus="待分配"
+                            break;
+                        case 3:
+                            this.quoter=true;
+                            this.orderAmount=true;
+                            this.publishTimes=true;
+                            obj.newStatus="报价中";
+                            break;
+                        case 4:
+                            this.quoter=true;
+                            this.orderAmount=true;
+                            this.publishTimes=true;
+                            obj.newStatus="报价中";
+                            break;
+                        case 5:
+                            this.quoter=true;
+                            this.orderAmount=true;
+                            this.publishTimes=true;
+                            obj.newStatus="待报价确认";
+                            break;
+                        case 6:
+                            this.quoter=true;
+                            this.orderAmount=true;
+                            this.publishTimes=true;
+                            obj.newStatus="待收款";
+                            break;
+                        case 7:
+                            this.quoter=true;
+                            this.orderAmount=true;
+                            this.publishTimes=true;
+                            obj.newStatus="分房待确认";
+                            break;
+                        case 8:
+                            this.quoter=true;
+                            this.orderAmount=true;
+                            this.publishTimes=true;
+                            obj.newStatus="待控房";
+                            break;
+                        case 9:
+                            this.quoter=true;
+                            this.orderAmount=true;
+                            this.publishTimes=true;
+                            obj.newStatus="已控房";
+                            break;
+                        default:
+                            this.quoter=true;
+                            this.orderAmount=true;
+                            this.publishTimes=true;
+                            obj.newStatus="需要开票"
+
                     }
                 }
             })
         },
         voucherLoadding(){
-            let newArr=[];
-            ajax.post('/api/team/order/query-need-voucher',{page:0,pageSize:10}).then(json=>{
-                this.arr=json.list;
-                console.log(json);
-                    for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
-                        if(this.arr[num]){
-                            newArr.push(this.arr[num]);
+            if(this.$route.path=="/dashboard/my-publish/require-invoice"){
+                ajax.post('/api/team/order/query-need-voucher',{page:this.pageNum-1,pageSize:this.pageSize},{lock: false}).then(json=>{
+                    this.currentData=json.list;
+                    this.total=json.count;
+                    for(let obj of this.currentData){
+                        switch(this.$route.path){
+                            case "/dashboard/my-publish/wait-publish":
+                                obj.newStatus="待发布";
+                                break;
+                            case "/dashboard/my-publish/wait-distribution":
+                                obj.newStatus="待分配"
+                                break;
+                            case "/dashboard/my-publish/quote":
+                                obj.newStatus="报价中";
+                                break;
+                            case "/dashboard/my-publish/wait-confirmed":
+                                obj.newStatus="待报价确认";
+                                break;
+                            case "/dashboard/my-publish/wait-gathering":
+                                obj.newStatus="待收款";
+                                break;
+                            case "/dashboard/my-publish/house-wait-distribution":
+                                obj.newStatus="分房待确认";
+                                break;
+                            case "/dashboard/my-publish/wait-control-house":
+                                obj.newStatus="待控房";
+                                break;
+                            case "/dashboard/my-publish/control-house":
+                                obj.newStatus="已控房";
+                                break;
+                            default:
+                                obj.newStatus="需要开票"
+                                break;
+
                         }
                     }
-                    this.currentData=newArr;
-                    this.total=this.arr.length;
-                for(let obj of this.currentData){
-                    if(obj.status===1){
-                        obj.newStatus="待发布";
-                    }else if(obj.status===2){
-                        obj.newStatus="待分配"
-                    }else if(obj.status===3){
-                        obj.newStatus="报价中"
-                    }else if(obj.status===4){
-                        obj.newStatus="报价中"
-                    }else if(obj.status===5){
-                        obj.newStatus="待报价确认"
-                    }else if(obj.status===6){
-                        obj.newStatus="待收款"
-                    }else if(obj.status===7){
-                        obj.newStatus="分房待确认"
-                    }else if(obj.status===8){
-                        obj.newStatus="待控房"
-                    }else if(obj.status===9){
-                        obj.newStatus="已控房"
-                    }else if(obj.status===10){
-                        obj.newStatus="需要开票"
-                    }
-                }
-            })
+                })
+            }
+
         },
         updateTab(){
-            if(this.$route.path=="/dashboard/my-publish/wait-publish"){
-                this.status=1;
-            }else if(this.$route.path=="/dashboard/my-publish/wait-distribution"){
-                this.status=2;
-            }else if(this.$route.path=="/dashboard/my-publish/quote"){
-                this.status=[3,4];
-            }else if(this.$route.path=="/dashboard/my-publish/wait-confirmed"){
-                this.status=5;
-            }else if(this.$route.path=="/dashboard/my-publish/wait-gathering"){
-                this.status=6;
-            }else if(this.$route.path=="/dashboard/my-publish/house-wait-distribution"){
-                this.status=7;
-            }else if(this.$route.path=="/dashboard/my-publish/wait-control-house"){
-                this.status=8;
-            }else if(this.$route.path=="/dashboard/my-publish/control-house"){
-                this.status=9;
+            switch(this.$route.path){
+                case "/dashboard/my-publish/wait-publish":
+                    this.status=1;
+                    break;
+                case "/dashboard/my-publish/wait-distribution":
+                    this.status=2;
+                    break;
+                case "/dashboard/my-publish/quote":
+                    this.status=[3,4];
+                    break;
+                case "/dashboard/my-publish/wait-confirmed":
+                    this.status=5;
+                    break;
+                case "/dashboard/my-publish/wait-gathering":
+                    this.status=6;
+                    break;
+                case "/dashboard/my-publish/house-wait-distribution":
+                    this.status=7;
+                    break;
+                case "/dashboard/my-publish/wait-control-house":
+                    this.status=8;
+                    break;
+                case "/dashboard/my-publish/control-house":
+                    this.status=9;
+                    break;
+                case "/dashboard/my-publish/require-invoice":
+                    this.status=10;
+                    break;
             }
         },
         changeTabEffective(tab){
+            this.pageNum=1;
             this.$router.push({name:"dashboard-my-publish",params:{status:tab.name}});
-            if(this.$route.path=="/dashboard/my-publish/wait-publish"){
-                this.status=1;
-                this.loadTable();
-            }else if(this.$route.path=="/dashboard/my-publish/wait-distribution"){
-                this.status=2;
-                this.loadTable();
-            }else if(this.$route.path=="/dashboard/my-publish/quote"){
-                this.status=[3,4];
-                this.loadTable();
-            }else if(this.$route.path=="/dashboard/my-publish/wait-confirmed"){
-                this.status=5;
-                this.loadTable();
-            }else if(this.$route.path=="/dashboard/my-publish/wait-gathering"){
-                this.status=6;
-                this.loadTable();
-            }else if(this.$route.path=="/dashboard/my-publish/house-wait-distribution"){
-                this.status=7;
-                this.loadTable();
-            }else if(this.$route.path=="/dashboard/my-publish/wait-control-house"){
-                this.status=8;
-                this.loadTable();
-            }else if(this.$route.path=="/dashboard/my-publish/control-house"){
-                this.status=9;
-                this.loadTable();
-            }else if(this.$route.path=="/dashboard/my-publish/require-invoice"){
-                this.voucherLoadding();
+            switch(this.$route.path){
+                case "/dashboard/my-publish/wait-publish":
+                    this.status=1;
+                    this.loadTable();
+                    break;
+                case "/dashboard/my-publish/wait-distribution":
+                    this.status=2;
+                    this.loadTable();
+                    break;
+                case "/dashboard/my-publish/quote":
+                    this.status=[3,4];
+                    this.loadTable();
+                    break;
+                case "/dashboard/my-publish/wait-confirmed":
+                    this.status=5;
+                    this.loadTable();
+                    break;
+                case "/dashboard/my-publish/wait-gathering":
+                    this.status=6;
+                    this.loadTable();
+                    break;
+                case "/dashboard/my-publish/house-wait-distribution":
+                    this.status=7;
+                    this.loadTable();
+                    break;
+                case "/dashboard/my-publish/wait-control-house":
+                    this.status=8;
+                    this.loadTable();
+                    break;
+                case "/dashboard/my-publish/control-house":
+                    this.status=9;
+                    this.loadTable();
+                    break;
+                case "/dashboard/my-publish/require-invoice":
+                    this.status=10;
+//                    this.status="需要开票"
+                    this.voucherLoadding();
+                    break;
             }
+
         },
         changeTabNoneffective(tab){
 
@@ -391,14 +432,50 @@ export default{
 
         },
         handleCurrentChange(page){
-            this.pageNum=page;
-            let newArr=[];
-            for(let num=(this.pageNum-1)*this.pageSize;num<this.pageNum*this.pageSize;num++){
-                if(this.arr[num]){
-                    newArr.push(this.arr[num]);
-                }
+
+            if(this.$route.path=="/dashboard/my-publish/require-invoice"){
+                    this.pageNum=page-1;
+                    this.voucherLoadding();
+            }else{
+                ajax.post('/api/team/my-publish/query',{status:this.status},{lock: false}).then(json=> {
+                    this.arr = json.list;
+                    this.pageNum=page;
+                    let newArr=[];
+                    for(let num=(this.pageNum-1)*this.pageSize;num<this.pageNum*this.pageSize;num++){
+                        if(this.arr[num]){
+                            newArr.push(this.arr[num]);
+                        }
+                    }
+                    this.currentData=newArr;
+
+                    for(let obj of this.currentData){
+                        if(obj.status===1){
+                            obj.newStatus="待发布";
+                        }else if(obj.status===2){
+                            obj.newStatus="待分配"
+                        }else if(obj.status===3){
+                            obj.newStatus="报价中"
+                        }else if(obj.status===4){
+                            obj.newStatus="报价中"
+                        }else if(obj.status===5){
+                            obj.newStatus="待报价确认"
+                        }else if(obj.status===6){
+                            obj.newStatus="待收款"
+                        }else if(obj.status===7){
+                            obj.newStatus="分房待确认"
+                        }else if(obj.status===8){
+                            obj.newStatus="待控房"
+                        }else if(obj.status===9){
+                            obj.newStatus="已控房"
+                        }else if(obj.status===10){
+                            obj.newStatus="需要开票"
+                        }
+                    }
+                })
             }
-            this.currentData=newArr;
+
+
+
         },
         changeClick(){
             this.selectState=1;
@@ -465,6 +542,7 @@ export default{
     },
     created(){
         this.updateTab();
+
     },
     beforeUpdate(){
         this.updateTab();

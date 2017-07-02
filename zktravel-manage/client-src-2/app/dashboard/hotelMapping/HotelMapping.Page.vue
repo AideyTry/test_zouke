@@ -13,7 +13,9 @@
                         style="width: 100%">
                     <el-table-column
                             prop="levelDesc"
-                            label="匹配等级">
+                            label="匹配等级"
+                            width="100"
+                            >
                     </el-table-column>
                     <el-table-column
                             prop="zkName"
@@ -35,11 +37,13 @@
                     </el-table-column>
                     <el-table-column
                             prop="zkAddress"
-                            label="SAI地址">
+                            label="SAI地址"
+                            width="240">
                     </el-table-column>
                     <el-table-column
                             prop="spAddress"
-                            label="miki地址">
+                            label="miki地址"
+                            width="240">
                     </el-table-column>
                     <el-table-column
                             prop="zkPhone"
@@ -58,7 +62,7 @@
                             </el-button>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="bookingUrl" label="Booking链接">
+                    <el-table-column prop="bookingUrl" label="Bk链接">
                         <template scope="scope">
                             <el-button @click="openbooking(scope.$index, currentdata)" type="text" size="small">
                                 查看
@@ -85,7 +89,8 @@
                             style="width: 100%">
                         <el-table-column
                                 prop="level"
-                                label="匹配等级">
+                                label="匹配等级"
+                                >
                         </el-table-column>
                         <el-table-column
                                 prop="zkName"
@@ -107,11 +112,13 @@
                         </el-table-column>
                         <el-table-column
                                 prop="zkAddress"
-                                label="SAI地址">
+                                label="SAI地址"
+                                width="240">
                         </el-table-column>
                         <el-table-column
                                 prop="spAddress"
-                                label="维途地址">
+                                label="维途地址"
+                                width="240">
                         </el-table-column>
                         <el-table-column
                                 prop="zkPhone"
@@ -130,7 +137,7 @@
                                 </el-button>
                             </template>
                         </el-table-column>
-                        <el-table-column prop="bookingUrl" label="Booking链接">
+                        <el-table-column prop="bookingUrl" label="Bk链接">
                             <template scope="scope">
                                 <el-button @click="openbooking(scope.$index, currentdata)" type="text" size="small">
                                     查看
@@ -179,11 +186,13 @@
                     </el-table-column>
                     <el-table-column
                             prop="zkAddress"
-                            label="SAI地址">
+                            label="SAI地址"
+                            width="240">
                     </el-table-column>
                     <el-table-column
                             prop="spAddress"
-                            label="道旅地址">
+                            label="道旅地址"
+                            width="240">
                     </el-table-column>
                     <el-table-column
                             prop="zkPhone"
@@ -202,7 +211,7 @@
                             </el-button>
                         </template>
                     </el-table-column>
-                    <el-table-column prop="bookingUrl" label="Booking链接">
+                    <el-table-column prop="bookingUrl" label="Bk链接">
                         <template scope="scope">
                             <el-button @click="openbooking(scope.$index, currentdata)" type="text" size="small">
                                 查看

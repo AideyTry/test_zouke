@@ -128,6 +128,22 @@
                     </el-row>
                 </el-card>
             </div>
+            <!--分房名单start-->
+            <div>
+                <el-row type="flex">
+                    <el-col :span="2">
+                        <h4>分房名单</h4>
+                    </el-col>
+                </el-row>
+                <el-row type="flex">
+                    <!--<el-form-item>-->
+                    <el-input type="textarea" v-model="content" :disabled="conceal"></el-input>
+                    <!--</el-form-item>-->
+                </el-row>
+                <el-button type="info" @click="submitform" size="small">保存
+                </el-button>
+            </div>
+            <!--分房名单end-->
             <!--<el-card>-->
                 <!--<el-row type="flex" slot="header" class="clearfix">-->
                     <!--<h4>分房名单</h4>-->
@@ -142,18 +158,6 @@
             <!--</el-card>-->
         </div>
         <RoomReservationCard v-if="userInfo.id==3" :orderDatas="orderData"></RoomReservationCard>
-        <el-row type="flex">
-            <h4>分房名单</h4>
-        </el-row>
-        <el-row type="flex">
-            <el-input
-                    type="textarea"
-                    :rows="5"
-                    v-model="orderData.allot_list.content"
-                    :disabled="true">
-
-            </el-input>
-        </el-row>
     </div>
 </template>
 <script>
@@ -165,7 +169,11 @@
             return {
 //                orderData:this.orederData,
                 change:false,
-                choose:false
+                choose:false,
+
+                content:'',
+                newContent:'',
+                conceal:false
             }
         },
         components:{
@@ -221,9 +229,38 @@
             dateRange(a,b){
                 return new Date(a).getDate()-new Date(b).getDate();
             },
+            loadform(){
+                if(!!this.orderData.allot_list){
+                    this.newContent=this.orderData.allot_list.content;
+                    this.content=this.newContent;
+                }
+            },
+            submitform(){
+                if(this.content.length===0){
+                    this.$message({
+                        message:"请输入内容！",
+                        type:'error'
+                    })
+                }else{
+                    ajax.post('/api/team/allot-list/collection',{id:this.$route.params.orderid,content:this.content}).then(
+                        data => {
+                            if (data.code == 0) {
+                                this.$notify({
+                                    title: '保存成功',
+                                    message: '已保存成功,请到订房员处查看',
+                                    type: 'success'
+                                });
+//                            this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'require-node'}});
+                            }
+                        }
+                    )
+                    this.conceal=true;
+                }
+            }
         },
         mounted(){
             this.dateRange();
+            this.loadform();
 //            this.loadOrder(this.$route.params.orderid);
             console.log("userInfo=",this.userInfo);
             console.log("this.ordersData=",this.orderData);

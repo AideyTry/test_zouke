@@ -131,6 +131,18 @@
 
 
         </el-card>
+        <el-row type="flex">
+            <h4>分房名单</h4>
+        </el-row>
+        <el-row type="flex">
+            <el-input
+                    type="textarea"
+                    :rows="5"
+                    v-model="orderDatas.allot_list.content"
+                    :disabled="true">
+
+            </el-input>
+        </el-row>
     </div>
 </template>
 <script>
@@ -154,8 +166,11 @@
         methods:{
             loadOrder(id){
                 ajax.post("/api/team/order/detail",{id:id}, {lock: false}).then(json=>{
-                    this.orderData = json.detail.order_detail.orders;
+                    this.orderData = json.detail.order_detail;
+                    console.log("json",json);
+                    console.log("---------",this.orderData);
                     this.orders=this.orderData.orders;
+                    console.log("orders====",this.orders);
                     this.suppliers=this.orderData.suppliers;
                     this.cityTabs=this.orderData.orders[0].city.name+'0';
                     console.log("160===",this.cityTabs);
