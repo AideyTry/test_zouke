@@ -5,7 +5,7 @@
 </style>
 <template>
     <div>
-        <div v-if="orderStatus!=8&&userInfo.id==2" class="orderDetail">
+        <div v-if="orderStatus!=8&&userInfo.role!=='room-booking'" class="orderDetail">
             <el-row type="flex">
                 <!--<el-col :span="1"></el-col>-->
                 <el-col :span="3">
@@ -157,7 +157,7 @@
                 <!--</el-input>-->
             <!--</el-card>-->
         </div>
-        <RoomReservationCard v-if="userInfo.id==3" :orderDatas="orderData"></RoomReservationCard>
+        <RoomReservationCard v-if="userInfo.role!=='custom-service'" :orderDatas="orderData"></RoomReservationCard>
     </div>
 </template>
 <script>

@@ -26,10 +26,10 @@
 </style>
 <template>
     <div>
-        <WriteOrder v-if="offlineRole.UPDATE_ORDER&&orderStatus==8" :orderData="orderData"></WriteOrder>
-        <RoomingList v-if="orderStatus==6||orderStatus==7" :orderData="orderData"></RoomingList>
-        <RoomingList v-if="!offlineRole.UPDATE_ORDER&&orderStatus==8" :orderData="orderData"></RoomingList>
-        <ControlHouse :orderData="orderData" v-if="orderStatus>8"></ControlHouse>
+        <WriteOrder v-if="offlineRole.UPDATE_ORDER&&orderStatus==8" :orderData="orderdata"></WriteOrder>
+        <RoomingList v-if="orderStatus==6||orderStatus==7" :orderData="orderdata"></RoomingList>
+        <RoomingList v-if="!offlineRole.UPDATE_ORDER&&orderStatus==8" :orderData="orderdata"></RoomingList>
+        <ControlHouse :orderData="orderdata" v-if="orderStatus>8"></ControlHouse>
     </div>
 
 </template>
@@ -40,11 +40,6 @@
     import ControlHouse from './cards/ControlHouse'
     export default{
         props:["orderdata"],
-        data(){
-            return {
-                orderData:null
-            }
-        },
         components:{
             WriteOrder:WriteOrder,
             RoomingList:RoomingList,
@@ -58,8 +53,8 @@
                 return this.$store.getters.offlineRole;
             },
             orderStatus(){
-                if(this.orderData){
-                    return this.orderData.status;
+                if(this.orderdata){
+                    return this.orderdata.status;
                 }else {
                     return 0
                 }
@@ -67,11 +62,6 @@
             }
         },
         methods:{
-            loadOrder(id){
-                ajax.post("/api/team/order/detail",{id:id}, {lock: false}).then(json=>{
-                    this.orderData = json.detail;
-                })
-            },
             dateRange(a,b){
                 return new Date(a).getDate()-new Date(b).getDate();
             },
@@ -79,7 +69,6 @@
         },
         mounted(){
             this.dateRange();
-            this.loadOrder(this.$route.params.orderid);
         }
     }
 </script>
