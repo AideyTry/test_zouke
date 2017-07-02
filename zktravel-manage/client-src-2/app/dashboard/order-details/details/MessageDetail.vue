@@ -27,8 +27,16 @@
                 border:1px solid #999;
                 border-radius:50%;
                 background-color: #999;
-                position:relative;
+                /*text-align:center;*/
+                /*vertical-align:middle;*/
                 top:10px;
+                .inMiddle{
+                    /*display:inline-block;*/
+                    /*vertical-align:middle;*/
+                    position:relative;
+                    left:10%;
+                    top:12%;
+                }
             }
             .time{
                 font-size:12px;
@@ -41,6 +49,7 @@
                 top:15px;
             }
             .contents{
+                font-weight: 900;
                 position:relative;
                 top:15px;
             }
@@ -100,7 +109,7 @@
         <el-row type="flex">
             <el-col :span="24">
                 <div v-for="item of currentList" :key="item" class="msgList">
-                    <span class="avatar">{{item.newType}}</span>
+                    <span class="avatar"><i class="inMiddle">{{item.newType}}</i></span>
                     <span class="time">{{item.time}}</span>
                     <span class="userName">{{item.user.name}}</span>
                     <span class="contents">{{item.content}}</span>
