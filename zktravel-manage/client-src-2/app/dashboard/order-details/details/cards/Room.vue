@@ -32,7 +32,7 @@
     <div class="card">
         <el-row>
             <el-col>
-                房型1：{{roomgroup[room.type]}} X {{room.number}} 备注：{{room.mark}}
+                房型1：{{room.type}} X {{room.number}} 备注：{{room.mark}}
             </el-col>
         </el-row>
         <el-row>
@@ -57,13 +57,6 @@
             return{
                 rule:{
 
-                },
-                roomgroup:{
-                    Single:'单人间',
-                    Double:'双人间',
-                    Triple:'三人间',
-                    Twins:'标间',
-                    Other:'其他'
                 },
                 tishi:true
             }   

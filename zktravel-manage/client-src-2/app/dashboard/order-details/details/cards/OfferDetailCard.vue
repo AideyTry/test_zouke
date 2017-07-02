@@ -19,23 +19,26 @@
         </el-row>
         <el-row>
             <el-col :span="3"><div>酒店<i class="red">*</i>：</div></el-col>
-            <el-col :span="9" style="padding-right: 10px">
+            <el-col :span="15" style="padding-right: 10px">
                 <el-form-item prop="hotel">
-                <el-autocomplete
-                        size="small"
-                        class="inline-input"
-                        v-model="hotel"
-                        :fetch-suggestions="searchhotel"
+                <el-select
+                        style="width:100%"
+                        filterable
+                        remote
                         placeholder="输入关键字选择"
-                        @select="selecthotel"
-                ></el-autocomplete>
+                        :remote-method="searchhotel"
+                        v-model="params.hotel"
+                        :loading="hfetch"
+                    >
+                    <el-option v-for="hotel of hotels" :key="hotel.id" 
+                        :label="genHotelLabel(hotel)" :value="hotel">
+                    </el-option>
+                </el-select>
                 </el-form-item>
             </el-col>
-            <el-col :span="12">B评分：9.0</el-col>
+            <el-col :span="3" v-if="params.hotel&&params.hotel.score">B评分：{{params.hotel.score}}</el-col>
         </el-row>
-        <template v-for="(v,k) in params.rooms">
-            <room   :v="v" :k="k" :room="order.rooms[k]" :cash="this.cash"></room>
-        </template>
+            <room v-for="(v,k) in params.rooms" :key="k" :v="v" :k="k" :room="order.rooms[k]" :cash="this.cash"></room>
         </el-form>
     </div>
 </template>
@@ -50,7 +53,9 @@
         props:['i','k','order','params','cash'],
         data(){
             return{
-                hotel:'',
+                hotels: [],
+                hfetch: false,
+
                 hotelflag:false,
                 rule:{
                     hotel:[{type:'object',required: true, message: '请输入关键字查找酒店', trigger: 'change'}]
@@ -58,51 +63,47 @@
             }
         },
         methods:{
-            searchhotel:debounce(function (queryString, cb) {
-                if (queryString) {
-                    ajax.postSilence('/api/hotel/zk-hotel/search', {
-                        keyword: queryString.trim()
-                    }).then(
-                        data => {
-                            let arr = []
-                            if(data.list){
-                                data.list.forEach(
-                                    (v, k) => {
-                                        arr.push({value: v.name, item: v})
-                                    }
-                                )
-                                cb(arr)
-                            }
+            genHotelLabel(hotel){
+                let l = '';
+                if(hotel.name){
+                    l+=hotel.name;
+                    if(hotel.ename) l+=`(${hotel.ename})`;
+                }else{
+                    l+=hotel.ename;
+                }
 
+                l+= ` - ${hotel.country} - ${hotel.city}`;
+                return l;
+            },
+            searchhotel: debounce(function s(queryString) {
+                const d = new Date().valueOf();
+                s.d = d;
+
+                if (queryString.trim()) {
+                    this.hfetch=true;
+                    ajax.postSilence('/api/hotel/zk-hotel/search', {
+                        keyword: queryString.trim(),
+                        city: this.order.city&&this.order.city.id
+                    }).then(data => {
+                        if(s.d === d){
+                            this.hfetch=false;
+                            this.hotels = data.list.map(item=>{
+                                const sameItem = this.hotels.find(u=>u.id===item.id);
+                                return sameItem?sameItem:item;
+                            })
                         }
-                    )
+                    }).catch(e=>{
+                        if(s.d===d){
+                            this.hfetch=false;
+                        }
+                        throw e;
+                    })
                 }
-            }, 1000),
-            selecthotel:function (item) {
-                let arr = item.item;
-                this.hotelflag=true;
-                this.params.hotel = arr;
-            }
-        },
-        watch:{
-            hotel(val){
-                if(!this.hotelflag){
-                    this.params.hotel={name:val,custom:true}
-                }
-                if(!val){
-                    this.params.hotel=''
-                }
-                this.hotelflag=false;
-            }
+            }, 300)
         },
         computed:{
             night(){
                 return new Date(this.order.check_in).daySpan(new Date(this.order.check_out))
-            }
-        },
-        mounted(){
-            if(this.params.hotel){
-                this.hotel=this.params.hotel.name
             }
         }
     }

@@ -14,7 +14,7 @@ module.exports = class ZkHotel {
         }
         return detail;
     }
-    async query(page, pageSize, { status = 0, keyword } = {}, requireCount = true ){
+    async query(page, pageSize, { status = 0, keyword, city } = {}, requireCount = true ){
 
         const findCondition = {
             status
@@ -25,6 +25,9 @@ module.exports = class ZkHotel {
                 { name: reg },
                 { name_en: reg }
             ];
+        }
+        if(city){
+            findCondition.city_ids = city;
         }
 
         const zkCollection = await dbclient.collections.get('zk_hotels');
@@ -48,7 +51,8 @@ module.exports = class ZkHotel {
                 email: 1,
                 description: 1,
                 url: 1,
-                alias: 1
+                alias: 1,
+                score:1
             }
         ).skip(skipNum).limit(pageSize).toArray()
 
