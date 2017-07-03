@@ -48,28 +48,25 @@
             padding:15px 0;
             background-color: #fff;
             margin-top: 20px;
-            .eight{
+            
+        }
+        .eight{
                 background-color: #FF6666;
-                padding:10px 40px;
-                display: inline-block;
+                padding:7px 40px;
             }
             .twelve{
                 background-color: #FF9900;
                 color:green;
-                padding:10px 40px;
-                display: inline-block;
+                padding:7px 40px;
             }
             .twenty-four{
                 background-color: #FFFF00;
-                padding:10px 40px;
-                display: inline-block;
+                padding:7px 40px;
             }
             .time-out{
                 background-color: #9900cc;
-                padding:10px 40px;
-                display: inline-block;
+                padding:7px 40px;
             }
-        }
         .hidden{
             display:none;
         }
@@ -154,19 +151,19 @@
                             报价紧急度
                         </el-col>
                         <el-col :span="1" class="eight"></el-col>
-                        <el-col :span="2">
+                        <el-col :span="3">
                             8小时完成
                         </el-col>
                         <el-col :span="1" class="twelve"></el-col>
-                        <el-col :span="2">
+                        <el-col :span="3">
                             24小时完成
                         </el-col>
                         <el-col :span="1" class="twenty-four"></el-col>
-                        <el-col :span="2">
+                        <el-col :span="3">
                             48小时完成
                         </el-col>
                         <el-col :span="1" class="time-out"></el-col>
-                        <el-col :span="2">
+                        <el-col :span="3">
                             已超时
                         </el-col>
                         <el-col :span="10"></el-col>

@@ -39,26 +39,23 @@
             padding:15px 0;
             background-color: #fff;
             margin-top: 20px;
+
             .eight{
                 background-color: #FF6666;
-                padding:10px 40px;
-                display: inline-block;
+                padding:0px 40px;
             }
             .twelve{
                 background-color: #FF9900;
                 color:green;
-                padding:10px 40px;
-                display: inline-block;
+                padding:0px 40px;
             }
             .twenty-four{
                 background-color: #FFFF00;
-                padding:10px 40px;
-                display: inline-block;
+                padding:0px 40px;
             }
             .time-out{
                 background-color: #9900cc;
-                padding:10px 40px;
-                display: inline-block;
+                padding:0px 40px;
             }
         }
     }
@@ -133,8 +130,7 @@
                 <el-row 
                     v-show="this.currentData.length!=0"
                     type="flex"
-                    class="row-bg"
-                    align="center">
+                    class="row-bg">
                         <el-col :span="2">
                             报价紧急度
                         </el-col>
@@ -144,11 +140,11 @@
                         </el-col>
                         <el-col :span="1" class="twelve"></el-col>
                         <el-col :span="2">
-                            12小时完成
+                            24小时完成
                         </el-col>
                         <el-col :span="1" class="twenty-four"></el-col>
                         <el-col :span="2">
-                            24小时完成
+                            48小时完成
                         </el-col>
                         <el-col :span="1" class="time-out"></el-col>
                         <el-col :span="2">
@@ -163,8 +159,7 @@
                         layout="total, prev, pager, next, jumper"
                         class="pagination"
                         @current-change="changePage"
-                        :total="pager.total"
-                >
+                        :total="pager.total">
                 </el-pagination>
             </el-col>
         </el-row>
@@ -175,6 +170,7 @@
     export default{
         data(){
             return{
+                status:'',
                 page:3,
                 activeName:'wp',
                 pager:{
@@ -200,27 +196,22 @@
             loadTable(){
                 ajax.post("/api/team/order/query",{status:this.pager.status,page:this.pager.pageNum,pageSize:this.pager.pageSize}).then(json=>{
                     console.log(json);
+                    status:this.status,
                     this.currentData=json.list;
                     this.pager.total=json.count;
                     for(let obj of this.currentData){
                     if(obj.status===1){
                         obj.status="待发布";
+                        obj.newStatus='待发布'
                     }else if(obj.status===2){
                         obj.status="待分配"
+                        obj.newStatus='待分配'
                     }else if(obj.status===3){
                         obj.status="待报价"
+                        obj.newStatus='待报价'
                     }else if(obj.status===4){
                         obj.status="待审核"
-                    }else if(obj.status===5){
-                        obj.status="待报价确认"
-                    }else if(obj.status===6){
-                        obj.status="待收款"
-                    }else if(obj.status===7){
-                        obj.status="分房待确认"
-                    }else if(obj.status===8){
-                        obj.status="待控房"
-                    }else if(obj.status===9){
-                        obj.status="已控房"
+                        obj.newStatus='待审核'
                     }
                 }
                     this.currentData.forEach(v=>{

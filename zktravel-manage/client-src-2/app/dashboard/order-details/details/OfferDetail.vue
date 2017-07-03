@@ -6,14 +6,15 @@
         height: 100%;
     }
     .finish-time{
-        width:170px;
-        height:30px;
+        width:180px;
+        height:20px;
         background-color: red;
         border:1px solid red;
-        border-radius: 15px;
+        border-radius: 10px;
         color:#fff;
-        line-height: 30px;
+        line-height: 20px;
         text-align: center;
+        font-size: 15px;
     }
 </style>
 <template>
@@ -137,7 +138,6 @@
                 }, {lock: false}).then(
                     data => {
                         console.log(data.detail);
-                        
                         this.booking_dead_line=new Date(data.detail.booking_dead_line).format('YYYY.MM.DD HH:MM');
                         this.status = data.detail.status;
                         this.currency = data.detail.requirement.currency;
@@ -280,7 +280,7 @@
         },
         mounted(){
             this.loadorder(this.$route.params.orderid);
-            console.log(this.orderdata);
+            
         }
     }
 </script>

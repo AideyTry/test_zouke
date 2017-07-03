@@ -134,7 +134,7 @@
          <el-row class="computed">
              <el-col :span="5"><strong>总价：</strong>{{cost}} {{cash}}</el-col>
              <el-col :span="5"><strong>Booking：</strong>{{bk}} {{cash}}</el-col>
-             <el-col :span="12"><strong>为您节省：</strong>{{bk-cost}} </el-col>
+             <el-col :span="12"><strong>为您节省：</strong>{{bk-cost}} {{cash}}</el-col>
          </el-row>
          <el-row class="computed">
              <el-col :span="24"><strong>取消政策：</strong>{{tab.provider.cancel_policy||''}}</el-col>

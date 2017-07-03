@@ -78,7 +78,7 @@
                         label="状态">
                 </el-table-column>
                 <el-table-column
-                        prop="creator"
+                        prop="creator.name"
                         label="报价员">
                 </el-table-column>
                 <el-table-column

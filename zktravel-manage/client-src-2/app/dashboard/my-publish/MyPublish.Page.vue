@@ -134,7 +134,7 @@
                     </el-table-column>
                     <el-table-column
                             v-if="quoter"
-                            prop=""
+                            prop="creator.name"
                             label="报价员">
                     </el-table-column>
                     <el-table-column
@@ -233,8 +233,8 @@ export default{
         loadTable(){
             let newArr=[];
             ajax.post('/api/team/my-publish/query',{status:this.status}).then(json=>{
+                console.log(json);
                 this.arr=json.list;
-                console.log(this.arr);
                     for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
                         if(this.arr[num]){
                             newArr.push(this.arr[num]);
