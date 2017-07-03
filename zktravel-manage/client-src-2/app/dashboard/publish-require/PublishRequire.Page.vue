@@ -38,6 +38,15 @@
             display: inline-block;
         }
     }
+
+    .user-avatar,.user-name{
+        display:inline-block;
+        vertical-align:middle;
+    }
+    .user-avatar{
+        width:25px;
+        border-radius:100px;
+    }
 </style>
 <style lang="scss">
     .publish-require {
@@ -50,7 +59,7 @@
     }
 </style>
 <template>
-    <div class="publish-require" v-if="type==1">
+    <div class="publish-require"><template  v-if="type==1">>
         <el-form ref="ruleForm" :rules="rule" :model="params" label-width="80px">
             <el-row type="flex">
                 <el-col :span="5">
@@ -77,6 +86,7 @@
                     <span>用户名<i class="red">*</i></span>
                     <el-form-item prop="user">
                         <el-select
+
                             style="width:160px;"
                             filterable
                             remote
@@ -85,8 +95,9 @@
                             v-model="params.user"
                             :loading="ufetch"
                         >
-                            <el-option v-for="user of users" :key="user.id" :label="user.name" :value="user">
-
+                            <el-option v-for="user of users" :key="user.id" :value="user">
+                                <img class="user-avatar" :src="user.avatar" >
+                                <div class="user-name">{{user.name}}</div>
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -232,7 +243,7 @@
             </div>
         </el-dialog>
         <!--发布二次确认弹出框end-->
-    </div>
+    </template></div>
 </template>
 <script>
     import debounce from 'lodash/debounce'
