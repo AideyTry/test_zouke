@@ -1,5 +1,7 @@
 <style lang="scss" scoped>
-
+    .el-row{
+        padding:10px 0;
+    }
 </style>
 <template>
     <div>

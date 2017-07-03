@@ -96,10 +96,17 @@
                             </span>
                         </template>
                     </el-table-column>
-                    <el-table-column label="合计">
+                    <el-table-column label="收款金额¥">
                         <template scope="scope">
                             <span>
                                 {{scope.row.collection_info.money?scope.row.collection_info.money*scope.row.collection_info.reo:0}}人民币
+                            </span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="备注">
+                        <template scope="scope">
+                            <span>
+                                {{scope.row.extras}}
                             </span>
                         </template>
                     </el-table-column>

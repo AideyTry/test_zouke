@@ -43,16 +43,18 @@
                         <el-button type="text" @click="addHotel()">添加酒店</el-button>
                     </el-col>
                 </el-row>
-                <el-row type="flex">
-                    <el-col :span="2">
-                        <strong>备注确认号:</strong>
-                    </el-col>
-                    <el-col :span="10">
-                        <el-input v-model="v.remark_confirm" placeholder="确认用户备注后，填写相应的编号，用';'隔开">
+                <!--备注确认号start-->
+                <!--<el-row type="flex">-->
+                    <!--<el-col :span="2">-->
+                        <!--<strong>备注确认号:</strong>-->
+                    <!--</el-col>-->
+                    <!--<el-col :span="10">-->
+                        <!--<el-input v-model="v.remark_confirm" placeholder="确认用户备注后，填写相应的编号，用';'隔开">-->
 
-                        </el-input>
-                    </el-col>
-                </el-row>
+                        <!--</el-input>-->
+                    <!--</el-col>-->
+                <!--</el-row>-->
+            <!--备注确认号end-->
                 <!--添加供应商start-->
                 <el-row type="flex" >
                     <el-col :span="20">

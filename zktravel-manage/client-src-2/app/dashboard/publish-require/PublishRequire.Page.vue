@@ -51,7 +51,7 @@
 </style>
 <template>
     <div class="publish-require" v-if="type==1">
-        <el-form ref="ruleForm" :rules="rule" :model="params" label-width="80px">
+        <el-form ref="params" :rules="rule" :model="params" label-width="80px">
             <el-row type="flex">
                 <el-col :span="5">
                     <el-select style="width:120px" size="small" v-model="params.priority" placeholder="选择优先级">
@@ -223,15 +223,18 @@
                 </el-col>
                 <el-col :span="19"></el-col>
             </el-row>
+            <!--发布二次确认弹出框start-->
+            <el-form-item>
+                <el-dialog title="确定发布？" :visible.sync="isTrue" size="tiny">
+                    <div slot="footer" class="dialog-footer">
+                        <el-button @click="isTrue = false">取 消</el-button>
+                        <el-button type="primary" @click="submitform('params')">确 定</el-button>
+                    </div>
+                </el-dialog>
+            </el-form-item>
+            <!--发布二次确认弹出框end-->
         </el-form>
-        <!--发布二次确认弹出框start-->
-        <el-dialog title="确定发布？" :visible.sync="isTrue" size="tiny">
-            <div slot="footer" class="dialog-footer">
-                <el-button @click="isTrue = false">取 消</el-button>
-                <el-button type="primary" @click="submitform()">确 定</el-button>
-            </div>
-        </el-dialog>
-        <!--发布二次确认弹出框end-->
+
     </div>
 </template>
 <script>
@@ -282,10 +285,14 @@
                     ]
                 },
                 rule: {
-                    user:[{type:'object',required: true, message: '请输入关键字查找用户名', trigger: 'change'}],
-                    number:[{type:'string',required: true, message: '请输入出发人数', trigger: 'blur'}],
-                    budget_min:[{type:'string',required: true, message: '请输入数字', trigger: 'blur'}],
-                    budget_max:[{type:'string',required: true, message: '请输入数字', trigger: 'blur'}]
+//                    user:[{type:'object',required: true, message: '请输入关键字查找用户名', trigger: 'change'}],
+//                    number:[{type:'string',required: true, message: '请输入出发人数', trigger: 'blur'}],
+//                    budget_min:[{type:'string',required: true, message: '请输入数字', trigger: 'blur'}],
+//                    budget_max:[{type:'string',required: true, message: '请输入数字', trigger: 'blur'}]
+                    user:[{required: true, message: '请输入关键字查找用户名', trigger: 'change'}],
+                    number:[{required: true, message: '请输入出发人数', trigger: 'blur'}],
+                    budget_min:[{required: true, message: '请输入数字', trigger: 'blur'}],
+                    budget_max:[{required: true, message: '请输入数字', trigger: 'blur'}]
                 },
                 pickerOptions: {
                     disabledDate(time) {
@@ -404,24 +411,31 @@
                 )
                 /*无前端校验的存为草稿end*/
             },
-            submitform(){
-                ajax.post('/api/team/requirement/publish', this.params).then(
-                    data => {
-                        if (data.code == 0) {
-                            this.$notify({
-                                title: '发布成功',
-                                message: '已成功发布，请到我的发布中查看',
-                                type: 'success'
-                            });
-                            this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'require-node'}});
-                        }else if(data.code==1){
-                            this.$notify.error({
-                                title: '无法发布',
-                                message: '请将必填项填写完整~！'
-                            });
-                        }
+            submitform(formName){
+                let vm=this;
+//                vm.valid=true;
+                console.log("formForm=",formName);
+                vm.$refs[formName].validate((valid)=>{
+                    if(valid){
+                        ajax.post('/api/team/requirement/publish', this.params).then(
+                            data => {
+                                if (data.code == 0) {
+                                    this.$notify({
+                                        title: '发布成功',
+                                        message: '已成功发布，请到我的发布中查看',
+                                        type: 'success'
+                                    });
+                                    this.$router.push({name:"dashboard-order-detail",params:{orderid:data.orderId,status:'require-node'}});
+                                }else if(data.code==1){
+                                    this.$notify.error({
+                                        title: '无法发布',
+                                        message: '请将必填项填写完整~！'
+                                    });
+                                }
+                            }
+                        )
                     }
-                )
+                })
             },
             addroom(k){
                 this.params.stay_details[k].rooms.push({

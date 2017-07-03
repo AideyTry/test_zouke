@@ -86,11 +86,11 @@
                 <el-tab-pane label="报价记录" name="offer-node">
                     <offerdetail ref="offerdetaildata" v-if="activetabs=='offer-node'"></offerdetail>
                 </el-tab-pane>
-                <el-tab-pane label="订单详情" name="order-detail">
-                    <orderDetail v-if="orderdata&&activetabs=='order-detail'" :orderdata="orderdata"></orderDetail>
-                </el-tab-pane>
                 <el-tab-pane label="收入/支出" name="in-out">
                     <income-detail v-if="orderdata&&activetabs=='in-out'&&orderdatastatus>5"></income-detail>
+                </el-tab-pane>
+                <el-tab-pane label="订单详情" name="order-detail">
+                    <orderDetail v-if="orderdata&&activetabs=='order-detail'" :orderdata="orderdata"></orderDetail>
                 </el-tab-pane>
                 <el-tab-pane label="开票记录" name="ticket-node">
                     <invoice-detail v-if="orderdata&&activetabs=='ticket-node'"></invoice-detail>
