@@ -36,7 +36,7 @@ module.exports = class Order extends BaseOrder {
                     status: item.status,
                     publishTime: item.publish_time,
                     creator:item.creator,
-                    finishTime: new Date(item.booking_dead_line).format('YYYY-MM-DD'),
+                    finishTime: item.booking_dead_line,
                     booking_user: item.booking_user
                 };
             })
