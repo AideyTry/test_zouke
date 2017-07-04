@@ -38,6 +38,15 @@
             display: inline-block;
         }
     }
+
+    .user-avatar,.user-name{
+        display:inline-block;
+        vertical-align:middle;
+    }
+    .user-avatar{
+        width:25px;
+        border-radius:100px;
+    }
 </style>
 <style lang="scss">
     .publish-require {
@@ -85,8 +94,9 @@
                             v-model="params.user"
                             :loading="ufetch"
                         >
-                            <el-option v-for="user of users" :key="user.id" :label="user.name" :value="user">
-
+                            <el-option v-for="user of users" :key="user.id" :value="user">
+                                <img class="user-avatar" :src="user.avatar" >
+                                <div class="user-name">{{user.name}}</div>
                             </el-option>
                         </el-select>
                     </el-form-item>

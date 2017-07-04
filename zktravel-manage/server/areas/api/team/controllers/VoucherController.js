@@ -21,6 +21,8 @@ module.exports = class VoucherController extends TeamController {
         const voucher = new Voucher();
         const voucherDetail = await voucher.download(orderId,orderIndex,hotelIndex,suppliersIndex);
 
+        console.log('download voucher data',voucherDetail)
+        
         await this.renderRemote({
             host:DEBUG?'wx.test.zouke.com':'w.zouke.com',
             path:'/zksystem/order/view-voucher',
@@ -28,7 +30,7 @@ module.exports = class VoucherController extends TeamController {
             headers:{
                 'content-type':'application/json'
             },
-            voucherDetail
+            data: voucherDetail
         });
     }
 };
