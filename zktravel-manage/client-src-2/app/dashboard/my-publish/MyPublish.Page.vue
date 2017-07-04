@@ -377,7 +377,7 @@ export default{
                     this.status=9;
                     break;
                 case "/dashboard/my-publish/require-invoice":
-                    this.status=10;
+//                    this.status=10;
                     break;
             }
         },
@@ -418,7 +418,7 @@ export default{
                     this.loadTable();
                     break;
                 case "/dashboard/my-publish/require-invoice":
-                    this.status=10;
+//                    this.status=10;
 //                    this.status="需要开票"
                     this.voucherLoadding();
                     break;
@@ -524,7 +524,7 @@ export default{
                 case 9:
                     this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'order-detail'}});
                     break;
-                case 10:
+                default:
                     this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'ticket-node'}});
                     break;    
             }

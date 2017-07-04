@@ -213,7 +213,7 @@
             </el-row>
             <date-card v-for="(v,k) of params.stay_details" 
                 :valid="valid" @cancelthis="cancelCard"
-                 @addroom="addroom" :item="v" :key="v._t" :removeable="params.stay_details.length>1"
+                 @addroom="addroom" :item="v" :key="v._t" :ruless="rule" ref="params" :removeable="params.stay_details.length>1"
                         :index="k"></date-card>
             <el-row class="addcard">
                 <el-col>
@@ -302,7 +302,8 @@
                     user:[{required: true, message: '请输入关键字查找用户名', trigger: 'change'}],
                     number:[{required: true, message: '请输入出发人数', trigger: 'blur'}],
                     budget_min:[{required: true, message: '请输入数字', trigger: 'blur'}],
-                    budget_max:[{required: true, message: '请输入数字', trigger: 'blur'}]
+                    budget_max:[{required: true, message: '请输入数字', trigger: 'blur'}],
+                    city: [{required: true, message: '请输入关键词查找城市', trigger: 'change'}]
                 },
                 pickerOptions: {
                     disabledDate(time) {
@@ -424,6 +425,11 @@
             submitform(formName){
                 let vm=this;
 //                vm.valid=true;
+//                vm.$refs.formName.validate((valid)=>{
+//                    if(valid){
+//                        alert("子组件成功");
+//                    }
+//                })
                 console.log("formForm=",formName);
                 vm.$refs[formName].validate((valid)=>{
                     if(valid){

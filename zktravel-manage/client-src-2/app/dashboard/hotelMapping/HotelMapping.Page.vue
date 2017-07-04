@@ -17,6 +17,7 @@
                 border
                 style="width: 100%">
             <el-table-column
+                    header-align="center"
                     prop="zkName"
                     label="SAI名">
                 <template scope="scope">
@@ -26,6 +27,7 @@
                 </template>
             </el-table-column>
             <el-table-column
+                    header-align="center"
                     prop="spName"
                     :label="$route.params.provider+'名'">
                 <template scope="scope">
@@ -35,40 +37,46 @@
                 </template>
             </el-table-column>
             <el-table-column
+                    header-align="center"
                     prop="zkAddress"
                     label="SAI地址"
-                    width="240">
+                    :width="'250%'">
             </el-table-column>
             <el-table-column
+                    header-align="center"
                     prop="spAddress"
                    :label="$route.params.provider+'地址'"
-                    width="240">
+                    :width="'250%'">
             </el-table-column>
             <el-table-column
+                    header-align="center"
                     prop="zkPhone"
                     label="SAI电话">
             </el-table-column>
             <el-table-column
+                    header-align="center"
                     prop="spPhone"
                     :label="$route.params.provider+'电话'">
             </el-table-column>
             <el-table-column
+                    header-align="center"
                     prop="spGPS"
-                    label="距离">
+                    label="距离"
+                    :width="'70%'">
                 <template scope="scope">
                     <el-button @click="openmap(scope.$index, currentdata)" type="text" size="small">
                         查看
                     </el-button>
                 </template>
             </el-table-column>
-            <el-table-column prop="bookingUrl" label="B链接">
+            <el-table-column prop="bookingUrl" label="B链接" :width="'75%'" header-align="center">
                 <template scope="scope">
                     <el-button @click="openbooking(scope.$index, currentdata)" type="text" size="small">
                         查看
                     </el-button>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" width="180">
+            <el-table-column label="操作" :width="'140%'" header-align="center">
                 <template scope="scope">
                     <el-button size="small" type="info" @click="matcherconfirm(scope.$index, scope.row)">匹配
                     </el-button>
@@ -146,7 +154,6 @@
         bottom: 0px;
         right: 0px;
     }
-
 </style>
 
 <script>
