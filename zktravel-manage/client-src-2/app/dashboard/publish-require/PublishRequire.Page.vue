@@ -299,7 +299,7 @@
 //                    number:[{type:'string',required: true, message: '请输入出发人数', trigger: 'blur'}],
 //                    budget_min:[{type:'string',required: true, message: '请输入数字', trigger: 'blur'}],
 //                    budget_max:[{type:'string',required: true, message: '请输入数字', trigger: 'blur'}]
-                    user:[{required: true, message: '请输入关键字查找用户名', trigger: 'change'}],
+                    user:[{type:'object',required: true, message: '请输入关键字查找用户名', trigger: 'change'}],
                     number:[{required: true, message: '请输入出发人数', trigger: 'blur'}],
                     budget_min:[{required: true, message: '请输入数字', trigger: 'blur'}],
                     budget_max:[{required: true, message: '请输入数字', trigger: 'blur'}],
