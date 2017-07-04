@@ -36,7 +36,10 @@ module.exports = class TeamReqController extends TeamController {
         if(needCheck){
             requirement = teamRequirement.validRequirement(this.request.body);
 
-            if(!requirement){
+            if(
+                !requirement||
+                (!requirement.budget_min&&!requirement.budget_max&&!requirement.budget_mark)
+            ){
                 this.renderJSON({code:1, msg: 'data check valid fail'});
                 return;
             }

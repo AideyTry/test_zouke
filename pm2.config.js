@@ -37,6 +37,7 @@ module.exports = {
             { instances: DEBUG ? 1 : 2 }
         ),
 
-        createApp('zktravel-web', 9223)
+        createApp('zktravel-web', 9223),
+        createApp('tailer-api', 9224)
     ]
 };

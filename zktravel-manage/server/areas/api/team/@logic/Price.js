@@ -1,5 +1,6 @@
 const BaseOrder = require('./BaseOrder');
 const compare = require('@local/compare');
+const clone = require('lodash/cloneDeep');
 
 const priceRule = {
     '*cases':[
@@ -24,7 +25,9 @@ const priceRule = {
         { min: 1 }
     ]
 }
-const userPolicyRule = {
+
+const priceWithUserPolicyRule = clone(priceRule);
+priceWithUserPolicyRule['*cases'][0]['user_policy'] = {
     '*payment': [
         {
             '*dead_line': '2017-08-08',
@@ -34,14 +37,14 @@ const userPolicyRule = {
     ],
     '*cancel': '取消政策',
     'explain': '报价说明'
-}
+};
 
 module.exports = class Price extends BaseOrder {
     validPrice(price){
         return compare(priceRule, price);
     }
-    validUserPolicy(policy){
-        return compare(userPolicyRule, policy);
+    validUserPolicy(price){
+        return compare(priceWithUserPolicyRule, policy);
     }
     async commit(id, requirementLastTime, price, user ){
         const nowTime = this.$createTime();
@@ -87,24 +90,21 @@ module.exports = class Price extends BaseOrder {
             }
         );
     }
-    async resolve(id, user, userPolicy, price){
+    async resolve(id, user, price){
         const nowTime = this.$createTime();
+
+        price.last_update = nowTime;
         const update = {
-            $set: { user_policy: userPolicy, status: this.status.WAIT_FOR_PRICE_CONFIRM },
+            $set: { price: Object.assign({}, price), status: this.status.WAIT_FOR_PRICE_CONFIRM },
             $push: {
                 logs: this.$createShiftUpdate({ type: 'system:resolve-price', time: nowTime, user, change_price: !!price })
             }
         }
+
         const queryResult = await (await this.$getCollection()).findOne({
                  _id:id, status: this.status.WAIT_FOR_PRICE_CHECK });
         if(!queryResult) return false;
-        const { price_history=[], requirement } = queryResult
-        if(price){
-            price.last_update = nowTime;
-            update.$set.price = Object.assign({},price);
-        }else{
-            price = queryResult.price;
-        }
+        const { price_history=[], requirement } = queryResult;
 
         price.requirement = requirement;
         price.check_pass = true;
