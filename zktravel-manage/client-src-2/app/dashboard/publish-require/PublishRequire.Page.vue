@@ -95,7 +95,7 @@
                             v-model="params.user"
                             :loading="ufetch"
                         >
-                            <el-option v-for="user of users" :key="user.id" :value="user">
+                            <el-option v-for="user of users" :key="user.id" :label="user.name" :value="user">
                                 <img class="user-avatar" :src="user.avatar" >
                                 <div class="user-name">{{user.name}}</div>
                             </el-option>

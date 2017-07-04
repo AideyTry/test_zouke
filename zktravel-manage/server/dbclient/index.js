@@ -29,7 +29,7 @@ module.exports = requireRoot('../../common/mongoClient/init')({
     zk_zones: c(
         {
             db: 'zouke',
-            collection: 'zk_zones'
+            collection: 'zk_zones_v2'
         },
         {
             db: 'static',

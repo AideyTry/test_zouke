@@ -81,8 +81,7 @@
                                 v-model="item.city"
                                 :loading="cfetch"
                             >
-                                <el-option v-for="city of cities" :key="city.id" :label="city.name" :value="city">
-
+                                <el-option v-for="city of cities" :key="city.id" :label="city.ename+'/'+city.name" :value="city">
                                 </el-option>
                             </el-select>
                         </el-form-item>
@@ -105,7 +104,6 @@
                             >
                             <el-option v-for="hotel of hotels" :key="hotel.id" 
                                 :label="genHotelLabel(hotel)" :value="hotel">
-
                             </el-option>
                         </el-select>
                     </el-col>
@@ -195,14 +193,14 @@
         methods: {
             genHotelLabel(hotel){
                 let l = '';
-                if(hotel.name){
-                    l+=hotel.name;
-                    if(hotel.ename) l+=`(${hotel.ename})`;
-                }else{
+                if(hotel.ename){
                     l+=hotel.ename;
+                    if(hotel.name) l+=`/${hotel.name}`;
+                }else{
+                    l+=hotel.name;
                 }
                 if(hotel.country){
-                    l+= ` - ${hotel.country} - ${hotel.city}`;
+                    l+= `,${hotel.city},${hotel.country}`;
                 }
                 return l;
             },
