@@ -213,7 +213,7 @@
             </el-row>
             <date-card v-for="(v,k) of params.stay_details" 
                 :valid="valid" @cancelthis="cancelCard"
-                 @addroom="addroom" :item="v" :key="v._t" :ruless="rule" ref="params" :removeable="params.stay_details.length>1"
+                 @addroom="addroom" :item="v" :key="v._t" :ruless="rule" ref="params" :params="params" :removeable="params.stay_details.length>1"
                         :index="k"></date-card>
             <el-row class="addcard">
                 <el-col>
@@ -261,6 +261,44 @@
             const today = new Date();
             const next = new Date();
             next.setDate(next.getDate()+1);
+
+            let validateBudget_min=(rule,value,callback)=>{
+                if(value==''&&this.params.budget_max==''&&this.params.budget_mark==''){
+                    callback(new Errror("至少输入一项"))
+                }else{
+                    if(value!=''||this.params.budget_max!=''||this.params.budget_mark!=''){
+                        this.$refs.params.validateField('budget_min');
+                    }else{
+                        callback();
+                    }
+                }
+            };
+
+            let validateBudget_max=(rule,value,callback)=>{
+                if(value==''&&this.params.budget_max==''&&this.params.budget_mark==''){
+                    callback(new Errror("至少输入一项"))
+                }else{
+                    if(value!=''||this.params.budget_max!=''||this.params.budget_mark!=''){
+                        this.$refs.params.validateField('budget_max');
+                    }else{
+                        callback();
+                    }
+                }
+            };
+
+
+            let validateBudget_mark=(rule,value,callback)=>{
+                if(value==''&&this.params.budget_min==''&&this.params.budget_mark==''){
+                    callback(new Errror("至少输入一项"))
+                }else{
+                    if(value!=''||this.params.budget_max!=''||this.params.budget_min!=''){
+                        this.$refs.params.validateField('budget_mark');
+                    }else{
+                        callback();
+                    }
+                }
+            };
+
             return {
                 users:[],
                 ufetch:false,
@@ -301,8 +339,11 @@
 //                    budget_max:[{type:'string',required: true, message: '请输入数字', trigger: 'blur'}]
                     user:[{type:'object',required: true, message: '请输入关键字查找用户名', trigger: 'change'}],
                     number:[{required: true, message: '请输入出发人数', trigger: 'blur'}],
-                    budget_min:[{required: true, message: '请输入数字', trigger: 'blur'}],
-                    budget_max:[{required: true, message: '请输入数字', trigger: 'blur'}],
+
+                    budget_min:[{validator:validateBudget_min, trigger: 'blur'}],
+                    budget_max:[{validator:validateBudget_max, trigger: 'blur'}],
+                    budget_mark:[{validator:validateBudget_mark,trigger:'blur'}],
+
                     city: [{required: true, message: '请输入关键词查找城市', trigger: 'change'}]
                 },
                 pickerOptions: {
