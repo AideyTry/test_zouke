@@ -52,7 +52,7 @@
                 params:{
                     id:this.$route.params.orderid,
                     user:{},
-                    dead_line:new Date()
+                    dead_line:new Date((new Date()).valueOf()+60*60*24*1000)
                 }
             }
         },
@@ -92,6 +92,7 @@
         },
         mounted(){
             this.searchuser();
+            console.log("完成时间=",this.params.dead_line);
         }
     }
 </script>

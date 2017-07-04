@@ -136,7 +136,7 @@
                     </el-table-column>
                     <el-table-column
                             v-if="isTrue"
-                            prop="startDate"
+                            prop="finishTime"
                             label="完成时间">
                     </el-table-column>
                     <el-table-column
