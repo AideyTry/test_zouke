@@ -104,7 +104,7 @@
                                 @change="selectHotel"
                             >
                             <el-option v-for="hotel of hotels" :key="hotel.id" 
-                                :label="genHotelLavel(hotel)" :value="hotel">
+                                :label="genHotelLabel(hotel)" :value="hotel">
 
                             </el-option>
                         </el-select>
@@ -193,7 +193,7 @@
             }
         },
         methods: {
-            genHotelLavel(hotel){
+            genHotelLabel(hotel){
                 let l = '';
                 if(hotel.name){
                     l+=hotel.name;
@@ -201,8 +201,9 @@
                 }else{
                     l+=hotel.ename;
                 }
-
-                l+= ` - ${hotel.country} - ${hotel.city}`;
+                if(hotel.country){
+                    l+= ` - ${hotel.country} - ${hotel.city}`;
+                }
                 return l;
             },
             cancelthis: function () {
@@ -241,8 +242,10 @@
 
                 if (queryString.trim()) {
                     this.hfetch=true;
+                    
                     ajax.postSilence('/api/hotel/zk-hotel/search', {
-                        keyword: queryString.trim()
+                        keyword: queryString.trim(),
+                        city: this.item.city&&this.item.city.id
                     }).then(data => {
                         if(s.d === d){
                             this.hfetch=false;

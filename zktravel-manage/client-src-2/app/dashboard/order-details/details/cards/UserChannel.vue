@@ -81,7 +81,6 @@
         methods:{
             addchannel(){
                 const { dead_line } = this.userchannel.payment[this.userchannel.payment.length-1];
-
                 this.userchannel.payment.push({
                     dead_line:new Date(dead_line),
                     price:'1'

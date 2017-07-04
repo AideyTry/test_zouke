@@ -37,7 +37,7 @@
                 </el-select>
             </el-col>
         </el-row>
-        <el-row>
+        <el-row type="flex" v-if="hide">
             <el-col :span="5" type="flex">
                 <el-input size="small" placeholder="搜索用户名/订单号/订房员/创建人"></el-input>
             </el-col>
@@ -90,6 +90,9 @@
                         label="发布日期">
                 </el-table-column>
             </el-table>
+            <div style="height:50px">
+
+            </div>
         <el-pagination layout="total, prev, pager, next, jumper" @current-change="changepage" :total="total"
                        :page-size="currentlimit"></el-pagination>
     </div>
@@ -100,6 +103,7 @@
     export default{
         data(){
             return{
+                hide:false,
                 ordertype:null,
                 startdate:null,
                 currentdata:[],

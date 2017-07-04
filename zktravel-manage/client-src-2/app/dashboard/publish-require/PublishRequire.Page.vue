@@ -83,8 +83,7 @@
                             placeholder="输入关键字选择"
                             :remote-method="searchuser"
                             v-model="params.user"
-                            :loading="ufetch"
-                        >
+                            :loading="ufetch">
                             <el-option v-for="user of users" :key="user.id" :label="user.name" :value="user">
 
                             </el-option>

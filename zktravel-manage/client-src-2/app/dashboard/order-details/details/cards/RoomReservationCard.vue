@@ -106,8 +106,8 @@
                             <el-row type="flex">
                                 <el-col :span="2"><strong>取消政策:</strong></el-col>
                                 <el-col :span="8">
-                                    <span>{{item.cancel_policy.cancel.free_cancel_date}}</span>
-                                    <span>前可免费取消</span>
+                                    <span>{{item.cancel_policy.cancel.free_cancel_date.substr(0,10)}}</span>
+                                    <span>{{item.cancel_policy.cancel.free_cancel_date?'前可免费取消':'不可取消'}}</span>
                                 </el-col>
                                 <el-col :span="2"></el-col>
                                 <el-col :span="2"><strong>付款政策:</strong></el-col>
@@ -131,6 +131,18 @@
 
 
         </el-card>
+        <el-row type="flex">
+            <h4>分房名单</h4>
+        </el-row>
+        <el-row type="flex">
+            <el-input
+                    type="textarea"
+                    :rows="5"
+                    v-model="orderDatas.allot_list.content"
+                    :disabled="true">
+
+            </el-input>
+        </el-row>
     </div>
 </template>
 <script>
@@ -154,8 +166,11 @@
         methods:{
             loadOrder(id){
                 ajax.post("/api/team/order/detail",{id:id}, {lock: false}).then(json=>{
-                    this.orderData = json.detail.order_detail.orders;
+                    this.orderData = json.detail.order_detail;
+                    console.log("json",json);
+                    console.log("---------",this.orderData);
                     this.orders=this.orderData.orders;
+                    console.log("orders====",this.orders);
                     this.suppliers=this.orderData.suppliers;
                     this.cityTabs=this.orderData.orders[0].city.name+'0';
                     console.log("160===",this.cityTabs);

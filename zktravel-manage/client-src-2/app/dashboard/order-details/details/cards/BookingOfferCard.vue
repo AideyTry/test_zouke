@@ -152,11 +152,6 @@
 <script>
     export default{
         props:['offer', 'index','orderdata'],
-        data(){
-            return{
-                cash:''
-            }
-        },
         methods:{
 
         },
@@ -211,13 +206,15 @@
                     }
                 )
                 return cost;
-            }
-        },
-        mounted(){
-            if(this.orderdata.requirement.currency=="GBP"){
-                this.cash="￡"
-            }else if(this.orderdata.requirement.currency=="EUR"){
-                 this.cash="€"
+            },
+            cash(){
+                if(!this.orderdata) return '';
+                switch(this.orderdata.requirement.currency){
+                    case 'GBP':
+                        return "￡";
+                    case 'EUR':
+                        return "€"
+                }
             }
         }
     }

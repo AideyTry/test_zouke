@@ -81,7 +81,7 @@
             <el-tab-pane label="待审核" name="we"></el-tab-pane>
             <el-tab-pane label="待控房" name="wv"></el-tab-pane>
         </el-tabs>
-        <el-row type="flex" class="search-group">
+        <el-row type="flex" class="search-group" v-if="conceal">
             <el-col :span="6">
                 <el-input
                         placeholder="搜索用户名/订单号/订房员/创建人"
@@ -99,7 +99,7 @@
                     <el-table-column
                             label="紧急度"
                             :class="isTrue?'abc':'hidden'"
-                            v-if="this.status<=3">
+                    >
                         <template scope="scope">
                             <el-tag v-if="scope.row._class=='eight'" color="#FF6666">8小时内完成</el-tag>
                             <el-tag v-else-if="scope.row._class=='twelve'" color="#FF9900">24小时内完成</el-tag>
@@ -133,7 +133,7 @@
                     </el-table-column>
                     <el-table-column
                             v-if="isTrue"
-                            prop="finishTime"
+                            prop="startDate"
                             label="完成时间">
                     </el-table-column>
                     <el-table-column
@@ -174,6 +174,7 @@
                 <el-pagination
                         layout="total, prev, pager, next, jumper"
                         class="pagination"
+                        :page-size="15"
                         @current-change="changePage"
                         :total="pager.total">
                 </el-pagination>
@@ -186,7 +187,7 @@
     export default{
         data(){
             return{
-                status:'',
+                conceal:false,
                 isTrue:true,
                 pIsTrue:false,
                 page:3,
@@ -212,6 +213,7 @@
         methods:{
             loadTable(){
                 ajax.post("/api/team/order/query",{
+//                    status:this.statusmap[this.$route.params.offer],
                     status:this.status,
                     page:this.pager.pageNum,
                     pageSize:this.pager.pageSize}).then(
@@ -219,6 +221,7 @@
                         console.log(data);
                         this.tableData=data.list;
                         this.pager.total=data.count;
+
                         for(let obj of this.tableData){
                             if(obj.status===3){
                                 this.isTrue=true;
@@ -238,6 +241,27 @@
 //                                obj.status="待控房"
                                 obj.newStatus='待控房'
                             }
+//                            if(obj.status===1){
+//                                obj.status="待发布";
+//                            }else if(obj.status===2){
+//                                obj.status="待分配"
+//                            }else if(obj.status===3){
+////                                this.isTrue=true;
+//                                obj.status="待报价"
+//                            }else if(obj.status===4){
+//                                obj.status="待审核"
+//                            }else if(obj.status===5){
+//                                obj.status="待报价确认"
+//                            }else if(obj.status===6){
+//                                obj.status="待收款"
+//                            }else if(obj.status===7){
+//                                obj.status="分房待确认"
+//                            }else if(obj.status===8){
+//                                this.isTrue=false;
+//                                obj.status="待控房"
+//                            }else if(obj.status===9){
+//                                obj.status="已控房"
+//                            }
                         }
                         this.tableData.forEach(
                             v=>{

@@ -39,23 +39,23 @@
             padding:15px 0;
             background-color: #fff;
             margin-top: 20px;
-
+            font-size: 10px;
             .eight{
                 background-color: #FF6666;
-                padding:0px 40px;
+                padding:0px 36px;
             }
             .twelve{
                 background-color: #FF9900;
                 color:green;
-                padding:0px 40px;
+                padding:0px 36px;
             }
             .twenty-four{
                 background-color: #FFFF00;
-                padding:0px 40px;
+                padding:0px 36px;
             }
             .time-out{
                 background-color: #9900cc;
-                padding:0px 40px;
+                padding:0px 36px;
             }
         }
     }
@@ -66,7 +66,7 @@
         <el-tabs v-model="$route.name"  @tab-click="changeTab">
             <el-tab-pane label="待审核" name="dashboard-wait-examine"></el-tab-pane>
         </el-tabs>
-        <el-row type="flex" class="search-group">
+        <el-row type="flex" class="search-group" v-if="conceal">
             <span>&nbsp&nbsp&nbsp&nbsp</span>
             <el-col :span="6">
                 <el-input
@@ -152,12 +152,13 @@
                         </el-col>
                         <el-col :span="10"></el-col>
                 </el-row>
-                <div style="height:30px">
+                <div style="height:50px">
 
                 </div>
                 <el-pagination
                         layout="total, prev, pager, next, jumper"
                         class="pagination"
+                        :page-size="pager.pageSize"
                         @current-change="changePage"
                         :total="pager.total">
                 </el-pagination>
@@ -171,6 +172,7 @@
         data(){
             return{
                 status:'',
+                conceal:false,
                 page:3,
                 activeName:'wp',
                 pager:{

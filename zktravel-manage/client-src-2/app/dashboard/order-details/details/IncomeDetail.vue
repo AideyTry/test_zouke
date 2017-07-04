@@ -232,6 +232,7 @@
         },
         methods: {
             loadorder(newLeftmoney){
+                console.log('abc');
                 ajax.post('/api/team/order/detail', {id: this.$route.params.orderid}).then(
                     data => {
 
