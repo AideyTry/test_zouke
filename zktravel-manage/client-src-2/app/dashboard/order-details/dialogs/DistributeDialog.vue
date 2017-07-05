@@ -52,7 +52,7 @@
                 params:{
                     id:this.$route.params.orderid,
                     user:{},
-                    dead_line:new Date((new Date()).valueOf()+60*60*24*1000)
+                    dead_line:(new Date((new Date()).valueOf()+60*60*24*1000))
                 }
             }
         },

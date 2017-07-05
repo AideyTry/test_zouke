@@ -222,10 +222,25 @@
                     pageSize:this.pager.pageSize}).then(
                     data=>{
                         console.log(data);
+
+//                        let arr=data.list;
+
+//                        data.list.forEach(function(value,index){
+//                            value.finishTime.substr(1,19);
+//                        })
                         this.tableData=data.list;
+                        let that=this;
+                        this.tableData.forEach(function(value,index){
+                            value.finishTime=(that.tableData[index].finishTime.substr(0,19)).split("T").join(" ");
+                        });
+
+
+
                         this.pager.total=data.count;
 
                         for(let obj of this.tableData){
+//                            obj.finishTime.substr(1,10);
+
                             if(obj.status===3){
                                 this.isTrue=true;
                                 this.pIsTrue=false;
