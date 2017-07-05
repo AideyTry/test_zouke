@@ -18,8 +18,8 @@ module.exports = function({
     }
 
     return compose([
-        session(sessionConfig, app),
         bodyParser(bodyConfig),
+        session(sessionConfig, app),
         mvc(routerConfig, View, decorator)
     ])
 }
