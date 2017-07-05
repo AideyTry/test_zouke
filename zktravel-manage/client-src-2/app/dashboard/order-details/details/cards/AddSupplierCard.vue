@@ -37,7 +37,7 @@
                         <strong>入住编号<i class="red">*</i></strong>
                     </el-col>
                     <el-col :span="13">
-                        <el-input v-model="v.at_number" type="text"></el-input>
+                        <el-input v-model="v.at_number" type="text" placeholder="填写入住编号"></el-input>
                     </el-col>
                     <el-col :span="2"></el-col>
                     <el-col :span="1"><span v-if="deleteIsTrue" class="el-icon-circle-close iconSize" @click="closeSupplier(index)"></span></el-col>

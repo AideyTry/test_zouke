@@ -44,16 +44,14 @@ module.exports = class MyOfflineOrderController extends TeamController {
         this.renderJSON({ code: 0 });
     }
     //管理员审核通过
-    async resolve(id, price, userPolicy){
+    async resolve(id, price){
         const s_price = new Price();
-        userPolicy = s_price.validUserPolicy(userPolicy);
-        if(!userPolicy) return this.renderJSON({ code:1, msg: 'data check valid fail' });
-        if(price){
-            price = s_price.validPrice(price);
-            if(!price) return this.renderJSON({ code:1, msg: 'data check valid fail' });
+        price = s_price.validUserPolicy(price);
+        if(!price){
+            return this.renderJSON({ code:1, msg: 'data check valid fail' });
         }
 
-        const result = await s_price.resolve(id, this.$getUser(), userPolicy, price);
+        const result = await s_price.resolve(id, this.$getUser(), price);
         if(!result) return this.renderJSON({ code:2, msg: 'can not reject price' });
 
         this.renderJSON({ code: 0 });

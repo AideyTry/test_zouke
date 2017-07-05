@@ -16,16 +16,16 @@
 </style>
 <template>
     <div class="provider">
-        <el-form  ref="ruleForm" :rules="rule" :model="userchannel">
+        <el-form :rules="rule" :model="user_policy" ref="ruleForm">
             <el-form-item label="付款政策">
-                <el-radio-group v-model="userchannel.type" @change="changeType($event)">
+                <el-radio-group v-model="user_policy.type" @change="changeType($event)">
                     <el-radio label="全款" value="全款"></el-radio>
                     <el-radio label="分期" value="分期"></el-radio>
                 </el-radio-group>
             </el-form-item>
-            <template v-for="(v,k) in userchannel.payment">
+            <template v-for="(v,k) in user_policy.payment">
                 <el-form v-if="v"  ref="ruleForm2" :rules="rule2" :model="v">
-                <el-form-item label="截止时间" v-if="userchannel.type=='分期'">
+                <el-form-item label="截止时间" v-if="user_policy.type=='分期'">
                     <el-date-picker
                             v-model="v.dead_line"
                             type="date"
@@ -38,12 +38,12 @@
                     </el-input>
                     </el-form-item>
                     <el-form-item prop="price" style="display:inline-block;">
-                        <el-button v-if="userchannel.payment.length>1" @click="userchannel.payment.remove(v)">
+                        <el-button v-if="user_policy.payment.length>1" @click="user_policy.payment.remove(v)">
                             删除分期
                         </el-button>
                     </el-form-item>
                 </el-form-item>  
-                <el-form-item label="截止时间" v-if="userchannel.type=='全款'"> 
+                <el-form-item label="截止时间" v-if="user_policy.type=='全款'"> 
                     <el-date-picker
                             v-model="v.dead_line"
                             type="date"
@@ -54,10 +54,10 @@
                 </el-form>
             </template>
                 <el-row>
-                    <el-button @click="addchannel" v-if="userchannel.type=='分期'" type="info">新增政策</el-button>
+                    <el-button @click="addchannel" v-if="user_policy.type=='分期'" type="info">新增政策</el-button>
                 </el-row>
             <el-form-item label="取消政策" prop="cancel">
-                <el-input type="textarea" v-model="userchannel.cancel"></el-input>
+                <el-input type="textarea" v-model="user_policy.cancel"></el-input>
             </el-form-item>
             <el-form-item label="报价说明">
                 <el-input type="textarea"></el-input>
@@ -67,7 +67,7 @@
 </template>
 <script>
     export default{
-        props:['userchannel','mycost="mycost'],
+        props:['user_policy'],
         data(){
             return{
                 rule:{
@@ -80,23 +80,23 @@
         },
         methods:{
             addchannel(){
-                const { dead_line } = this.userchannel.payment[this.userchannel.payment.length-1];
-                this.userchannel.payment.push({
+                const { dead_line } = this.user_policy.payment[this.user_policy.payment.length-1];
+                this.user_policy.payment.push({
                     dead_line:new Date(dead_line),
                     price:'1'
                 })    
             },
             changeType(label){
                 if(label=="全款"){
-                    this.userchannel.payment = [{
+                    this.user_policy.payment = [{
                         dead_line:new Date,
                         price:0
                     }]
                 }
             }   
          },
-         created(){
-            console.log(this.mycost);
+         computed: {
+
          }
      }
 </script>

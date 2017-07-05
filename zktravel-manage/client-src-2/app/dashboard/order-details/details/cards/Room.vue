@@ -34,7 +34,7 @@
     <div class="card">
         <el-row>
             <el-col>
-                房型1：{{room.type}} X {{room.number}} 备注：{{room.mark}}
+                房型{{k+1}}：{{room.type}} X {{room.number}} 备注：{{room.mark}}
             </el-col>
         </el-row>
         <el-form>
@@ -43,7 +43,7 @@
                     <div>实际房型<i class="red">*</i></div>
                 </el-col>
             </el-row>
-            <el-row v-for="rooms in realRoom">
+            <el-row v-for="(rooms,key) in realRoom" :key="key">
                 <el-col :span="20" class="home">
                     <el-input size="mini" placeholder="房型输入" v-model="rooms.roomsType">
                     </el-input>
@@ -54,7 +54,7 @@
         </el-form>
         <el-row class="button-group">
             <el-col>
-                <el-button size="mini" type="info" @click="addroom" v-show="this.realRoom.length<this.room.number">+新增房型</el-button>
+                <el-button size="mini" type="info" @click="addroom">+新增房型</el-button>
             </el-col>
         </el-row>
         <el-row>
@@ -92,7 +92,6 @@
             }
         },
         mounted(){
-            console.log(this.cash);
         }
     }
 </script>

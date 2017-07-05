@@ -515,7 +515,7 @@ export default{
                 case 9:
                     this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'order-detail'}});
                     break;
-                case 10:
+                default:
                     this.$router.push({name:"dashboard-order-detail",params:{orderid:orderId,status:'ticket-node'}});
                     break;    
             }

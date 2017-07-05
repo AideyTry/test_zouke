@@ -37,8 +37,12 @@
                     <span>{{item.number}}</span>
                     <el-button style="background-color:#fff;:#20A0FF" size="mini" @click="roomAdd(item,indexOf)">+</el-button>
                 </el-col>
-                <el-col :span="13">
-                    <el-input v-model="item.roomDescription" type="text"></el-input>
+                <el-col :span="14">
+                    <el-input v-model="item.roomDescription"
+                              type="textarea" :rows="2"
+                              placeholder="填写房间描述">
+
+                    </el-input>
                 </el-col>
             </el-row>
             <PeoplesCard :peoples="item.peoples" :add="add" :subtract="subtract" :num="indexOf" :room="item"></PeoplesCard>
@@ -73,11 +77,11 @@
                     value: 'Double',
                     label: 'Double'
                 }, {
+                    value: 'Twin',
+                    label: 'Twin'
+                }, {
                     value: 'Triple',
                     label: 'Triple'
-                }, {
-                    value: 'Twins',
-                    label: 'Twins'
                 }, {
                     value: 'Other',
                     label: 'Other'
@@ -161,7 +165,7 @@
                             }
                         );
                         break;
-                    case "Twins":
+                    case "Twin":
                         item.peoples.splice(0,number,
                             {
                                 name:'',
@@ -228,7 +232,7 @@
 
                         );
                         break;
-                    case "Twins":
+                    case "Twin":
                         room.peoples.push(
                             {
                                 name:'',
@@ -267,7 +271,7 @@
                         case "Triple":
                             room.peoples.splice(room.peoples.length-(room.number*3),3)
                             break;
-                        case "Twins":
+                        case "Twin":
                             room.peoples.splice(room.peoples.length-(room.number*2),2)
                             break;
                         case "Other":

@@ -28,8 +28,7 @@
                         placeholder="输入关键字选择"
                         :remote-method="searchhotel"
                         v-model="params.hotel"
-                        :loading="hfetch"
-                    >
+                        :loading="hfetch">
                     <el-option v-for="hotel of hotels" :key="hotel.id" 
                         :label="genHotelLabel(hotel)" :value="hotel">
                     </el-option>
@@ -55,7 +54,6 @@
             return{
                 hotels: [],
                 hfetch: false,
-
                 hotelflag:false,
                 rule:{
                     hotel:[{type:'object',required: true, message: '请输入关键字查找酒店', trigger: 'change'}]
@@ -111,7 +109,6 @@
             if(this.params.hotel){
                 this.hotels.push(this.params.hotel);
             }
-            console.log(this.cash);
         }
     }
 </script>

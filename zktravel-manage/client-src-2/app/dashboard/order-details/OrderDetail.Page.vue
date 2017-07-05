@@ -86,11 +86,11 @@
                 <el-tab-pane label="报价记录" name="offer-node">
                     <offerdetail ref="offerdetaildata" v-if="activetabs=='offer-node'"></offerdetail>
                 </el-tab-pane>
-                <el-tab-pane label="订单详情" name="order-detail">
-                    <orderDetail v-if="orderdata&&activetabs=='order-detail'" :orderdata="orderdata"></orderDetail>
-                </el-tab-pane>
                 <el-tab-pane label="收入/支出" name="in-out">
                     <income-detail v-if="orderdata&&activetabs=='in-out'&&orderdatastatus>5"></income-detail>
+                </el-tab-pane>
+                <el-tab-pane label="订单详情" name="order-detail">
+                    <orderDetail v-if="orderdata&&activetabs=='order-detail'" :orderdata="orderdata"></orderDetail>
                 </el-tab-pane>
                 <el-tab-pane label="开票记录" name="ticket-node">
                     <invoice-detail v-if="orderdata&&activetabs=='ticket-node'"></invoice-detail>
@@ -304,6 +304,7 @@
                 let params = [];
                 let vm=this;
                 this.$commit('valid',true);
+                console.log(this.$refs.offerdetaildata.editableTabs);//子组件传递过来的数据
                 this.$refs.offerdetaildata.editableTabs.forEach(
                     (v, k) => {
                         params.push({
@@ -311,11 +312,11 @@
                                     booking_channel: v.provider.booking_channel,
                                     payment: v.provider.payment_policy,
                                     cancel: v.provider.cancel_policy,
-                                    remark: v.provider.remark,
+                                    remark: v.provider.remark
                                 },
                                 price: []
                             }
-                        );
+                        );//构建一个参数列表
                         v.params.forEach(
                             (a, b) => {
                                 params[k].price.push({hotel:a.hotel, rooms: []})
@@ -354,19 +355,19 @@
             passOffer(){
                 let vm = this;
                 let params = [];
-                let user = JSON.parse(JSON.stringify(this.$refs.offerdetaildata.userchannel));
+                let user = [];
                 this.$refs.offerdetaildata.editableTabs.forEach(
                     (v, k) => {
                         params.push({
-                                sp_policy: {
-                                    booking_channel: v.provider.booking_channel,
-                                    payment: v.provider.payment_policy,
-                                    cancel: v.provider.cancel_policy,
-                                    remark: v.provider.remark,
-                                },
-                                price: []
-                            }
-                        );
+                            sp_policy: {
+                                booking_channel: v.provider.booking_channel,
+                                payment: v.provider.payment_policy,
+                                cancel: v.provider.cancel_policy,
+                                remark: v.provider.remark
+                            },
+                            price: [],
+                            user_policy: v.user_policy
+                        });
                         v.params.forEach(
                             (a, b) => {
                                 params[k].price.push({hotel: a.hotel, rooms: []})
@@ -378,17 +379,13 @@
                             }
                         )
                     }
-                )
-                user.payment.forEach(
-                    (v, k) => {
-                        v.dead_line = new Date(v.dead_line).format('YYYY-MM-DD')
-                    }
-                )
+                );
+
                 let _params = {
-                    userPolicy: user,
                     id: this.$route.params.orderid,
-                    price: {cases: params}
+                    price: {cases: params},
                 };
+                console.log(_params);
                 ajax.post('/api/team/price/resolve', _params).then(
                     data => {
                         if (data.code == 0) {

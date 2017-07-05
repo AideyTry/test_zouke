@@ -42,7 +42,7 @@
 <template>
     <div class="zkhotel">
         <el-tabs :active-name="$route.params.status" @tab-click="changetab">
-            <el-tab-pane label="未审核" name="unexamine">
+            <el-tab-pane label="待审核" name="unexamine">
                 <el-row type="flex" class="search-group">
                     <el-col :span="4" class="search-input">
                         <el-input
@@ -75,10 +75,8 @@
                     </el-col>
                     <el-col :span="3">
                         <el-select clearable v-model="searchcountry" placeholder="国家">
-                            <template v-for="">
-                                <el-option value="ge" label="德国">
-                                </el-option>
-                            </template>
+                            <el-option value="ge" label="德国">
+                            </el-option>
                         </el-select>
                     </el-col>
                 </el-row>
@@ -387,13 +385,6 @@
                 this.loadtable();
             }
 
-        },
-        beforeRouteEnter (to, from, next) {
-            if (!to.params.status) {
-                next({name: 'dashboard-zkhotel', params: {status: 'ground'}});
-            } else {
-                next();
-            }
         }
     }
 </script>
