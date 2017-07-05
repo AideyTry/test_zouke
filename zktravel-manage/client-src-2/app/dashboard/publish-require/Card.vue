@@ -53,7 +53,7 @@
 </style>
 <template>
     <div class="card-container">
-        <el-form ref="ruleForm2" :rules="ruless" :model="myitem">
+        <el-form ref="params" :rules="ruless" :model="myitem">
             <div class="card">
                 <el-row>
                     <el-col :span="3" class="title">
@@ -149,7 +149,7 @@
     import debounce from 'lodash/debounce';
     import ajax from '@local/common/ajax';
     export default{
-        props: ['item', 'ruless','index', 'valid', 'removeable'],
+        props: ['params','item', 'ruless','index', 'valid', 'removeable'],
         data(){
             return {
                 cities:[],
@@ -285,7 +285,7 @@
         watch: {
             valid(val){
                 if (val) {
-                    this.$refs['ruleForm2'].validate();
+                    this.$refs['params'].validate();
                     this.$refs['ruleForm1'].forEach(
                         (v,k)=>{
                             v.validate();

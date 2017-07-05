@@ -84,7 +84,7 @@
                                    :orderdata="orderdata"></changerequire>
                 </el-tab-pane>
                 <el-tab-pane label="报价记录" name="offer-node">
-                    <offerdetail ref="offerdetaildata" v-if="activetabs=='offer-node'"></offerdetail>
+                    <offerdetail ref="offerdetaildata" v-if="activetabs=='offer-node'&&orderdatastatus!=2"></offerdetail>
                 </el-tab-pane>
                 <el-tab-pane label="收入/支出" name="in-out">
                     <income-detail v-if="orderdata&&activetabs=='in-out'&&orderdatastatus>5"></income-detail>
