@@ -1,5 +1,5 @@
 const Controller = require('@local/koa-mvc/Controller');
-const Auth = require('../Auth');
+const Auth = require('../@logic/Auth');
 
 module.exports = class AuthController extends Controller {
     // @POST
