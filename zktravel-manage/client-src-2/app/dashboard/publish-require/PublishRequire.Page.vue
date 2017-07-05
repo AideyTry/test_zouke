@@ -158,14 +158,14 @@
                 <el-col :span="22">
                     <div>
                         <span>每间夜</span>
-                        <el-form-item prop="budget_min">
+                        <el-form-item>
                             <el-input size="small" type="number" v-model="params.budget_min" placeholder="最低"></el-input><span style="margin-left: 8px">~</span>
                         </el-form-item>
-                        <el-form-item prop="budget_min">
+                        <el-form-item>
                             <el-input size="small" type="number" v-model="params.budget_max" placeholder="最高"></el-input>
                             <div style="width:1.2em;text-align:right;display:inline-block;">{{getSign(params.currency)}}</div>
                         </el-form-item>
-                        <el-form-item prop="budget_min">
+                        <el-form-item prop="budget_mark">
                         <el-input v-model="params.budget_mark" size="small"
                                   placeholder="备注"></el-input>
                         </el-form-item>
@@ -262,14 +262,33 @@
             const next = new Date();
             next.setDate(next.getDate()+1);
 
-            let validateBudget_min=(rule,value,callback)=>{
-                if((typeof(value)=='object')&&(typeof(this.params.budget_max)=='object')&&(this.params.budget_mark=='')){
-                    callback(new Error("预算范围三项中至少输入一项！"))
-                }else  if(typeof(value)!='object'||(typeof(this.params.budget_max)!='object')||(this.params.budget_mark!='')){
+//            let validateBudget_min=(rule,value,callback)=>{
+//                if(typeof(this.params.budget_min)=='object'&&(typeof(this.params.budget_max)=='object')&&(this.params.budget_mark=='')){
+////                    callback(new Error("预算范围三项中至少输入一项！"))
+//                }else  if(typeof(this.params.budget_min)!='object'||(typeof(this.params.budget_max)!='object')||(this.params.budget_mark!='')){
+////                    this.$refs.params.validateField('budget_min');
+//                    callback();
+//
+//                }
+//            };
+
+
+//            let validateBudget_max=(rule,value,callback)=>{
+//                if(typeof(this.params.budget_min)=='object'&&(typeof(this.params.budget_max)=='object')&&(this.params.budget_mark=='')){
+////                    callback(new Error("预算范围三项中至少输入一项！"))
+//                }else  if(typeof(this.params.budget_min)!='object'||(typeof(this.params.budget_max)!='object')||(this.params.budget_mark!='')){
+////                    this.$refs.params.validateField('budget_min');
+//                    callback();
+//                }
+//            };
+
+
+            let validateBudget_mark=(rule,value,callback)=>{
+                if(typeof(this.params.budget_min)=='object'&&(typeof(this.params.budget_max)=='object')&&(this.params.budget_mark=='')){
+                    callback(new Error("预算范围如果不输入请在备注中输入备注信息！"))
+                }else  if(typeof(this.params.budget_min)!='object'||(typeof(this.params.budget_max)!='object')||(this.params.budget_mark!='')){
 //                    this.$refs.params.validateField('budget_min');
                     callback();
-                }else{
-
                 }
             };
 
@@ -315,11 +334,11 @@
                     user:[{type:'object',required: true, message: '请输入关键字查找用户名', trigger: 'change'}],
                     number:[{required: true, message: '请输入出发人数', trigger: 'blur'}],
 
-                    budget_min:[{validator:validateBudget_min, trigger: 'blur'}],
+//                    budget_min:[{validator:validateBudget_min, trigger: 'blur'}],
 //                    budget_max:[{validator:validateBudget_max, trigger: 'blur'}],
-//                    budget_mark:[{validator:validateBudget_mark,trigger:'blur'}],
+                    budget_mark:[{validator:validateBudget_mark,trigger:'blur'}],
 
-                    city: [{required: true, message: '请输入关键词查找城市', trigger: 'change'}]
+                    city: [{type:'object',required: true, message: '请输入关键词查找城市', trigger: 'change'}]
                 },
                 pickerOptions: {
                     disabledDate(time) {
@@ -452,11 +471,14 @@
                 let vm=this;
 //                vm.valid=true;
                 let child=vm.$refs.card;
-                child.$refs[formName].validateField('city',function(){
-
-                })
-                console.log("child===",child[0].rule2);
-                console.log("formForm=======",(typeof(this.budget_min)=='object')&&(typeof(this.budget_max)=='object')&&(this.budget_mark==''));
+                child.forEach(function(value){
+                    value.$refs[formName].validateField('city',function(){
+                        vm.valid=true;
+                    })
+                });
+//                child[0].$refs[formName].validateField('city',function(){
+//                    vm.valid=true;
+//                })
                 vm.$refs[formName].validate((valid)=>{
                     if(valid){
                         ajax.post('/api/team/requirement/publish', this.params).then(
@@ -476,6 +498,11 @@
                                 }
                             }
                         )
+                    }else{
+                        this.$notify.error({
+                            title: '无法发布',
+                            message: '请将必填项填写完整~！'
+                        });
                     }
                 })
             },
@@ -505,7 +532,6 @@
             }
         },
         mounted(){
-            console.log("type0f(null)=",typeof(this.budget_min));
         }
     }
 </script>

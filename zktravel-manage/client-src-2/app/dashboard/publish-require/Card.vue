@@ -53,7 +53,7 @@
 </style>
 <template>
     <div class="card-container">
-        <el-form ref="params" :rules="rule2" :model="myitem">
+        <el-form ref="params" :rules="ruless" :model="myitem">
             <div class="card">
                 <el-row>
                     <el-col :span="3" class="title">
@@ -285,7 +285,7 @@
         watch: {
             valid(val){
                 if (val) {
-                    this.$refs['ruleForm2'].validate();
+                    this.$refs['params'].validate();
                     this.$refs['ruleForm1'].forEach(
                         (v,k)=>{
                             v.validate();
