@@ -29,13 +29,19 @@
             }
         }
     }
+    .line{
+        display:block;
+        width:100%;
+        /*border-bottom:solid 1px #000;*/
+        margin-top:30px;
+    }
 </style>
 <template>
     <div>
         <div v-if="!change" class="offerOrder">
             <el-row type="flex">
                 <el-col :span="24" class="orderMsg">
-                    <h4>暂无订单信息</h4>
+                    <h3>暂无订单信息</h3>
                 </el-col>
             </el-row>
             <el-row type="flex">
@@ -48,7 +54,7 @@
             <div class="orderHotel">
                 <el-row type="flex">
                     <el-col :span="4">
-                        <h4>订单信息</h4>
+                        <h3>订单信息:</h3>
                     </el-col>
                     <el-col :span="18">
 
@@ -82,7 +88,12 @@
             <PurchaseChannelsCard :purchase_channel="purchase_channel" :order="order"></PurchaseChannelsCard>
         </div>
         <el-row type="flex">
-            <h4>分房名单</h4>
+            <el-col :span="24">
+                <span class="line"></span>
+            </el-col>
+        </el-row>
+        <el-row type="flex">
+            <h3>分房名单:</h3>
         </el-row>
         <el-row type="flex">
             <el-input
