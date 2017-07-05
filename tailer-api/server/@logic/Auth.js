@@ -1,6 +1,7 @@
 const https = require('https');
 const { AppId, AppSecret } = requireRoot('env');
 const parse = require('co-body');
+const crypto = require('crypto');
 
 module.exports = class Auth {
     getSessionKey(code){
@@ -25,5 +26,28 @@ module.exports = class Auth {
                 j(e);
             }).end();
         })
+    }
+    validSign(rawData, session_key, signature){
+        const sha1 = crypto.createHash('sha1');
+        sha1.update(rawData+session_key);
+        return sha1.digest('hex')===signature;
+    }
+    decryptData(session_key, encryptedData, iv){
+        const sessionKey = new Buffer(session_key, 'base64');
+        encryptedData = new Buffer(encryptedData, 'base64');
+        iv = new Buffer(iv, 'base64');
+
+        const decipher = crypto.createDecipheriv('aes-128-cbc', sessionKey, iv);
+        decipher.setAutoPadding(true);
+        let decoded = decipher.update(encryptedData, 'binary', 'utf8');
+        decoded += decipher.final('utf8');
+        decoded = JSON.parse(decoded);
+        if(decoded.watermark.appid !== AppId){
+            throw new Error('wrong appid');
+        }
+        return decoded;
+    }
+    async updateUser(userInfo){
+
     }
 }
