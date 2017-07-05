@@ -62,7 +62,7 @@ module.exports = class ActionTrigger{
 
             if(result!==false){
                 const args = (meta.$$params||[]).map(key=>{
-                    let searchParamFrom = ['query', 'post'];
+                    let searchParamFrom = ['query', 'body'];
                     if(meta.$$paramFrom&&meta.$$paramFrom[key]){
                         searchParamFrom = meta.$$paramFrom[key]; 
                     }
@@ -72,7 +72,7 @@ module.exports = class ActionTrigger{
                                 if(key in controller.query)
                                     return controller.query[key];
                                 break;
-                            case 'post':
+                            case 'body':
                                 if(key in controller.request.body)
                                     return controller.request.body[key];
                                 break;
