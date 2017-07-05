@@ -45,6 +45,7 @@ module.exports = class MapState {
         fuzzy._exists = true;
         const set = new Set();
         for(let mapKey of Object.values(fuzzy)){
+            if(mapKey==='_exists') continue;
             set.add(MappingLevel.getLevel(mapKey));
         }
         return Object.assign(createBaseMapState(), { fuzzy, fuzzy_level: [...set] });

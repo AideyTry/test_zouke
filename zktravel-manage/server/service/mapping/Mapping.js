@@ -177,7 +177,7 @@ module.exports = class Mapping {
         const zkCollection = await getZkHotelCollection();
         const spQuery = {
             'supplier': sp,
-            'map_state.invalid': {$ne:true},
+            'map_state.invalid': {$in:[null, false]},
             'map_state.fuzzy._exists': true  // fuzzy exists
         };
  
@@ -189,22 +189,32 @@ module.exports = class Mapping {
             { id:1, name:1, name_en:1, address:1, phone:1, url_web:1, map_state:1, gps: 1 })
             .skip(page*pageSize).limit(pageSize).toArray();
 
+        let itemSize = 0;
+        const returnSpList = [];
         const zkIds = new Set();
 
-        for(let {map_state:{fuzzy}} of spFuzzyList.filter(sp=>!!sp.map_state.fuzzy)){
+        for(let spHotel of spFuzzyList){
+            const {map_state:{fuzzy}} = spHotel;
+
+            returnSpList.push(spHotel);
+
             delete fuzzy._exists;
             const keys = Object.keys(fuzzy);
             for(let id of keys){
                 if(!level){
+                    ++itemSize;
                     zkIds.add(parseInt(id));
                 }else{
                     if(level&&MappingLevel.getLevel(fuzzy[id])===level){
+                        ++itemSize;
                         zkIds.add(parseInt(id));
                     }else{
                         delete fuzzy[id];
                     }
                 }
             }
+
+            if(itemSize>=pageSize) break;
         }
 
         const zkHotels = await zkCollection.find({
@@ -218,7 +228,7 @@ module.exports = class Mapping {
 
         const result = [];
         
-        for(let sp of spFuzzyList){
+        for(let sp of returnSpList){
             const map_state = sp.map_state;
 
             for(let zkId of Object.keys(map_state.fuzzy)){
