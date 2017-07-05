@@ -20,7 +20,7 @@ module.exports = class AuthController extends Controller {
         await auth.updateUser(userInfo);
         this.session = userInfo;
 
-        this.renderJSON({ code:0 });
+        this.renderJSON({ code:0, token: this.sessionId });
     }
 
     // @POST
