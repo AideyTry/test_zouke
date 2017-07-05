@@ -27,7 +27,7 @@ const priceRule = {
 }
 
 const priceWithUserPolicyRule = clone(priceRule);
-priceWithUserPolicyRule['*cases'][0]['user_policy'] = {
+priceWithUserPolicyRule['*cases'][0]['*user_policy'] = {
     '*payment': [
         {
             '*dead_line': '2017-08-08',
