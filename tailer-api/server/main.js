@@ -30,8 +30,15 @@ app.use(koaMvc({
     },
     sessionConfig: {
         key: SESS_KEY,
-        maxAge: 86400000,
-        dir: SESS_DIR
+        maxAge: 7200000,
+        dir: SESS_DIR,
+        keyStore: {
+            get(ctx){
+                return ctx.request.body&&ctx.request.body.token;
+            },
+            set(){},
+            destroy(){}
+        }
     }
 }, app));
 

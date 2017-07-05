@@ -27,7 +27,7 @@ const priceRule = {
 }
 
 const priceWithUserPolicyRule = clone(priceRule);
-priceWithUserPolicyRule['*cases'][0]['user_policy'] = {
+priceWithUserPolicyRule['*cases'][0]['*user_policy'] = {
     '*payment': [
         {
             '*dead_line': '2017-08-08',
@@ -44,7 +44,7 @@ module.exports = class Price extends BaseOrder {
         return compare(priceRule, price);
     }
     validUserPolicy(price){
-        return compare(priceWithUserPolicyRule, policy);
+        return compare(priceWithUserPolicyRule, price);
     }
     async commit(id, requirementLastTime, price, user ){
         const nowTime = this.$createTime();

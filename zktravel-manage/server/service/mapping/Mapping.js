@@ -117,6 +117,7 @@ module.exports = class Mapping {
         // 更新sp酒店库匹配信息
         spResolver.resolveHotel(spHotel._id, MapState.createStrict(zkId, -1));
 
+/*
         const spCollection = await getSpHotelCollection();
         // 用新插入的酒店反查sp酒店库去重
         const remapResult = await this.$searchSimilarHotel(zkHotel, spCollection, {
@@ -142,6 +143,7 @@ module.exports = class Mapping {
                 console.error(e);
             }
         }
+*/
     }
 
     async queryAlone(sp, page=0, pageSize=20){
