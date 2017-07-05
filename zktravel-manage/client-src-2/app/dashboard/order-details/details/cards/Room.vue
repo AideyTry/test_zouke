@@ -19,33 +19,55 @@
         max-width: 80px;
     }
     .cost{
-        .el-input{
+        .el-input {
 
         }
-
     }
     .red{
         color:red;
+    }
+    .home .el-input{
+        width: 200px;
     }
 </style>
 <template>
     <div class="card">
         <el-row>
             <el-col>
-                房型1：{{room.type}} X {{room.number}} 备注：{{room.mark}}
+                房型{{k+1}}：{{room.type}} X {{room.number}} 备注：{{room.mark}}
+            </el-col>
+        </el-row>
+        <el-form>
+            <el-row>
+                <el-col>
+                    <div>实际房型<i class="red">*</i></div>
+                </el-col>
+            </el-row>
+            <el-row v-for="(rooms,key) in realRoom" :key="key">
+                <el-col :span="20" class="home">
+                    <el-input size="mini" placeholder="房型输入" v-model="rooms.roomsType">
+                    </el-input>
+                    <el-input type='number' size="mini" v-model="rooms.number"></el-input>
+                    <el-button size="mini" type="warming" v-if="realRoom.length>1" @click="realRoom.remove(rooms)">-删除房型</el-button>
+                </el-col>  
+            </el-row>
+        </el-form>
+        <el-row class="button-group">
+            <el-col>
+                <el-button size="mini" type="info" @click="addroom">+新增房型</el-button>
             </el-col>
         </el-row>
         <el-row>
             <el-col class="cost">
                 <span>成本<i class="red">*</i>：</span>
                 <el-input v-model="v.price.cost" type="number" size="mini">
-                </el-input><span>{{cash}}</span>
+                </el-input><span>{{this.cash}}</span>
                 <span>bk价<i class="red">*</i>：</span>
                 <el-input v-model="v.price.bk" type="number" size="mini">
-                </el-input><span>{{cash}}</span>
+                </el-input><span>{{this.cash}}</span>
                 <span>报价<i class="red">*</i>：</span>
                 <el-input v-model="v.price.quoted" type="number" size="mini"></el-input>
-                <span>{{cash}}</span>
+                <span>{{this.cash}}</span>
             </el-col>
         </el-row>
     </div>
@@ -56,13 +78,20 @@
         data(){
             return{
                 rule:{
-
                 },
-                tishi:true
+                tishi:true,
+                realRoom:[{roomsType:"",number:""}]
             }   
         },
         methods:{
-        
+            addroom() {
+                this.realRoom.push({
+                    roomsType:"",
+                    number:""
+                })
+            }
+        },
+        mounted(){
         }
     }
 </script>

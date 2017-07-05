@@ -304,6 +304,7 @@
                 let params = [];
                 let vm=this;
                 this.$commit('valid',true);
+                console.log(this.$refs.offerdetaildata.editableTabs);//子组件传递过来的数据
                 this.$refs.offerdetaildata.editableTabs.forEach(
                     (v, k) => {
                         params.push({
@@ -311,11 +312,11 @@
                                     booking_channel: v.provider.booking_channel,
                                     payment: v.provider.payment_policy,
                                     cancel: v.provider.cancel_policy,
-                                    remark: v.provider.remark,
+                                    remark: v.provider.remark
                                 },
                                 price: []
                             }
-                        );
+                        );//构建一个参数列表
                         v.params.forEach(
                             (a, b) => {
                                 params[k].price.push({hotel:a.hotel, rooms: []})
@@ -354,19 +355,18 @@
             passOffer(){
                 let vm = this;
                 let params = [];
-                let user = JSON.parse(JSON.stringify(this.$refs.offerdetaildata.userchannel));
                 this.$refs.offerdetaildata.editableTabs.forEach(
                     (v, k) => {
                         params.push({
-                                sp_policy: {
-                                    booking_channel: v.provider.booking_channel,
-                                    payment: v.provider.payment_policy,
-                                    cancel: v.provider.cancel_policy,
-                                    remark: v.provider.remark,
-                                },
-                                price: []
-                            }
-                        );
+                            sp_policy: {
+                                booking_channel: v.provider.booking_channel,
+                                payment: v.provider.payment_policy,
+                                cancel: v.provider.cancel_policy,
+                                remark: v.provider.remark
+                            },
+                            price: [],
+                            user_policy: v.user_policy
+                        });
                         v.params.forEach(
                             (a, b) => {
                                 params[k].price.push({hotel: a.hotel, rooms: []})
@@ -378,14 +378,9 @@
                             }
                         )
                     }
-                )
-                user.payment.forEach(
-                    (v, k) => {
-                        v.dead_line = new Date(v.dead_line).format('YYYY-MM-DD')
-                    }
-                )
+                );
+
                 let _params = {
-                    userPolicy: user,
                     id: this.$route.params.orderid,
                     price: {cases: params}
                 };
@@ -437,7 +432,6 @@
             },
             userole(){
                 return this.$store.getters.offlineRole;
-
             },
             orderdatastatus(){
                 return this.orderdata ? this.orderdata.status : '0'

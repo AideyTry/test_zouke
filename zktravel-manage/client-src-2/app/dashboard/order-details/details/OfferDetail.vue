@@ -6,14 +6,15 @@
         height: 100%;
     }
     .finish-time{
-        width:170px;
-        height:30px;
+        width:180px;
+        height:20px;
         background-color: red;
         border:1px solid red;
-        border-radius: 15px;
+        border-radius: 10px;
         color:#fff;
-        line-height: 30px;
+        line-height: 20px;
         text-align: center;
+        font-size: 15px;
     }
 </style>
 <template>
@@ -49,17 +50,18 @@
                                  <h4>供应商政策</h4>
                              </el-col>
                         </el-row>
-                        <provider :provider="item.provider" :index="index"></provider>
+                        <provider :provider="item.provider" :index="index" v-if="item.provider"></provider>
+                        <el-row style="height: 40px" v-if="offlineRole.CHECK_PRICE" type="flex">
+                            <el-col :span="9">
+                                <h4>用户政策</h4>
+                            </el-col>
+                        </el-row>
+                        <userchannel :user_policy="item.user_policy" :key="index" v-if="offlineRole.CHECK_PRICE&&item.user_policy"></userchannel>         
                     </div>
                 </el-tab-pane>
             </el-tabs>
-            <el-row style="height: 40px" v-if="offlineRole.CHECK_PRICE" type="flex">
-                <el-col :span="9">
-                    <h4>用户政策</h4>
-                </el-col>
-            </el-row>
-            <userchannel v-if="offlineRole.CHECK_PRICE&&userchannel" :userchannel="userchannel"> </userchannel>
-            <el-row style="height: 40px" type="flex">
+            
+           <el-row style="height: 40px" type="flex">
                 <el-col :span="9">
                     <h4>历史报价</h4>
                 </el-col>
@@ -109,22 +111,17 @@
                 editableTabs: [{
                     title: '方案1',
                     name: '方案1',
-                    params: []
-                }],
+                    params: [],
+                    user_policy:{
+                        payment:[{ dead_line:new Date,price:0}],
+                        cancel:'',
+                        explain:'',
+                        type:'全款'
+                        }
+                    }],
                 orderdata: null,
                 countryTabs: null,
                 offergroup: 1,
-                userchannel:{
-                    payment:[
-                        {
-                            dead_line:new Date,
-                            price:0
-                        }
-                    ],
-                    cancel:'',
-                    explain:'',
-                    type:'全款'
-                },
                 history:''
             }
         },
@@ -132,12 +129,10 @@
             /*/解析订单/*/
             loadorder(id){
                 let vm = this;
-                ajax.post('/api/team/order/detail', {
+                ajax.post('/api/team/order/detail', {//展示报价记录
                     id: id
                 }, {lock: false}).then(
                     data => {
-                        console.log(data.detail);
-                        
                         this.booking_dead_line=new Date(data.detail.booking_dead_line).format('YYYY.MM.DD HH:MM');
                         this.status = data.detail.status;
                         this.currency = data.detail.requirement.currency;
@@ -154,7 +149,8 @@
                             vm.editableTabs=[];
                             data.detail.price.cases.forEach(
                                 (a,b)=>{
-                                    vm.editableTabs.push({
+                                    if(a.user_policy){
+                                        vm.editableTabs.push({
                                         title: '方案'+(b*1+1),
                                         name: '方案'+(b*1+1),
                                         order: data.detail.requirement.stay_details, //
@@ -165,11 +161,18 @@
                                             cancel_policy:a.sp_policy.cancel,
                                             remark:a.sp_policy.remark
                                         },
-                                        cost:{cost: 0, bk: 0, quoted: 0}
+                                        user_policy:{
+                                            payment:[{ dead_line:new Date,price:0}],
+                                            cancel: a.user_policy.cancel,
+                                            explain: a.user_policy.explain,
+                                            type: a.user_policy.type
+                                            },
+                                        cost:{cost: '', bk: '', quoted: ''}
                                     })
-                                    vm.countryTabs = data.detail.requirement.stay_details[0].city.name + '0'
+                                        vm.countryTabs = data.detail.requirement.stay_details[0].city.name + '0'
                                 }
-                            )
+
+                            })
                         }else{
                             vm.editableTabs = [{
                                 title: '方案1',
@@ -181,7 +184,13 @@
                                     payment_policy:'',
                                     cancel_policy:'',
                                     remark:''
-                                }
+                                },
+                                user_policy:{
+                                    payment:[],
+                                    cancel: '',
+                                    explain: '',
+                                    type: ''
+                                    }
                             }]
                             vm.countryTabs = data.detail.requirement.stay_details[0].city.name + '0'
                             data.detail.requirement.stay_details.forEach(
@@ -189,7 +198,7 @@
                                     vm.editableTabs[0].params.push({city: '', hotel: '', rooms: []})
                                     v.rooms.forEach(
                                         (l, y) => {
-                                            vm.editableTabs[0].params[k].rooms.push({price:{cost: 0, bk: 0, quoted: 0}})
+                                            vm.editableTabs[0].params[k].rooms.push({price:{cost:'', bk: '', quoted: ''}})
                                         }
                                     )
                                 }
@@ -213,7 +222,6 @@
                 pricecase.title = '方案' + this.tabnum,
                 pricecase.name = '方案' + this.tabnum
                 this.editableTabsValue = pricecase.title;
-
                 this.editableTabs.push(pricecase);
             },
             /*删除方案*/
@@ -261,6 +269,7 @@
                     });
                 }
             }
+         
         },
         computed: {
             offlineRole(){
@@ -280,7 +289,6 @@
         },
         mounted(){
             this.loadorder(this.$route.params.orderid);
-            console.log(this.orderdata);
         }
     }
 </script>
