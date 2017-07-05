@@ -44,7 +44,7 @@ module.exports = class Price extends BaseOrder {
         return compare(priceRule, price);
     }
     validUserPolicy(price){
-        return compare(priceWithUserPolicyRule, policy);
+        return compare(priceWithUserPolicyRule, price);
     }
     async commit(id, requirementLastTime, price, user ){
         const nowTime = this.$createTime();
