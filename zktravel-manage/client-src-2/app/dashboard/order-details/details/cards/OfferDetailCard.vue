@@ -28,8 +28,7 @@
                         placeholder="输入关键字选择"
                         :remote-method="searchhotel"
                         v-model="params.hotel"
-                        :loading="hfetch"
-                    >
+                        :loading="hfetch">
                     <el-option v-for="hotel of hotels" :key="hotel.id" 
                         :label="genHotelLabel(hotel)" :value="hotel">
                     </el-option>
@@ -38,7 +37,7 @@
             </el-col>
             <el-col :span="3" v-if="params.hotel&&params.hotel.score">B评分：{{params.hotel.score}}</el-col>
         </el-row>
-            <room v-for="(v,k) in params.rooms" :key="k" :v="v" :k="k" :room="order.rooms[k]" :cash="this.cash"></room>
+            <room v-for="(v,k) in params.rooms" :key="k" :v="v" :k="k" :room="order.rooms[k]" :cash="cash"></room>
         </el-form>
     </div>
 </template>
@@ -55,7 +54,6 @@
             return{
                 hotels: [],
                 hfetch: false,
-
                 hotelflag:false,
                 rule:{
                     hotel:[{type:'object',required: true, message: '请输入关键字查找酒店', trigger: 'change'}]

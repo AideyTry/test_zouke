@@ -20,6 +20,10 @@
             left:0;
         }
         .msgList{
+            height:50px;
+            .el_col{
+                border-top:1px solid #ccc;
+            }
             .avatar{
                 display:inline-block;
                 width:50px;
@@ -34,12 +38,9 @@
                 padding-left:15px;
                 display:inline-block;
                 font-size:16px;
-                font-family:Microsoft YaHei;
             }
             .line{
-                width:100%;
                 margin-top:5px;
-                border-top:1px solid #ccc;
             }
         }
         .el-pagination{
@@ -59,7 +60,7 @@
            	<el-col :span="20">
 
             </el-col>
-            <el-col :span="2">
+            <el-col :span="2" v-if="this.userInfo.id==2">
                     <el-button type="primary" @click="btn()">添加投诉记录</el-button>
             </el-col>
         </el-row>
@@ -78,13 +79,13 @@
                 <p></p>
             </el-col>
         </el-row>
-        <el-row type="flex">
+        <el-row type="flex" style="margin-top: 20px;">
             <el-col :span="24">
                 <div v-for="item of currentList" :key="item" class="msgList">
                     <span>{{item.date}}</span>
                     <span>{{item.user.name}}</span>
                     <span>{{item.content}}</span>
-                    <el-row type="flex">
+                    <el-row type="flex" class="el_col"> 
                         <el-col :span="1"></el-col>
                         <el-col :span="22"><p class="line"></p></el-col>
                     </el-row>
@@ -125,21 +126,20 @@
         computed:{
             orderId(){
                 return this.$route.params.orderid;
+            },
+            userInfo(){
+                return this.$store.getters.userInfo;
             }
         },
         methods:{
             loading(id){
                 let arr=[];
-//                console.log("orderData=",this.orderData);
                 ajax.post("/api/team/order/detail",{id:id},{lock:false}).then(json=>{
                     console.log(json);
-//                    console.log("logs=",json.detail.logs);
                     this.complain_content=json.detail.complain_content;
-//                    console.log("this.logs=",this.logs);
                     this.pageNum=1;
                     this.list=this.complain_content;
-                    this.list.reverse();
-//                    console.log("this.list=",this.list);
+                    this.list=this.list.reverse();
                     for(let v of this.list){
                         if(typeof(v.user)=='undefined'||!v.user){
                             v.user='';
@@ -165,7 +165,6 @@
                     this.msg='';
                     ajax.post("/api/team/complaints/commit",{id:this.orderId,content:this.newMsg},{lock:false}).then(json=>{
                         this.loading(this.orderId);
-                        console.log(json);
                     })
                 }
             },

@@ -134,7 +134,7 @@
                     </el-table-column>
                     <el-table-column
                             v-if="quoter"
-                            :prop="'booking_user'&&'booking_user.name'"
+                            prop="creator.name"        
                             label="报价员">
                     </el-table-column>
                     <el-table-column
@@ -235,7 +235,6 @@ export default{
             let newArr=[];
             ajax.post('/api/team/my-publish/query',{status:this.status},{lock: false}).then(json=>{
                 this.arr=json.list;
-                console.log(this.arr);
                     for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
                         if(this.arr[num]){
                             newArr.push(this.arr[num]);
@@ -377,7 +376,6 @@ export default{
                     this.status=9;
                     break;
                 case "/dashboard/my-publish/require-invoice":
-//                    this.status=10;
                     break;
             }
         },
@@ -418,8 +416,6 @@ export default{
                     this.loadTable();
                     break;
                 case "/dashboard/my-publish/require-invoice":
-//                    this.status=10;
-//                    this.status="需要开票"
                     this.voucherLoadding();
                     break;
             }
@@ -432,7 +428,6 @@ export default{
 
         },
         handleCurrentChange(page){
-
             if(this.$route.path=="/dashboard/my-publish/require-invoice"){
                     this.pageNum=page-1;
                     this.voucherLoadding();
@@ -447,7 +442,6 @@ export default{
                         }
                     }
                     this.currentData=newArr;
-
                     for(let obj of this.currentData){
                         if(obj.status===1){
                             obj.newStatus="待发布";
@@ -473,9 +467,6 @@ export default{
                     }
                 })
             }
-
-
-
         },
         changeClick(){
             this.selectState=1;
@@ -533,7 +524,6 @@ export default{
     },
     mounted(){
         this.loadTable();
-        this.voucherLoadding();
         if(this.publish.isTrue){
             this.value2=this.sorts[0].value;
         }else{
