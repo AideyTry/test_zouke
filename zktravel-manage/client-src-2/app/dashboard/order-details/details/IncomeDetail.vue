@@ -73,6 +73,7 @@
 
                 <el-col :span="14" class="button-group" v-if="userole.GATHERING">
                     <el-button type="info" @click="payment" v-if="(!payflag)">收款</el-button>
+                    <el-button type="info" @click="lookup" v-if="payflag">查看二维码</el-button>
                     <el-button type="info" @click="markpayment" v-if="payflag">录入线下付款</el-button>
                     <el-button type="danger" @click="cancelpayment" v-if="payflag">取消收款</el-button>
                 </el-col>
@@ -89,7 +90,7 @@
                     </el-table-column>
                     <el-table-column label="渠道" prop="provider">
                     </el-table-column>
-                    <el-table-column label="收款金额" prop="collection_info.money">
+                    <el-table-column :label="'收款金额'+currency.sign" prop="collection_info.money">
                         <template scope="scope">
                             <span>
                                 {{scope.row.collection_info.money?scope.row.collection_info.money:0}}{{currency.name}}
@@ -291,7 +292,8 @@
                 ajax.post('/api/team/pay-stream/collection', this.params).then(
                     data => {
                         if (data.code == 0) {
-                            this.dialog.show = true;
+                            this.payflag=true;
+//                            this.dialog.show = true;
 //                            this.$notify({
 //                                title: '提交成功',
 //                                message: '已提交付款信息',
@@ -327,6 +329,9 @@
             },
             changecost(){
                 this.changedialog.show=true;
+            },
+            lookup(){
+
             },
             /*款项收齐后不显示收款start*/
             collectPayment(){

@@ -199,15 +199,22 @@
             cost(){
                 let arr= this.orderData.price.cases||[];
                 let cost=0;
-                arr.forEach(
-                    (v,k)=>{
-                        v.price[k].rooms.forEach(
-                            (a,b)=>{
-                                cost+=a.price.cost;
-                            }
-                        )
-                    }
-                )
+//                arr.forEach(
+//                    (v,k)=>{
+//                        v.price[k].rooms.forEach(
+//                            (a,b)=>{
+//                                cost+=a.price.cost;
+//                            }
+//                        )
+//                    }
+//                )
+                arr.forEach(function(cases,index){
+                    cases.price.forEach(function(price,index){
+                        price.rooms.forEach(function(v,index){
+                            cost+=v.price.cost;
+                        })
+                    })
+                })
                 return cost;
             },
             percent(){

@@ -477,7 +477,7 @@
                     })
                 });
 //                child[0].$refs[formName].validateField('city',function(){
-//                    vm.valid=true;
+//                   vm.valid=true;
 //                })
                 vm.$refs[formName].validate((valid)=>{
                     if(valid){

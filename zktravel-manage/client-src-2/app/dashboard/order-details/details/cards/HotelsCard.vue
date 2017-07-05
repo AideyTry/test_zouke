@@ -22,15 +22,30 @@
                 <el-row type="flex">
                     <el-col :span="2"><strong>酒店<i class="red">*</i></strong></el-col>
                     <el-col :span="8">
-                        <el-autocomplete
-                                size="small"
-                                v-model="v.hotel.name"
-                                :fetch-suggestions="searchHotel"
-                                placeholder="请输入关键字选择"
-                                @select="selectHotel"
-                        >
+                        <!--<el-autocomplete-->
+                                <!--size="small"-->
+                                <!--v-model="v.hotel.name"-->
+                                <!--:fetch-suggestions="searchHotel"-->
+                                <!--placeholder="请输入关键字选择"-->
+                                <!--@select="selectHotel"-->
+                        <!--&gt;-->
 
-                        </el-autocomplete>
+                        <!--</el-autocomplete>-->
+
+                        <el-select
+                                style="width:100%"
+                                filterable
+                                remote
+                                placeholder="输入关键字选择"
+                                :remote-method="searchhotel"
+                                v-model="v.hotel"
+                                :loading="hfetch"
+                                @change="selectHotel"
+                        >
+                            <el-option v-for="hotel of hotels" :key="hotel.id"
+                                       :label="genHotelLabel(hotel)" :value="hotel">
+                            </el-option>
+                        </el-select>
                     </el-col>
                     <el-col :span="3">
                         <span>B评分:</span>
@@ -81,7 +96,9 @@
                 hotel:'',
                 hotelFlag:false,
                 input:'',
-                deleteIsTrue:true
+                deleteIsTrue:true,
+                hfetch:false,
+                hotels:[]
             }
         },
         components:{
@@ -93,34 +110,79 @@
             }
         },
         methods:{
-
-            /*search start*/
-            searchHotel:debounce(function (queryString, cb) {
-                if (queryString) {
-                    ajax.postSilence('/api/hotel/zk-hotel/search', {
-                        keyword: queryString.trim()
-                    }).then(
-                        data => {
-                            let arr = []
-                            if(data.list){
-                                data.list.forEach(
-                                    (v, k) => {
-                                        arr.push({value: v.name, item: v})
-                                    }
-                                )
-                                cb(arr)
-                            }
-
-                        }
-                    )
+            genHotelLabel(hotel){
+                let l = '';
+                if(hotel.ename){
+                    l+=hotel.ename;
+                    if(hotel.name) l+=`/${hotel.name}`;
+                }else{
+                    l+=hotel.name;
                 }
-            }, 1000),
-            selectHotel(item){
-                let arr = item.item;
-                this.hotelflag = true;
-                this.myItem.hotel = arr;
-
+                if(hotel.country){
+                    l+= `,${hotel.city},${hotel.country}`;
+                }
+                return l;
             },
+            searchhotel: debounce(function s(queryString) {
+                const d = new Date().valueOf();
+                s.d = d;
+
+                if (queryString.trim()) {
+                    this.hfetch=true;
+
+                    ajax.postSilence('/api/hotel/zk-hotel/search', {
+                        keyword: queryString.trim(),
+                        city: this.item.city&&this.item.city.id
+                    }).then(data => {
+                        if(s.d === d){
+                            this.hfetch=false;
+                            this.hotels = data.list.map(item=>{
+                                const sameItem = this.hotels.find(u=>u.id===item.id);
+                                return sameItem?sameItem:item;
+                            })
+                        }
+                    }).catch(e=>{
+                        if(s.d===d){
+                            this.hfetch=false;
+                        }
+                        throw e;
+                    })
+                }
+            }, 300),
+            selectHotel(h){
+                if(typeof h === 'string'){
+                    const item = { name:h, custom:true };
+                    this.hotels.splice(0,1,item);
+                    this.item.hotel = item;
+                }
+            },
+            /*search start*/
+//            searchHotel:debounce(function (queryString, cb) {
+//                if (queryString) {
+//                    ajax.postSilence('/api/hotel/zk-hotel/search', {
+//                        keyword: queryString.trim()
+//                    }).then(
+//                        data => {
+//                            let arr = []
+//                            if(data.list){
+//                                data.list.forEach(
+//                                    (v, k) => {
+//                                        arr.push({value: v.name, item: v})
+//                                    }
+//                                )
+//                                cb(arr)
+//                            }
+//
+//                        }
+//                    )
+//                }
+//            }, 1000),
+//            selectHotel(item){
+//                let arr = item.item;
+//                this.hotelflag = true;
+//                this.myItem.hotel = arr;
+//
+//            },
             /*search end*/
             addHotel(){
                 this.deleteIsTrue=true;
