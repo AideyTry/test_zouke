@@ -82,6 +82,9 @@
             closedialog(){
                 this.dialog.show=false;
             }
+        },
+        mounted(){
+            console.log(this.history);
         }
     }
 </script>

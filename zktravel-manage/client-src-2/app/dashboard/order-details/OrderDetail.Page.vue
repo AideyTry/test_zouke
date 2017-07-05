@@ -355,7 +355,6 @@
             passOffer(){
                 let vm = this;
                 let params = [];
-                let user = [];
                 this.$refs.offerdetaildata.editableTabs.forEach(
                     (v, k) => {
                         params.push({
@@ -383,9 +382,8 @@
 
                 let _params = {
                     id: this.$route.params.orderid,
-                    price: {cases: params},
+                    price: {cases: params}
                 };
-                console.log(_params);
                 ajax.post('/api/team/price/resolve', _params).then(
                     data => {
                         if (data.code == 0) {
