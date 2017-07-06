@@ -32,6 +32,7 @@ module.exports = class User {
                 UPDATE_ROOM_PERSON: 1<<15,      //填写分房名单
                 GATHERING: 1<<16,               //收款
                 REFUND: 1<<17,                  //退款
+                MODIFYING_COST: 1<<18,          //修改成本
             }
         }
     }
