@@ -57,8 +57,8 @@
                 },
                 pickerOptions0: {
                     disabledDate(time) {
-                        console.log("time===",time);
-                        console.log("时间===",time.getTime() < Date.now() - 8.64e7);
+//                        console.log("time===",time);
+//                        console.log("时间===",time.getTime() < Date.now() - 8.64e7);
                         return time.getTime() < Date.now() - 8.64e7;
 //                        return time.getTime();
                     }
@@ -101,9 +101,15 @@
         },
         mounted(){
             this.searchuser();
-            console.log("完成时间======",);
+            console.log("dead_line======",this.params.dead_line);
 //            console.log("datenow==",Date.now());
 //            console.log("Date.now() - 8.64e7;",Date.now(),Date.now() - 8.64e7);
-        }
+        },
+        beforeUpdate(){
+            console.log("update=====",this.params.dead_line);
+        },
+//        updated(){
+//
+//        }
     }
 </script>

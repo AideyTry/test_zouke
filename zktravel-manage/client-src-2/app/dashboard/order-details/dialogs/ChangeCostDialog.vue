@@ -45,7 +45,7 @@
                 params:{
                     supplier_name:'',
                     reason:'',
-                    cost:''
+                    cost:0
                 },
                 channel: [{
                     value: 'GTA',
@@ -58,7 +58,7 @@
         },
         methods:{
             submit(){
-                ajax.post('/api/team/provider-stream/change',{id:this.$route.params.orderid,provider_obj:this.params}).then(
+                ajax.post('/api/team/modifying-cost/change',{id:this.$route.params.orderid,modifying_obj:this.params}).then(
                     data=>{
                         if(data.code==0){
                             this.$notify({

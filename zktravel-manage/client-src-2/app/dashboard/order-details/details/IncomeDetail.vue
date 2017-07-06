@@ -190,7 +190,7 @@
         <div class="divline"></div>
         <div class="card">
             <div class="title">供应商成本流水
-                <el-button type="info" style="float: right" @click="changecost" v-if="userRole.REFUND">
+                <el-button type="info" style="float: right" @click="changecost" v-if="userRole.REFUND||userRole.MODIFYING_COST">
                     修改成本
                 </el-button>
             </div>
