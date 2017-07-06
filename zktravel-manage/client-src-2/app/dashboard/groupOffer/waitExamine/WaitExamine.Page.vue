@@ -88,7 +88,7 @@
                         style="width: 100%">
                     <el-table-column
                             label="紧急度"
-                            v-if="true">
+                            v-if="isShow">
                         <template scope="scope">
                             <el-tag v-if="scope.row._class=='eight'" color="#FF6666">8小时内完成</el-tag>
                             <el-tag v-if="scope.row._class=='twelve'" color="#FF9900">24小时内完成</el-tag>
@@ -129,6 +129,7 @@
                 </el-table>
                 <el-row 
                     v-show="this.currentData.length!=0"
+                    v-if="isShow"
                     type="flex"
                     class="row-bg">
                         <el-col :span="2">
@@ -171,6 +172,7 @@
     export default{
         data(){
             return{
+                isShow:false,
                 status:'',
                 conceal:false,
                 page:3,
@@ -209,6 +211,7 @@
                         obj.status="待分配"
                         obj.newStatus='待分配'
                     }else if(obj.status===3){
+                        this.isShow=true
                         obj.status="待报价"
                         obj.newStatus='待报价'
                     }else if(obj.status===4){
