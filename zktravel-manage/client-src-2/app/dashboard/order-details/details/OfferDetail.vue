@@ -24,10 +24,10 @@
                 <el-col :span="2">
                     <h4>报价详情</h4>
                 </el-col>
-                <el-col :span="19" class="creator-info">
+                <el-col :span="10" class="creator-info">
                     <div v-show="this.status>2" class="finish-time">{{booking_dead_line}} 前完成</div>
                 </el-col>
-                <el-col :span="3">
+                <el-col :span="4" :offset="8">
                     <div v-show="this.status>2">报价：{{booking_user}}</div>
                 </el-col>
             </el-row>
