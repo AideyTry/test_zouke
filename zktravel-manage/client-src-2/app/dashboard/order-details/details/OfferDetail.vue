@@ -76,7 +76,7 @@
                     </el-col>
                     <el-col :span="12" class="creator-info">
                     </el-col>
-                </el-row>cc
+                </el-row>
                 <bookoffer :offer="o" :index="p" v-if="o" :orderdata="orderdata"></bookoffer>
             </template>
         </div>
