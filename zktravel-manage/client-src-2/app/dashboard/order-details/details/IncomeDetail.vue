@@ -195,17 +195,26 @@
                 </el-button>
             </div>
             <div>
-                <el-table border :data="order.provider_stream" v-if="order">
-                    <el-table-column label="时间" prop="provider_obj.time">
+                <!--<el-table border :data="order.provider_stream" v-if="order">-->
+                <el-table border :data="order.order_detail.suppliers" v-if="order">
+                    <el-table-column label="供应商" prop="supplier_name">
+
                     </el-table-column>
-                    <el-table-column label="原因" prop="provider_obj.reason">
+                    <el-table-column label="时间" prop="">
                     </el-table-column>
-                    <el-table-column label="操作人" prop="provider_obj.user.name">
+                    <el-table-column label="原因" prop="reason">
                     </el-table-column>
-                    <el-table-column label="金额" prop="provider_obj.cost">
+                    <el-table-column label="操作人" prop="booking_userName">
+                    </el-table-column>
+                    <el-table-column label="金额" prop="total_cost">
                     </el-table-column>
                 </el-table>
             </div>
+            <el-row type="flex" class="computed">
+                <el-col style="text-align: right">
+                    <span>供应商成本：{{privider_const}}€</span>
+                </el-col>
+            </el-row>
         </div>
         <paymentdialog @loadorder="loadorder" ref="dialogroup" :dialog="dialog" :income="newIncome" :leftmoney="newLeftmoney" @closedialog="closedialog"></paymentdialog>
         <refunddialog @loadorder="loadorder" ref="refund" :dialog="refunddialog" @closedialog="closedialog"></refunddialog>
@@ -226,6 +235,7 @@
         data(){
             return {
                 counts:0,
+                privider_const:0,
                 newLeftmoney:0,
                 newIncome:0,
                 newMoney:0,
@@ -272,6 +282,19 @@
                     data => {
 
                         this.order = data.detail;
+                        console.log("this.order==",this.order);
+
+
+                        /*供应商流水start*/
+                        let vm=this;
+                        this.order.order_detail.suppliers.forEach(function(value){
+                            value.booking_userName=vm.order.booking_user.name;
+                            value.reason="预订";
+                            vm.privider_const+=parseInt(value.total_cost);
+                        })
+                        /*供应商流水end*/
+
+
                         if (data.detail.collection_info) {
                             this.params = data.detail.collection_info;
                             this.params.money+=this.params.currency;

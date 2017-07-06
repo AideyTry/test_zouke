@@ -380,14 +380,15 @@ export default{
             }
         },
         changeTabEffective(tab){
+            console.log("tab==",tab);
             this.pageNum=1;
-            this.$router.push({name:"dashboard-my-publish",params:{status:tab.name}});
-            switch(this.$route.path){
-                case "/dashboard/my-publish/wait-publish":
+            this.$router.push({name:"dashboard-my-publish",params:{status:tab.name}});//改成this.activeName=tab.name
+            switch(this.$route.path){  //把this.$route.path改成tab.index或者tab.name
+                case "/dashboard/my-publish/wait-publish":  //case 0或者first
                     this.status=1;
-                    this.loadTable();
+                    this.loadTable();                     //this.loadTable(里面穿不同的参数)
                     break;
-                case "/dashboard/my-publish/wait-distribution":
+                case "/dashboard/my-publish/wait-distribution":  //case 1或者second
                     this.status=2;
                     this.loadTable();
                     break;
