@@ -97,9 +97,9 @@
                         border
                         style="width: 100%">
                     <el-table-column
-                            label="紧急度"
-                            :class="isTrue?'abc':'hidden'"
-                    >
+                            v-if="isShow"
+                            label="紧急度">
+                           <!--  :class="isTrue?'abc':'hidden'" -->
                         <template scope="scope">
                             <el-tag v-if="scope.row._class=='eight'" color="#FF6666">8小时内完成</el-tag>
                             <el-tag v-else-if="scope.row._class=='twelve'" color="#FF9900">24小时内完成</el-tag>
@@ -144,6 +144,7 @@
                 </el-table>
                <el-row 
                     v-show="this.tableData.length!=0"
+                    v-if="isShow"
                     type="flex"
                     class="row-bg"
                     align="center">
@@ -187,6 +188,7 @@
     export default{
         data(){
             return{
+                isShow:false,
                 conceal:false,
                 isTrue:true,
                 pIsTrue:false,
@@ -238,20 +240,22 @@
 
                         for(let obj of this.tableData){
 //                            obj.finishTime.substr(1,10);
-
                             if(obj.status===3){
+                                this.isShow=true;
                                 this.isTrue=true;
                                 this.pIsTrue=false;
                                 obj.newStatus='待报价'
 //                                obj.status="待报价"
                             }
                             if(obj.status===4){
+                                this.isShow=false;
                                 this.isTrue=true;
                                 this.pIsTrue=false;
                                 obj.newStatus='待审核'
 //                                obj.status="待报价"
                             }
                             if(obj.status===8){
+                                this.isShow=false;
                                 this.isTrue=false;
                                 this.pIsTrue=true;
 //                                obj.status="待控房"
@@ -281,7 +285,7 @@
                         }
                         this.tableData.forEach(
                             v=>{
-                                let hour=Math.floor((new Date(v.startDate)-new Date())/3600000);
+                                let hour=Math.floor((new Date(v.finishTime)-new Date())/3600000);
                                 if(hour<=8&&0<hour){
                                     v._class='eight'
                                 }else if(8<hour&&hour<=24){

@@ -1,0 +1,59 @@
+extends ../~layout
+
+block title
+    +t(`${model.title}`)
+block head
+    link(rel="stylesheet" href="/i/team-price.css")
+    script( src="/i/team-price.js")
+block content
+    .wrap
+        each price in model.prices
+            .main
+                .main-warp
+                    .main-header
+                        .toggle-main
+                            h4 #[span.city #{price.city},]#[span.long &ensp;#{price.daySpan}晚]
+                            p.time #{price.check_in}-#{price.check_out}
+                            p.xiaoji 小计：
+                                span #{price.total}#{model.currency}
+                                button #[i]比Booking便宜#{price.bkTotal-price.total}#{model.currency}
+                        .toggle
+                .main-body
+                    p= price.hotel
+                    p
+                        if price.star
+                            button #{price.star}星级
+                        if(price.score)
+                            button Booking评分：&nbsp;&nbsp;#{price.score}分
+                    each room in price.rooms
+                        .room
+                            h4= room.types.map(r=>`${r.name} x ${r.num}`).join('/')
+                            table
+                                tr #[td]#[td SAI]#[td Booking]
+                                tr #[td 每间每晚#{model.currency}]#[td #{room.price.quoted}]#[td #{room.price.bk}]
+                                tr 
+                                    td #{room.number}间#{price.daySpan}晚#{model.currency}
+                                    td= room.price.quoted*price.daySpan*room.number
+                                    td= room.price.bk*price.daySpan*room.number
+        footer
+            .div1: p #[span SAI合计：]#{model.total}#{model.currency}#[br]#[span 总共比Booking便宜#{model.bkTotal-model.total}#{model.currency}]
+            #btn.div2 报价政策
+        #dialog.dialog
+            h3: a#close.close: img(src="/i/images/delete.png")
+            div
+                .item
+                    h4 #[span]取消政策
+                    p 2017.06.01 前可免费取消
+                .item
+                    h4 #[span]付款政策
+                    p 2017.06.01 前可免费取消
+                .item
+                    h4 #[span]取消政策
+                    p 全额支付
+                    p 2017.06.01 前可免费取消
+                .item
+                    h4 #[span]报价说明
+                    ul
+                        li 以上价格含税含早，不含前台可能收取的城市稅。
+                        li 以上价格未控房，仅供参考。
+        #mubu.mubu

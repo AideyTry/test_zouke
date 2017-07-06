@@ -19,9 +19,7 @@
         max-width: 80px;
     }
     .cost{
-        .el-input {
-
-        }
+        
     }
     .red{
         color:red;
@@ -60,13 +58,13 @@
         <el-row>
             <el-col class="cost">
                 <span>成本<i class="red">*</i>：</span>
-                <el-input v-model="v.price.cost" type="number" size="mini">
+                <el-input v-model="v.price.cost" type="number" size="mini" placeholder="每间每晚">
                 </el-input><span>{{this.cash}}</span>
                 <span>bk价<i class="red">*</i>：</span>
-                <el-input v-model="v.price.bk" type="number" size="mini">
+                <el-input v-model="v.price.bk" type="number" size="mini" placeholder="每间每晚">
                 </el-input><span>{{this.cash}}</span>
                 <span>报价<i class="red">*</i>：</span>
-                <el-input v-model="v.price.quoted" type="number" size="mini"></el-input>
+                <el-input v-model="v.price.quoted" type="number" size="mini" placeholder="每间每晚"></el-input>
                 <span>{{this.cash}}</span>
             </el-col>
         </el-row>

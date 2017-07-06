@@ -160,20 +160,24 @@
 </template>
 <script>
     export default{
-        props:['offer', 'index','orderdata'],
-        data() {
-            return {
-                multipleSelection: []
-            }
-        },
+        props:['offer', 'index','orderdata', 'disable', 'select'],
         methods:{
-            test(index){
-                console.log(index)
-            },
             handleSelectionChange(val) {
-                this.multipleSelection = val;
-                console.log(val)
-
+                if(this.disable){
+                    this.$refs.multipleSelection.clearSelection();
+                }else{
+                    if(val.length===0){
+                        this.$emit('clear-select');
+                        this.select.splice(0, this.select.length);
+                    }else{
+                        this.$emit('selected');
+                        this.select.splice(0, this.select.length);
+                        for(let i of val){
+                            this.select.push(this.orderdata.indexOf(i))
+                        }
+                        console.log(this.select)
+                    }
+                }
             }
         },
         computed:{

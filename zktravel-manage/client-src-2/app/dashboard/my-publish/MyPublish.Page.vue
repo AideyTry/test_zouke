@@ -134,7 +134,7 @@
                     </el-table-column>
                     <el-table-column
                             v-if="quoter"
-                            prop="creator.name"        
+                            prop="booking_user.name"        
                             label="报价员">
                     </el-table-column>
                     <el-table-column
@@ -235,6 +235,7 @@ export default{
             let newArr=[];
             ajax.post('/api/team/my-publish/query',{status:this.status},{lock: false}).then(json=>{
                 this.arr=json.list;
+                console.log(json);
                     for(let num=(this.pageNum-1)*this.pageSize;num<this.pageSize;num++){
                         if(this.arr[num]){
                             newArr.push(this.arr[num]);
