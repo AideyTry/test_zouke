@@ -89,6 +89,7 @@
                     roomsType:"",
                     number:""
                 })
+                console.log(this.realRoom)
             }
         },
         mounted(){

@@ -149,28 +149,32 @@
                             vm.editableTabs=[];
                             data.detail.price.cases.forEach(
                                 (a,b)=>{
-                                    if(a.user_policy){
-                                        vm.editableTabs.push({
-                                        title: '方案'+(b*1+1),
-                                        name: '方案'+(b*1+1),
-                                        order: data.detail.requirement.stay_details, //
-                                        params: a.price,
-                                        provider:{
-                                            booking_channel:a.sp_policy.booking_channel,
-                                            payment_policy:a.sp_policy.payment,
-                                            cancel_policy:a.sp_policy.cancel,
-                                            remark:a.sp_policy.remark
-                                        },
-                                        user_policy:{
-                                            payment:[{ dead_line:new Date,price:0}],
-                                            cancel: a.user_policy.cancel,
-                                            explain: a.user_policy.explain,
-                                            type: a.user_policy.type
-                                            },
-                                        cost:{cost: '', bk: '', quoted: ''}
-                                    })
-                                        vm.countryTabs = data.detail.requirement.stay_details[0].city.name + '0'
-                                }
+                                      vm.editableTabs.push({
+                                          title: '方案'+(b*1+1),
+                                          name: '方案'+(b*1+1),
+                                          order: data.detail.requirement.stay_details, //
+                                          params: a.price,
+                                          provider:{
+                                              booking_channel:a.sp_policy.booking_channel,
+                                              payment_policy:a.sp_policy.payment,
+                                              cancel_policy:a.sp_policy.cancel,
+                                              remark:a.sp_policy.remark
+                                          },
+                                          user_policy: a.user_policy?
+                                            {
+                                              payment:[{ dead_line:new Date,price:0}],
+                                              cancel: a.user_policy.cancel,
+                                              explain: a.user_policy.explain,
+                                              type: a.user_policy.type
+                                              }:{ 
+                                            payment:[],
+                                            cancel:'',
+                                            explain:'',
+                                            type:'' },
+                                          cost:{cost: '', bk: '', quoted: ''}
+                                      })
+                                      vm.countryTabs = data.detail.requirement.stay_details[0].city.name + '0'
+                                  
 
                             })
                         }else{
