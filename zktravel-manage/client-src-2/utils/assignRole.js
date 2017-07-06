@@ -21,6 +21,7 @@ export default function assignRole(number) {
             UPDATE_ROOM_PERSON: filter(1<<15,number), //填写分房名单
             GATHERING: filter(1<<16,number), //收款
             REFUND: filter(1<<17,number), //退款
+            MODIFYING_COST:filter(1<<18,number)//修改成本
     };
     function filter(code,number) {
        return (code&number)===code;

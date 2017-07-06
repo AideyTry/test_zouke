@@ -8,8 +8,18 @@
     <el-dialog title="修改订单成本" :visible.sync="dialog.show"
                size="tiny">
         <el-form>
+            <el-form-item label="选择供应商">
+                <el-select v-model="params.supplier_name" placeholder="请选择">
+                    <el-option
+                            v-for="item in channel"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item label="修改原因" >
-                <el-input v-model="params.reason" placeholder="请填写修改原因">
+                <el-input type="text" v-model="params.reason" placeholder="请填写修改原因">
 
                 </el-input>
             </el-form-item>
@@ -33,14 +43,24 @@
         data(){
             return{
                 params:{
+                    supplier_name:'',
                     reason:'',
-                    cost:''
-                }
+                    cost:0
+                },
+                channel: [{
+                    value: 'GTA',
+                    label: 'GTA'
+                }, {
+                    value: 'miki',
+                    label: 'miki'
+                }]
             }
         },
         methods:{
             submit(){
-                ajax.post('/api/team/provider-stream/change',{id:this.$route.params.orderid,provider_obj:this.params}).then(
+                let _params=JSON.parse(JSON.stringify(this.params));
+
+                ajax.post('/api/team/modifying-cost/change',{id:this.$route.params.orderid,modifying_obj:_params}).then(
                     data=>{
                         if(data.code==0){
                             this.$notify({

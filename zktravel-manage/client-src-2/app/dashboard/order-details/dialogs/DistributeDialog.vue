@@ -28,6 +28,7 @@
                                 v-model="params.dead_line"
                                 type="date"
                                 placeholder="选择日期"
+                                :clearable="false"
                                 :picker-options="pickerOptions0">
                         </el-date-picker>
                     </el-form-item>
@@ -52,10 +53,12 @@
                 params:{
                     id:this.$route.params.orderid,
                     user:{},
-                    dead_line:(new Date((new Date()).valueOf()+60*60*32*1000))
+                    dead_line:(new Date((new Date()).valueOf()+60*60*24*1000))
                 },
                 pickerOptions0: {
                     disabledDate(time) {
+//                        console.log("time===",time);
+//                        console.log("时间===",time.getTime() < Date.now() - 8.64e7);
                         return time.getTime() < Date.now() - 8.64e7;
 //                        return time.getTime();
                     }
@@ -98,9 +101,15 @@
         },
         mounted(){
             this.searchuser();
-//            console.log("完成时间=",this.params.dead_line);
+            console.log("dead_line======",this.params.dead_line);
 //            console.log("datenow==",Date.now());
 //            console.log("Date.now() - 8.64e7;",Date.now(),Date.now() - 8.64e7);
-        }
+        },
+        beforeUpdate(){
+            console.log("update=====",this.params.dead_line);
+        },
+//        updated(){
+//
+//        }
     }
 </script>
