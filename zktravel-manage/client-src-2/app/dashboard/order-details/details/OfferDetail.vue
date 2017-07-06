@@ -69,7 +69,7 @@
             <history :history="orderdata" @useHistory="useHistory" v-if="orderdata"></history>
         </div>
         <div class="offer-detail-booking" v-if="offlineRole.CONFIRM_PRICE&&orderstatus>4">
-            <template v-for="(o,p) in editableTabs">
+            <div v-for="(o,p) in editableTabs" :key="p">
                 <el-row style="height: 40px" type="flex">
                     <el-col :span="9">
                         <h4>方案{{p*1+1}}</h4>
@@ -77,8 +77,11 @@
                     <el-col :span="12" class="creator-info">
                     </el-col>
                 </el-row>
-                <bookoffer :offer="o" :index="p" v-if="o" :orderdata="orderdata"></bookoffer>
-            </template>
+                <bookoffer 
+                    @clear-select="selectCase=-1"
+                    @selected="selectCase=p"
+                    :select="selectedRow" :offer="o" :index="p" v-if="o" :orderdata="orderdata" :disable='selectCase!==-1&&selectCase!==p'></bookoffer>
+            </div>
         </div>
     </div>
 </template>
@@ -101,6 +104,11 @@
         },
         data(){
             return {
+                //bookoffer
+                selectCase:-1,
+                selectedRow: [],
+
+
                 night:'',
                 cash:'',
                 status:""-0,
