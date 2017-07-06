@@ -196,11 +196,11 @@
             </div>
             <div>
                 <!--<el-table border :data="order.provider_stream" v-if="order">-->
-                <el-table border :data="order.order_detail.suppliers" v-if="order">
+                <el-table border :data="provider_cost" v-if="order">
                     <el-table-column label="供应商" prop="supplier_name">
 
                     </el-table-column>
-                    <el-table-column label="时间" prop="">
+                    <el-table-column label="时间" prop="time">
                     </el-table-column>
                     <el-table-column label="原因" prop="reason">
                     </el-table-column>
@@ -212,7 +212,7 @@
             </div>
             <el-row type="flex" class="computed">
                 <el-col style="text-align: right">
-                    <span>供应商成本：{{privider_const}}€</span>
+                    <span>供应商成本：{{privider_consts}}€</span>
                 </el-col>
             </el-row>
         </div>
@@ -235,7 +235,7 @@
         data(){
             return {
                 counts:0,
-                privider_const:0,
+                privider_consts:0,
                 newLeftmoney:0,
                 newIncome:0,
                 newMoney:0,
@@ -254,6 +254,8 @@
                     money: 0,
                     id: ''
                 },
+                provider_cost:[
+                ],
                 refunddialog:{
                     show:false
                 },
@@ -287,11 +289,32 @@
 
                         /*供应商流水start*/
                         let vm=this;
-                        this.order.order_detail.suppliers.forEach(function(value){
-                            value.booking_userName=vm.order.booking_user.name;
-                            value.reason="预订";
-                            vm.privider_const+=parseInt(value.total_cost);
+                        this.order.order_detail.suppliers.forEach(function(value,index){
+                            vm.provider_cost.push(
+                            {
+                                supplier_name:value.supplier_name,
+                                    time:'',
+                                reason:'预订',
+                                booking_userName:vm.order.booking_user.name,
+                                total_cost:value.total_cost
+                            })
+//                            value.booking_userName=vm.order.booking_user.name;
+//                            value.reason="预订";
+                            vm.privider_consts+=parseInt(value.total_cost);
                         })
+
+                        if(this.order.modifyCost_list){
+//                            let vm=this;
+                            this.order.modifyCost_list.forEach(function(value,index){
+                                vm.provider_cost.push({
+                                    supplier_name:value.supplier_name,
+                                    time:value.time,
+                                    reason:value.reason,
+                                    booking_userName:value.user.name,
+                                    total_cost:value.cost
+                                })
+                            })
+                        }
                         /*供应商流水end*/
 
 
