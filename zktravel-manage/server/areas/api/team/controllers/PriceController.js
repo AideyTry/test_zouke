@@ -1,5 +1,8 @@
 const TeamController = require('../TeamController');
 const Price = require('../@logic/Price');
+const { DEBUG, DES_PWD } = requireRoot('env');
+const pricePage = `http://${DEBUG?'wx.test.zouke.com':'w.zouke.com'}/n/team/price?`;
+const DES = require('@local/des');
 
 module.exports = class MyOfflineOrderController extends TeamController {
     $meta(){
@@ -70,5 +73,12 @@ module.exports = class MyOfflineOrderController extends TeamController {
         const result = await price.disagree(id, this.$getUser())
         if(result) this.renderJSON({ code:0 });
         else this.renderJSON({ code:2, msg:'can not disagree this order price' });
+    }
+
+    async confirmQr(id, index){
+        const cuid = this.$getUser().id;
+        const des = new DES(DES_PWD);
+        const sign = des.encrypt(id+cuid+index);
+        this.renderQR(`${pricePage}id=${id}&cuid=${cuid}&index=${index}&sign=${sign}`);
     }
 }

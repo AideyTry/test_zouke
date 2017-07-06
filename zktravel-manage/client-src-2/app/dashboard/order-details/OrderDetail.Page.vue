@@ -196,6 +196,9 @@
                         return time.getTime() < Date.now() - 8.64e7;
                     }
                 },
+                form: {
+                    type: []
+                },
                 /*弹出框*/
                 dialoggroup: [
                     {
@@ -225,7 +228,7 @@
                            date:new Date()
                         },
                         rule: null
-                    }
+                    },
                 ],
                 tab: null,
                 activetabs: 'require-node',
