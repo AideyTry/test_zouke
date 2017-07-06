@@ -147,6 +147,8 @@
             /*/解析订单/*/
             loadorder(id){
                 let vm = this;
+                const defaultExplain='以上价格含税含早，不含前台可能收取的城市税\n大系统房未做预留，仅为报价，最终确认以实际预订为准';
+
                 ajax.post('/api/team/order/detail', {
                     id: id
                 }, {lock: false}).then(
@@ -162,33 +164,37 @@
                         if(this.status-0>2){
                              this.booking_user = data.detail.booking_user.name;
                         }
-                        vm.orderdata = data.detail;
                         if(data.detail.price){
                             vm.editableTabs=[];
                             data.detail.price.cases.forEach(
                                 (a,b)=>{
+                                    for(let p of a.price){
+                                        for(let room of p.rooms){
+                                            if(!room.actual_room_name) room.actual_room_name = []
+                                        }
+                                    };
                                     vm.editableTabs.push({
-                                    title: '方案'+(b*1+1),
-                                    name: '方案'+(b*1+1),
-                                    order: data.detail.requirement.stay_details, //
-                                    params: a.price,
-                                    provider:{
-                                        booking_channel:a.sp_policy.booking_channel,
-                                        payment_policy:a.sp_policy.payment,
-                                        cancel_policy:a.sp_policy.cancel,
-                                        remark:a.sp_policy.remark
-                                    },
-                                    user_policy: a.user_policy? {
-                                        payment:[{ dead_line:new Date,price:0}],
-                                        cancel: a.user_policy.cancel,
-                                        explain: a.user_policy.explain,
-                                        type: a.user_policy.type
-                                        }:{ payment:[], cancle:'',explain:'',type:'' },
-                                    cost:{cost: '', bk: '', quoted: ''}
-                                })
-                                vm.countryTabs = data.detail.requirement.stay_details[0].city.name + '0'
+                                        title: '方案'+(b*1+1),
+                                        name: '方案'+(b*1+1),
+                                        order: data.detail.requirement.stay_details, //
+                                        params: a.price,
+                                        provider:{
+                                            booking_channel:a.sp_policy.booking_channel,
+                                            payment_policy:a.sp_policy.payment,
+                                            cancel_policy:a.sp_policy.cancel,
+                                            remark:a.sp_policy.remark
+                                        },
+                                        user_policy: a.user_policy? {
+                                            payment:[{ dead_line:new Date,price:0}],
+                                            cancel: a.user_policy.cancel,
+                                            explain: a.user_policy.explain||defaultExplain,
+                                            type: a.user_policy.type
+                                            }:{ payment:[], cancle:'',explain:defaultExplain,type:'' },
+                                        cost:{cost: '', bk: '', quoted: ''}
+                                    })
+                                    vm.countryTabs = data.detail.requirement.stay_details[0].city.name + '0'
 
-                            })
+                                })
                         }else{
                             vm.editableTabs = [{
                                 title: '方案1',
@@ -204,7 +210,7 @@
                                 user_policy:{
                                     payment:[],
                                     cancel: '',
-                                    explain: '',
+                                    explain: defaultExplain,
                                     type: ''
                                     }
                             }]
@@ -220,6 +226,7 @@
                                 }
                             )
                         }
+                        vm.orderdata = data.detail;
                     }
                 )
             },
@@ -278,9 +285,6 @@
                         type: 'success'
                     });
                 }
-            },
-            test(){
-                selectCase=p
             }
 
         },

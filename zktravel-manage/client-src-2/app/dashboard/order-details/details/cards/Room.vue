@@ -38,15 +38,15 @@
         <el-form>
             <el-row>
                 <el-col>
-                    <div>实际房型<i class="red">*</i></div>
+                    <div>实际房型</div>
                 </el-col>
             </el-row>
-            <el-row v-for="(rooms,key) in realRoom" :key="key">
+            <el-row v-for="(rooms,key) in v.actual_room_name" :key="key">
                 <el-col :span="20" class="home">
-                    <el-input size="mini" placeholder="房型输入" v-model="rooms.roomsType">
+                    <el-input size="mini" placeholder="房型输入" v-model="rooms.name">
                     </el-input>
                     <el-input type='number' size="mini" v-model="rooms.number"></el-input>
-                    <el-button size="mini" type="warming" v-if="realRoom.length>1" @click="realRoom.remove(rooms)">-删除房型</el-button>
+                    <el-button size="mini" type="warming" v-if="v.actual_room_name.length>1" @click="v.actual_room_name.remove(rooms)">-删除房型</el-button>
                 </el-col>  
             </el-row>
         </el-form>
@@ -77,17 +77,15 @@
             return{
                 rule:{
                 },
-                tishi:true,
-                realRoom:[{roomsType:"",number:""}]
+                tishi:true
             }   
         },
         methods:{
             addroom() {
-                this.realRoom.push({
-                    roomsType:"",
+                this.v.actual_room_name.push({
+                    name:"",
                     number:""
-                })
-                console.log(this.realRoom)
+                });
             }
         },
         mounted(){

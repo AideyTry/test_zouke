@@ -196,7 +196,7 @@
             </div>
             <div>
                 <!--<el-table border :data="order.provider_stream" v-if="order">-->
-                <el-table border :data="provider_cost" v-if="order">
+                <el-table border :data="new_provider_cost" v-if="order">
                     <el-table-column label="供应商" prop="supplier_name">
 
                     </el-table-column>
@@ -275,7 +275,6 @@
             newIncome(){
                 this.newLeftmoney=this.counts-this.newIncome;
             }
-
         },
         methods: {
             loadorder(newLeftmoney){
@@ -289,6 +288,7 @@
 
                         /*供应商流水start*/
                         let vm=this;
+                        this.provider_cost=[];
                         this.order.order_detail.suppliers.forEach(function(value,index){
                             vm.provider_cost.push(
                             {
@@ -316,6 +316,7 @@
                             })
                         }
                         /*供应商流水end*/
+
 
 
                         if (data.detail.collection_info) {
@@ -415,6 +416,10 @@
             /*款项收齐后不显示收款end*/
         },
         computed: {
+            new_provider_cost(){
+                this.provider_cost.reverse();
+                return this.provider_cost=[...new Set(this.provider_cost)];
+            },
             userRole(){
                 return this.$store.getters.offlineRole;
             },
