@@ -8,6 +8,16 @@
     <el-dialog title="修改订单成本" :visible.sync="dialog.show"
                size="tiny">
         <el-form>
+            <el-form-item label="选择供应商">
+                <el-select v-model="params.supplier_name" placeholder="请选择">
+                    <el-option
+                            v-for="item in channel"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
+            </el-form-item>
             <el-form-item label="修改原因" >
                 <el-input v-model="params.reason" placeholder="请填写修改原因">
 
@@ -33,9 +43,17 @@
         data(){
             return{
                 params:{
+                    supplier_name:'',
                     reason:'',
                     cost:''
-                }
+                },
+                channel: [{
+                    value: 'GTA',
+                    label: 'GTA'
+                }, {
+                    value: 'miki',
+                    label: 'miki'
+                }]
             }
         },
         methods:{

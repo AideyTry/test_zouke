@@ -227,6 +227,7 @@
 //                        })
                         this.tableData=data.list;
                         let that=this;
+                        console.log("this.tableData===",this.tableData);
                         this.tableData.forEach(function(value,index){
                             value.finishTime=(that.tableData[index].finishTime.substr(0,19)).split("T").join(" ");
                         });
@@ -351,6 +352,7 @@
         },
         mounted(){
             this.loadTable();
+
         },
         created(){
             this.updateTab();
