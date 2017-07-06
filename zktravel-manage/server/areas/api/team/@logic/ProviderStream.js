@@ -3,7 +3,7 @@ const compare = require('@local/compare');
 
 const objRule = {
     "*reason":"退款原因",
-    "*cost":100
+    "*cost":"退款金额"
 };
 
 module.exports = class ProviderStream extends BaseOrder {
