@@ -11,10 +11,8 @@ if(!require('../config').DEBUG){
 }else{
     console.log('\x1b[0;31m\ndev:node\n\x1b[0m')
     const path = require('path');
-
     const chokidar = require('chokidar');
     const webpackCliPath = path.join(__dirname,'../node_modules/.bin/webpack');
-
     function webpack(env){
         const webpackCliArgv = env?['--env',env]:[];
         return childProcess.spawn(webpackCliPath,webpackCliArgv,{stdio:'inherit'});
