@@ -31,8 +31,20 @@
                     <div v-show="this.status>2">报价：{{booking_user}}</div>
                 </el-col>
             </el-row>
-            <el-tabs v-model="editableTabsValue" type="card" editable closable 
-                            @edit="handleTabsEdit">
+            <el-row>
+                <el-col :span="24" :offset="22">
+                    <div>
+                      <el-button
+                        size="small"
+                        type="primary"
+                        @click="addtab">
+                        添加方案
+                      </el-button>
+                    </div>
+                </el-col>
+            </el-row>
+            <el-tabs v-model="editableTabsValue" type="card" closable
+                            @tab-remove="closetab">
                 <el-tab-pane
                         :key="item.name"
                         v-for="(item, index) in editableTabs"
@@ -77,7 +89,7 @@
                     <el-col :span="12" class="creator-info">
                     </el-col>
                 </el-row>
-                <bookoffer 
+                <bookoffer
                     @clear-select="selectCase=-1"
                     @selected="selectCase=p"
                     :select="selectedRow" :offer="o" :index="p" v-if="o" :orderdata="orderdata" :disable='selectCase!==-1&&selectCase!==p'></bookoffer>
@@ -135,7 +147,7 @@
             /*/解析订单/*/
             loadorder(id){
                 let vm = this;
-                ajax.post('/api/team/order/detail', {//展示报价记录
+                ajax.post('/api/team/order/detail', {
                     id: id
                 }, {lock: false}).then(
                     data => {
@@ -210,14 +222,6 @@
                         }
                     }
                 )
-            },
-            handleTabsEdit(targetName, action){
-                if (action === 'add') {
-                    this.addtab();
-                } else if (action === 'remove') {
-                    this.closetab(targetName)
-                }
-
             },
             /*添加方案*/
             addtab(){

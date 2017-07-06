@@ -78,7 +78,7 @@
                         label="状态">
                 </el-table-column>
                 <el-table-column
-                        prop="creator.name"
+                        prop=""
                         label="报价员">
                 </el-table-column>
                 <el-table-column
@@ -118,6 +118,7 @@
                 let vm=this;
                 ajax.post('/api/team/order/query',{status:2,page:vm.currentpage-1,pageSize:vm.currentlimit}).then(
                     data=>{
+                        console.log(data);
                         vm.currentdata =  data.list;
                         for(let obj of this.currentdata){
                             if(obj.status===1){
