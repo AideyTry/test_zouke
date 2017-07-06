@@ -13,7 +13,7 @@ const priceRule = {
             },
             price: [
                 {
-                    '*hotel': { '*name': '' },
+                    '*hotel': { },
                     '*rooms': [
                         { 
                             '*price':{ '*cost': 100, '*bk': 120, '*quoted': 110 },
@@ -44,7 +44,9 @@ priceWithUserPolicyRule['*cases'][0]['*user_policy'] = {
 
 module.exports = class Price extends BaseOrder {
     validPrice(price){
-        return compare(priceRule, price);
+        const result = compare(priceRule, price);
+        console.log(compare.getLastError());
+        return result;
     }
     validUserPolicy(price){
         return compare(priceWithUserPolicyRule, price);
