@@ -25,7 +25,10 @@
     <el-table
             :data="tabledata"
             border
-            style="width: 100%">
+            style="width: 100%"
+            ref= multipleSelection
+            @selection-change="handleSelectionChange"
+    >
         <el-table-column
                 label="入住/离店">
             <template scope="scope">
@@ -129,6 +132,12 @@
                 </template>
             </template>
         </el-table-column>
+        <el-table-column
+                type="selection"
+                width="55"
+                label=""
+        >
+        </el-table-column>
     </el-table>
      <div style="padding-top: 20px">
          <el-row class="computed">
@@ -152,8 +161,20 @@
 <script>
     export default{
         props:['offer', 'index','orderdata'],
+        data() {
+            return {
+                multipleSelection: []
+            }
+        },
         methods:{
+            test(index){
+                console.log(index)
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+                console.log(val)
 
+            }
         },
         computed:{
             tab(){
