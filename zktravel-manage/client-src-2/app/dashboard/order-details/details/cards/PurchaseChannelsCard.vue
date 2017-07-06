@@ -1,4 +1,10 @@
 <style lang="scss" scoped>
+    .line{
+        display:block;
+        width:100%;
+        /*border-bottom:solid 1px #000;*/
+        margin-top:30px;
+    }
     .purchase{
         .red{
             color:#f00;
@@ -8,8 +14,13 @@
 <template>
     <div class="purchase">
         <el-row type="flex">
+            <el-col :span="24">
+                <span class="line"></span>
+            </el-col>
+        </el-row>
+        <el-row type="flex">
             <el-col :span="2">
-                <h4>采购渠道</h4>
+                <h3>采购渠道:</h3>
             </el-col>
         </el-row>
 

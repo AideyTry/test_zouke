@@ -20,6 +20,9 @@
         }
         .card {
             margin: 20px 0;
+            .payment{
+                margin-bottom:13%;
+            }
         }
         .card::after {
             border: 1px solid #ccc;
@@ -34,7 +37,27 @@
         }
         .button-group {
             text-align: right;
+            .img-size{
+                display:inline-block;
+                width:100px;
+                height:100px;
+                margin:0;
+                padding:0;
+                .code{
+                    display:inline-block;
+                    margin:0;
+                    padding:0;
+                    /*width:50px;*/
+                    /*height:50px;*/
+                }
+                span{
+                    display:inline-block;
+                    font-size:8px;
+                }
+
+            }
         }
+
     }
 </style>
 <style>
@@ -62,7 +85,7 @@
                     </el-radio>
                 </el-col>
             </el-row>
-            <el-row type="flex">
+            <el-row type="flex" class="payment">
                 <el-col :span="10">
                     <span>
                         本次收款
@@ -73,6 +96,11 @@
 
                 <el-col :span="14" class="button-group" v-if="userole.GATHERING">
                     <el-button type="info" @click="payment" v-if="(!payflag)">收款</el-button>
+                    <!--<el-button type="info" @click="lookup" v-if="payflag">查看二维码</el-button>-->
+                    <span class="img-size" v-if="payflag">
+                        <img  class="code" src="////qr.api.cli.im/qr?data=%25E8%25B5%25B0%25E5%25AE%25A2%25E7%25BD%2591%25E6%2594%25AF%25E4%25BB%2598&level=H&transparent=false&bgcolor=%23ffffff&forecolor=%23000000&blockpixel=12&marginblock=1&logourl=http%3A%2F%2Fstatic.clewm.net%2Fcli%2Fimages%2Flogomb%2Fversion2%2Fweixin1.png&size=100&kid=cliim&key=9bae92981bd34233a66914cf575073f7" />
+                        <span>二维码扫码支付</span>
+                    </span>
                     <el-button type="info" @click="markpayment" v-if="payflag">录入线下付款</el-button>
                     <el-button type="danger" @click="cancelpayment" v-if="payflag">取消收款</el-button>
                 </el-col>
@@ -89,7 +117,7 @@
                     </el-table-column>
                     <el-table-column label="渠道" prop="provider">
                     </el-table-column>
-                    <el-table-column label="收款金额" prop="collection_info.money">
+                    <el-table-column :label="'收款金额'+currency.sign" prop="collection_info.money">
                         <template scope="scope">
                             <span>
                                 {{scope.row.collection_info.money?scope.row.collection_info.money:0}}{{currency.name}}
@@ -291,7 +319,8 @@
                 ajax.post('/api/team/pay-stream/collection', this.params).then(
                     data => {
                         if (data.code == 0) {
-                            this.dialog.show = true;
+                            this.payflag=true;
+//                            this.dialog.show = true;
 //                            this.$notify({
 //                                title: '提交成功',
 //                                message: '已提交付款信息',
@@ -327,6 +356,9 @@
             },
             changecost(){
                 this.changedialog.show=true;
+            },
+            lookup(){
+
             },
             /*款项收齐后不显示收款start*/
             collectPayment(){
