@@ -19,7 +19,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="修改原因" >
-                <el-input v-model="params.reason" placeholder="请填写修改原因">
+                <el-input type="text" v-model="params.reason" placeholder="请填写修改原因">
 
                 </el-input>
             </el-form-item>
@@ -58,7 +58,9 @@
         },
         methods:{
             submit(){
-                ajax.post('/api/team/modifying-cost/change',{id:this.$route.params.orderid,modifying_obj:this.params}).then(
+                let _params=JSON.parse(JSON.stringify(this.params));
+
+                ajax.post('/api/team/modifying-cost/change',{id:this.$route.params.orderid,modifying_obj:_params}).then(
                     data=>{
                         if(data.code==0){
                             this.$notify({

@@ -11,7 +11,9 @@ module.exports = class ModifyingCost extends BaseOrder {
 
     //供应商对象校验
     validModifyingCost(Modifying_obj){
-        return compare(objRule, Modifying_obj,{strict:true});
+        const result =  compare(objRule, Modifying_obj,{strict:true});
+        console.log(compare.getLastError());
+        return result;
     }
 
     //退款
