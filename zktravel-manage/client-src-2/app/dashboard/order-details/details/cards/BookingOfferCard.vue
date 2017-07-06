@@ -173,6 +173,7 @@
                         this.$emit('selected');
                         this.select.splice(0, this.select.length);
                         for(let i of val){
+                            console.log(this.orderdata)
                             this.select.push(this.orderdata.indexOf(i))
                         }
                         console.log(this.select)
