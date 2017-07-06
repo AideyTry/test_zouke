@@ -56,11 +56,11 @@
                                 <h4>用户政策</h4>
                             </el-col>
                         </el-row>
-                        <userchannel :user_policy="item.user_policy" :key="index" v-if="offlineRole.CHECK_PRICE&&item.user_policy"></userchannel>         
+                        <userchannel :user_policy="item.user_policy" :key="index" v-if="offlineRole.CHECK_PRICE&&item.user_policy"></userchannel>
                     </div>
                 </el-tab-pane>
             </el-tabs>
-            
+
            <el-row style="height: 40px" type="flex">
                 <el-col :span="9">
                     <h4>历史报价</h4>
@@ -169,7 +169,6 @@
                                     cost:{cost: '', bk: '', quoted: ''}
                                 })
                                 vm.countryTabs = data.detail.requirement.stay_details[0].city.name + '0'
-                                
 
                             })
                         }else{
@@ -270,7 +269,7 @@
                     });
                 }
             }
-         
+
         },
         computed: {
             offlineRole(){
