@@ -21,6 +21,7 @@ module.exports = class WController extends Controller {
             return null;
         }
         const phpsession = JSON.parse(phpsessionstr);
+        
         this[PHPSESSIONKEY] = phpsession;
         return phpsession;
     }

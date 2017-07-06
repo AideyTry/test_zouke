@@ -6,5 +6,14 @@ function c(...c){
 }
 
 module.exports = requireRoot('../../common/mongoClient/init')({
-    
+    offline_order: c(
+        {
+            db: 'zouke',
+            collection: 'offline_order'
+        },
+        {
+            db: 'cluster',
+            collection: 'offline_order'
+        }
+    )
 })

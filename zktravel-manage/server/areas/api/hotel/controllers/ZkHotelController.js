@@ -27,7 +27,8 @@ module.exports = class ZkHotelController extends LController {
             booking: h.url,
             score: h.score,
             phone: h.phone,
-            address: h.address
+            address: h.address,
+            star: h.star
         }))})
     }
 }
