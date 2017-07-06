@@ -1,0 +1,21 @@
+doctype html
+
+html
+    head
+        title 登录
+    body
+        script.
+            var request = new XMLHttpRequest();
+            var currentPath = encodeURIComponent(location.pathname+location.search);
+            request.open('GET', '/zksystem/auth/wx-login?redirect_url='+currentPath);
+            request.onreadystatechange = function(e){
+                if(e.target.readyState===4){
+                    if(e.target.status===200){
+                        const data = JSON.parse(e.target.responseText);
+                        if(data.code===0){
+                            location.replace(data.url);
+                        }
+                    }
+                }
+            };
+            request.send();

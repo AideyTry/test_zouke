@@ -3,6 +3,7 @@ const pug = require('pug');
 const path = require('path');
 const ActionTrigger = require('./ActionTrigger');
 const Route = require('./Route');
+const { appRoot } = require('./utils');
 
 const pugCompileOptions = {
     cache: true,
@@ -69,7 +70,9 @@ module.exports = class Controller {
         const controller = this.route.controller;
         view = view || this.route.action;
 
-        const viewPath = path.resolve(this.route.viewsRoot, `${controller}/${view}.pug`);
+        const viewPath = view.startsWith('/') ? 
+            path.join(appRoot, `${view}.pug`) : 
+            path.join(this.route.viewsRoot, `${controller}/${view}.pug`);
 
         this.ctx.body = pug.compileFile(viewPath, pugCompileOptions)({
             model,

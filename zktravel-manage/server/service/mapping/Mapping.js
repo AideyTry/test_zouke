@@ -49,6 +49,7 @@ module.exports = class Mapping {
                 $and: [
                     {
                         country_id: hotel.country_id,
+                        status:0,
                         $or: orQueryCondition
                     },
                     query

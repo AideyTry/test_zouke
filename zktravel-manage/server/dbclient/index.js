@@ -66,6 +66,16 @@ module.exports = requireRoot('../../common/mongoClient/init')({
             collection: 'offline_order'
         }
     ),
+
+    // online
+    zk_hotels_product: c({
+        db: 'static',
+        collection: 'zk_hotels_v2'
+    }),
+    sp_hotels_product: c({
+        db: 'static',
+        collection: 'sp_hotels'
+    })
 /*
     // old map数据
     zk_ht_map_old: {

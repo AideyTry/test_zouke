@@ -25,7 +25,8 @@ app.use(async (ctx, next) => {
         ctx.accepts(['html', 'image/*'])==='image/*'||                  // qr code
         ctx.path.startsWith('/trigger/')||                              // internal call
         ctx.headers['x-requested-with'] === 'XMLHttpRequest'||          // api ajax
-        ctx.path==='/api/team/voucher/to-download'||                       // voucher download
+        ctx.path==='/api/team/voucher/to-download'||                    // voucher download
+        ctx.path==='/api/team/price/confirm-qr'||                       // confirm-qr
         (DEBUG&&ctx.path.startsWith('/test/'))
     ){
         await next();
