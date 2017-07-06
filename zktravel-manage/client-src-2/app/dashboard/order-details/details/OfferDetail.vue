@@ -56,11 +56,11 @@
                                 <h4>用户政策</h4>
                             </el-col>
                         </el-row>
-                        <userchannel :user_policy="item.user_policy" :key="index" v-if="offlineRole.CHECK_PRICE&&item.user_policy"></userchannel>         
+                        <userchannel :user_policy="item.user_policy" :key="index" v-if="offlineRole.CHECK_PRICE&&item.user_policy"></userchannel>
                     </div>
                 </el-tab-pane>
             </el-tabs>
-            
+
            <el-row style="height: 40px" type="flex">
                 <el-col :span="9">
                     <h4>历史报价</h4>
@@ -149,28 +149,26 @@
                             vm.editableTabs=[];
                             data.detail.price.cases.forEach(
                                 (a,b)=>{
-                                    if(a.user_policy){
-                                        vm.editableTabs.push({
-                                        title: '方案'+(b*1+1),
-                                        name: '方案'+(b*1+1),
-                                        order: data.detail.requirement.stay_details, //
-                                        params: a.price,
-                                        provider:{
-                                            booking_channel:a.sp_policy.booking_channel,
-                                            payment_policy:a.sp_policy.payment,
-                                            cancel_policy:a.sp_policy.cancel,
-                                            remark:a.sp_policy.remark
-                                        },
-                                        user_policy:{
-                                            payment:[{ dead_line:new Date,price:0}],
-                                            cancel: a.user_policy.cancel,
-                                            explain: a.user_policy.explain,
-                                            type: a.user_policy.type
-                                            },
-                                        cost:{cost: '', bk: '', quoted: ''}
-                                    })
-                                        vm.countryTabs = data.detail.requirement.stay_details[0].city.name + '0'
-                                }
+                                    vm.editableTabs.push({
+                                    title: '方案'+(b*1+1),
+                                    name: '方案'+(b*1+1),
+                                    order: data.detail.requirement.stay_details, //
+                                    params: a.price,
+                                    provider:{
+                                        booking_channel:a.sp_policy.booking_channel,
+                                        payment_policy:a.sp_policy.payment,
+                                        cancel_policy:a.sp_policy.cancel,
+                                        remark:a.sp_policy.remark
+                                    },
+                                    user_policy: a.user_policy? {
+                                        payment:[{ dead_line:new Date,price:0}],
+                                        cancel: a.user_policy.cancel,
+                                        explain: a.user_policy.explain,
+                                        type: a.user_policy.type
+                                        }:{ payment:[], cancle:'',explain:'',type:'' },
+                                    cost:{cost: '', bk: '', quoted: ''}
+                                })
+                                vm.countryTabs = data.detail.requirement.stay_details[0].city.name + '0'
 
                             })
                         }else{
@@ -227,7 +225,9 @@
             /*删除方案*/
             closetab(targetName){
                 let tabs = this.editableTabs;
+                const index = parseInt(targetName.substr(2));
                 let activeName = this.editableTabsValue;
+                if(index!==1) this.editableTabsValue = '方案'+(index-1);
                 tabs.forEach((tab, index) => {
                     if (tab.name === targetName) {
                         let nextTab = tabs[index + 1] || tabs[index - 1];
@@ -269,7 +269,7 @@
                     });
                 }
             }
-         
+
         },
         computed: {
             offlineRole(){
