@@ -107,8 +107,6 @@
                 //bookoffer
                 selectCase:-1,
                 selectedRow: [],
-
-
                 night:'',
                 cash:'',
                 status:""-0,
@@ -276,6 +274,9 @@
                         type: 'success'
                     });
                 }
+            },
+            test(){
+                selectCase=p
             }
 
         },

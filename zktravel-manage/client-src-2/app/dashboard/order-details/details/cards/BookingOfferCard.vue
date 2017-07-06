@@ -171,7 +171,11 @@
                         this.select.splice(0, this.select.length);
                     }else{
                         this.$emit('selected');
-                        //
+                        this.select.splice(0, this.select.length);
+                        for(let i of val){
+                            this.select.push(this.orderdata.indexOf(i))
+                        }
+                        console.log(this.select)
                     }
                 }
             }
