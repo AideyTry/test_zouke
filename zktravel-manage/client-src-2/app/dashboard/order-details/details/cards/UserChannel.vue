@@ -60,7 +60,7 @@
                 <el-input type="textarea" v-model="user_policy.cancel"></el-input>
             </el-form-item>
             <el-form-item label="报价说明">
-                <el-input type="textarea"></el-input>
+                <el-input type="textarea" v-model="user_policy.explain"></el-input>
             </el-form-item>
         </el-form>
     </div>

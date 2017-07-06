@@ -147,6 +147,8 @@
             /*/解析订单/*/
             loadorder(id){
                 let vm = this;
+                const defaultExplain='以上价格含税含早，不含前台可能收取的城市税\n大系统房未做预留，仅为报价，最终确认以实际预订为准';
+
                 ajax.post('/api/team/order/detail', {
                     id: id
                 }, {lock: false}).then(
@@ -185,9 +187,9 @@
                                         user_policy: a.user_policy? {
                                             payment:[{ dead_line:new Date,price:0}],
                                             cancel: a.user_policy.cancel,
-                                            explain: a.user_policy.explain,
+                                            explain: a.user_policy.explain||defaultExplain,
                                             type: a.user_policy.type
-                                            }:{ payment:[], cancle:'',explain:'',type:'' },
+                                            }:{ payment:[], cancle:'',explain:defaultExplain,type:'' },
                                         cost:{cost: '', bk: '', quoted: ''}
                                     })
                                     vm.countryTabs = data.detail.requirement.stay_details[0].city.name + '0'
@@ -208,7 +210,7 @@
                                 user_policy:{
                                     payment:[],
                                     cancel: '',
-                                    explain: '',
+                                    explain: defaultExplain,
                                     type: ''
                                     }
                             }]
