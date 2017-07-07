@@ -80,7 +80,7 @@
                             <el-col :span="10">
                                 <span>收款汇率<i class="red">*</i></span>
                                 <span>1{{currency.sign}}=</span>
-                                <el-input size="mini" type="number" v-model="params.reo"></el-input>
+                                <el-input size="mini" type="number" v-model="currency.sign=='€'?order.rates.EUR:order.rates.GBP"></el-input>
                                 <span>¥</span>
                                 <!--                    <span>实时汇率：1€=4546¥</span>-->
                             </el-col>
@@ -89,12 +89,18 @@
                                 <!--<el-radio disabled class="radio" size="small" value="1" label="1">{{currency.name}}</el-radio>-->
                                 <!--<el-radio disabled class="radio" size="small" value="2" label="1">人民币-->
                                 <!--</el-radio>-->
-                                <!--<el-radio class="radio" size="small" v-model="currency.name" :label="'欧元'">{{currency.name}}</el-radio>-->
-                                <!--<el-radio class="radio" size="small" v-model="currency.name" :label="'人民币'">-->
-                                <!--</el-radio>-->
+
+                                <!--case 'EUR':-->
+                                <!--return { name:'欧元', sign:'€' };-->
+                                <!--case 'GBP':-->
+                                <!--return { name:'英镑', sign:'￡' };-->
+                                <!--case 'RMB':-->
+                                <!--return { name:"人民币", sign:'￥'}-->
+
                                 <el-radio-group v-model="new_currency">
-                                    <el-radio label="欧元">{{currency.name}}</el-radio>
-                                    <el-radio label="人民币">人民币</el-radio>
+                                    <el-radio  class="radio" size="small" :label='currency.name'>{{currency.name}}</el-radio>
+                                    <el-radio  class="radio" size="small" label="人民币">人民币
+                                    </el-radio>
                                 </el-radio-group>
                             </el-col>
                         </el-row>
@@ -109,7 +115,7 @@
                                     </span>
                                     <i class="red">*</i>
                                     <el-input size="mini" type="number" v-model="params.money"></el-input>
-                                    <span>{{currency.name}} ={{money}}¥</span>
+                                    <span>{{currency.name}} ={{params.money*(currency.sign=='€'?order.rates.EUR:order.rates.GBP)}}¥</span>
                                 </el-form-item>
                             </el-col>
 
@@ -149,7 +155,8 @@
                         <el-table-column label="收款金额¥">
                             <template scope="scope">
                                 <span>
-                                    {{scope.row.collection_info.money?scope.row.collection_info.money*scope.row.collection_info.reo:0}}人民币
+                                    <!--{{scope.row.collection_info.money?scope.row.collection_info.money*scope.row.collection_info.reo:0}}人民币-->
+                                    {{scope.row.collection_info.money?scope.row.collection_info.money*(currency.sign=='€'?order.rates.EUR:order.rates.GBP):0}}元
                                 </span>
                             </template>
                         </el-table-column>
@@ -166,7 +173,7 @@
                     <el-col style="text-align: right">
                         <span>还需收款 ：{{leftmoney}} {{currency.sign}}</span>
                         <span>收款总额 ：{{income}} {{currency.sign}}</span>
-                        <span>{{incomeRmb}}¥</span>
+                        <span>{{income*(currency.sign=='€'?order.rates.EUR:order.rates.GBP)}}¥</span>
                     </el-col>
                 </el-row>
             </div>
@@ -486,7 +493,7 @@
                 }
             },
             new_currency(){
-                return "欧元"
+                return "欧元";
             },
             currencys(){
                 return this.currency.name;

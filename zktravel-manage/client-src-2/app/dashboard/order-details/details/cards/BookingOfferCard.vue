@@ -17,6 +17,7 @@
         .computed{
             height: 40px;
             line-height: 40px;
+            margin-bottom: 30px;
         }
     }
 </style>
@@ -153,8 +154,8 @@
              <el-col :span="21">付款类型：{{tab.user_policy.type||''}}
                     <template v-for="(v,k) in tab.user_policy.payment">
                         <el-row>
-                            <el-col>截止时间：{{v.dead_line}}  金额：{{v.price}}</el-col>  
-                        </el-row>  
+                            <el-col>截止时间：{{v.dead_line}}  金额：{{v.price}}</el-col>
+                        </el-row>
                     </template>
              </el-col>
          </el-row>
