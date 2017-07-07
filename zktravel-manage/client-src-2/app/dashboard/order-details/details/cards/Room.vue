@@ -43,7 +43,7 @@
             <el-form-item label="房间数量">
                 <el-input style="max-width:100px;" type='number' v-model="rooms.number"></el-input>
             </el-form-item><el-form-item>
-                <el-button type="primary" v-if="v.actual_room_name.length>1" @click="v.actual_room_name.remove(rooms)">删除房型</el-button>
+                <el-button type="primary" @click="v.actual_room_name.remove(rooms)">删除房型</el-button>
             </el-form-item>
         </el-form>
         <el-row class="button-group">

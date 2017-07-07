@@ -17,7 +17,7 @@ const priceRule = {
                     '*rooms': [
                         { 
                             '*price':{ '*cost': 100, '*bk': 120, '*quoted': 110 },
-                            'actual_room_name': [ { name:'名称', number:3 } ]
+                            'actual_room_name': [ { '*name':'名称', '*number':3 } ]
                         },
                         { min: 1 }
                     ]
