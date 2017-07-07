@@ -89,9 +89,13 @@
                                 <!--<el-radio disabled class="radio" size="small" value="1" label="1">{{currency.name}}</el-radio>-->
                                 <!--<el-radio disabled class="radio" size="small" value="2" label="1">人民币-->
                                 <!--</el-radio>-->
-                                <el-radio class="radio" size="small" v-model="currency.name" :label="currency.name">{{currency.name}}</el-radio>
-                                <el-radio class="radio" size="small" v-model="currency.name" :label="rmb">
-                                </el-radio>
+                                <!--<el-radio class="radio" size="small" v-model="currency.name" :label="'欧元'">{{currency.name}}</el-radio>-->
+                                <!--<el-radio class="radio" size="small" v-model="currency.name" :label="'人民币'">-->
+                                <!--</el-radio>-->
+                                <el-radio-group v-model="new_currency">
+                                    <el-radio label="欧元">{{currency.name}}</el-radio>
+                                    <el-radio label="人民币">人民币</el-radio>
+                                </el-radio-group>
                             </el-col>
                         </el-row>
                     </el-form-item>
@@ -253,7 +257,7 @@
         },
         data(){
             return {
-                rmb:'RMB',
+//                new_currency:'欧元',
                 counts:0,
                 privider_consts:0,
                 newLeftmoney:0,
@@ -480,6 +484,9 @@
                     case 'RMB':
                         return { name:"人民币", sign:'￥'}
                 }
+            },
+            new_currency(){
+                return "欧元"
             },
             currencys(){
                 return this.currency.name;
