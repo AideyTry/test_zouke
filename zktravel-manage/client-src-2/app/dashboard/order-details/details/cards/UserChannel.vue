@@ -54,7 +54,7 @@
                 </el-form>
             </template>
                 <el-row>
-                    <el-button @click="addchannel" v-if="user_policy.type=='分期'" type="info">新增政策</el-button>
+                    <el-button v-if="user_policy.type=='分期'" type="info" @click="addchannel">新增政策</el-button>
                 </el-row>
             <el-form-item label="取消政策" prop="cancel">
                 <el-input type="textarea" v-model="user_policy.cancel"></el-input>
@@ -87,7 +87,7 @@
                 })    
             },
             changeType(label){
-                if(label=="全款"){
+                if(label="全款"){
                     this.user_policy.payment = [{
                         dead_line:new Date,
                         price:0

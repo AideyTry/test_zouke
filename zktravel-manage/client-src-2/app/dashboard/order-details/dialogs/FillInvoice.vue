@@ -33,7 +33,7 @@
                                 <el-radio label="人民币">人民币</el-radio>
                             </el-radio-group>
                           </el-form-item>
-                          <el-form-item label="金额" :span="8">
+                          <el-form-item label="金额" :span="8" prop="money">
                              <el-input v-model="voucher_obj.money"></el-input><span>{{cash}}</span>
                           </el-form-item>
                           <hr>
@@ -69,7 +69,8 @@
                   country: '',
                   address: '',
                   voucher_type: '',
-                  currency: ''
+                  currency: '',
+                  money:''
                 },
               rules: {
                   company: [
@@ -86,11 +87,13 @@
                   ],
                   currency: [
                     { required: true, message: '请选择一种货币种类', trigger: 'change' }
+                  ],
+                  money: [
+                    { required: true,message:'请填写金额（数字）',trigger:'blur'}
                   ]
                 }   
             }
         },
-
         methods:{
             submitForm(formName) {
                 this.$refs[formName].validate((valid)=>{
