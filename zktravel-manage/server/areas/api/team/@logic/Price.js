@@ -122,25 +122,63 @@ module.exports = class Price extends BaseOrder {
         }, update);
     }
 
-    async agree(id, userSelectCase, user){
-        return this.$update(
-            {
-                _id: id,
-                status: this.status.WAIT_FOR_PRICE_CONFIRM,
-                'creator.id': user.id,
-                'price_history.0': { $exists: true }
-            },
-            {
+    async agree(id, index, selectIndex, user){
+        const col = await this.$getCollection();
+
+        const query = {
+            _id: id,
+            status: this.status.WAIT_FOR_PRICE_CONFIRM,
+            'creator.id': user.id,
+            'price_history.0': { $exists: true }
+        };
+
+        const order = await col.findOne(query);
+
+        if(!order) return false;
+
+        const { requirement, price } = order;
+
+        if(requirement.stay_details.length<=selectIndex.length){
+            return this.$update(query, { 
                 $set: { 
                     status: this.status.WAIT_FOR_GATHERING,
-                    user_select_case: userSelectCase,
+                    user_select_case: price.cases[index],
                     'price_history.0.confirm_pass': true
                 },
                 $push: {
                     logs: this.$createShiftUpdate({ type: 'system:agree-price', time: this.$createTime(), user })
                 }
+            })
+        }
+
+        const newRequirement = clone(requirement);
+        const newPrice = clone(price);
+
+        requirement.stay_details = requirement.stay_details.filter((_,i)=>selectIndex.includes(i));
+        newRequirement.stay_details = requirement.stay_details.filter((_,i)=>!selectIndex.includes(i));
+        for(let c of price.cases){
+            c.price = c.price.filter((_,i)=>selectIndex.includes(i));
+        }
+        for(let c of newPrice.cases){
+            c.price = c.price.filter((_,i)=>selectIndex.includes(i));
+        }
+
+        const r = this.$update(query, {
+            $set:{
+                status: this.status.WAIT_FOR_GATHERING,
+                user_select_case: price.cases[index],
+                'price_history.0.confirm_pass': true,
+                price,
+                requirement
+            },
+            $push: {
+                logs: this.$createShiftUpdate({ type: 'system:agree-price', sub:'split', time: this.$createTime(), user })
             }
-        )
+        });
+        if(!r) return false;
+
+        this.$insert(Object.assign({}, order, { from:order._id, requirement: newRequirement, price: newPrice }));
+        return true;
     }
     async disagree(id, user){
         return this.$update(

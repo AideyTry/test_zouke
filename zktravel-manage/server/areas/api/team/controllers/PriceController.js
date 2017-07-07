@@ -60,10 +60,14 @@ module.exports = class MyOfflineOrderController extends TeamController {
         this.renderJSON({ code: 0 });
     }
     //用户同意报价
-    async agree(id, userSelectCase){
-        if(!userSelectCase) return this.renderJSON({ code:1, msg:'no user select case' });
+    async agree(id, index, selectIndex){
+        if(
+            index==undefined||
+            !Array.isArray(selectIndex)
+        ) return this.renderJSON({ code: 5, msg: 'invalid args' });
+
         const price = new Price();
-        const result = await price.agree(id, userSelectCase, this.$getUser())
+        const result = await price.agree(id, index, selectIndex, this.$getUser());
         if(result) this.renderJSON({ code:0 });
         else this.renderJSON({ code:2, msg:'can not agree this order price' });
     }
