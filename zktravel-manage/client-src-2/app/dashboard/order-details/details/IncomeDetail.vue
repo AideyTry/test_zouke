@@ -1,5 +1,8 @@
 <style lang="scss" scoped>
     .income {
+        .red{
+            color:#f00;
+        }
         .title {
             height: 40px;
             font-size: 18px;
@@ -68,157 +71,177 @@
 </style>
 <template>
     <div class="income">
-        <div class="install card">
-            <div class="title">收款设置</div>
-            <el-row>
-                <el-col :span="10">
-                    <span>收款汇率<i></i></span>
-                    <span>1{{currency.sign}}=</span>
-                    <el-input size="mini" type="number" v-model="params.reo"></el-input>
-                                        <span>¥</span>
-                    <!--                    <span>实时汇率：1€=4546¥</span>-->
-                </el-col>
-                <el-col :span="14">
-                    <span>收款币种</span>
-                    <el-radio disabled class="radio" size="small" value="1" label="1">{{currency.name}}</el-radio>
-                    <el-radio disabled class="radio" size="small" value="2" label="1">人民币
-                    </el-radio>
-                </el-col>
-            </el-row>
-            <el-row type="flex" class="payment">
-                <el-col :span="10">
-                    <span>
-                        本次收款
-                    </span>
-                    <el-input size="mini" type="number" v-model="params.money"></el-input>
-                    <span>{{currency.name}} ={{money}}¥</span>
-                </el-col>
+        <el-form :model="params" :rules="rule" ref="params">
+            <div class="install card">
 
-                <el-col :span="14" class="button-group" v-if="userole.GATHERING">
-                    <el-button type="info" @click="payment" v-if="(!payflag)">收款</el-button>
-                    <!--<el-button type="info" @click="lookup" v-if="payflag">查看二维码</el-button>-->
-                    <span class="img-size" v-if="payflag">
-                        <img  class="code" src="////qr.api.cli.im/qr?data=%25E8%25B5%25B0%25E5%25AE%25A2%25E7%25BD%2591%25E6%2594%25AF%25E4%25BB%2598&level=H&transparent=false&bgcolor=%23ffffff&forecolor=%23000000&blockpixel=12&marginblock=1&logourl=http%3A%2F%2Fstatic.clewm.net%2Fcli%2Fimages%2Flogomb%2Fversion2%2Fweixin1.png&size=100&kid=cliim&key=9bae92981bd34233a66914cf575073f7" />
-                        <span>二维码扫码支付</span>
-                    </span>
-                    <el-button type="info" @click="markpayment" v-if="payflag">录入线下付款</el-button>
-                    <el-button type="danger" @click="cancelpayment" v-if="payflag">取消收款</el-button>
-                </el-col>
-            </el-row>
-        </div>
-        <div class="divline"></div>
-        <div class="stream card">
-            <div class="title">收款流水</div>
-            <div>
-                <el-table border :data="order.pay_stream" v-if="order">
-                    <el-table-column label="时间" prop="paytime">
-                    </el-table-column>
-                    <el-table-column label="操作人" prop="user.name">
-                    </el-table-column>
-                    <el-table-column label="渠道" prop="provider">
-                    </el-table-column>
-                    <el-table-column :label="'收款金额'+currency.sign" prop="collection_info.money">
-                        <template scope="scope">
-                            <span>
-                                {{scope.row.collection_info.money?scope.row.collection_info.money:0}}{{currency.name}}
-                            </span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="收款金额¥">
-                        <template scope="scope">
-                            <span>
-                                {{scope.row.collection_info.money?scope.row.collection_info.money*scope.row.collection_info.reo:0}}人民币
-                            </span>
-                        </template>
-                    </el-table-column>
-                    <el-table-column label="备注">
-                        <template scope="scope">
-                            <span>
-                                {{scope.row.extras}}
-                            </span>
-                        </template>
-                    </el-table-column>
-                </el-table>
-            </div>
-            <el-row type="flex" class="computed">
-                <el-col style="text-align: right">
-                    <span>还需收款 ：{{leftmoney}} {{currency.sign}}</span>
-                    <span>收款总额 ：{{income}} {{currency.sign}}</span>
-                    <span>{{incomeRmb}}¥</span>
-                </el-col>
-            </el-row>
-        </div>
-        <div class="divline"></div>
-        <div class="plan card" v-if="order">
-            <div class="title">收款计划
-            </div>
-            <el-row type="flex" class="computed" v-if="order.user_policy">
-                <el-col :span="6" v-for="(v,k) in order.user_policy.payment" :key="k">
-                    {{v.price}}({{v.dead_line}}前)
-                </el-col>
-            </el-row>
-        </div>
-        <div class="divline"></div>
-        <div class="card">
-            <div class="title">退款流水
-                <el-button type="danger" style="float: right" @click="refundorder" v-if="userRole.REFUND">
-                    退款
-                </el-button>
-            </div>
+                    <div class="title">收款设置</div>
+                    <el-form-item>
+                        <el-row>
+                            <el-col :span="10">
+                                <span>收款汇率<i class="red">*</i></span>
+                                <span>1{{currency.sign}}=</span>
+                                <el-input size="mini" type="number" v-model="params.reo"></el-input>
+                                <span>¥</span>
+                                <!--                    <span>实时汇率：1€=4546¥</span>-->
+                            </el-col>
+                            <el-col :span="14">
+                                <span>收款币种</span>
+                                <!--<el-radio disabled class="radio" size="small" value="1" label="1">{{currency.name}}</el-radio>-->
+                                <!--<el-radio disabled class="radio" size="small" value="2" label="1">人民币-->
+                                <!--</el-radio>-->
+                                <!--<el-radio class="radio" size="small" v-model="currency.name" :label="'欧元'">{{currency.name}}</el-radio>-->
+                                <!--<el-radio class="radio" size="small" v-model="currency.name" :label="'人民币'">-->
+                                <!--</el-radio>-->
+                                <el-radio-group v-model="new_currency">
+                                    <el-radio label="欧元">{{currency.name}}</el-radio>
+                                    <el-radio label="人民币">人民币</el-radio>
+                                </el-radio-group>
+                            </el-col>
+                        </el-row>
+                    </el-form-item>
 
-            <div>
-                <el-table border :data="order.refund_stream" v-if="order">
-                    <el-table-column label="时间" prop="refund_time">
-                    </el-table-column>
-                    <el-table-column label="原因" prop="reason">
-                    </el-table-column>
-                    <el-table-column label="操作人" prop="user.name">
-                    </el-table-column>
-                    <el-table-column label="渠道" prop="path">
-                    </el-table-column>
-                    <el-table-column label="退款金额" prop="money">
-                    </el-table-column>
-                </el-table>
-            </div>
-            <el-row type="flex" class="computed">
-                <el-col style="text-align: right">
-                    <span>退款总额 ：{{refundmoney}}€</span>
-                    <span>¥</span>
-                </el-col>
-            </el-row>
-        </div>
-        <div class="divline"></div>
-        <div class="card">
-            <div class="title">供应商成本流水
-                <el-button type="info" style="float: right" @click="changecost" v-if="userRole.REFUND||userRole.MODIFYING_COST">
-                    修改成本
-                </el-button>
-            </div>
-            <div>
-                <!--<el-table border :data="order.provider_stream" v-if="order">-->
-                <el-table border :data="new_provider_cost" v-if="order">
-                    <el-table-column label="供应商" prop="supplier_name">
+                        <el-row type="flex" class="payment">
 
-                    </el-table-column>
-                    <el-table-column label="时间" prop="time">
-                    </el-table-column>
-                    <el-table-column label="原因" prop="reason">
-                    </el-table-column>
-                    <el-table-column label="操作人" prop="booking_userName">
-                    </el-table-column>
-                    <el-table-column label="金额" prop="total_cost">
-                    </el-table-column>
-                </el-table>
+                            <el-col :span="10">
+                                <el-form-item prop="money">
+                                    <span>
+                                        本次收款
+                                    </span>
+                                    <i class="red">*</i>
+                                    <el-input size="mini" type="number" v-model="params.money"></el-input>
+                                    <span>{{currency.name}} ={{money}}¥</span>
+                                </el-form-item>
+                            </el-col>
+
+                            <el-col :span="14" class="button-group" v-if="userole.GATHERING">
+                                <el-button type="info" @click="payment" v-if="(!payflag)">生成收款二维码</el-button>
+                                <!--<el-button type="info" @click="lookup" v-if="payflag">查看二维码</el-button>-->
+                                <span class="img-size" v-if="payflag">
+                            <img  class="code" src="////qr.api.cli.im/qr?data=%25E8%25B5%25B0%25E5%25AE%25A2%25E7%25BD%2591%25E6%2594%25AF%25E4%25BB%2598&level=H&transparent=false&bgcolor=%23ffffff&forecolor=%23000000&blockpixel=12&marginblock=1&logourl=http%3A%2F%2Fstatic.clewm.net%2Fcli%2Fimages%2Flogomb%2Fversion2%2Fweixin1.png&size=100&kid=cliim&key=9bae92981bd34233a66914cf575073f7" />
+                            <span>二维码扫码支付</span>
+                        </span>
+                                <el-button type="info" @click="markpayment" v-if="payflag">录入线下付款</el-button>
+                                <el-button type="danger" @click="cancelpayment" v-if="payflag">取消收款</el-button>
+                            </el-col>
+                        </el-row>
+
+                <!--</el-form>-->
+
             </div>
-            <el-row type="flex" class="computed">
-                <el-col style="text-align: right">
-                    <span>供应商成本：{{privider_consts}}€</span>
-                </el-col>
-            </el-row>
-        </div>
-        <paymentdialog @loadorder="loadorder" ref="dialogroup" :dialog="dialog" :income="newIncome" :leftmoney="newLeftmoney" @closedialog="closedialog"></paymentdialog>
-        <refunddialog @loadorder="loadorder" ref="refund" :dialog="refunddialog" @closedialog="closedialog"></refunddialog>
-        <changecost @loadorder="loadorder" ref="changecost" :dialog="changedialog" @closedialog="closedialog"></changecost>
+            <div class="divline"></div>
+            <div class="stream card">
+                <div class="title">收款流水</div>
+                <div>
+                    <el-table border :data="order.pay_stream" v-if="order">
+                        <el-table-column label="时间" prop="paytime">
+                        </el-table-column>
+                        <el-table-column label="操作人" prop="user.name">
+                        </el-table-column>
+                        <el-table-column label="渠道" prop="provider">
+                        </el-table-column>
+                        <el-table-column :label="'收款金额'+currency.sign" prop="collection_info.money">
+                            <template scope="scope">
+                                <span>
+                                    {{scope.row.collection_info.money?scope.row.collection_info.money:0}}{{currency.name}}
+                                </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="收款金额¥">
+                            <template scope="scope">
+                                <span>
+                                    {{scope.row.collection_info.money?scope.row.collection_info.money*scope.row.collection_info.reo:0}}人民币
+                                </span>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="备注">
+                            <template scope="scope">
+                                <span>
+                                    {{scope.row.extras}}
+                                </span>
+                            </template>
+                        </el-table-column>
+                    </el-table>
+                </div>
+                <el-row type="flex" class="computed">
+                    <el-col style="text-align: right">
+                        <span>还需收款 ：{{leftmoney}} {{currency.sign}}</span>
+                        <span>收款总额 ：{{income}} {{currency.sign}}</span>
+                        <span>{{incomeRmb}}¥</span>
+                    </el-col>
+                </el-row>
+            </div>
+            <div class="divline"></div>
+            <div class="plan card" v-if="order">
+                <div class="title">收款计划
+                </div>
+                <el-row type="flex" class="computed" v-if="order.user_policy">
+                    <el-col :span="6" v-for="(v,k) in order.user_policy.payment" :key="k">
+                        {{v.price}}({{v.dead_line}}前)
+                    </el-col>
+                </el-row>
+            </div>
+            <div class="divline"></div>
+            <div class="card">
+                <div class="title">退款流水
+                    <el-button type="danger" style="float: right" @click="refundorder" v-if="userRole.REFUND">
+                        退款
+                    </el-button>
+                </div>
+
+                <div>
+                    <el-table border :data="order.refund_stream" v-if="order">
+                        <el-table-column label="时间" prop="refund_time">
+                        </el-table-column>
+                        <el-table-column label="原因" prop="reason">
+                        </el-table-column>
+                        <el-table-column label="操作人" prop="user.name">
+                        </el-table-column>
+                        <el-table-column label="渠道" prop="path">
+                        </el-table-column>
+                        <el-table-column label="退款金额" prop="money">
+                        </el-table-column>
+                    </el-table>
+                </div>
+                <el-row type="flex" class="computed">
+                    <el-col style="text-align: right">
+                        <span>退款总额 ：{{refundmoney}}€</span>
+                        <span>¥</span>
+                    </el-col>
+                </el-row>
+            </div>
+            <div class="divline"></div>
+            <div class="card" v-if="userRole.MODIFYING_COST">
+                <div class="title">供应商成本流水
+                    <el-button type="info" style="float: right" @click="changecost" v-if="userRole.REFUND||userRole.MODIFYING_COST">
+                        修改成本
+                    </el-button>
+                </div>
+                <div>
+                    <!--<el-table border :data="order.provider_stream" v-if="order">-->
+                    <el-table border :data="new_provider_cost" v-if="order">
+                        <el-table-column label="供应商" prop="supplier_name">
+
+                        </el-table-column>
+                        <el-table-column label="时间" prop="time">
+                        </el-table-column>
+                        <el-table-column label="原因" prop="reason">
+                        </el-table-column>
+                        <el-table-column label="操作人" prop="booking_userName">
+                        </el-table-column>
+                        <el-table-column label="金额" prop="total_cost">
+                        </el-table-column>
+                    </el-table>
+                </div>
+                <el-row type="flex" class="computed">
+                    <el-col style="text-align: right">
+                        <span>供应商成本：{{new_privider_consts}}€</span>
+                    </el-col>
+                </el-row>
+            </div>
+            <paymentdialog @loadorder="loadorder" @gathering="gathering" :paramss="params" :checkout="checkout" ref="dialogroup" :dialog="dialog" :income="newIncome" :leftmoney="newLeftmoney" @closedialog="closedialog"></paymentdialog>
+            <refunddialog @loadorder="loadorder" ref="refund" :dialog="refunddialog" @closedialog="closedialog"></refunddialog>
+            <changecost @loadorder="loadorder" ref="changecost" :dialog="changedialog" @closedialog="closedialog"></changecost>
+        </el-form>
     </div>
 </template>
 <script>
@@ -234,6 +257,7 @@
         },
         data(){
             return {
+//                new_currency:'欧元',
                 counts:0,
                 privider_consts:0,
                 newLeftmoney:0,
@@ -251,7 +275,7 @@
                 payflag: false,
                 params: {
                     reo: 0,
-                    money: 0,
+                    money: null,
                     id: ''
                 },
                 provider_cost:[
@@ -261,6 +285,12 @@
                 },
                 changedialog:{
                     show:false
+                },
+                checkout:false,
+                rule:{
+                    money:[
+                        { required: true, message: '请输入本次收款金额', trigger: 'blur' }
+                    ]
                 }
             }
         },
@@ -300,7 +330,7 @@
                             })
 //                            value.booking_userName=vm.order.booking_user.name;
 //                            value.reason="预订";
-                            vm.privider_consts+=parseInt(value.total_cost);
+//                            vm.privider_consts+=parseInt(value.total_cost);
                         })
 
                         if(this.order.modifyCost_list){
@@ -390,6 +420,7 @@
                                 message: '请重新输入收款信息',
                                 type: 'success'
                             });
+                            this.payflag=false;
                             this.loadorder();
                         }
                     }
@@ -412,13 +443,33 @@
             if(this.leftmoney<=0){
                     this.payflag = true;
                 }
-            }
+            },
             /*款项收齐后不显示收款end*/
+            /*收款校验start*/
+            gathering(){
+//                console.log("=======",formName);
+                let params=this.params;
+                this.$refs['params'].validate((valid)=>{
+                    if(valid){
+                        this.$refs.dialogroup.loadSubmit();
+                    }
+                })
+            }
+            /*收款校验end*/
+
         },
         computed: {
             new_provider_cost(){
                 this.provider_cost.reverse();
                 return this.provider_cost=[...new Set(this.provider_cost)];
+            },
+            new_privider_consts(){
+                let vm=this;
+                this.new_provider_cost.forEach(function(value){
+                    vm.privider_consts+=parseInt(value.total_cost);
+                })
+
+                 return this.privider_consts;
             },
             userRole(){
                 return this.$store.getters.offlineRole;
@@ -430,7 +481,15 @@
                         return { name:'欧元', sign:'€' };
                     case 'GBP':
                         return { name:'英镑', sign:'￡' };
+                    case 'RMB':
+                        return { name:"人民币", sign:'￥'}
                 }
+            },
+            new_currency(){
+                return "欧元"
+            },
+            currencys(){
+                return this.currency.name;
             },
             money(){
 //                return parseFloat((this.params.reo * this.params.money).toFixed(2));

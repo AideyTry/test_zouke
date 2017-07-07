@@ -92,7 +92,7 @@
 <script>
     import ajax from '@local/common/ajax';
     export default{
-        props: ['dialog','income','leftmoney'],
+        props: ['dialog','income','leftmoney','paramss','checkout'],
         data(){
             return {
                 dialog2:{
@@ -123,6 +123,14 @@
                 this.dialog.show=false;
             },
             submit(){
+
+                this.$emit('gathering');
+//                if(this.checkout){
+//                this.loadSubmit();
+//                }
+
+            },
+            loadSubmit(){
                 let vm=this;
                 let _params=JSON.parse(JSON.stringify(this.params));
                 _params.paytime=new Date(_params.paytime).format('YYYY-MM-DD');

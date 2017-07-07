@@ -26,10 +26,10 @@
                     <el-form-item label="完成时间:">
                         <el-date-picker
                                 v-model="params.dead_line"
-                                type="date"
+                                type="datetime"
                                 placeholder="选择日期"
                                 :clearable="false"
-                                :picker-options="pickerOptions0">
+                                >
                         </el-date-picker>
                     </el-form-item>
                 </el-col>
@@ -55,14 +55,22 @@
                     user:{},
                     dead_line:(new Date((new Date()).valueOf()+60*60*24*1000))
                 },
-                pickerOptions0: {
-                    disabledDate(time) {
-//                        console.log("time===",time);
-//                        console.log("时间===",time.getTime() < Date.now() - 8.64e7);
-                        return time.getTime() < Date.now() - 8.64e7;
-//                        return time.getTime();
-                    }
-                }
+//                pickerOptions0: {
+//                    disabledDate(time) {
+////                        console.log("time===",time);
+////                        console.log("时间===",time.getTime() < Date.now() - 8.64e7);
+////                        console.log("getTime===",time);
+////                        return time.getTime() < Date.now() - 8.64e7;
+//                        return time.getTime() < Date.now() - 8.64e7;
+////                        return time.getTime();
+//                    }
+//                }
+            }
+        },
+        computed:{
+            new_dead_line(){
+//                return new Date(this.params.dead_line).format('YYYY-MM-DD HH:mm:ss');
+                return new Date(this.params.dead_line).format('YYYY-MM-DD HH:mm:ss');
             }
         },
         methods:{
@@ -79,7 +87,12 @@
             },
             submit(){
                 let vm=this;
-                ajax.post('/api/team/requirement/dispatch',this.params).then(
+                let _params={
+                        id:this.$route.params.orderid,
+                        user:this.params.user,
+                        dead_line:this.new_dead_line
+                    }
+                ajax.post('/api/team/requirement/dispatch',_params).then(
                     data=>{
                         if(data.code==0){
                             vm.close();
@@ -106,7 +119,7 @@
 //            console.log("Date.now() - 8.64e7;",Date.now(),Date.now() - 8.64e7);
         },
         beforeUpdate(){
-            console.log("update=====",this.params.dead_line);
+            console.log("update=====",this.new_dead_line);
         },
 //        updated(){
 //
