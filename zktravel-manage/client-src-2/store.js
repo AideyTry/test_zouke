@@ -75,12 +75,17 @@ const store = new Vuex.Store({
             state.count=--state.count;
         },
         selectRoom(state){
-            state.selectRoom=++selectRoom;
+            state.selectRoom=++state.selectRoom;
         },
         supplier(state,supplier_name){
             state.supplier=supplier_name;
-        }
+        },
         /*待控放end*/
+        /*报价通过start*/
+        select(state,select){
+            state.select=select;
+        }
+        /*报价通过end*/
     },
     actions: {
         logout({ commit }){

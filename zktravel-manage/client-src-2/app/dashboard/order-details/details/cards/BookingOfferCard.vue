@@ -160,7 +160,7 @@
 </template>
 <script>
     export default{
-        props:['offer', 'index','orderdata', 'disable', 'select'],
+        props:['offer', 'index','orderdata', 'disable', 'select', 'selected'],
         methods:{
             handleSelectionChange(val) {
                 if(this.disable){
@@ -173,7 +173,7 @@
                         this.$emit('selected');
                         this.select.splice(0, this.select.length);
                         for(let i of val){
-                            this.select.push(this.orderdata.indexOf(i))
+                            this.select.push(this.tabledata.indexOf(i))
                         }
                     }
                 }

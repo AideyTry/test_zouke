@@ -5,18 +5,18 @@
 </style>
 <template>
     <el-dialog
-            title="请选择报价方案"
+            title="确定提交"
             :visible.sync="dialoggroup[2].show"
             size="tiny">
         <el-form label-position="left" ref="ruleForm">
             <el-row class="padding-left">
                 <el-col>
-                    <el-form-item label="方案:">
-                        <el-select v-model="selectnum" placeholder="请选择方案">
-                            <template v-for="(v,k) in orderdata">
-                                <el-option :label="'方案'+(k+1)" :value="k"></el-option>
-                            </template>
-                        </el-select>
+                    <el-form-item label="确认提交选中方案">
+                        <!--<el-select v-model="selectnum" placeholder="请选择方案">-->
+                            <!--<template v-for="(v,k) in orderdata">-->
+                                <!--<el-option :label="'方案'+(k+1)" :value="k"></el-option>-->
+                            <!--</template>-->
+                        <!--</el-select>-->
                     </el-form-item>
                 </el-col>
             </el-row>
@@ -31,7 +31,7 @@
 <script>
     import ajax  from '@local/common/ajax';
     export default{
-        props:['dialoggroup','pickerOptions'],
+        props:['dialoggroup','pickerOptions','selectCase','selectIndex'],
         data(){
             return{
                 orderdata:null,
@@ -43,12 +43,18 @@
                 selectnum:0
             }
         },
+        computed:{
+            select(){
+                return this.$store.getters.select;
+            }
+        },
         methods:{
             submit(){
                 let vm=this;
                 ajax.post('/api/team/price/agree',{
                     id:this.$route.params.orderid,
-                    userSelectCase:this.orderdata[this.selectnum]
+                    index: this.selectCase,
+                    selectIndex:this.selectIndex,
                 }).then(
                     data=>{
                         if(data.code==0){
