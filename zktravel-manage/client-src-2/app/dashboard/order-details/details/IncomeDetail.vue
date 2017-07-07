@@ -86,16 +86,16 @@
                             </el-col>
                             <el-col :span="14">
                                 <span>收款币种</span>
-                                <!--<el-radio disabled class="radio" size="small" value="1" label="1">{{currency.name}}</el-radio>-->
-                                <!--<el-radio disabled class="radio" size="small" value="2" label="1">人民币-->
-                                <!--</el-radio>-->
+                                <el-radio disabled class="radio" size="small" value="1" label="1">{{currency.name}}</el-radio>
+                                <el-radio disabled class="radio" size="small" value="2" label="1">人民币
+                                </el-radio>
                                 <!--<el-radio class="radio" size="small" v-model="currency.name" :label="'欧元'">{{currency.name}}</el-radio>-->
                                 <!--<el-radio class="radio" size="small" v-model="currency.name" :label="'人民币'">-->
                                 <!--</el-radio>-->
-                                <el-radio-group v-model="new_currency">
-                                    <el-radio label="欧元">{{currency.name}}</el-radio>
-                                    <el-radio label="人民币">人民币</el-radio>
-                                </el-radio-group>
+                                <!--<el-radio-group v-model="new_currency">-->
+                                    <!--<el-radio :label="currency.name"></el-radio>-->
+                                    <!--<el-radio label="人民币"></el-radio>-->
+                                <!--</el-radio-group>-->
                             </el-col>
                         </el-row>
                     </el-form-item>
@@ -486,7 +486,7 @@
                 }
             },
             new_currency(){
-                return "欧元"
+                return "欧元";
             },
             currencys(){
                 return this.currency.name;
