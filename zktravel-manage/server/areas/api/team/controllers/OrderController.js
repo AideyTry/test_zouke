@@ -29,4 +29,7 @@ module.exports = class OrderController extends TeamController {
         );
         this.renderJSON({ code:0, list, count });
     }
+    async disabled(id){
+        
+    }
 }
