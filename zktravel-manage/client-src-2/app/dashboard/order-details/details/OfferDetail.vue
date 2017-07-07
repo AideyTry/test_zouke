@@ -92,7 +92,9 @@
                 <bookoffer
                     @clear-select="selectCase=-1"
                     @selected="selectCase=p"
-                    :select="selectedRow" :offer="o" :index="p" v-if="o" :orderdata="orderdata" :disable='selectCase!==-1&&selectCase!==p'></bookoffer>
+                    :select="selectedRow" :offer="o" :index="p" v-if="o" :orderdata="orderdata" :disable='selectCase!==-1&&selectCase!==p'>
+                        
+                </bookoffer>
             </div>
         </div>
     </div>

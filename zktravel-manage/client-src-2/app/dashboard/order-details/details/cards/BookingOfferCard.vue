@@ -146,13 +146,13 @@
              <el-col :span="12"><strong>为您节省：</strong>{{bk-cost}} {{cash}}</el-col>
          </el-row>
          <el-row class="computed">
-             <el-col :span="24"><strong>取消政策：</strong>{{tab.provider.cancel_policy||''}}</el-col>
+             <el-col :span="24"><strong>取消政策：</strong>{{tab.user_policy.cancel||''}}</el-col>
          </el-row>
          <el-row class="computed">
              <el-col :span="24"><strong>付款政策：</strong>{{tab.provider.payment_policy||''}}</el-col>
          </el-row>
          <el-row class="computed">
-             <el-col :span="24"><strong>报价说明：</strong>{{tab.provider.remark||''}} </el-col>
+             <el-col :span="24"><strong>报价说明：</strong>{{tab.user_policy.explain||''}} </el-col>
          </el-row>
      </div>
 
@@ -164,7 +164,13 @@
         methods:{
             handleSelectionChange(val) {
                 if(this.disable){
+                    let vm = this;
                     this.$refs.multipleSelection.clearSelection();
+                    vm.$notify({
+                        title: '操作失败',
+                        message: '请选择同一个方案！',
+                        type: 'error'
+                    });
                 }else{
                     if(val.length===0){
                         this.$emit('clear-select');
@@ -175,7 +181,6 @@
                         for(let i of val){
                             this.select.push(this.tabledata.indexOf(i))
                         }
-                        console.log(this.select)
                     }
                 }
             }
@@ -187,7 +192,6 @@
             tabledata(){
                 let arr= this.tab.order||[]; //循环每个酒店住宿时间段
                 let num=0;
-                
                 arr.forEach(
                     (v,k)=>{
                         v.num=new Date(v.check_in).daySpan(new Date(v.check_out)); //循环每个酒店所在的天数

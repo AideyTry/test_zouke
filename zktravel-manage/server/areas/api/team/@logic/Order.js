@@ -1,4 +1,5 @@
 const BaseOrder = require('./BaseOrder');
+const dbclient = requireRoot('dbclient');
 
 module.exports = class Order extends BaseOrder {
     async query(status, { creatorId, bookingId, page=0, pageSize=10 } = {}){
@@ -97,6 +98,16 @@ module.exports = class Order extends BaseOrder {
         const collection = await this.$getCollection();
         const detail = await collection.findOne({ _id: id });
         if(!detail) return null;
+
+        const cfg_cache = await dbclient.collections.get('cfg_cache');
+        const rates = await cfg_cache.find(
+            { key:{$in:['zk_rate_cny_eur', 'zk_rate_cny_gbp']} }, 
+            { key: 1, value: 1}).toArray();
+        detail.rates = {
+            EUR: rates.find(r=>r.key==='zk_rate_cny_eur').value,
+            GBP: rates.find(r=>r.key==='zk_rate_cny_gbp').value
+        }
+
         detail.id = detail._id;
         delete detail._id;
         return detail;

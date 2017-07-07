@@ -67,6 +67,17 @@ module.exports = requireRoot('../../common/mongoClient/init')({
         }
     ),
 
+    cfg_cache: c(
+        {
+            db: 'zktravel',
+            collection: 'cfg_cache'
+        },
+        {
+            db: 'cluster',
+            collection: 'cfg_cache'
+        }
+    ),
+
     // online
     zk_hotels_product: c({
         db: 'static',
