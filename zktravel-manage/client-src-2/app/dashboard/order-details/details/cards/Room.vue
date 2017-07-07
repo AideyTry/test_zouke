@@ -15,18 +15,14 @@
     .el-row{
         height: 40px;
     }
-    .el-input{
-        max-width: 80px;
+    .cost .el-input{
+        max-width: 100px;
     }
-    .cost{
-        
-    }
+   
     .red{
         color:red;
     }
-    .home .el-input{
-        width: 200px;
-    }
+    
 </style>
 <template>
     <div class="card">
@@ -35,24 +31,24 @@
                 房型{{k+1}}：{{room.type}} X {{room.number}} 备注：{{room.mark}}
             </el-col>
         </el-row>
-        <el-form>
-            <el-row>
-                <el-col>
+        <el-row>
+            <el-col>
                     <div>实际房型</div>
-                </el-col>
-            </el-row>
-            <el-row v-for="(rooms,key) in v.actual_room_name" :key="key">
-                <el-col :span="20" class="home">
-                    <el-input size="mini" placeholder="房型输入" v-model="rooms.name">
-                    </el-input>
-                    <el-input type='number' size="mini" v-model="rooms.number"></el-input>
-                    <el-button size="mini" type="warming" v-if="v.actual_room_name.length>1" @click="v.actual_room_name.remove(rooms)">-删除房型</el-button>
-                </el-col>  
-            </el-row>
+            </el-col>
+        </el-row>
+        <el-form :inline="true" v-for="(rooms,key) in v.actual_room_name" :key="key">
+            <el-form-item label="房型输入">
+                <el-input style="max-width:300px;" v-model="rooms.name"></el-input>
+            </el-form-item>
+            <el-form-item label="房间数量">
+                <el-input style="max-width:100px;" type='number' v-model="rooms.number"></el-input>
+            </el-form-item><el-form-item>
+                <el-button type="primary" v-if="v.actual_room_name.length>1" @click="v.actual_room_name.remove(rooms)">删除房型</el-button>
+            </el-form-item>
         </el-form>
         <el-row class="button-group">
             <el-col>
-                <el-button size="mini" type="info" @click="addroom">+新增房型</el-button>
+                <el-button type="primary" @click="addroom">+新增房型</el-button>
             </el-col>
         </el-row>
         <el-row>
@@ -75,8 +71,7 @@
         props:['v','k','room','cash'],
         data(){
             return{
-                rule:{
-                },
+                rule:{},
                 tishi:true
             }   
         },
