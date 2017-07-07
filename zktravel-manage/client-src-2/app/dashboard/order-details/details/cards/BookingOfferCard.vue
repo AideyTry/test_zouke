@@ -149,7 +149,14 @@
              <el-col :span="24"><strong>取消政策：</strong>{{tab.user_policy.cancel||''}}</el-col>
          </el-row>
          <el-row class="computed">
-             <el-col :span="24"><strong>付款政策：</strong>{{tab.provider.payment_policy||''}}</el-col>
+             <el-col :span="2"><strong>付款政策：</strong></el-col>
+             <el-col :span="22">付款类型：{{tab.user_policy.type||''}}
+                    <template v-for="(v,k) in tab.user_policy.payment">
+                        <el-row>
+                            <el-col>截止时间：{{v.dead_line}}  金额：{{v.price}}</el-col>  
+                        </el-row>  
+                    </template>
+             </el-col>
          </el-row>
          <el-row class="computed">
              <el-col :span="24"><strong>报价说明：</strong>{{tab.user_policy.explain||''}} </el-col>
@@ -159,6 +166,7 @@
     </div>
 </template>
 <script>
+import debounce from 'lodash/debounce'
     export default{
         props:['offer', 'index','orderdata', 'disable', 'select', 'selected'],
         methods:{
@@ -187,7 +195,11 @@
         },
         computed:{
             tab(){
-                return JSON.parse(JSON.stringify(this.offer));
+                let offer = JSON.parse(JSON.stringify(this.offer));
+                for(let payment of offer.user_policy.payment){
+                    payment.dead_line = new Date(payment.dead_line).format('YYYY.MM.DD')
+                }
+                return offer;
             },
             tabledata(){
                 let arr= this.tab.order||[]; //循环每个酒店住宿时间段
