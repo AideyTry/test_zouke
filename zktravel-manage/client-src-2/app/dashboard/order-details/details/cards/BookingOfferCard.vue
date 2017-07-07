@@ -172,7 +172,13 @@ import debounce from 'lodash/debounce'
         methods:{
             handleSelectionChange(val) {
                 if(this.disable){
+                    let vm = this;
                     this.$refs.multipleSelection.clearSelection();
+                    vm.$notify({
+                        title: '操作失败',
+                        message: '请选择同一个方案！',
+                        type: 'error'
+                    });
                 }else{
                     if(val.length===0){
                         this.$emit('clear-select');
