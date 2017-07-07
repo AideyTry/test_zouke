@@ -42,20 +42,20 @@
             font-size: 10px;
             .eight{
                 background-color: #FF6666;
-                padding:0px 36px;
+                padding:0px 30px;
             }
             .twelve{
                 background-color: #FF9900;
                 color:green;
-                padding:0px 36px;
+                padding:0px 30px;
             }
             .twenty-four{
                 background-color: #FFFF00;
-                padding:0px 36px;
+                padding:0px 30px;
             }
             .time-out{
                 background-color: #9900cc;
-                padding:0px 36px;
+                padding:0px 30px;
             }
         }
     }

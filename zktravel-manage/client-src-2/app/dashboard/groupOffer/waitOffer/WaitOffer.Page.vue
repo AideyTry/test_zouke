@@ -52,20 +52,20 @@
         }
         .eight{
                 background-color: #FF6666;
-                padding:7px 40px;
+                padding:0px 30px;
             }
             .twelve{
                 background-color: #FF9900;
                 color:green;
-                padding:7px 40px;
+                padding:0px 30px;
             }
             .twenty-four{
                 background-color: #FFFF00;
-                padding:7px 40px;
+                padding:0px 30px;
             }
             .time-out{
                 background-color: #9900cc;
-                padding:7px 40px;
+                padding:0px 30px;
             }
         .hidden{
             display:none;
@@ -148,7 +148,7 @@
                     type="flex"
                     class="row-bg"
                     align="center">
-                        <el-col :span="2">
+                        <el-col :span="3">
                             报价紧急度
                         </el-col>
                         <el-col :span="1" class="eight"></el-col>
