@@ -222,7 +222,7 @@
                                     vm.editableTabs[0].params.push({city: '', hotel: '', rooms: []})
                                     v.rooms.forEach(
                                         (l, y) => {
-                                            vm.editableTabs[0].params[k].rooms.push({price:{cost:'', bk: '', quoted: ''}})
+                                            vm.editableTabs[0].params[k].rooms.push({price:{cost:'', bk: '', quoted: ''},actual_room_name:[]})
                                         }
                                     )
                                 }

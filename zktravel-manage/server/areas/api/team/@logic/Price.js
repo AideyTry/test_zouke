@@ -17,7 +17,7 @@ const priceRule = {
                     '*rooms': [
                         { 
                             '*price':{ '*cost': 100, '*bk': 120, '*quoted': 110 },
-                            'actual_room_name': [ { name:'名称', number:3 } ]
+                            'actual_room_name': [ { '*name':'名称', '*number':3 } ]
                         },
                         { min: 1 }
                     ]
@@ -155,7 +155,7 @@ module.exports = class Price extends BaseOrder {
         const newPrice = clone(price);
 
         requirement.stay_details = requirement.stay_details.filter((_,i)=>selectIndex.includes(i));
-        newRequirement.stay_details = requirement.stay_details.filter((_,i)=>!selectIndex.includes(i));
+        newRequirement.stay_details = newRequirement.stay_details.filter((_,i)=>!selectIndex.includes(i));
         for(let c of price.cases){
             c.price = c.price.filter((_,i)=>selectIndex.includes(i));
         }
