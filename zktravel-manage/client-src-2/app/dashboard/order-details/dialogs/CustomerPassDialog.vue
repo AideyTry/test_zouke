@@ -78,12 +78,6 @@
             },
             close(){
                 this.$emit('closedialog',3);
-            },
-            test(){
-                let vm=this;
-                console.log(this.$route.params.orderid)
-                console.log(this.selectCase)
-                console.log(this.selectIndex)
             }
         },
         mounted(){
