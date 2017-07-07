@@ -22,7 +22,6 @@
             </el-row>
             <el-row>
                 <el-col>
-                    <el-button @click="test" type="info" size="large">test</el-button>
                     <el-button @click="submit" type="info" size="large">确定</el-button>
                 </el-col>
             </el-row>
