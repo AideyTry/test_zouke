@@ -469,6 +469,7 @@
             submitform(formName){
                 let vm=this;
 //                vm.valid=true;
+                console.log("ss======",formName);
                 let child=vm.$refs.card;
                 child.forEach(function(value){
                     value.$refs[formName].validateField('city',function(){
