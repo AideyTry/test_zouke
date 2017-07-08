@@ -60,7 +60,8 @@ module.exports = class Price{
             currency: currency[order.requirement.currency],
             prices,
             total,
-            bkTotal
+            bkTotal,
+            userPolicy: selectCase.user_policy||{}
         };
     }
 }
