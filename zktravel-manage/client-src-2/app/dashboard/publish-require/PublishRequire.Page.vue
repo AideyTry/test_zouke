@@ -146,7 +146,7 @@
                     <template>
                         <el-radio class="radio" v-model="params.currency" label="EUR">欧元</el-radio>
                         <el-radio class="radio" v-model="params.currency" label="GBP">英镑</el-radio>
-                        <el-radio class="radio" v-model="params.currency" label="RMB">人民币</el-radio>
+                        <el-radio class="radio" v-model="params.currency" label="CNY">人民币</el-radio>
                     </template>
                 </el-col>
                 <el-col :span="6"></el-col>
@@ -372,7 +372,7 @@
                         return "€";
                     case 'GBP':
                         return "￡";
-                    case 'RMB':
+                    case 'CNY':
                         return '￥';
                 }
             },

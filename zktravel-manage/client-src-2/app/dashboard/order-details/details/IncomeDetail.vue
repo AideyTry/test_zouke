@@ -261,7 +261,7 @@
                 </el-row>
             </div>
             <paymentdialog @loadorder="loadorder" @gathering="gathering" :paramss="params" :checkout="checkout" ref="dialogroup" :dialog="dialog" :income="income" :leftmoney="leftmoney" @closedialog="closedialog"></paymentdialog>
-            <refunddialog @loadorder="loadorder" ref="refund" :order="order" :pay_const="pay_const" :currency="currency" :dialog="refunddialog" @closedialog="closedialog"></refunddialog>
+            <refunddialog @loadorder="loadorder" ref="refund" :order="order" :pay_const="pay_const" :income="income" :currency="currency" :dialog="refunddialog" @closedialog="closedialog"></refunddialog>
             <changecost @loadorder="loadorder" ref="changecost" :dialog="changedialog" @closedialog="closedialog"></changecost>
         </el-form>
     </div>

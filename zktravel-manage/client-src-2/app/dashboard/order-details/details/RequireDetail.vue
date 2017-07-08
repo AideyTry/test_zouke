@@ -168,7 +168,7 @@
             return{
                 currencyGroup:{
                     EUR:'欧元',
-                    RMB:'人民币',
+                    CNY:'人民币',
                     GBP:'英镑',
                     USD:'美元'
                 },

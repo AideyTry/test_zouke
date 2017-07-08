@@ -69,7 +69,7 @@
                 <el-col :span="1"></el-col>
                 <el-col :span="7">
                     <span>已收款</span>
-                    <span></span>
+                    <span>{{order&&parseInt(incomes)}}</span>
                     <span>{{genCurrency(params.currency).name}}</span>
                 </el-col>
                 <el-col :span="1"></el-col>
@@ -97,7 +97,7 @@
 <script>
     import ajax from '@local/common/ajax';
     export default{
-        props: ['order','pay_const','dialog', 'rates', 'currency'],
+        props: ['order','pay_const','income','dialog', 'rates', 'currency'],
         data(){
             return {
                 params: {
@@ -123,6 +123,9 @@
                 if(this.order){
                     return this.pay_const*((this.params.currency)=='CNY'?(this.order.requirement.currency=='EUR'?this.order.rates.EUR:this.order.rates.GBP):1);
                 }
+            },
+            incomes(){
+                return this.income.toFixed(0)*((this.params.currency)=='CNY'?(this.order.requirement.currency=='EUR'?this.order.rates.EUR:this.order.rates.GBP):1)
             },
             rate(){
               return  (this.order&&this.order.requirement.currency=='EUR'?this.order.rates.EUR:this.order.rates.GBP);
