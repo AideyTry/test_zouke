@@ -87,7 +87,7 @@
                             <el-col :span="1"></el-col>
                             <el-col :span="6">
                                 <span>实时汇率</span>
-                                <span>{{requireCurrency.sign?order.rates.EUR:order.rates.GBP}}</span>
+                                <span>{{order&&order.rates[requireCurrency.type]||1}}</span>
                             </el-col>
                             <el-col :span="1"></el-col>
                             <el-col :span="8">
@@ -261,7 +261,7 @@
                 </el-row>
             </div>
             <paymentdialog @loadorder="loadorder" @gathering="gathering" :paramss="params" :checkout="checkout" ref="dialogroup" :dialog="dialog" :income="newIncome" :leftmoney="newLeftmoney" @closedialog="closedialog"></paymentdialog>
-            <refunddialog @loadorder="loadorder" ref="refund" :dialog="refunddialog" @closedialog="closedialog"></refunddialog>
+            <refunddialog @loadorder="loadorder" ref="refund" :order="order" :pay_const="pay_const" :currency="currency" :dialog="refunddialog" @closedialog="closedialog"></refunddialog>
             <changecost @loadorder="loadorder" ref="changecost" :dialog="changedialog" @closedialog="closedialog"></changecost>
         </el-form>
     </div>
@@ -280,8 +280,11 @@
         data(){
             return {
                 counts:0,
+                pay_const:0,
                 privider_consts:0,
                 newLeftmoney:0,
+                incomes:0,
+                incomes_rmb:0,
                 newIncome:0,
                 newMoney:0,
                 radio: '',
@@ -295,7 +298,8 @@
                 },
                 payflag: false,
                 params: {
-                    reo: 1,
+//                    reo: 1,
+                    reo: null,
                     currency:'CNY',
                     money: null
                 },
@@ -340,20 +344,21 @@
                         /*供应商流水start*/
                         let vm=this;
                         this.provider_cost=[];
-                        this.order.order_detail.suppliers.forEach(function(value,index){
-                            vm.provider_cost.push(
-                            {
-                                supplier_name:value.supplier_name,
-                                    time:'',
-                                reason:'预订',
-                                booking_userName:vm.order.booking_user.name,
-                                total_cost:value.total_cost + vm.requireCurrency.name
-                            })
+                        if(this.order.order_detail){
+                            this.order.order_detail.suppliers.forEach(function(value,index){
+                                vm.provider_cost.push(
+                                    {
+                                        supplier_name:value.supplier_name,
+                                        time:'',
+                                        reason:'预订',
+                                        booking_userName:vm.order.booking_user.name,
+                                        total_cost:value.total_cost + vm.requireCurrency.name
+                                    })
 //                            value.booking_userName=vm.order.booking_user.name;
 //                            value.reason="预订";
 //                            vm.privider_consts+=parseInt(value.total_cost);
-                        })
-
+                            })
+                        }
                         if(this.order.modifyCost_list){
 //                            let vm=this;
                             this.order.modifyCost_list.forEach(function(value,index){
@@ -367,8 +372,6 @@
                             })
                         }
                         /*供应商流水end*/
-
-
 
                         if (data.detail.collection_info) {
                             this.params = data.detail.collection_info;
@@ -548,34 +551,55 @@
                     const { check_in, check_out } = stay_details[i];
                     pay += price * new Date(check_in).daySpan(new Date(check_out));
                 }
+                this.pay_const=pay;
                 return pay-this.income;
             },
             income(){
-                let income = 0;
-
-                if(!this.order) return income;
+//                let income = 0;
+//
+//                if(!this.order) return income;
+//
+//                for(let stream of [this.params, ...(this.order.pay_stream||[])]) {
+//                    if (stream.money == null) continue;
+//
+//                    income += stream.money / (stream.currency === 'CNY' ? stream.reo : 1);
+//                }
+//
+//                return income;
+                if(!this.order) return this.incomes;
 
                 for(let stream of [this.params, ...(this.order.pay_stream||[])]) {
                     if (stream.money == null) continue;
 
-                    income += stream.money / (stream.currency === 'CNY' ? stream.reo : 1);
+                    this.incomes += stream.money / (stream.currency === 'CNY' ? stream.reo : 1);
                 }
 
-                return income;
+                return this.incomes;
+
             },
             /*收款总额人民币start*/
             incomeRmb(){
-                let income = 0;
+//                let income = 0;
+//
+//                if(!this.order) return income;
+//
+//                for(let stream of [this.params, ...(this.order.pay_stream||[])]) {
+//                    if (stream.money == null) continue;
+//
+//                    income += stream.money * (stream.currency === 'CNY' ? 1 : stream.reo);
+//                }
+//
+//                return income
 
-                if(!this.order) return income;
+                if(!this.order) return this.incomes_rmb;
 
                 for(let stream of [this.params, ...(this.order.pay_stream||[])]) {
                     if (stream.money == null) continue;
 
-                    income += stream.money * (stream.currency === 'CNY' ? 1 : stream.reo);
+                    this.incomes_rmb += stream.money * (stream.currency === 'CNY' ? 1 : stream.reo);
                 }
 
-                return income;
+                return this.incomes_rmb;
             },
             /*收款总额人民币end*/
             refundmoney(){
@@ -592,9 +616,9 @@
         },
         mounted(){
             this.loadorder();
-        },
-        beforeUpdate(){
-            this.newMoney=this.params.money;
         }
+//        beforeUpdate(){
+////            this.newMoney=this.params.money;
+//        }
     }
 </script>

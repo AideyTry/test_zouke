@@ -3,11 +3,17 @@
         margin-top: 10px;
         text-align: center;
     }
+    .line{
+        display:inline-block;
+        width:100%;
+
+        border-bottom:1px solid #ccc;
+    }
 </style>
 <template>
     <el-dialog title="填写退款信息"
                :visible.sync="dialog.show"
-               size="tiny">
+               size="small">
         <el-form>
             <el-form-item label="退款原因">
                 <el-input placeholder="请填写退款原因" v-model="params.reason">
@@ -33,12 +39,32 @@
                 <el-radio v-model="params.path" label="支付宝">支付宝</el-radio>
             </el-form-item>
             <el-form-item label="币种">
-                <el-radio v-model="params.currency" :label="currency.type">欧元</el-radio>
-                <el-radio v-model="params.currency" label="CNY">人民币</el-radio>
+                <!--<el-radio-group v-model="params.currency">-->
+                    <!--<el-radio :label="currency.type">{{genCurrency(params.currency).name}}</el-radio>-->
+                    <!--<el-radio label="CNY">人民币</el-radio>-->
+                <!--</el-radio-group>-->
+
+                <el-radio-group v-if="order" v-model="params.currency">
+                    <el-radio  class="radio" size="small" :label='requireCurrency.type'>{{requireCurrency&&requireCurrency.name}}</el-radio>
+                    <el-radio  class="radio" size="small" label="CNY">人民币
+                    </el-radio>
+                </el-radio-group>
             </el-form-item>
             <el-form-item label="退款金额">
-                <el-input type="number" placeholder="请填写退款金额" v-model="params.money"></el-input>
+                <el-row>
+                    <el-col :span="12">
+                        <el-input type="number" placeholder="请填写退款金额" v-model="params.money"></el-input>
+                    </el-col>
+                    <el-col :span="2">{{genCurrency(params.currency).name}}</el-col>
+                </el-row>
             </el-form-item>
+            <span class="line"></span>
+            <div>
+                <strong>订单成本</strong>
+                <!--<span>{{pay_const*(params.currency=='EUR'?order.rates.EUR:order.rates.GBP)}}</span>-->
+                <span>{{new_pay_const}}</span>
+                <span>{{genCurrency(params.currency).name}}</span>
+            </div>
         </el-form>
         <div class="button-container">
             <el-button type="info" @click="submit">
@@ -50,7 +76,7 @@
 <script>
     import ajax from '@local/common/ajax';
     export default{
-        props: ['dialog', 'rates', 'currency'],
+        props: ['order','pay_const','dialog', 'rates', 'currency'],
         data(){
             return {
                 params: {
@@ -63,9 +89,28 @@
                 }
             }
         },
+        computed:{
+            requireCurrency(){
+                let vm=this;
+                if(vm.order){
+                    return this.genCurrency(vm.order.requirement.currency);
+                }
+                return {};
+            },
+            new_pay_const(){
+//                let names=genCurrency(params.currency).name;
+                if(this.order){
+                    return this.pay_const*((this.params.currency)=='CNY'?(this.order.requirement.currency=='EUR'?this.order.rates.EUR:this.order.rates.GBP):1);
+                }
+            },
+            rate(){
+              return  (this.order&&this.order.requirement.currency=='EUR'?this.order.rates.EUR:this.order.rates.GBP);
+            }
+        },
         methods:{
             submit(){
                 this.params.refund_time=new Date(this.params.refund_time).format('YYYY-MM-DD');
+                this.params.rate = this.order.rates[this.requireCurrency.type];
                 ajax.post('/api/team/refund-stream/refund',{id:this.$route.params.orderid,refund_obj:this.params}).then(
                     data=>{
                         if(data.code==0){
@@ -79,7 +124,27 @@
                         }
                     }
                 )
+            },
+            genCurrency(type){
+                switch(type){
+                    case 'EUR':
+                        return { type, name:'欧元', sign:'€' };
+                        break;
+                    case 'GBP':
+                        return { type, name:'英镑', sign:'￡' };
+                        break;
+                    case 'CNY':
+                        return { type, name:"人民币", sign:'￥'};
+                        break;
+                    default:
+                        return {};
+                        break;
+                }
             }
+        },
+        mounted(){
+            console.log("order===",this.order);
+            console.log("this.params.currency==",this.params.currency);
         }
     }
 </script>
