@@ -82,7 +82,7 @@
             <el-row type="flex">
                 <el-col :span="2"><strong>取消政策</strong></el-col>
                 <el-col>
-                    <span>{{}}</span>
+                    <span></span>
                     <span>前可免费取消</span>
                 </el-col>
             </el-row>
