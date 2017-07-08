@@ -126,9 +126,11 @@
                             <template v-for="(item,index) in orderData.user_select_case.user_policy.payment">
                                 <el-row type="flex">
                                     <span>{{formatTime(item.dead_line)}}</span>
-                                    <span>前需支付</span>
-                                    <span>{{item.price}}</span>
-                                    <span>{{orderData&&genCurrency(orderData.requirement.currency).sign}}</span>
+                                    <template v-if="isTrue">
+                                        <span>前需支付</span>
+                                        <span>{{item.price}}</span>
+                                        <span>{{orderData&&genCurrency(orderData.requirement.currency).sign}}</span>
+                                    </template>
                                 </el-row>
                             </template>
                         </el-col>
@@ -227,7 +229,7 @@
             percent(){
             },
             isTrue(){
-                if(this.orderData.user_select_case.user_policy.payment.length>1){
+                if(this.orderData.user_select_case.user_policy.type=='全款'){
                     this.change=!this.change;
                 }
                 return this.change;
