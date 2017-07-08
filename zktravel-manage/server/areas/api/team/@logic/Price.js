@@ -160,7 +160,7 @@ module.exports = class Price extends BaseOrder {
             c.price = c.price.filter((_,i)=>selectIndex.includes(i));
         }
         for(let c of newPrice.cases){
-            c.price = c.price.filter((_,i)=>selectIndex.includes(i));
+            c.price = c.price.filter((_,i)=>!selectIndex.includes(i));
         }
 
         const r = this.$update(query, {

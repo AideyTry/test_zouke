@@ -30,7 +30,7 @@
     import require from '../details/RequireDetail';
     import offer from '../details/cards/BookingOfferCard';
     export default{
-        props:['data'], //包裹的是case方案
+        props:['data'], 
         components:{
             require :require,
             offer:offer
@@ -50,7 +50,7 @@
                         editableTabs.push({
                             title: '方案'+(b*1+1),
                             name: '方案'+(b*1+1),
-                            order: vm.data.requirement.stay_details,//放的是每个酒店入住的时间段
+                            order: vm.data.requirement.stay_details,
                             params: a.price,
                             provider:{
                                 booking_channel:a.sp_policy.booking_channel,
@@ -58,6 +58,7 @@
                                 cancel_policy:a.sp_policy.cancel,
                                 remark:a.sp_policy.remark
                             },
+                            user_policy: a.user_policy,
                             cost:{cost: 0, bk: 0, quoted: 0}
                         })
                     }
@@ -65,8 +66,8 @@
                 return editableTabs;
             }
         },
-        methods:{
-
+        mounted(){
+            console.log(this.offerdata);
         }
     }
 </script>

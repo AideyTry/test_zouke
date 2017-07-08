@@ -17,7 +17,6 @@
         .computed{
             height: 40px;
             line-height: 40px;
-            margin-bottom: 30px;
         }
     }
 </style>
@@ -28,8 +27,7 @@
             border
             style="width: 100%"
             ref= multipleSelection
-            @selection-change="handleSelectionChange"
-    >
+            @selection-change="handleSelectionChange">
         <el-table-column
                 label="入住/离店">
             <template scope="scope">
@@ -146,22 +144,28 @@
              <el-col :span="5"><strong>Booking：</strong>{{bk}} {{cash}}</el-col>
              <el-col :span="12"><strong>为您节省：</strong>{{bk-cost}} {{cash}}</el-col>
          </el-row>
-         <el-row class="computed">
-             <el-col :span="24"><strong>取消政策：</strong>{{tab.user_policy.cancel||''}}</el-col>
-         </el-row>
-         <el-row class="computed">
-             <el-col :span="3"><strong>付款政策：</strong></el-col>
-             <el-col :span="21">付款类型：{{tab.user_policy.type||''}}
-                    <template v-for="(v,k) in tab.user_policy.payment">
+         <template v-if="tab.user_policy">
+             <el-row class="computed">
+                 <el-col :span="24"><strong>取消政策：</strong>{{tab.user_policy.cancel}}</el-col>
+             </el-row>
+             <el-row class="computed">
+                 <el-col :span="3"><strong>付款政策：</strong>
+                 </el-col>
+                 <el-col :span="21">
+                     <el-row>
+                        <el-col>付款类型：{{tab.user_policy.type}}</el-col>
+                    </el-row>
+                    <template v-for="(v,k) in tab.user_policy.payment" :k="k">
                         <el-row>
-                            <el-col>截止时间：{{v.dead_line}}  金额：{{v.price}}</el-col>
+                            <el-col>时间：{{v.dead_line}} 金额：{{v.price}}</el-col>
                         </el-row>
                     </template>
-             </el-col>
-         </el-row>
-         <el-row class="computed">
-             <el-col :span="24"><strong>报价说明：</strong>{{tab.user_policy.explain||''}} </el-col>
-         </el-row>
+                 </el-col>
+             </el-row>
+             <el-row class="computed">
+                 <el-col :span="24"><strong>报价说明：</strong>{{tab.user_policy.explain}} </el-col>
+             </el-row>
+         </template>
      </div>
 
     </div>
@@ -197,8 +201,8 @@ import debounce from 'lodash/debounce'
         computed:{
             tab(){
                 let offer = JSON.parse(JSON.stringify(this.offer));
-                for(let payment of offer.user_policy.payment){
-                    payment.dead_line = new Date(payment.dead_line).format('YYYY.MM.DD')
+                for(let tebs of offer.user_policy.payment){
+                    tebs.dead_line = new Date(tebs.dead_line).format("YYYY.MM.DD");
                 }
                 return offer;
             },

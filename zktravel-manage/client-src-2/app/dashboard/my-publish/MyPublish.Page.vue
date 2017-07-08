@@ -212,7 +212,6 @@ export default{
             },
             status:null,
             arr:[],
-
             pageNum:1,
             pageSize:15,
             total:0,

@@ -88,12 +88,19 @@
                     </el-col>
                     <el-col :span="12" class="creator-info">
                     </el-col>
+                    <el-col :span="2">
+                        <el-button type="primary" @click="showDialog">点击获取二维码</el-button>
+                    </el-col>
                 </el-row>
+                <el-dialog title="二维码" :visible.sync="dialogTableVisible" type="flex" class="showDialog">
+                    <div style="width: 200px;height:200px;" size="small">
+                        <img :src="`/api/team/price/confirm-qr?id=${$route.params.orderid}&index=${p}`">
+                    </div>
+                </el-dialog>
                 <bookoffer
                     @clear-select="selectCase=-1"
                     @selected="selectCase=p"
-                    :select="selectedRow" :offer="o" :index="p" v-if="o" :orderdata="orderdata" :disable='selectCase!==-1&&selectCase!==p'>
-                        
+                    :select="selectedRow" :offer="o" :index="p" v-if="o" :orderdata="orderdata" :disable='selectCase!==-1&&selectCase!==p'> 
                 </bookoffer>
             </div>
         </div>
@@ -119,6 +126,7 @@
         data(){
             return {
                 //bookoffer
+                dialogTableVisible: false,
                 selectCase:-1,
                 selectedRow: [],
                 night:'',
@@ -144,6 +152,18 @@
                 offergroup: 1,
                 history:''
             }
+        },
+        watch:{
+            selectCase(v){
+                this.$emit('changeSelectCase', v);
+            },
+            selectedRow(v){
+                this.$emit('changeSelectIndex', v);
+            }
+        },
+        created(){
+            this.$emit('changeSelectCase', this.selectCase);
+            this.$emit('changeSelectIndex', this.selectedRow);
         },
         methods: {
             /*/解析订单/*/
@@ -222,7 +242,7 @@
                                     vm.editableTabs[0].params.push({city: '', hotel: '', rooms: []})
                                     v.rooms.forEach(
                                         (l, y) => {
-                                            vm.editableTabs[0].params[k].rooms.push({price:{cost:'', bk: '', quoted: ''},actual_room_name:[]})
+                                            vm.editableTabs[0].params[k].rooms.push({price:{cost:'', bk: '', quoted: ''}})
                                         }
                                     )
                                 }
@@ -287,6 +307,9 @@
                         type: 'success'
                     });
                 }
+            },
+            showDialog(){
+                this.dialogTableVisible=true;
             }
 
         },
