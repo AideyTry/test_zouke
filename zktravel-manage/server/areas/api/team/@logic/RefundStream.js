@@ -14,7 +14,10 @@ module.exports = class RefundStream extends BaseOrder {
 
     //退款对象校验
     validRefundObj(refund_obj){
-        return compare(objRule, refund_obj);
+
+       const result = compare(objRule, refund_obj);
+       console.log(compare.getLastError());
+       return result;
     }
 
     //退款
@@ -24,7 +27,6 @@ module.exports = class RefundStream extends BaseOrder {
         return await this.$update(
             {
                 _id: id,
-                "creator.id":user.id,
                 /**订单状态校验：in/nin **/
                 status:{ $in:[
                     this.status.WAIT_FOR_GATHERING,
@@ -35,8 +37,8 @@ module.exports = class RefundStream extends BaseOrder {
             },
             {
                 $push:{
-                    refund_stream:refund_obj,
-                    logs: this.$createShiftUpdate({ type: 'user:refund_stream', time: this.$createTime(), user })
+                    refund_stream: refund_obj,
+                    logs: this.$createShiftUpdate({ type: 'user:refund-stream', time: this.$createTime(), user })
                 }
             }
         )

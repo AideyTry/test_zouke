@@ -33,6 +33,8 @@ module.exports = class User {
                 GATHERING: 1<<16,               //收款
                 REFUND: 1<<17,                  //退款
                 MODIFYING_COST: 1<<18,          //修改成本
+                MODIFY_INVOICE: 1<<19,          //开发票
+
             }
         }
     }

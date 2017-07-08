@@ -7,22 +7,18 @@ module.exports = class VoucherController extends TeamController {
     $meta(){
         return {
             access: {
-                'download': {
-                    'offline_order': this.P.OFFLINE_ORDER.EXPORT_VOUCHER
-                },
-                default: {
+                'toDownload': {
                     'offline_order': this.P.OFFLINE_ORDER.EXPORT_VOUCHER
                 }
             }
         }
     }
 
+    //导出收据
     async toDownload(orderId,orderIndex=0,hotelIndex=0,suppliersIndex=0){
         const voucher = new Voucher();
         const voucherDetail = await voucher.download(orderId,orderIndex,hotelIndex,suppliersIndex);
 
-        console.log('download voucher data',voucherDetail)
-        
         await this.renderRemote({
             host:DEBUG?'wx.test.zouke.com':'w.zouke.com',
             path:'/zksystem/order/view-voucher',

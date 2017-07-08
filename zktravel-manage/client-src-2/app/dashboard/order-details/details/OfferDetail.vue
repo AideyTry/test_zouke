@@ -153,6 +153,18 @@
                 history:''
             }
         },
+        watch:{
+            selectCase(v){
+                this.$emit('changeSelectCase', v);
+            },
+            selectedRow(v){
+                this.$emit('changeSelectIndex', v);
+            }
+        },
+        created(){
+            this.$emit('changeSelectCase', this.selectCase);
+            this.$emit('changeSelectIndex', this.selectedRow);
+        },
         methods: {
             /*/解析订单/*/
             loadorder(id){

@@ -6,7 +6,6 @@ module.exports = class Voucher extends BaseOrder {
     //数据入库
     async download(orderId,orderIndex,hotelIndex,suppliersIndex){
         const collection = await this.$getCollection();
-
         const result = await collection.findOne({'_id':orderId}, {
             '_id': 1,
             'order_detail': 1,
@@ -44,16 +43,16 @@ module.exports = class Voucher extends BaseOrder {
         return {
             checkIn: new Date(order.check_in).format('dd/MM/YYYY'),
             checkOut: new Date(order.check_out).format('dd/MM/YYYY'),
-            confirmNumber: order.hotels[hotelIndex].suppliers[suppliersIndex].at_number,                    //酒店确认号
-            guestName: guestName,                                                                           //客人姓名
+            confirmNumber: order.hotels[hotelIndex].suppliers[suppliersIndex].at_number,
+            guestName: guestName,
             hotelAddress: '暂无',
-            hotelName: order.hotels[hotelIndex].hotel.name,                                                 //酒店名
+            hotelName: order.hotels[hotelIndex].hotel.name,
             hotelPhone: '暂无',
-            orderId: result._id,                                                                            //订单ID
-            referentNo: order.hotels[hotelIndex].remark_confirm,                                            //入住编号
-            roomList: roomDetail,                                                                           //房间列表
-            roomNumbers: roomNum,                                                                           //房间总数
-            hasBoard: result.requirement.breakfast                                                                                  //是否含早餐
+            orderId: result._id,
+            referentNo: order.hotels[hotelIndex].remark_confirm,
+            roomList: roomDetail,
+            roomNumbers: roomNum,
+            hasBoard: result.requirement.breakfast
         }
     }
 };

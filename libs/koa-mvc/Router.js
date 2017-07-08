@@ -17,7 +17,10 @@ module.exports = class Router{
     constructor({ 
         rules = [],
         areas = []
-    } = {}){
+    } = {}){ 
+        if(!Array.isArray(rules)){
+            rules = [rules];
+        }
         if(rules.length===0){
             rules.push('{{controller:home}}/{{action:index}}')
         }
