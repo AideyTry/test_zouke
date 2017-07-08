@@ -53,6 +53,10 @@ module.exports = class MyPayStreamController extends TeamController {
 
     //录入收款信息(生成流水)
     async collection(id,reo,currency,money){
+
+        if(reo) reo = parseFloat(reo);
+        if(money) reo = parseFloat(money);
+
         const payStream = new PayStream();
         //拿到当前用户信息，更新表的时候做id校验
         let user = this.$getUser();

@@ -33,8 +33,8 @@
                 <el-radio v-model="params.path" label="支付宝">支付宝</el-radio>
             </el-form-item>
             <el-form-item label="币种">
-                <el-radio v-model="params.currency" label="欧元">欧元</el-radio>
-                <el-radio v-model="params.currency" label="人民币">人民币</el-radio>
+                <el-radio v-model="params.currency" :label="currency.type">欧元</el-radio>
+                <el-radio v-model="params.currency" label="CNY">人民币</el-radio>
             </el-form-item>
             <el-form-item label="退款金额">
                 <el-input type="number" placeholder="请填写退款金额" v-model="params.money"></el-input>
@@ -50,7 +50,7 @@
 <script>
     import ajax from '@local/common/ajax';
     export default{
-        props: ['dialog'],
+        props: ['dialog', 'rates', 'currency'],
         data(){
             return {
                 params: {
@@ -58,8 +58,8 @@
                     refund_time: new Date(),
                     is_cancel: true,
                     path: '走客转账',
-                    currency: '欧元',
-                    money: ''
+                    currency: this.currency.type,
+                    money: null
                 }
             }
         },
