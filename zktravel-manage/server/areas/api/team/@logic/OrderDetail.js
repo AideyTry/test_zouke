@@ -34,9 +34,10 @@ const orderRule = {
 };
 
 module.exports = class OrderDetail extends BaseOrder {
-    //订单数据校验
     validOrder(order_obj){
-        return compare(orderRule, order_obj);
+        const result =  compare(orderRule, order_obj);
+        console.log(compare.getLastError());
+        return result;
     }
 
     //数据入库
@@ -54,13 +55,11 @@ module.exports = class OrderDetail extends BaseOrder {
                 ]}
             },
             {
-                //插入数据
                 $set:{
                     order_detail: order_obj,
                     status:this.status.ORDER_RESOLVE
                 },
                 $push: {
-                    //日志记录
                     logs: this.$createShiftUpdate({ type: 'user:save_order', time: this.$createTime(), user })
                 }
             }

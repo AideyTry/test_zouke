@@ -13,14 +13,12 @@ module.exports = class AllotList extends BaseOrder {
         }, {_id:1}));
 
         const update = {
-            //插入数据
             $set:{
                 allot_list:{
                     content: content,
                 }
             },
             $push: {
-                //日志记录
                 logs: this.$createShiftUpdate({ type: 'system:allot-list', time: this.$createTime(), user })
             }
         };
@@ -44,7 +42,5 @@ module.exports = class AllotList extends BaseOrder {
             },update
 
         )
-
-
     }
 };

@@ -10,16 +10,13 @@ module.exports = class Complains extends BaseOrder {
         return await this.$update(
             {
                 _id: id,
-                "creator.id":user.id
             },
             {
-                //插入数据
                 $push: {
                     complain_content:{
                         "content":content,
                         "date":this.$createTime(),
                         "user":user
-
                     }
                 }
             }
