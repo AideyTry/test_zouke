@@ -139,42 +139,34 @@
         </el-table-column>
     </el-table>
      <div style="padding-top: 20px">
-         <el-row class="computed">
-             <el-col :span="5"><strong>总价：</strong>{{cost}} {{cash}}</el-col>
-             <el-col :span="5"><strong>Booking：</strong>{{bk}} {{cash}}</el-col>
-             <el-col :span="12"><strong>为您节省：</strong>{{bk-cost}} {{cash}}</el-col>
-         </el-row>
+         
          <template v-if="tab.user_policy">
+             <el-row class="computed">
+                 <el-col :span="5"><strong>总价：</strong>{{cost}} {{cash}}</el-col>
+                 <el-col :span="5"><strong>Booking：</strong>{{bk}} {{cash}}</el-col>
+                 <el-col :span="12"><strong>为您节省：</strong>{{bk-cost}} {{cash}}</el-col>
+             </el-row>
              <el-row class="computed">
                  <el-col :span="24"><strong>取消政策：</strong>{{tab.user_policy.cancel}}</el-col>
              </el-row>
-             <el-row class="computed">
+             <!-- <el-row class="computed">
                  <el-col :span="3"><strong>付款政策：</strong>
                  </el-col>
                  <el-col :span="21">
                     <el-row>
                         <el-col>付款类型：{{tab.user_policy.type}}</el-col>
                     </el-row>
-                    <div v-if="this.tab.user_policy.payment.length==0">
-                        <template>
-                            <el-row>
-                                <el-col>{{tab.user_policy.payment[0].dead_line}}前缴清全款</el-col>
-                            </el-row>  
-                         </template>
-                    </div>
-                    <div v-if="this.tab.user_policy.payment!==0">
-                        <template v-for="(v,k) in tab.user_policy.payment" :k="k">
-                            <el-row>
-                                <el-col>{{v.dead_line}} 金额：{{v.price}}</el-col>
-                            </el-row>  
-                        </template>
-                    </div>
+                    <template v-for="(v,k) in tab.user_policy.payment" :k="k">
+                        <el-row >
+                            <el-col>时间：{{tab.user_policy.payment[k].dead_line}} 前缴清全款</el-col>
+                        </el-row>  
+                    </template>
                  </el-col>
-             </el-row>
+             </el-row>  -->
              <el-row class="computed">
                  <el-col :span="24"><strong>报价说明：</strong>{{tab.user_policy.explain}} </el-col>
              </el-row>
-         </template>
+         </template>                                
      </div>
 
     </div>
@@ -185,7 +177,7 @@ import debounce from 'lodash/debounce'
         props:['offer', 'index','orderdata', 'disable', 'select', 'selected'],
         data(){
             return {
-                a:''
+               
             }
         },
         methods:{
@@ -274,9 +266,7 @@ import debounce from 'lodash/debounce'
             }
         },
          mounted(){
-            if(this.tab.user_policy){
-                console.log(JSON.stringify(this.tab));
-            }
+            
         }
     }
 </script>
