@@ -7,10 +7,12 @@ module.exports = class AllotList extends BaseOrder {
 
         const collection = await this.$getCollection();
         //看该订单是否已付款
-        const notHavePaystream = !!(await collection.findOne({
+        const order = await collection.findOne({
             '_id': id,
             'pay_stream': null
-        }, {_id:1}));
+        }, {_id:1, pay_stream:1, status:1});
+
+        if(!order) return false;
 
         const update = {
             $set:{
@@ -24,7 +26,7 @@ module.exports = class AllotList extends BaseOrder {
         };
 
         //如果有支付信息，更改status
-        if(!notHavePaystream){
+        if((!order.pay_stream||order.pay_stream.length===0)&&order.status!==this.status.ORDER_RESOLVE){
             update.$set.status = this.status.WAIT_FOR_BOOKING;
         }
 
