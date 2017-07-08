@@ -77,14 +77,20 @@
                     <div class="title">收款设置</div>
                     <el-form-item>
                         <el-row>
-                            <el-col :span="10">
+                            <el-col :span="8">
                                 <span>收款汇率<i class="red">*</i></span>
-                                <span>1{{currency.sign}}=</span>
-                                <el-input size="mini" type="number" v-model="currency.sign=='€'?order.rates.EUR:order.rates.GBP"></el-input>
+                                <span>{{requireCurrency.sign}}=</span>
+                                <el-input size="mini" type="number" v-model="params.reo"></el-input>
                                 <span>¥</span>
                                 <!--                    <span>实时汇率：1€=4546¥</span>-->
                             </el-col>
-                            <el-col :span="14">
+                            <el-col :span="1"></el-col>
+                            <el-col :span="6">
+                                <span>实时汇率</span>
+                                <span>{{requireCurrency.sign?order.rates.EUR:order.rates.GBP}}</span>
+                            </el-col>
+                            <el-col :span="1"></el-col>
+                            <el-col :span="8">
                                 <span>收款币种</span>
                                 <!--<el-radio disabled class="radio" size="small" value="1" label="1">{{currency.name}}</el-radio>-->
                                 <!--<el-radio disabled class="radio" size="small" value="2" label="1">人民币-->
@@ -97,9 +103,9 @@
                                 <!--case 'RMB':-->
                                 <!--return { name:"人民币", sign:'￥'}-->
 
-                                <el-radio-group v-model="new_currency">
-                                    <el-radio  class="radio" size="small" :label='currency.name'>{{currency.name}}</el-radio>
-                                    <el-radio  class="radio" size="small" label="人民币">人民币
+                                <el-radio-group v-if="order" v-model="params.currency">
+                                    <el-radio  class="radio" size="small" :label='requireCurrency.type'>{{requireCurrency.name}}</el-radio>
+                                    <el-radio  class="radio" size="small" label="CNY">人民币
                                     </el-radio>
                                 </el-radio-group>
                             </el-col>
@@ -115,7 +121,7 @@
                                     </span>
                                     <i class="red">*</i>
                                     <el-input size="mini" type="number" v-model="params.money"></el-input>
-                                    <span>{{currency.name}} ={{params.money*(currency.sign=='€'?order.rates.EUR:order.rates.GBP)}}¥</span>
+                                    <span>{{currency.name}} = {{params.money && (params.money * (params.currency==='CNY'?1:params.reo).toFixed(0))}}¥</span>
                                 </el-form-item>
                             </el-col>
 
@@ -145,18 +151,27 @@
                         </el-table-column>
                         <el-table-column label="渠道" prop="provider">
                         </el-table-column>
-                        <el-table-column :label="'收款金额'+currency.sign" prop="collection_info.money">
+                        <el-table-column label="收款币种">
+                            <template scope="scope">{{genCurrency(scope.row.collection_info.currency).name}}</template>
+                        </el-table-column>
+                        <el-table-column :label="'收款金额'+requireCurrency.sign">
                             <template scope="scope">
                                 <span>
-                                    {{scope.row.collection_info.money?scope.row.collection_info.money:0}}{{currency.name}}
+                                    {{
+                                        scope.row.collection_info.currency==='CNY' ?
+                                        (scope.row.collection_info.money*scope.row.collection_info.reo).toFixed(0) :
+                                        scope.row.collection_info.money
+                                    }}{{requireCurrency.name}}
                                 </span>
                             </template>
                         </el-table-column>
                         <el-table-column label="收款金额¥">
                             <template scope="scope">
                                 <span>
-                                    <!--{{scope.row.collection_info.money?scope.row.collection_info.money*scope.row.collection_info.reo:0}}人民币-->
-                                    {{scope.row.collection_info.money?scope.row.collection_info.money*(currency.sign=='€'?order.rates.EUR:order.rates.GBP):0}}元
+                                    {{
+                                        scope.row.collection_info.currency==='CNY'?
+                                        scope.row.collection_info.money:
+                                        (scope.row.collection_info.reo/scope.row.collection_info.reo).toFixed(0)}}人民币
                                 </span>
                             </template>
                         </el-table-column>
@@ -171,9 +186,9 @@
                 </div>
                 <el-row type="flex" class="computed">
                     <el-col style="text-align: right">
-                        <span>还需收款 ：{{leftmoney}} {{currency.sign}}</span>
-                        <span>收款总额 ：{{income}} {{currency.sign}}</span>
-                        <span>{{income*(currency.sign=='€'?order.rates.EUR:order.rates.GBP)}}¥</span>
+                        <span>还需收款 ：{{leftmoney}} {{requireCurrency.sign}}</span>
+                        <span>收款总额 ：{{income}} {{requireCurrency.sign}}</span>
+                        <span>{{incomeRmb}}¥</span>
                     </el-col>
                 </el-row>
             </div>
@@ -241,7 +256,7 @@
                 </div>
                 <el-row type="flex" class="computed">
                     <el-col style="text-align: right">
-                        <span>供应商成本：{{new_privider_consts}}€</span>
+                        <span>供应商成本：{{new_privider_consts}}</span>
                     </el-col>
                 </el-row>
             </div>
@@ -264,7 +279,6 @@
         },
         data(){
             return {
-//                new_currency:'欧元',
                 counts:0,
                 privider_consts:0,
                 newLeftmoney:0,
@@ -281,9 +295,9 @@
                 },
                 payflag: false,
                 params: {
-                    reo: 0,
-                    money: null,
-                    id: ''
+                    reo: 1,
+                    currency:'CNY',
+                    money: null
                 },
                 provider_cost:[
                 ],
@@ -333,7 +347,7 @@
                                     time:'',
                                 reason:'预订',
                                 booking_userName:vm.order.booking_user.name,
-                                total_cost:value.total_cost
+                                total_cost:value.total_cost + vm.requireCurrency.name
                             })
 //                            value.booking_userName=vm.order.booking_user.name;
 //                            value.reason="预订";
@@ -358,10 +372,12 @@
 
                         if (data.detail.collection_info) {
                             this.params = data.detail.collection_info;
-                            this.params.money+=this.params.currency;
                             this.payflag = true;
                         }else {
-                            this.params = {reo: 0, currency: '欧元', money: 0, id: ''}
+                            if(this.requireCurrency.type!=='CNY'){
+                                this.params.reo = this.order.rates[this.requireCurrency.type];
+                                this.params.currency = this.requireCurrency.type;
+                            }
                             this.payflag = false;
                         }
 
@@ -382,7 +398,6 @@
                             count+=newArr[i];
                         }
                         this.counts=count;
-                        this.params.money=parseFloat(this.params.money);
 
                         if(this.params.money===0){
                             this.newLeftmoney=this.counts;
@@ -394,6 +409,8 @@
                             this.newIncome=newLeftmoney.income;
 //                    this.newLeftmoney=leftmoney;
                         }
+
+                        this.currency = data.detail.requirement.currency;
                         /*加载数据end*/
                     }
                 )
@@ -461,8 +478,21 @@
                         this.$refs.dialogroup.loadSubmit();
                     }
                 })
-            }
+            },
             /*收款校验end*/
+
+            genCurrency(type){
+                switch(type){
+                    case 'EUR':
+                        return { type, name:'欧元', sign:'€' };
+                    case 'GBP':
+                        return { type, name:'英镑', sign:'￡' };
+                    case 'CNY':
+                        return { type, name:"人民币", sign:'￥'};
+                    default:
+                        return {};
+                }
+            }
 
         },
         computed: {
@@ -471,32 +501,28 @@
                 return this.provider_cost=[...new Set(this.provider_cost)];
             },
             new_privider_consts(){
-                let vm=this;
-                this.new_provider_cost.forEach(function(value){
-                    vm.privider_consts+=parseInt(value.total_cost);
-                })
+                let provider_total = 0;
+                this.new_provider_cost.forEach(value=>{
+                    provider_total+=parseInt(value.total_cost);
+                });
 
-                 return this.privider_consts;
+                return provider_total+this.requireCurrency.name;
             },
             userRole(){
                 return this.$store.getters.offlineRole;
             },
-            currency(){
-                if(!this.order) return {};
-                switch(this.order.requirement.currency){
-                    case 'EUR':
-                        return { name:'欧元', sign:'€' };
-                    case 'GBP':
-                        return { name:'英镑', sign:'￡' };
-                    case 'RMB':
-                        return { name:"人民币", sign:'￥'}
+            requireCurrency(){
+                if(this.order){
+                    return this.genCurrency(this.order.requirement.currency);
                 }
+
+                return {};
+            },
+            currency(){
+                return this.genCurrency(this.params.currency);
             },
             new_currency(){
                 return "欧元";
-            },
-            currencys(){
-                return this.currency.name;
             },
             money(){
 //                return parseFloat((this.params.reo * this.params.money).toFixed(2));
@@ -525,33 +551,31 @@
                 return pay-this.income;
             },
             income(){
-                let income=(this.params.money*1)||0;
-                if(this.order&&this.order.pay_stream){
-                    this.order.pay_stream.forEach(
-                        (v,k)=>{
-                            income+=v.collection_info.money*1;
-                        }
-                    )
+                let income = 0;
+
+                if(!this.order) return income;
+
+                for(let stream of [this.params, ...(this.order.pay_stream||[])]) {
+                    if (stream.money == null) continue;
+
+                    income += stream.money / (stream.currency === 'CNY' ? stream.reo : 1);
                 }
+
                 return income;
             },
             /*收款总额人民币start*/
             incomeRmb(){
-                let reo=0;
-                if(this.order&& this.order.pay_stream){
-                    this.order.pay_stream.forEach(
-                        (v,k)=>{
-                            reo=v.collection_info.reo;
-                        }
-                    )
+                let income = 0;
+
+                if(!this.order) return income;
+
+                for(let stream of [this.params, ...(this.order.pay_stream||[])]) {
+                    if (stream.money == null) continue;
+
+                    income += stream.money * (stream.currency === 'CNY' ? 1 : stream.reo);
                 }
-                if(reo){
-//                    return parseFloat((this.income*reo).toFixed(2));
-                    return parseInt(this.income*reo);
-                }else{
-//                    return parseFloat((this.income*this.params.reo).toFixed(2));
-                    return parseInt(this.income*this.params.reo);
-                }
+
+                return income;
             },
             /*收款总额人民币end*/
             refundmoney(){

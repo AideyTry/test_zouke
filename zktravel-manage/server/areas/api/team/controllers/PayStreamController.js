@@ -16,6 +16,9 @@ module.exports = class MyPayStreamController extends TeamController {
 
     //发起收款
     async collection(id,reo,currency,money){
+        if(reo) reo = parseFloat(reo);
+        if(money) reo = parseFloat(money);
+
         const payStream = new PayStream();
         let user = this.$getUser();
         const result = await payStream.collection(id,user,reo,currency,money);
