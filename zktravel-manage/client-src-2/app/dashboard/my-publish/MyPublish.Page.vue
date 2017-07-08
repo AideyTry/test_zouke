@@ -312,6 +312,7 @@ export default{
         voucherLoadding(){
             if(this.$route.path=="/dashboard/my-publish/require-invoice"){
                 ajax.post('/api/team/order/query-need-voucher',{page:this.pageNum-1,pageSize:this.pageSize},{lock: false}).then(json=>{
+                    console.log(json);
                     this.currentData=json.list;
                     this.total=json.count;
                     for(let obj of this.currentData){

@@ -17,6 +17,7 @@
         .computed{
             height: 40px;
             line-height: 40px;
+            margin-bottom: 30px;
         }
     }
 </style>
@@ -149,12 +150,12 @@
              <el-col :span="24"><strong>取消政策：</strong>{{tab.user_policy.cancel||''}}</el-col>
          </el-row>
          <el-row class="computed">
-             <el-col :span="2"><strong>付款政策：</strong></el-col>
-             <el-col :span="22">付款类型：{{tab.user_policy.type||''}}
+             <el-col :span="3"><strong>付款政策：</strong></el-col>
+             <el-col :span="21">付款类型：{{tab.user_policy.type||''}}
                     <template v-for="(v,k) in tab.user_policy.payment">
                         <el-row>
-                            <el-col>截止时间：{{v.dead_line}}  金额：{{v.price}}</el-col>  
-                        </el-row>  
+                            <el-col>截止时间：{{v.dead_line}}  金额：{{v.price}}</el-col>
+                        </el-row>
                     </template>
              </el-col>
          </el-row>

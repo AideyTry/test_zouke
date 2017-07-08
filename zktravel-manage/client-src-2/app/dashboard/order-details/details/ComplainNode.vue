@@ -138,7 +138,7 @@
                     console.log(json);
                     this.complain_content=json.detail.complain_content;
                     this.pageNum=1;
-                    this.list=this.complain_content;
+                    this.list=this.complain_content?this.complain_content:this.complain_content=[];
                     this.list=this.list.reverse();
                     for(let v of this.list){
                         if(typeof(v.user)=='undefined'||!v.user){

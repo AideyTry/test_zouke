@@ -104,7 +104,7 @@
                         <el-col :span="10">
                             <el-row type="flex">
                                 <strong>取消政策:</strong>
-                                <span>{{orderData.user_policy.cancel}}</span>
+                                <span>{{orderData.user_select_case.user_policy.cancel}}</span>
                             </el-row>
                         </el-col>
                         <el-col :span="2"></el-col>
@@ -116,7 +116,7 @@
                             <el-row v-if="isTrue==false" type="flex">
                                 <span>全款</span>
                             </el-row>
-                            <template v-for="(item,index) in orderData.user_policy.payment">
+                            <template v-for="(item,index) in orderData.user_select_case.user_policy.payment">
                                 <el-row type="flex">
                                     <span>{{item.dead_line}}</span>
                                     <span>前需支付</span>
@@ -220,7 +220,7 @@
             percent(){
             },
             isTrue(){
-                if(this.orderData.user_policy.payment.length>1){
+                if(this.orderData.user_select_case.user_policy.payment.length>1){
                     this.change=!this.change;
                 }
                 return this.change;
