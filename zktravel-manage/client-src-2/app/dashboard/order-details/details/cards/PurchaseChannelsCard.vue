@@ -34,7 +34,7 @@
                         <el-col :span="2">
                             <el-input v-model="item.total_cost" type="number" size="mini"></el-input>
                         </el-col>
-                        €
+                        <span>{{orderData&&genCurrency(orderData.requirement.currency).sign}}</span>
                     </el-row>
                     <template>
                         <el-row type="flex">
@@ -87,7 +87,7 @@
 
                                 </el-col>
                                 <el-col :span="1">
-                                    €
+                                    <span>{{orderData&&genCurrency(orderData.requirement.currency).sign}}</span>
                                 </el-col>
                                 <el-col :span="2">
                                     <el-button type="primary" icon="delete" size="mini" @click="deletePurchase(item.cancel_policy.cancel.pay_cancel,index)"></el-button>
@@ -129,7 +129,7 @@
                                 <el-input v-model="v.number" type="number" size="mini"></el-input>
                             </el-col>
                             <el-col :span="1">
-                                €
+                                <span>{{orderData&&genCurrency(orderData.requirement.currency).sign}}</span>
                             </el-col>
                             <el-col :span="2">
                                 <el-button type="primary" icon="delete" size="mini" @click="deletePayPolicy(item.pay_policy,index)"></el-button>
@@ -149,7 +149,7 @@
 </template>
 <script>
     export default{
-        props:["order","purchase_channel"],
+        props:["order","purchase_channel","orderData"],
         data(){
           return {
               supplier:'',
@@ -234,6 +234,18 @@
 ////                }
 //
 //            },
+            genCurrency(type){
+                switch(type){
+                    case 'EUR':
+                        return { type, name:'欧元', sign:'€' };
+                    case 'GBP':
+                        return { type, name:'英镑', sign:'￡' };
+                    case 'CNY':
+                        return { type, name:"人民币", sign:'￥'};
+                    default:
+                        return {};
+                }
+            },
             loadSupplier(){
 //                this.purchase_channel;
 //                this.newSupplier;
@@ -318,7 +330,7 @@
                },
                 deep:true
             }
-        },
+        }
 //        watch:{
 //
 ////            newSupplier(){
@@ -461,17 +473,6 @@
 ////                }
 //            }
 //        },
-        mounted(){
-//            this.loadSupplier();
-//            if(this.item.length==1){
-//                this.deleteIsTrue=false;
-//            }else{
-//                this.deleteIsTrue=true;
-//            }
-            console.log("newSupplier===",this.newSupplier);
-        },
-        beforeUpdate(){
-            console.log("newSupplier===",this.newSupplier);
-        }
+
     }
 </script>

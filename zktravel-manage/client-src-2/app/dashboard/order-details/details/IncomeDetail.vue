@@ -224,12 +224,12 @@
                         </el-table-column>
                     </el-table>
                 </div>
-                <el-row type="flex" class="computed">
-                    <el-col style="text-align: right">
-                        <span>退款总额 ：{{refundmoney}}€</span>
-                        <span>¥</span>
-                    </el-col>
-                </el-row>
+                <!--<el-row type="flex" class="computed">-->
+                    <!--<el-col style="text-align: right">-->
+                        <!--<span>退款总额 ：{{refundmoney}}€</span>-->
+                        <!--<span>¥</span>-->
+                    <!--</el-col>-->
+                <!--</el-row>-->
             </div>
             <div class="divline"></div>
             <div class="card" v-if="userRole.MODIFYING_COST">

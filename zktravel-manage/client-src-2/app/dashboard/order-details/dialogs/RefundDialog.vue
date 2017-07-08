@@ -59,33 +59,33 @@
                 </el-row>
             </el-form-item>
             <span class="line"></span>
-            <el-row type="flex">
-                <el-col :span="7">
-                    <strong>订单成本</strong>
-                    <!--<span>{{pay_const*(params.currency=='EUR'?order.rates.EUR:order.rates.GBP)}}</span>-->
-                    <span>{{parseInt(new_pay_const)}}</span>
-                    <span>{{genCurrency(params.currency).name}}</span>
-                </el-col>
-                <el-col :span="1"></el-col>
-                <el-col :span="7">
-                    <span>已收款</span>
-                    <span>{{order&&parseInt(incomes)}}</span>
-                    <span>{{genCurrency(params.currency).name}}</span>
-                </el-col>
-                <el-col :span="1"></el-col>
-                <el-col :span="7">
-                    <span>已退款</span>
-                    <span></span>
-                    <span>{{genCurrency(params.currency).name}}</span>
-                </el-col>
-            </el-row>
-            <el-row type="flex">
-                <el-col :span="2"><strong>取消政策</strong></el-col>
-                <el-col>
-                    <span></span>
-                    <span>前可免费取消</span>
-                </el-col>
-            </el-row>
+            <!--<el-row type="flex">-->
+                <!--<el-col :span="7">-->
+                    <!--<strong>订单成本</strong>-->
+                    <!--&lt;!&ndash;<span>{{pay_const*(params.currency=='EUR'?order.rates.EUR:order.rates.GBP)}}</span>&ndash;&gt;-->
+                    <!--<span>{{parseInt(new_pay_const)}}</span>-->
+                    <!--<span>{{genCurrency(params.currency).name}}</span>-->
+                <!--</el-col>-->
+                <!--<el-col :span="1"></el-col>-->
+                <!--<el-col :span="7">-->
+                    <!--<span>已收款</span>-->
+                    <!--<span>{{order&&parseInt(incomes)}}</span>-->
+                    <!--<span>{{genCurrency(params.currency).name}}</span>-->
+                <!--</el-col>-->
+                <!--<el-col :span="1"></el-col>-->
+                <!--<el-col :span="7">-->
+                    <!--<span>已退款</span>-->
+                    <!--<span></span>-->
+                    <!--<span>{{genCurrency(params.currency).name}}</span>-->
+                <!--</el-col>-->
+            <!--</el-row>-->
+            <!--<el-row type="flex">-->
+                <!--<el-col :span="2"><strong>取消政策</strong></el-col>-->
+                <!--<el-col>-->
+                    <!--<span></span>-->
+                    <!--<span>前可免费取消</span>-->
+                <!--</el-col>-->
+            <!--</el-row>-->
         </el-form>
         <div class="button-container">
             <el-button type="info" @click="submit">

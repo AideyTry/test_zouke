@@ -100,16 +100,16 @@
                                 <el-col :span="2"><strong>总成本价:</strong></el-col>
                                 <el-col>
                                     <span>{{item.total_cost}}</span>
-                                    €
+                                    <span>{{orderDatas&&genCurrency(orderDatas.requirement.currency).sign}}</span>
                                 </el-col>
                             </el-row>
                             <el-row type="flex">
-                                <el-col :span="2"><strong>取消政策:</strong></el-col>
-                                <el-col :span="8">
-                                    <span>{{item.cancel_policy.cancel.free_cancel_date.substr(0,10)}}</span>
-                                    <span>{{item.cancel_policy.cancel.free_cancel_date?'前可免费取消':'不可取消'}}</span>
-                                </el-col>
-                                <el-col :span="2"></el-col>
+                                <!--<el-col :span="2"><strong>取消政策:</strong></el-col>-->
+                                <!--<el-col :span="8">-->
+                                    <!--<span>{{item.cancel_policy.cancel.free_cancel_date.substr(0,10)}}</span>-->
+                                    <!--<span>{{item.cancel_policy.cancel.free_cancel_date?'前可免费取消':'不可取消'}}</span>-->
+                                <!--</el-col>-->
+                                <!--<el-col :span="2"></el-col>-->
                                 <el-col :span="2"><strong>付款政策:</strong></el-col>
                                 <el-col :span="8">
                                     <template v-for="(v,index) in item.pay_policy">
@@ -118,7 +118,7 @@
                                                 <span>{{v.pay_date.substr(0,10)}}</span>
                                                 <span>前续支付</span>
                                                 <span>{{v.number}}</span>
-                                                €
+                                                <span>{{orderDatas&&genCurrency(orderDatas.requirement.currency).sign}}</span>
                                             </el-col>
                                         </el-row>
                                     </template>
@@ -164,6 +164,18 @@
             }
         },
         methods:{
+            genCurrency(type){
+                switch(type){
+                    case 'EUR':
+                        return { type, name:'欧元', sign:'€' };
+                    case 'GBP':
+                        return { type, name:'英镑', sign:'￡' };
+                    case 'CNY':
+                        return { type, name:"人民币", sign:'￥'};
+                    default:
+                        return {};
+                }
+            },
             loadOrder(id){
                 ajax.post("/api/team/order/detail",{id:id}, {lock: false}).then(json=>{
                     this.orderData = json.detail.order_detail;
@@ -191,7 +203,7 @@
         mounted(){
             this.dateRange();
             this.loadOrder(this.$route.params.orderid);
-            console.log("orderDatas",this.orderDatas);
+            console.log("orderDatas===",this.orderDatas);
         }
     }
 </script>

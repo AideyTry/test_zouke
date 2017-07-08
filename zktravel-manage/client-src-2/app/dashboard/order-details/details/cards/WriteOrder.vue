@@ -85,7 +85,7 @@
                 </el-tabs>
             </div>
 
-            <PurchaseChannelsCard :purchase_channel="purchase_channel" :order="order"></PurchaseChannelsCard>
+            <PurchaseChannelsCard :purchase_channel="purchase_channel" :orderData="orderData" :order="order"></PurchaseChannelsCard>
         </div>
         <el-row type="flex">
             <el-col :span="24">

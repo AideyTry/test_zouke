@@ -47,43 +47,47 @@
                         </el-col>
                     </el-row>
                     <template v-for="(item,index) in v.hotels">
-                        <el-row type="flex">
-                            <el-col :span="8">
-                                <strong>入住编号:</strong>
-                                <span>{{item.suppliers.at_number}}</span>
-                            </el-col>
-                            <el-col :span="8">
-                                <strong>备注确认号:</strong>
-                                <span>{{item.remark_confirm}}</span>
-                            </el-col>
-                        </el-row>
-                        <el-row type="flex">
-                            <el-col :span="8">
-                                <strong>酒店入住时间:</strong>
-                                <span></span>
-                            </el-col>
-                            <el-col :span="8">
-                                <strong>酒店退房时间:</strong>
-                                <span></span>
-                            </el-col>
-                        </el-row>
-                        <template v-for="(room,index) in item.suppliers.rooms">
+                        <div v-for="(v,index) in item.suppliers" :key="v.at_number">
                             <el-row type="flex">
-                                <el-col :span="6">
-                                    <strong>房间:</strong>
-                                    <span>{{room.type}}</span>
+                                <el-col :span="8">
+                                    <strong>入住编号:</strong>
+                                    <span>{{v.at_number}}</span>
                                 </el-col>
-                                <el-col :span="6">
-                                    <template v-for="(item,index) in room.peoples">
-                                        <el-row type="flex">
-                                            <strong>入住人:</strong>
-                                            <span>{{item.name}}</span>
-                                            <span>{{item.family_name}}</span>
-                                        </el-row>
-                                    </template>
+                                <!--<el-col :span="8">-->
+                                <!--<strong>备注确认号:</strong>-->
+                                <!--<span>{{item.remark_confirm}}</span>-->
+                                <!--</el-col>-->
+                            </el-row>
+                            <el-row type="flex">
+                                <el-col :span="8">
+                                    <strong>酒店入住时间:</strong>
+                                    <span></span>
+                                </el-col>
+                                <el-col :span="8">
+                                    <strong>酒店退房时间:</strong>
+                                    <span></span>
                                 </el-col>
                             </el-row>
-                        </template>
+                            <template v-for="(room,index) in v.rooms">
+                                <el-row type="flex">
+                                    <el-col :span="6">
+                                        <strong>房间:</strong>
+                                        <span>{{room.type}}</span>
+                                    </el-col>
+                                    <el-col :span="6">
+                                        <template v-for="(item,index) in room.peoples">
+                                            <el-row type="flex">
+                                                <strong>入住人:</strong>
+                                                <span>{{item.name}}</span>
+                                                <span>{{item.family_name}}</span>
+                                            </el-row>
+                                        </template>
+                                    </el-col>
+                                </el-row>
+                            </template>
+                        </div>
+
+
                     </template>
                 </div>
             </el-card>
@@ -97,7 +101,7 @@
                         <el-col :span="5">
                             <strong>订单金额:</strong>
                             <span>{{cost}}</span>
-                            €
+                            <span>{{orderData&&genCurrency(orderData.requirement.currency).sign}}</span>
                         </el-col>
                     </el-row>
                     <el-row type="flex">
@@ -118,10 +122,10 @@
                             </el-row>
                             <template v-for="(item,index) in orderData.user_select_case.user_policy.payment">
                                 <el-row type="flex">
-                                    <span>{{item.dead_line}}</span>
+                                    <span>{{formatTime(item.dead_line)}}</span>
                                     <span>前需支付</span>
                                     <span>{{item.price}}</span>
-                                    €
+                                    <span>{{orderData&&genCurrency(orderData.requirement.currency).sign}}</span>
                                 </el-row>
                             </template>
                         </el-col>
@@ -227,6 +231,21 @@
             }
         },
         methods:{
+            formatTime(time){
+                return new Date(time).format('YYYY-MM-DD');
+            },
+            genCurrency(type){
+                switch(type){
+                    case 'EUR':
+                        return { type, name:'欧元', sign:'€' };
+                    case 'GBP':
+                        return { type, name:'英镑', sign:'￡' };
+                    case 'CNY':
+                        return { type, name:"人民币", sign:'￥'};
+                    default:
+                        return {};
+                }
+            },
             loadOrder(id){
                 ajax.post("/api/team/order/detail",{id:id}, {lock: false}).then(json=>{
                     this.orderData = json.detail;
