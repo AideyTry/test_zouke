@@ -27,27 +27,30 @@
                             <span>{{v.check_in}}-{{v.check_out}}</span>
                             <span>{{dateRange(v.check_out,v.check_in)}}晚</span>
                         </el-col>
-                        <el-col :span="8">
-                            <strong>入住酒店:</strong>
-                            <span>{{v.hotel.name}}</span>
-                        </el-col>
                     </el-row>
-                    <el-row type="flex">
-                        <el-col :span="8">
-                            <strong>酒店电话:</strong>
-                            <span></span>
-                        </el-col>
-                        <el-col :span="8">
-                            <strong>酒店地址:</strong>
-                            <span>{{v.hotel.address}}</span>
-                        </el-col>
-                        <el-col :span="8">
-                            <strong>是否含早:</strong>
-                            <span>{{orderData.requirement.breakfast?"含早":"不含"}}</span>
-                        </el-col>
-                    </el-row>
+                    
                     <template v-for="(item,index) in v.hotels">
                         <div v-for="(v,index) in item.suppliers" :key="v.at_number">
+                            <el-row type="flex">
+                                <el-col :span="8">
+                                    <strong>入住酒店:</strong>
+                                    <span>{{item.hotel.name}}</span>
+                                </el-col>
+                            </el-row>
+                            <el-row type="flex">
+                                <el-col :span="8">
+                                    <strong>酒店电话:</strong>
+                                    <span></span>
+                                </el-col>
+                                <el-col :span="8">
+                                    <strong>酒店地址:</strong>
+                                    <span>{{item.hotel.address}}</span>
+                                </el-col>
+                                <el-col :span="8">
+                                    <strong>是否含早:</strong>
+                                    <span>{{orderData.requirement.breakfast?"含早":"不含"}}</span>
+                                </el-col>
+                            </el-row>
                             <el-row type="flex">
                                 <el-col :span="8">
                                     <strong>入住编号:</strong>
