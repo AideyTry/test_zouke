@@ -18,7 +18,7 @@ const store = new Vuex.Store({
         /*待控放start*/
         count:2,
         selectRoom:0,
-        supplier:'',
+        supplier:[],
         /*待控放end*/
         /*用户权限管理*/
         offlineRole:null,
@@ -77,8 +77,8 @@ const store = new Vuex.Store({
         selectRoom(state){
             state.selectRoom=++state.selectRoom;
         },
-        supplier(state,supplier_name){
-            state.supplier=supplier_name;
+        supplier(state,supplier){
+            state.supplier=supplier;
         },
         /*待控放end*/
         /*报价通过start*/
@@ -94,38 +94,38 @@ const store = new Vuex.Store({
             })
         },
         /*待控房start*/
-        updateOrders({commit},orders){
-                    let arr=[];
-                    let count_GTA=0;
-                    let count_miki=0;
-                    let str='';
-                    orders.forEach(function(order){
-                        order.hotels.forEach(function(hotels){
-                            hotels.suppliers.forEach(function(supplier,index){
-                                arr.push(supplier.supplier_name);
-                            })
-                        })
-                    });
-                    for(let i=0;i<arr.length;i++){
-                        if(arr[i]=='GTA'){
-                            count_GTA++;
-                        }
-                        if(arr[i]=='miki'){
-                            count_miki++;
-                        }
-                    }
-                    if(count_GTA==0&&count_miki==0){
-                        commit('supplier',str)
-                    }
-                    if(count_GTA!=0&&count_miki==0){
-                        str="GTA";
-                        commit('supplier',str)
-                    }
-                    if(count_GTA==0&&count_miki!=0){
-                        str="miki";
-                        commit('supplier',str)
-                    }
-        }
+        // updateOrders({commit},orders){
+        //             let arr=[];
+        //             let count_GTA=0;
+        //             let count_miki=0;
+        //             let str='';
+        //             orders.forEach(function(order){
+        //                 order.hotels.forEach(function(hotels){
+        //                     hotels.suppliers.forEach(function(supplier,index){
+        //                         arr.push(supplier.supplier_name);
+        //                     })
+        //                 })
+        //             });
+        //             for(let i=0;i<arr.length;i++){
+        //                 if(arr[i]=='GTA'){
+        //                     count_GTA++;
+        //                 }
+        //                 if(arr[i]=='miki'){
+        //                     count_miki++;
+        //                 }
+        //             }
+        //             if(count_GTA==0&&count_miki==0){
+        //                 commit('supplier',str)
+        //             }
+        //             if(count_GTA!=0&&count_miki==0){
+        //                 str="GTA";
+        //                 commit('supplier',str)
+        //             }
+        //             if(count_GTA==0&&count_miki!=0){
+        //                 str="miki";
+        //                 commit('supplier',str)
+        //             }
+        // }
         /*待控房end*/
     }
 });
