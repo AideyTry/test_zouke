@@ -26,7 +26,7 @@ const validReqDataRule = {
             '*check_in': '2017-07-08',
             '*check_out': '2017-07-09',
             '*city': { '*id':123, '*name':'name' },
-            'hotel': { },
+            'hotel': { '*id':123 },
             '*rooms': [
                 { '*type': 'type', '*number': 1, 'mark': 'mark' },
                 { min:1 }

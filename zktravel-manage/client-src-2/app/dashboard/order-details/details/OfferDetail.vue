@@ -231,7 +231,7 @@
                             vm.countryTabs = data.detail.requirement.stay_details[0].city.name + '0'
                             data.detail.requirement.stay_details.forEach(
                                 (v, k) => {
-                                    vm.editableTabs[0].params.push({city: '', hotel: '', rooms: []})
+                                    vm.editableTabs[0].params.push({city: null, hotel: null, rooms: []})
                                     v.rooms.forEach(
                                         (l, y) => {
                                             vm.editableTabs[0].params[k].rooms.push({price:{cost:'', bk: '', quoted: ''},actual_room_name:[]})
