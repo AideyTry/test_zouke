@@ -10,7 +10,7 @@
 <style lang="scss" scoped>
     .booking-offer{
         background: #E5E9F2;
-        padding: 20px 10px;
+        padding: 20px 10px 90px 10px;
         font-size: 15px;
         margin-bottom: 20px;
         border-radius: 5px;
@@ -44,7 +44,7 @@
                 prop="address"
                 label="酒店">
             <template scope="scope">
-                <span>{{scope.row.params.hotel.name||scope.row.hotel.name}}</span>
+                <span>{{scope.row.params.hotel.name||scope.row.params.hotel.ename}}</span>
             </template>
         </el-table-column>
         <el-table-column
@@ -159,6 +159,7 @@
                         <el-row>
                             <el-col>时间：{{v.dead_line}} 金额：{{v.price}}</el-col>
                         </el-row>
+                         
                     </template>
                  </el-col>
              </el-row>
@@ -200,11 +201,7 @@ import debounce from 'lodash/debounce'
         },
         computed:{
             tab(){
-                let offer = JSON.parse(JSON.stringify(this.offer));
-                for(let tebs of offer.user_policy.payment){
-                    tebs.dead_line = new Date(tebs.dead_line).format("YYYY.MM.DD");
-                }
-                return offer;
+                return JSON.parse(JSON.stringify(this.offer));
             },
             tabledata(){
                 let arr= this.tab.order||[]; //循环每个酒店住宿时间段
@@ -262,6 +259,9 @@ import debounce from 'lodash/debounce'
                         return "€"
                 }
             }
+        },
+         mounted(){
+            console.log(this.tab);
         }
     }
 </script>

@@ -10,5 +10,7 @@ module.exports = class LoginController extends WController {
             this.render(null, '/views/login');
             return false;
         }
+
+        console.log('\tuid: ', uid);
     }
 }

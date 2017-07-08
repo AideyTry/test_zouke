@@ -6,7 +6,7 @@ const orderRule = {
         {
             "*hotels":[
                 {
-                    "*hotel":{},
+                    "*hotel":{ "*id": 123 },
                     "*suppliers":[{
                         "*supplier_name": "供应商名字",
                         "*at_number": "入住编号",

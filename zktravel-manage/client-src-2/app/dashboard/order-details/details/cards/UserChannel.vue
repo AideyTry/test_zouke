@@ -89,7 +89,7 @@
             changeType(label){
                 if(label="全款"){
                     this.user_policy.payment = [{
-                        dead_line:new Date,
+                        dead_line:new Date(),
                         price:0
                     }]
                 }

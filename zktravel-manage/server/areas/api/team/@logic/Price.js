@@ -13,7 +13,7 @@ const priceRule = {
             },
             price: [
                 {
-                    '*hotel': { },
+                    '*hotel': { '*id':123 },
                     '*rooms': [
                         { 
                             '*price':{ '*cost': 100, '*bk': 120, '*quoted': 110 },
