@@ -28,9 +28,10 @@
             min-width: 850px;
             width: 100%;
             background: #F9FAFC;
-            padding: 0px 20px;
+            padding: 0px 20px 20px 20px;
             box-sizing:border-box;
             overflow-y: auto;
+            overflow-x: hidden;
             margin-bottom: 80px;
             h4 {
                 display: inline-block;
