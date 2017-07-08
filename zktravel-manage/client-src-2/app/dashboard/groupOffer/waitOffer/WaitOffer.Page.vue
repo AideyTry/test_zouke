@@ -56,7 +56,6 @@
             }
             .twelve{
                 background-color: #FF9900;
-                color:green;
                 padding:0px 30px;
             }
             .twenty-four{
@@ -103,7 +102,7 @@
                         <template scope="scope">
                             <el-tag v-if="scope.row._class=='eight'" color="#FF6666">8小时内完成</el-tag>
                             <el-tag v-else-if="scope.row._class=='twelve'" color="#FF9900">24小时内完成</el-tag>
-                            <el-tag v-else-if="scope.row._class=='twenty-four'" color="#FFFF00">48小时内完成</el-tag>
+                            <el-tag v-else-if="scope.row._class=='twenty-four'" color="#FFFF00" style="color:green;">48小时内完成</el-tag>
                             <el-tag v-else-if="scope.row._class=='time-out'" color="#9900cc">已超时</el-tag>
                         </template>
                     </el-table-column>
