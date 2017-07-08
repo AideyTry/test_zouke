@@ -9,14 +9,12 @@ const objRule = {
 
 module.exports = class ModifyingCost extends BaseOrder {
 
-    //供应商对象校验
     validModifyingCost(Modifying_obj){
         const result =  compare(objRule, Modifying_obj)
         console.log(compare.getLastError());
         return result;
     }
 
-    //退款
     async commit(id,user,Modifying_obj){
 
         Modifying_obj["time"] = this.$createTime();
@@ -35,7 +33,7 @@ module.exports = class ModifyingCost extends BaseOrder {
             {
                 $push:{
                     modifyCost_list: Modifying_obj,
-                    logs: this.$createShiftUpdate({ type: 'user: modifyingCost', time: this.$createTime(), user })
+                    logs: this.$createShiftUpdate({ type: 'user: modifying-cost', time: this.$createTime(), user })
                 }
             }
         )

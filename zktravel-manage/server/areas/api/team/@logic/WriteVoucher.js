@@ -14,7 +14,10 @@ module.exports = class WriteVoucher extends BaseOrder {
 
     //发票数据校验
     validVoucherObj(voucher_obj){
-        return compare(voucherRule, voucher_obj);
+        const result =  compare(voucherRule, voucher_obj);
+
+        console.log(compare.getLastError());
+        return result;
     }
 
     //数据入库
@@ -26,14 +29,12 @@ module.exports = class WriteVoucher extends BaseOrder {
         /**方法前面带$的说明是从父类继承来的**/
         return await this.$update(
             {
-                _id: id,
-                "creator.id":user.id
+                _id: id
             },
             {
                 $push: {
                     voucher_details:voucher_obj,
-                    //日志记录
-                    logs: this.$createShiftUpdate({ type: 'user:write_voucher', time: this.$createTime(), user })
+                    logs: this.$createShiftUpdate({ type: 'user: write-voucher', time: this.$createTime(), user })
                 }
             }
         )
