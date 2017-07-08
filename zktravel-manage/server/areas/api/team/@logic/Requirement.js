@@ -106,7 +106,7 @@ function patchPriceDiff(old_stay_details, stay_details, price){
 
         for(const diffDetail of diff){
             if(diffDetail.from === null){
-                const empty = { hotel:{}, rooms: [] };
+                const empty = { hotel:null, rooms: [] };
                 for(let i=0; i<diffDetail.length; ++i){
                     empty.rooms.push({price:{ 'cost': 0, 'bk': 0, 'quoted': 0  }});
                 }
