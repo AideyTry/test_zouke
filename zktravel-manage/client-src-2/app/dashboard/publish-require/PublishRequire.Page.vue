@@ -107,6 +107,7 @@
                         <el-input size="small" type="number" style="width:80px;" placeholder="请填写人数" v-model="params.number"></el-input>
                     </el-form-item>
                 </el-col>
+                <!--
                 <el-col :span="6">
                     <span>出行时间<i class="red">*</i></span>
                     <el-date-picker
@@ -117,6 +118,7 @@
                             :picker-options="pickerOptions">
                     </el-date-picker>
                 </el-col>
+                -->
             </el-row>
             <el-row type="flex">
                 <el-col :span="2">
@@ -347,7 +349,7 @@
                 },
                 type: this.ordertype || 1,
                 order: this.orderid || null,
-                startdate: new Date(),
+                //startdate: new Date(),
                 valid:false,
                 /*发布二次确认弹出框start*/
                 isTrue:false
@@ -479,6 +481,10 @@
                         vm.valid=true;
                     })
                 });
+                this.params.start_date = this.params.stay_details.map(s=>s.check_in).reduce((p,c)=>{
+                    if(p===0) return c;
+                    else return p<c?p:c;
+                },0);
 //                child[0].$refs[formName].validateField('city',function(){
 //                   vm.valid=true;
 //                })
@@ -523,17 +529,21 @@
                 if(this.orderdata.requirement.user){
                     this.users.push(this.orderdata.requirement.user);
                 }
+                /*
                 if(this.params.start_date){
                     this.startdate = new Date(this.params.start_date);
                 }
+                */
             }
 
         },
+        /*
         watch: {
             startdate(val){
                 this.params.start_date = val.format('YYYY-MM-DD');
             }
         },
+        */
         mounted(){
         }
     }
