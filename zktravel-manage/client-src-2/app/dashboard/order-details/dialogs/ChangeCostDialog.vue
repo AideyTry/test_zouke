@@ -38,6 +38,7 @@
 </template>
 <script>
     import ajax from '@local/common/ajax';
+    import spList from '../sp-list'
     export default{
         props:['dialog'],
         data(){
@@ -47,13 +48,7 @@
                     reason:'',
                     cost:0
                 },
-                channel: [{
-                    value: 'GTA',
-                    label: 'GTA'
-                }, {
-                    value: 'miki',
-                    label: 'miki'
-                }]
+                channel: spList.map(s=> ({ value:s.name, label:s.label }) ),
             }
         },
         methods:{

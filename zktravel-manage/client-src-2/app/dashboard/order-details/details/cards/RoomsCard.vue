@@ -39,7 +39,7 @@
                 </el-col>
                 <el-col :span="14">
                     <el-input v-model="item.roomDescription"
-                              type="textarea" :rows="2"
+                              type="textarea" :rows="1"
                               placeholder="填写房间描述">
 
                     </el-input>

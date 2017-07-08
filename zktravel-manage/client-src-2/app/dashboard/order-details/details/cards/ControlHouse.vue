@@ -16,7 +16,7 @@
                     <span>{{orderId}}</span>
                 </el-col>
             </el-row>
-            <el-card class="box-card" v-for="(v,index) in newOrderData.orders" :key="v.id" :index="index" :v="v">
+            <el-card class="box-card" v-for="(v,index) in newOrderData" :key="v.id" :index="index" :v="v">
                 <el-row type="flex" slot="header" class="clearfix">
                     <h4>入住单{{index+1}}</h4>
                 </el-row>

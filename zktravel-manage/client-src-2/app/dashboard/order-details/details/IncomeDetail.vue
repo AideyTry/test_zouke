@@ -298,8 +298,8 @@
                 },
                 payflag: false,
                 params: {
-//                    reo: 1,
-                    reo: null,
+                    reo: 1,
+//                    reo: null,
                     currency:'CNY',
                     money: null
                 },
