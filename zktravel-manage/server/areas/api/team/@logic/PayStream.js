@@ -76,6 +76,9 @@ module.exports = class PayStream extends BaseOrder {
         //没有发起收款
         if(!orderDoc) return false;
         const { collection_info, status: preStatus, allot_list } = orderDoc;
+
+        if(!collection_info) return false;
+
         const pay_stream= {
             "collection_info":collection_info,
             "provider":provider,

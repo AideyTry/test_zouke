@@ -152,15 +152,23 @@
                  <el-col :span="3"><strong>付款政策：</strong>
                  </el-col>
                  <el-col :span="21">
-                     <el-row>
+                    <el-row>
                         <el-col>付款类型：{{tab.user_policy.type}}</el-col>
                     </el-row>
-                    <template v-for="(v,k) in tab.user_policy.payment" :k="k">
-                        <el-row>
-                            <el-col>时间：{{v.dead_line}} 金额：{{v.price}}</el-col>
-                        </el-row>
-                         
-                    </template>
+                    <div v-if="this.tab.user_policy.payment.length==0">
+                        <template>
+                            <el-row>
+                                <el-col>{{tab.user_policy.payment[0].dead_line}}前缴清全款</el-col>
+                            </el-row>  
+                         </template>
+                    </div>
+                    <div v-if="this.tab.user_policy.payment!==0">
+                        <template v-for="(v,k) in tab.user_policy.payment" :k="k">
+                            <el-row>
+                                <el-col>{{v.dead_line}} 金额：{{v.price}}</el-col>
+                            </el-row>  
+                        </template>
+                    </div>
                  </el-col>
              </el-row>
              <el-row class="computed">
@@ -175,6 +183,11 @@
 import debounce from 'lodash/debounce'
     export default{
         props:['offer', 'index','orderdata', 'disable', 'select', 'selected'],
+        data(){
+            return {
+                a:''
+            }
+        },
         methods:{
             handleSelectionChange(val) {
                 if(this.disable){
@@ -261,7 +274,9 @@ import debounce from 'lodash/debounce'
             }
         },
          mounted(){
-            console.log(this.tab);
+            if(this.tab.user_policy){
+                console.log(JSON.stringify(this.tab));
+            }
         }
     }
 </script>

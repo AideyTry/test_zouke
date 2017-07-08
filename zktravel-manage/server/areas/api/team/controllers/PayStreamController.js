@@ -16,8 +16,10 @@ module.exports = class MyPayStreamController extends TeamController {
 
     //发起收款
     async collection(id,reo,currency,money){
+        if(!reo||!currency||!money) return this.renderJSON({ code:1, msg:'illigal args' });
+
         if(reo) reo = parseFloat(reo);
-        if(money) reo = parseFloat(money);
+        if(money) money = parseFloat(money);
 
         const payStream = new PayStream();
         let user = this.$getUser();

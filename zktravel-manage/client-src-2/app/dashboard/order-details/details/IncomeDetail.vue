@@ -80,7 +80,7 @@
                             <el-col :span="8">
                                 <span>收款汇率<i class="red">*</i></span>
                                 <span>{{requireCurrency.sign}}=</span>
-                                <el-input size="mini" type="number" v-model="params.reo"></el-input>
+                                <el-input size="mini" :disabled="payflag" type="number" v-model="params.reo"></el-input>
                                 <span>¥</span>
                                 <!--                    <span>实时汇率：1€=4546¥</span>-->
                             </el-col>
@@ -104,8 +104,8 @@
                                 <!--return { name:"人民币", sign:'￥'}-->
 
                                 <el-radio-group v-if="order" v-model="params.currency">
-                                    <el-radio  class="radio" size="small" :label='requireCurrency.type'>{{requireCurrency.name}}</el-radio>
-                                    <el-radio  class="radio" size="small" label="CNY">人民币
+                                    <el-radio :disabled="payflag"  class="radio" size="small" :label='requireCurrency.type'>{{requireCurrency.name}}</el-radio>
+                                    <el-radio :disabled="payflag"  class="radio" size="small" label="CNY">人民币
                                     </el-radio>
                                 </el-radio-group>
                             </el-col>
@@ -120,18 +120,18 @@
                                         本次收款
                                     </span>
                                     <i class="red">*</i>
-                                    <el-input size="mini" type="number" v-model="params.money"></el-input>
-                                    <span>{{currency.name}} = {{params.money && (params.money * (params.currency==='CNY'?1:params.reo).toFixed(0))}}¥</span>
+                                    <el-input :disabled="payflag" size="mini" type="number" v-model="params.money"></el-input>
+                                    <span>{{currency.name}} = {{params.money && (params.money * (params.currency==='CNY'?1:params.reo)).toFixed(0)}}¥</span>
                                 </el-form-item>
                             </el-col>
 
                             <el-col :span="14" class="button-group" v-if="userole.GATHERING">
-                                <el-button type="info" @click="payment" v-if="(!payflag)">生成收款二维码</el-button>
+                                <el-button type="info" @click="payment" v-if="!payflag">生成收款二维码</el-button>
                                 <!--<el-button type="info" @click="lookup" v-if="payflag">查看二维码</el-button>-->
                                 <span class="img-size" v-if="payflag">
-                            <img  class="code" src="////qr.api.cli.im/qr?data=%25E8%25B5%25B0%25E5%25AE%25A2%25E7%25BD%2591%25E6%2594%25AF%25E4%25BB%2598&level=H&transparent=false&bgcolor=%23ffffff&forecolor=%23000000&blockpixel=12&marginblock=1&logourl=http%3A%2F%2Fstatic.clewm.net%2Fcli%2Fimages%2Flogomb%2Fversion2%2Fweixin1.png&size=100&kid=cliim&key=9bae92981bd34233a66914cf575073f7" />
-                            <span>二维码扫码支付</span>
-                        </span>
+                                    <img class="code" src="//qr.api.cli.im/qr?data=%25E8%25B5%25B0%25E5%25AE%25A2%25E7%25BD%2591%25E6%2594%25AF%25E4%25BB%2598&level=H&transparent=false&bgcolor=%23ffffff&forecolor=%23000000&blockpixel=12&marginblock=1&logourl=http%3A%2F%2Fstatic.clewm.net%2Fcli%2Fimages%2Flogomb%2Fversion2%2Fweixin1.png&size=100&kid=cliim&key=9bae92981bd34233a66914cf575073f7">
+                                    <span>二维码扫码支付</span>
+                                </span>
                                 <el-button type="info" @click="markpayment" v-if="payflag">录入线下付款</el-button>
                                 <el-button type="danger" @click="cancelpayment" v-if="payflag">取消收款</el-button>
                             </el-col>
@@ -159,7 +159,7 @@
                                 <span>
                                     {{
                                         scope.row.collection_info.currency==='CNY' ?
-                                        (scope.row.collection_info.money*scope.row.collection_info.reo).toFixed(0) :
+                                        (scope.row.collection_info.money/scope.row.collection_info.reo).toFixed(0) :
                                         scope.row.collection_info.money
                                     }}{{requireCurrency.name}}
                                 </span>
@@ -171,7 +171,7 @@
                                     {{
                                         scope.row.collection_info.currency==='CNY'?
                                         scope.row.collection_info.money:
-                                        (scope.row.collection_info.reo/scope.row.collection_info.reo).toFixed(0)}}人民币
+                                        (scope.row.collection_info.money*scope.row.collection_info.reo).toFixed(0)}}人民币
                                 </span>
                             </template>
                         </el-table-column>
@@ -187,8 +187,8 @@
                 <el-row type="flex" class="computed">
                     <el-col style="text-align: right">
                         <span>还需收款 ：{{leftmoney}} {{requireCurrency.sign}}</span>
-                        <span>收款总额 ：{{income}} {{requireCurrency.sign}}</span>
-                        <span>{{incomeRmb}}¥</span>
+                        <span>收款总额 ：{{income.toFixed(0)}} {{requireCurrency.sign}}</span>
+                        <span>{{incomeRmb.toFixed(0)}}¥</span>
                     </el-col>
                 </el-row>
             </div>
@@ -260,7 +260,7 @@
                     </el-col>
                 </el-row>
             </div>
-            <paymentdialog @loadorder="loadorder" @gathering="gathering" :paramss="params" :checkout="checkout" ref="dialogroup" :dialog="dialog" :income="newIncome" :leftmoney="newLeftmoney" @closedialog="closedialog"></paymentdialog>
+            <paymentdialog @loadorder="loadorder" @gathering="gathering" :paramss="params" :checkout="checkout" ref="dialogroup" :dialog="dialog" :income="income" :leftmoney="leftmoney" @closedialog="closedialog"></paymentdialog>
             <refunddialog @loadorder="loadorder" ref="refund" :order="order" :pay_const="pay_const" :currency="currency" :dialog="refunddialog" @closedialog="closedialog"></refunddialog>
             <changecost @loadorder="loadorder" ref="changecost" :dialog="changedialog" @closedialog="closedialog"></changecost>
         </el-form>
@@ -282,10 +282,6 @@
                 counts:0,
                 pay_const:0,
                 privider_consts:0,
-                newLeftmoney:0,
-                incomes:0,
-                incomes_rmb:0,
-                newIncome:0,
                 newMoney:0,
                 radio: '',
                 order: null,
@@ -299,7 +295,6 @@
                 payflag: false,
                 params: {
                     reo: 1,
-//                    reo: null,
                     currency:'CNY',
                     money: null
                 },
@@ -384,9 +379,6 @@
                             this.payflag = false;
                         }
 
-                        if(this.leftmoney<=0){
-                            this.payflag = true;
-                        }
                         /*加载数据start*/
                         let newArr=[];
                         let count=0;
@@ -402,38 +394,24 @@
                         }
                         this.counts=count;
 
-                        if(this.params.money===0){
-                            this.newLeftmoney=this.counts;
-                            if(newLeftmoney){
-                                this.newLeftmoney=newLeftmoney;
-                            }
-                        }
-                        if(typeof(newLeftmoney)=='object'){
-                            this.newIncome=newLeftmoney.income;
-//                    this.newLeftmoney=leftmoney;
-                        }
-
-                        this.currency = data.detail.requirement.currency;
                         /*加载数据end*/
                     }
                 )
             },
             payment(){
-                this.params.id = this.$route.params.orderid;
-                ajax.post('/api/team/pay-stream/collection', this.params).then(
-                    data => {
-                        if (data.code == 0) {
-                            this.payflag=true;
-//                            this.dialog.show = true;
-//                            this.$notify({
-//                                title: '提交成功',
-//                                message: '已提交付款信息',
-//                                type: 'success'
-//                            });
-//                            this.loadorder(this.newLeftmoney);
+                this.$refs['params'].validate((valid)=>{
+                    if(!valid) return;
+
+                    this.params.id = this.$route.params.orderid;
+                    ajax.post('/api/team/pay-stream/collection', this.params).then(
+                        data => {
+                            if (data.code == 0) {
+                                this.payflag=true;
+                            }
                         }
-                    }
-                )
+                    )
+                })
+
             },
             closedialog(){
                 this.dialog.show = false;
@@ -465,22 +443,9 @@
             lookup(){
 
             },
-            /*款项收齐后不显示收款start*/
-            collectPayment(){
-            if(this.leftmoney<=0){
-                    this.payflag = true;
-                }
-            },
-            /*款项收齐后不显示收款end*/
             /*收款校验start*/
             gathering(){
-//                console.log("=======",formName);
-                let params=this.params;
-                this.$refs['params'].validate((valid)=>{
-                    if(valid){
-                        this.$refs.dialogroup.loadSubmit();
-                    }
-                })
+                this.$refs.dialogroup.loadSubmit();
             },
             /*收款校验end*/
 
@@ -555,51 +520,34 @@
                 return pay-this.income;
             },
             income(){
-//                let income = 0;
-//
-//                if(!this.order) return income;
-//
-//                for(let stream of [this.params, ...(this.order.pay_stream||[])]) {
-//                    if (stream.money == null) continue;
-//
-//                    income += stream.money / (stream.currency === 'CNY' ? stream.reo : 1);
-//                }
-//
-//                return income;
-                if(!this.order) return this.incomes;
+               let income = 0;
 
-                for(let stream of [this.params, ...(this.order.pay_stream||[])]) {
-                    if (stream.money == null) continue;
+               if(!this.order) return income;
 
-                    this.incomes += stream.money / (stream.currency === 'CNY' ? stream.reo : 1);
-                }
+               for(let stream of [{ collection_info:this.params }, ...(this.order.pay_stream||[])]) {
+                   stream = stream.collection_info;
+                   if (stream.money == null) continue;
 
-                return this.incomes;
+                   income += stream.money / (stream.currency === 'CNY' ? stream.reo : 1);
+               }
+
+               return income;
 
             },
             /*收款总额人民币start*/
             incomeRmb(){
-//                let income = 0;
-//
-//                if(!this.order) return income;
-//
-//                for(let stream of [this.params, ...(this.order.pay_stream||[])]) {
-//                    if (stream.money == null) continue;
-//
-//                    income += stream.money * (stream.currency === 'CNY' ? 1 : stream.reo);
-//                }
-//
-//                return income
+               let income = 0;
 
-                if(!this.order) return this.incomes_rmb;
+               if(!this.order) return income;
 
-                for(let stream of [this.params, ...(this.order.pay_stream||[])]) {
+               for(let stream of [{ collection_info:this.params }, ...(this.order.pay_stream||[])]) {
+                    stream = stream.collection_info;
                     if (stream.money == null) continue;
 
-                    this.incomes_rmb += stream.money * (stream.currency === 'CNY' ? 1 : stream.reo);
-                }
+                    income += stream.money * (stream.currency === 'CNY' ? 1 : stream.reo);
+               }
 
-                return this.incomes_rmb;
+               return income
             },
             /*收款总额人民币end*/
             refundmoney(){
