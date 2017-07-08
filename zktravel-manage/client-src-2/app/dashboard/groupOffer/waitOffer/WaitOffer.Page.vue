@@ -96,7 +96,6 @@
                         border
                         style="width: 100%">
                     <el-table-column
-                            v-if="isShow"
                             label="紧急度">
                            <!--  :class="isTrue?'abc':'hidden'" -->
                         <template scope="scope">
@@ -143,7 +142,6 @@
                 </el-table>
                <el-row 
                     v-show="this.tableData.length!=0"
-                    v-if="isShow"
                     type="flex"
                     class="row-bg"
                     align="center">
@@ -187,7 +185,6 @@
     export default{
         data(){
             return{
-                isShow:false,
                 conceal:false,
                 isTrue:true,
                 pIsTrue:false,
@@ -240,21 +237,18 @@
                         for(let obj of this.tableData){
 //                            obj.finishTime.substr(1,10);
                             if(obj.status===3){
-                                this.isShow=true;
                                 this.isTrue=true;
                                 this.pIsTrue=false;
                                 obj.newStatus='待报价'
 //                                obj.status="待报价"
                             }
                             if(obj.status===4){
-                                this.isShow=false;
                                 this.isTrue=true;
                                 this.pIsTrue=false;
                                 obj.newStatus='待审核'
 //                                obj.status="待报价"
                             }
                             if(obj.status===8){
-                                this.isShow=false;
                                 this.isTrue=false;
                                 this.pIsTrue=true;
 //                                obj.status="待控房"

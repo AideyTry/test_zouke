@@ -47,6 +47,7 @@
                 console.log(this.data);
                 vm.data.cases.forEach(  //循环方案
                     (a,b)=>{
+                        console.log("asd",a);
                         editableTabs.push({
                             title: '方案'+(b*1+1),
                             name: '方案'+(b*1+1),

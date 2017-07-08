@@ -177,6 +177,7 @@
                     id: id
                 }, {lock: false}).then(
                     data => {
+                        console.log(data);
                         this.booking_dead_line=new Date(data.detail.booking_dead_line).format('YYYY.MM.DD HH:MM');
                         this.status = data.detail.status;
                         this.currency = data.detail.requirement.currency;
