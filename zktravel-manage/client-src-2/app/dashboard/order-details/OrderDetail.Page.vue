@@ -84,7 +84,9 @@
                                    :orderdata="orderdata"></changerequire>
                 </el-tab-pane>
                 <el-tab-pane label="报价记录" name="offer-node">
-                    <offerdetail ref="offerdetaildata" v-if="activetabs=='offer-node'&&orderdatastatus!=2"></offerdetail>
+                    <offerdetail ref="offerdetaildata" v-if="activetabs=='offer-node'&&orderdatastatus!=2" 
+                        @changeSelectCase="offerPassData.selectCase=$event"
+                        @changeSelectIndex="offerPassData.selectIndex=$event"></offerdetail>
                 </el-tab-pane>
                 <el-tab-pane label="收入/支出" name="in-out">
                     <income-detail v-if="orderdata&&activetabs=='in-out'&&orderdatastatus>5"></income-detail>
@@ -132,7 +134,7 @@
                     <!--客服审核-->
                     <el-button type="success" @click="showdialog(3)" size="small"
                                v-if="userole.CONFIRM_PRICE&&activetabs=='offer-node'&&orderdatastatus==5"
-                               :disabled="$refs.offerdetaildata&&$refs.offerdetaildata.selectCase===-1">报价通过
+                               :disabled="offerPassData.selectCase===-1">报价通过
                     </el-button>
                     <el-button type="danger" @click="customRejectOffer" size="small"
                                v-if="userole.CONFIRM_PRICE&&activetabs=='offer-node'&&orderdatastatus==5">重新报价
@@ -151,8 +153,8 @@
                              :pickerOptions="pickerOptions"></dialog1>
                     <dialog2 @closedialog="closedialog" :dialoggroup="dialoggroup"></dialog2>
                     <dialog3 @closedialog="closedialog" :dialoggroup="dialoggroup"
-                             :selectCase="$refs.offerdetaildata.selectCase"
-                             :selectIndex="$refs.offerdetaildata.selectedRow"
+                             :selectCase="offerPassData.selectCase"
+                             :selectIndex="offerPassData.selectIndex"
                              v-if="userole.CONFIRM_PRICE&&activetabs=='offer-node'&&orderdatastatus==5"></dialog3>
                     <dialog4 @closedialog="closedialog" :dialoggroup="dialoggroup" :pickerOptions="pickerOptions"></dialog4>
                 </div>
@@ -192,6 +194,11 @@
         },
         data(){
             return {
+                offerPassData: {
+                    selectCase:-1,
+                    selectIndex: [],
+                },
+
                 change: false,
                 orderdata: null,
                 pickerOptions: {
