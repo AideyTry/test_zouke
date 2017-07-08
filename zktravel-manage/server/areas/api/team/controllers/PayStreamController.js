@@ -21,6 +21,9 @@ module.exports = class MyPayStreamController extends TeamController {
         if(reo) reo = parseFloat(reo);
         if(money) money = parseFloat(money);
 
+        // zero
+        if(!money||!reo) return this.renderJSON({ code:1, msg:'illigal args' });
+
         const payStream = new PayStream();
         let user = this.$getUser();
         const result = await payStream.collection(id,user,reo,currency,money);
