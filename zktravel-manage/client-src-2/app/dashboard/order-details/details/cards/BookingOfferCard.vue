@@ -44,7 +44,7 @@
                 prop="address"
                 label="酒店">
             <template scope="scope">
-                <span>{{scope.row.params.hotel.name||scope.row.hotel.name}}</span>
+                <span>{{scope.row.params.hotel.name||scope.row.params.hotel.ename}}</span>
             </template>
         </el-table-column>
         <el-table-column

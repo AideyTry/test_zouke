@@ -89,14 +89,9 @@
                     <el-col :span="12" class="creator-info">
                     </el-col>
                     <el-col :span="2">
-                        <el-button type="primary" @click="showDialog">点击获取二维码</el-button>
+                        <el-button type="primary" @click="showDialog(p)">点击获取二维码</el-button>
                     </el-col>
                 </el-row>
-                <el-dialog title="二维码" :visible.sync="dialogTableVisible" type="flex" class="showDialog">
-                    <div style="width: 200px;height:200px;" size="small">
-                        <img :src="`/api/team/price/confirm-qr?id=${$route.params.orderid}&index=${p}`">
-                    </div>
-                </el-dialog>
                 <bookoffer
                     @clear-select="selectCase=-1"
                     @selected="selectCase=p"
@@ -104,6 +99,12 @@
                 </bookoffer>
             </div>
         </div>
+
+        <el-dialog title="二维码" :visible.sync="dialogTableVisible" type="flex" class="showDialog">
+            <div style="width: 200px;height:200px;" size="small">
+                <img :src="`/api/team/price/confirm-qr?id=${$route.params.orderid}&index=${qrIndex}`">
+            </div>
+        </el-dialog>
     </div>
 </template>
 <script>
@@ -125,8 +126,9 @@
         },
         data(){
             return {
-                //bookoffer
                 dialogTableVisible: false,
+                qrIndex:0,
+                //bookoffer
                 selectCase:-1,
                 selectedRow: [],
                 night:'',
@@ -239,7 +241,7 @@
                             vm.countryTabs = data.detail.requirement.stay_details[0].city.name + '0'
                             data.detail.requirement.stay_details.forEach(
                                 (v, k) => {
-                                    vm.editableTabs[0].params.push({city: '', hotel: '', rooms: []})
+                                    vm.editableTabs[0].params.push({city: null, hotel: null, rooms: []})
                                     v.rooms.forEach(
                                         (l, y) => {
                                             vm.editableTabs[0].params[k].rooms.push({price:{cost:'', bk: '', quoted: ''}, actual_room_name:[]})
@@ -308,8 +310,9 @@
                     });
                 }
             },
-            showDialog(){
+            showDialog(p){
                 this.dialogTableVisible=true;
+                this.qrIndex = p;
             }
 
         },

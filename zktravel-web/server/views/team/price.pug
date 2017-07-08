@@ -27,7 +27,7 @@ block content
                             button Booking评分：&nbsp;&nbsp;#{price.score}分
                     each room in price.rooms
                         .room
-                            h4= room.types.map(r=>`${r.name} x ${r.num}`).join('/')
+                            h4= room.types.map(r=>`${r.name} ${r.num}间`).join('/')
                             table
                                 tr #[td]#[td SAI]#[td Booking]
                                 tr #[td 每间每晚#{model.currency}]#[td #{room.price.quoted}]#[td #{room.price.bk}]
@@ -41,19 +41,20 @@ block content
         #dialog.dialog
             h3: a#close.close: img(src="/i/images/delete.png")
             div
-                .item
-                    h4 #[span]取消政策
-                    p 2017.06.01 前可免费取消
-                .item
-                    h4 #[span]付款政策
-                    p 2017.06.01 前可免费取消
-                .item
-                    h4 #[span]取消政策
-                    p 全额支付
-                    p 2017.06.01 前可免费取消
-                .item
-                    h4 #[span]报价说明
-                    ul
-                        li 以上价格含税含早，不含前台可能收取的城市稅。
-                        li 以上价格未控房，仅供参考。
+                if(model.userPolicy.cancel)
+                    .item
+                        h4 #[span]取消政策
+                        p= model.userPolicy.cancel
+                if(model.userPolicy.payment)
+                    .item
+                        h4 #[span]付款政策
+                        p= model.userPolicy.type==='全款'? '全额支付':'分期付款'
+                        each payment in model.userPolicy.payment
+                            p. 
+                                #{new Date(payment.dead_line).format('YYYY.MM.DD')}
+                                前#{ model.userPolicy.type==='全款'?'缴清全款':`支付${payment.price}${model.currency}`}
+                if(model.userPolicy.explain)
+                    .item
+                        h4 #[span]报价说明
+                        p= model.userPolicy.explain
         #mubu.mubu

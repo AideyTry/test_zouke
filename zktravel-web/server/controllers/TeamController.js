@@ -18,7 +18,7 @@ module.exports = class TeamController extends LController {
         cuid = parseInt(cuid, 10);
         const uid = await this.$getUid();
         
-        if((detail&&detail.creator.id===uid&&detail.price&&detail.price.cases[index])||cuid===uid){
+        if((detail&&detail.requirement.user.id===uid&&detail.price&&detail.price.cases[index])||cuid===uid){
             this.render(price.getModel(detail, index));
         }else{
             this.render(null, 'price.error');
