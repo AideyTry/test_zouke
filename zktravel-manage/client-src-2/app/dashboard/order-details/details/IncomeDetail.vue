@@ -401,7 +401,7 @@
             payment(){
                 this.$refs['params'].validate((valid)=>{
                     if(!valid) return;
-                    
+
                     this.params.id = this.$route.params.orderid;
                     ajax.post('/api/team/pay-stream/collection', this.params).then(
                         data => {
@@ -411,7 +411,7 @@
                         }
                     )
                 })
-              
+
             },
             closedialog(){
                 this.dialog.show = false;

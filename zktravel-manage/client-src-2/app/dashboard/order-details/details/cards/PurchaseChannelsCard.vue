@@ -56,10 +56,11 @@
                                 <!--</el-form-item>-->
                                 <el-date-picker
                                         v-model="item.cancel_policy.cancel.free_cancel_date"
-                                        type="date"
+                                        type="datetime"
                                         size="small"
                                         placeholder="选择日期"
-                                        :picker-options="pickerOptions">
+                                        >
+                                        <!--:picker-options="pickerOptions">-->
                                 </el-date-picker>
 
                             </el-col>
@@ -74,7 +75,7 @@
                                             type="date"
                                             size="small"
                                             placeholder="选择日期"
-                                            :picker-options="pickerOptions">
+                                            >
                                     </el-date-picker>
                                 </el-col>
                                 <el-col :span="2">
