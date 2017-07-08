@@ -164,68 +164,117 @@
         computed:{
             newSupplier(){
                 return this.$store.getters.supplier;
+            },
+            new_purchase_channel(){
+                let vm=this;
+                vm.purchase_channel=[...new Set(vm.purchase_channel)];
             }
+
         },
         methods:{
+//            loadSupplier(){
+//                this.supplier=this.newSupplier;
+////                switch(this.supplier){
+////                    case '':
+////                        this.supplier=null;
+////                        break;
+////                    case 'GTA':
+//////                        if(this.purchase_channel.length==0||this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='miki'){
+////                            this.purchase_channel.push({
+////                                supplier_name:'GTA',
+////                                total_cost:'',
+////                                cancel_policy:{
+////                                    cancel_name:'',
+////                                    cancel:
+////                                        {
+////                                            free_cancel_date:'',
+////                                            pay_cancel:[{
+////                                                date:'',
+////                                                number:null
+////                                            }]
+////                                        }
+////
+////                                },
+////                                pay_policy:[
+////                                    {
+////                                        pay_date:'',
+////                                        number:null
+////                                    }
+////                                ]
+////                            });
+//////                        }
+////                        break;
+////                    case 'miki':
+//////                        if(this.purchase_channel.length==0||this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='GTA'){
+////                            this.purchase_channel.push({
+////                                supplier_name:'miki',
+////                                total_cost:'',
+////                                cancel_policy:{
+////                                    cancel_name:'',
+////                                    cancel:
+////                                        {
+////                                            free_cancel_date:'',
+////                                            pay_cancel:[{
+////                                                date:'',
+////                                                number:null
+////                                            }]
+////                                        }
+////
+////                                },
+////                                pay_policy:[
+////                                    {
+////                                        pay_date:'',
+////                                        number:null
+////                                    }
+////                                ]
+////                            });
+//////                        }
+////                        break;
+////                }
+//
+//            },
             loadSupplier(){
-                this.supplier=this.newSupplier;
-                switch(this.supplier){
-                    case '':
-                        this.supplier=null;
-                        break;
-                    case 'GTA':
-                        if(this.purchase_channel.length==0||this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='miki'){
-                            this.purchase_channel.push({
-                                supplier_name:'GTA',
-                                total_cost:'',
-                                cancel_policy:{
-                                    cancel_name:'',
-                                    cancel:
-                                        {
-                                            free_cancel_date:'',
-                                            pay_cancel:[{
-                                                date:'',
-                                                number:null
-                                            }]
-                                        }
+//                this.purchase_channel;
+//                this.newSupplier;
+                const allSupplier = this.newSupplier;
+                const oldSupplierSet = this.purchase_channel;
 
-                                },
-                                pay_policy:[
-                                    {
-                                        pay_date:'',
-                                        number:null
-                                    }
-                                ]
-                            });
-                        }
-                        break;
-                    case 'miki':
-                        if(this.purchase_channel.length==0||this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='GTA'){
-                            this.purchase_channel.push({
-                                supplier_name:'miki',
-                                total_cost:'',
-                                cancel_policy:{
-                                    cancel_name:'',
-                                    cancel:
-                                        {
-                                            free_cancel_date:'',
-                                            pay_cancel:[{
-                                                date:'',
-                                                number:null
-                                            }]
-                                        }
+                const newSupplierSet = [];
 
-                                },
-                                pay_policy:[
+
+                for(let sp of allSupplier){
+                    const sameSp = oldSupplierSet.find(i=>i.supplier_name===sp);
+                    if(sameSp){
+                        newSupplierSet.push(sameSp);
+                    }else{
+                        newSupplierSet.push( {
+                           supplier_name:sp,
+                           total_cost:'',
+                            cancel_policy:{
+                                cancel_name:'',
+                                cancel:
                                     {
-                                        pay_date:'',
-                                        number:null
+                                        free_cancel_date:'',
+                                        pay_cancel:[{
+                                            date:'',
+                                            number:null
+                                        }]
                                     }
-                                ]
-                            });
-                        }
-                        break;
-                }
+
+                            },
+                            pay_policy:[
+                                {
+                                    pay_date:'',
+                                    number:null
+                               }
+                           ]
+                        });
+                    }
+                };
+
+
+                this.purchase_channel.splice(0,this.purchase_channel.length,...newSupplierSet);
+                (this.purchase_channel.length>0) && (this.supplier= this.purchase_channel[0].supplier_name);
             },
             addCancelPolicy(v){
                 console.log("v=",v);
@@ -261,69 +310,167 @@
             }
         },
         watch:{
-            newSupplier(){
-                this.loadSupplier();
-                console.log("order=",this.order)
-                let arr=[];
-                let count_GTA=0;
-                let count_miki=0;
-                this.order.orders.forEach(function(orders){
-                    orders.hotels.forEach(function(hotels){
-                        hotels.suppliers.forEach(function(supplier,index){
-                            arr.push(supplier.supplier_name);
-                        })
-                    })
-                });
-                for(let i=0;i<arr.length;i++){
-                    if(arr[i]=='GTA'){
-                        count_GTA++;
-                    }
-                    if(arr[i]=='miki'){
-                        count_miki++;
-                    }
-                }
-                if(count_GTA==0&&count_miki==0){
-                    this.newSupplier='';
-                    this.purchase_channel.splice(0,2);
-                }
-                if(count_GTA==0){
-                    if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='GTA'){
-                        this.purchase_channel.splice(0,1);
-                    }
-                    if(this.purchase_channel.length==2&&this.purchase_channel[0].supplier_name=='GTA'){
-                        this.purchase_channel.splice(0,1);
-                    }
-                    if(this.purchase_channel.length==2&&this.purchase_channel[1].supplier_name=='GTA'){
-                        this.purchase_channel.splice(1,1);
-                    }
-                }
-                if(count_miki==0){
-                    if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='miki'){
-                        this.purchase_channel.splice(0,1);
-                    }
-                    if(this.purchase_channel.length==2&&this.purchase_channel[0].supplier_name=='miki'){
-                        this.purchase_channel.splice(0,1);
-                    }
-                    if(this.purchase_channel.length==2&&this.purchase_channel[1].supplier_name=='miki'){
-                        this.purchase_channel.splice(1,1);
-                    }
-                }
-            },
-            deleteIsTrue(){
-//                if(this.item.length==1){
-//                    this.deleteIsTrue=false;
-//                }else{
-//                    this.deleteIsTrue=true;
-//                }
+            newSupplier:{
+               handler:function(val,oldVal){
+                    console.log("======",val);
+                   this.loadSupplier();
+               },
+                deep:true
             }
         },
+//        watch:{
+//
+////            newSupplier(){
+////                console.log("order=",this.order)
+////
+////                console.log("newSupplier===",this.newSupplier);
+////                let arr=[];
+////                let count_GTA=0;
+////                let count_miki=0;
+////                this.order.orders.forEach(function(orders){
+////                    orders.hotels.forEach(function(hotels){
+////                        hotels.suppliers.forEach(function(supplier,index){
+////                            arr.push(supplier.supplier_name);
+////                        })
+////                    })
+////                });
+//////                this.provider_cost=[...new Set(this.provider_cost)]
+//////                arr=[...new Set(arr)];
+////                console.log("arr===",arr);
+////                for(let i=0;i<arr.length;i++){
+////                    if(arr[i]=='GTA'){
+////                        count_GTA++;
+////                        this.purchase_channel.push({
+////                            supplier_name:'GTA',
+////                            total_cost:'',
+////                            cancel_policy:{
+////                                cancel_name:'',
+////                                cancel:
+////                                    {
+////                                        free_cancel_date:'',
+////                                        pay_cancel:[{
+////                                            date:'',
+////                                            number:null
+////                                        }]
+////                                    }
+////
+////                            },
+////                            pay_policy:[
+////                                {
+////                                    pay_date:'',
+////                                    number:null
+////                                }
+////                            ]
+////                        });
+////                    }
+////                    if(arr[i]=='miki'){
+////                        count_miki++;
+////                        this.purchase_channel.push({
+////                            supplier_name:'miki',
+////                            total_cost:'',
+////                            cancel_policy:{
+////                                cancel_name:'',
+////                                cancel:
+////                                    {
+////                                        free_cancel_date:'',
+////                                        pay_cancel:[{
+////                                            date:'',
+////                                            number:null
+////                                        }]
+////                                    }
+////
+////                            },
+////                            pay_policy:[
+////                                {
+////                                    pay_date:'',
+////                                    number:null
+////                                }
+////                            ]
+////                        });
+////                    }
+////
+////
+////                    /*数组去重start*/
+////                    var newArr=[];
+////                    for(var i=0;i<this.purchase_channel;i++){
+////                        if(newArr.indexOf(this.purchase_channel[i])==-1){
+////                            newArr.push(this.purchase_channel[i]);
+////                        }
+////                    }
+////                    /*数组去重end*/
+////                    this.purchase_channel=newArr;
+////                    console.log("this.purchase_channel",this.purchase_channel);
+////                    console.log("order=",this.order)
+//////                    const s = new Set();
+////////
+////////                    [2, 3, 5, 4, 5, 2, 2].forEach(x => s.add(x));
+//////                    this.purchase_channel.forEach(x=>s.add(x));
+//////                    this.purchase_channel=s;
+////                    this.loadSupplier();
+////                }
+////
+//////                if(count_GTA==0&&count_miki==0){
+//////                    this.newSupplier='';
+//////                    this.purchase_channel.splice(0,2);
+//////                }
+//////                if(count_GTA==0){
+////////                    if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='GTA'){
+////////                        this.purchase_channel.splice(0,1);
+////////                    }
+////////                    if(this.purchase_channel.length==2&&this.purchase_channel[0].supplier_name=='GTA'){
+////////                        this.purchase_channel.splice(0,1);
+////////                    }
+////////                    if(this.purchase_channel.length==2&&this.purchase_channel[1].supplier_name=='GTA'){
+////////                        this.purchase_channel.splice(1,1);
+////////                    }
+//////                    let i,flag;
+//////                    for(i=0;i<arr.length;i++){
+//////                        if(arr[i]=='GTA'){
+//////                            flag=i;
+//////                        }
+//////                    }
+//////                    this.purchase_channel.splice(flag,1);
+//////                }
+////
+////
+//////                if(count_miki==0){
+////////                    if(this.purchase_channel.length==1&&this.purchase_channel[0].supplier_name=='miki'){
+////////                        this.purchase_channel.splice(0,1);
+////////                    }
+////////                    if(this.purchase_channel.length==2&&this.purchase_channel[0].supplier_name=='miki'){
+////////                        this.purchase_channel.splice(0,1);
+////////                    }
+////////                    if(this.purchase_channel.length==2&&this.purchase_channel[1].supplier_name=='miki'){
+////////                        this.purchase_channel.splice(1,1);
+////////                    }
+//////                    let i,flag;
+//////                    for(i=0;i<arr.length;i++){
+//////                        if(arr[i]=='miki'){
+//////                            flag=i;
+//////                        }
+//////                    }
+//////                    this.purchase_channel.splice(flag,1);
+//////                }
+////            },
+//            deleteIsTrue(){
+////                if(this.item.length==1){
+////                    this.deleteIsTrue=false;
+////                }else{
+////                    this.deleteIsTrue=true;
+////                }
+//            }
+//        },
         mounted(){
-            this.loadSupplier();
+//            this.loadSupplier();
 //            if(this.item.length==1){
 //                this.deleteIsTrue=false;
 //            }else{
 //                this.deleteIsTrue=true;
 //            }
+            console.log("newSupplier===",this.newSupplier);
+        },
+        beforeUpdate(){
+            console.log("newSupplier===",this.newSupplier);
         }
     }
 </script>

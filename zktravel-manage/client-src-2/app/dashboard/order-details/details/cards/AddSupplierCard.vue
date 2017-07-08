@@ -52,7 +52,9 @@
 
 </template>
 <script>
-    import RoomsCard from './RoomsCard'
+    import RoomsCard from './RoomsCard';
+    import spList from '../../sp-list';
+
     export default{
         props: ["currentData","item","orders"],
         data(){
@@ -60,13 +62,7 @@
                 index:null,
                 isTrue_supplier:false,
                 deleteIsTrue:true,
-                channel: [{
-                    value: 'GTA',
-                    label: 'GTA'
-                }, {
-                    value: 'miki',
-                    label: 'miki'
-                }],
+                channel: spList.map(s=> ({ value:s.name, label:s.label }) ),
                 rooms: [{
                     value: 'Single',
                     label: 'Single'
@@ -111,6 +107,19 @@
         computed: {
             selectRoom(){
                 return this.$store.getters.selectRoom;
+            },
+            provider(){
+                let arr=[];
+                for(let { hotels } of this.orders){
+                    for(let { suppliers } of hotels){
+                        for(let { supplier_name: sp } of suppliers) {
+                            if (!arr.includes(sp)) {
+                                arr.push(sp);
+                            }
+                        }
+                    }
+                }
+                return arr;
             }
         },
         methods: {
@@ -147,8 +156,7 @@
                 }
             },
             supplierChange(value){
-                console.log("value=",value);
-                this.$commit("supplier",value);
+                this.$commit("supplier",this.provider);
             }
         },
         watch:{
@@ -166,6 +174,9 @@
             }else{
                 this.deleteIsTrue=true;
             }
+        },
+        beforeUpdate(){
+            console.log("orders===",this.orders);
         }
     }
 </script>

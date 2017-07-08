@@ -33,7 +33,7 @@
                                 </el-col>
                                 <el-col :span="16">
                                     <strong>指定的酒店:</strong>
-                                    <span>{{item.hotel.name}}</span>
+                                    <span>{{item.hotel&&item.hotel.name}}</span>
                                 </el-col>
                             </el-row>
                             <div v-for="(v,index) in item.hotels">
