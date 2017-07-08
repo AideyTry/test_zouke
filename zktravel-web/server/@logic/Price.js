@@ -32,7 +32,7 @@ module.exports = class Price{
 
             prices.push({
                 city: blockDetail.city.name,
-                hotel: selectCase.price[i].hotel.name,
+                hotel: selectCase.price[i].hotel.ename||selectCase.price[i].hotel.name,
                 star: selectCase.price[i].hotel.star,
                 score: selectCase.price[i].hotel.score,
                 check_in: new Date(blockDetail.check_in).format('YYYY年M月D日'),
